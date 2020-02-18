@@ -117,7 +117,7 @@ class Crawl extends CB_Controller
         $this->load->library(array('querystring','aws_s3','form_validation'));
 
         $this->imageAnnotator = new ImageAnnotatorClient([
-            'credentials' => './denguru-fbb3def6b97b.json'
+            'credentials' => './denguru2-51a54-34c83efd96e6.json'
         ]);
 
 
@@ -266,7 +266,6 @@ class Crawl extends CB_Controller
                                         'cit_name' => element('crawl_title',$ivalue) ,
                                         'cit_summary' => element('crawl_sub_title',$ivalue) ,
                                         'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
-                                        'cit_datetime' => cdate('Y-m-d H:i:s'),
                                         'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                         'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))),
                                         'brd_id' => element('brd_id', $board_crawl),
@@ -498,7 +497,6 @@ class Crawl extends CB_Controller
                                     'cit_name' => element('crawl_title',$ivalue) ,
                                     'cit_summary' => element('crawl_sub_title',$ivalue) ,
                                     'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
-                                    'cit_datetime' => cdate('Y-m-d H:i:s'),
                                     'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                     'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))),
                                     'brd_id' => element('brd_id', $board_crawl),
@@ -1242,163 +1240,17 @@ class Crawl extends CB_Controller
 
 
 
-                        // if(element('post_content', $post))
-                        //     eval(element('post_content', $post));
-                        // elseif(element('brd_content', $board_crawl))
-                        //     eval(element('brd_content', $board_crawl));
+                        if(element('post_content', $post))
+                            eval(element('post_content', $post));
+                        elseif(element('brd_content', $board_crawl))
+                            eval(element('brd_content', $board_crawl));
                         
 
 
 
                         
                 
-                        $html_dom = $html->find('div.xans-element-.-prodlist',0);
-
-                    if(!$html_dom){
-                        log_message('error', '$html_dom post_id:'.$post_id);
-                        $is_pln_error=true;
-                    }
-
-                    $i=0;
-
-
-                    if($html_dom->find('li.xans-record-')){
-                        foreach($html_dom->find('li.xans-record-') as $gallery) {
-                            $iteminfo = array();
-
-                            $crawl_info[$i]['crawl_price'] = '';
-                            $crawl_info[$i]['crawl_title'] = '';
-                            $crawl_info[$i]['crawl_post_url'] = '';
-                            $crawl_info[$i]['crawl_goods_code'] = '';
-
-                            $itemimg = array();
-
-                            $crawl_img[$i]['img_src'] = '';
-
-                            if($gallery->find('div.-name',0))
-                              if($gallery->find('div.-name',0)->find('span.-real',0)->first_child())
-                                  $iteminfo['crawl_title'] = $gallery->find('div.-name',0)->find('span.-real',0)->first_child()->plaintext;
-
-
-                            if($gallery->find('div.xans-element-.-detail',0))
-                              if($gallery->find('div.xans-element-.-detail',0)->last_child())
-                                if($gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling())
-                                    if($gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling()->find('span.-real',0)->first_child())
-                                  $iteminfo['crawl_price'] = $gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling()->find('span.-real',0)->first_child()->plaintext;
-
-
-                            
-
-
-                            if($gallery->find('div.-name',0))
-                                if($gallery->find('div.-name',0)->first_child())
-                                    if($gallery->find('div.-name',0)->first_child()->href)
-                                    $iteminfo['crawl_post_url'] = $gallery->find('div.-name',0)->first_child()->href;
-
-                            
-                                
-
-                       
-
-                            //$iteminfo['crawl_sub_title'] = $gallery->find('span.displaynone',1)->next_sibling()->plaintext;
-                 
-                            if($gallery->find('div.-icons',0))
-                                if($gallery->find('div.-icons',0)->first_child())
-                                    if($gallery->find('div.-icons',0)->first_child()->alt)
-                                        if($gallery->find('div.-icons',0)->first_child()->alt==="품절")
-                                            $iteminfo['crawl_is_soldout'] = 1;
-
-                          
-                            if(!empty($iteminfo['crawl_price'])) {
-                                $crawl_info[$i]['crawl_price'] = $iteminfo['crawl_price'];
-                            } else {
-                                log_message('error', '$crawl_price post_id:'.$post_id);
-                                $is_pln_error=true;
-                                
-                            }
-
-                            if(!empty($iteminfo['crawl_title'])) {
-                                $crawl_info[$i]['crawl_title'] = $iteminfo['crawl_title'];
-                            } else {
-                                log_message('error', '$crawl_title post_id:'.$post_id);
-                               $is_pln_error=true;
-                            }
-
-                            if(!empty($iteminfo['crawl_sub_title'])) {
-                                $crawl_info[$i]['crawl_sub_title'] = $iteminfo['crawl_sub_title'];
-                            } else {
-                                log_message('error', '$crawl_sub_title post_id:'.$post_id);
-                                // $is_pln_error=true;
-                            }
-
-
-                            
-                           
-                            
-                            if(!empty($iteminfo['crawl_post_url'])) {
-                            
-                                $crawl_info[$i]['crawl_post_url'] = $iteminfo['crawl_post_url'];
-
-                                
-                                $crawl_post_url = parse_url($iteminfo['crawl_post_url']);
-                                parse_str($crawl_post_url['query'],$query_string);
-                                
-                                
-                                $iteminfo['crawl_goods_code'] = $query_string[$board_crawl['brd_goods_key']];
-                                
-                                
-                                
-                                
-                            } else {
-                                log_message('error', '$crawl_post_url post_id:'.$post_id);
-                                $is_pln_error=true;
-                            }
-                            
-                            if(!empty($iteminfo['crawl_goods_code'])) {
-                                $crawl_info[$i]['crawl_goods_code'] = $iteminfo['crawl_goods_code'];
-                            } else {
-                                log_message('error', '$crawl_goods_code post_id:'.$post_id);
-                               $is_pln_error=true;
-                            }
-
-                            if(!empty($iteminfo['crawl_is_soldout'])) {
-                                $crawl_info[$i]['crawl_is_soldout'] = 1;
-
-                                
-                            } else {
-                                log_message('error', '$crawl_is_soldout post_id:'.$post_id);
-                                // $is_pln_error=true;
-                            }
-
-                            
-                            
-
-                            
-
-
-                            if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0))
-                              if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child())
-                                if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child()->src)
-                                    $itemimg['img_src'] = $gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child()->src;
-
-                               
-                            
-                            if(!empty($itemimg['img_src'])) {
-                                $crawl_img[$i]['img_src'] = $itemimg['img_src'];
-                            } else {
-                                log_message('error', '$img_src post_id:'.$post_id);
-                                $is_pln_error=true;
-                            }
-                            
-                            
-
-                            $i++;
-                        }
                         
-                    } else {
-                        log_message('error', '$html_dom post_id:'.$post_id);
-                        $is_pln_error=true;
-                    }
 
                         
 
@@ -1579,159 +1431,13 @@ class Crawl extends CB_Controller
 
 
 
-                    // if(element('post_content', $post))
-                    //     eval(element('post_content', $post));
-                    // elseif(element('brd_content', $board_crawl))
-                    //     eval(element('brd_content', $board_crawl));
+                    if(element('post_content', $post))
+                        eval(element('post_content', $post));
+                    elseif(element('brd_content', $board_crawl))
+                        eval(element('brd_content', $board_crawl));
                     
 
-                    $html_dom = $html->find('div.xans-element-.-prodlist',0);
-
-                    if(!$html_dom){
-                        log_message('error', '$html_dom post_id:'.$post_id);
-                        $is_pln_error=true;
-                    }
-
-                    $i=0;
-
-
-                    if($html_dom->find('li.xans-record-')){
-                        foreach($html_dom->find('li.xans-record-') as $gallery) {
-                            $iteminfo = array();
-
-                            $crawl_info[$i]['crawl_price'] = '';
-                            $crawl_info[$i]['crawl_title'] = '';
-                            $crawl_info[$i]['crawl_post_url'] = '';
-                            $crawl_info[$i]['crawl_goods_code'] = '';
-
-                            $itemimg = array();
-
-                            $crawl_img[$i]['img_src'] = '';
-
-                            if($gallery->find('div.-name',0))
-                              if($gallery->find('div.-name',0)->find('span.-real',0)->first_child())
-                                  $iteminfo['crawl_title'] = $gallery->find('div.-name',0)->find('span.-real',0)->first_child()->plaintext;
-
-
-                            if($gallery->find('div.xans-element-.-detail',0))
-                              if($gallery->find('div.xans-element-.-detail',0)->last_child())
-                                if($gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling())
-                                    if($gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling()->find('span.-real',0)->first_child())
-                                  $iteminfo['crawl_price'] = $gallery->find('div.xans-element-.-detail',0)->last_child()->prev_sibling()->find('span.-real',0)->first_child()->plaintext;
-
-
-                            
-
-
-                            if($gallery->find('div.-name',0))
-                                if($gallery->find('div.-name',0)->first_child())
-                                    if($gallery->find('div.-name',0)->first_child()->href)
-                                    $iteminfo['crawl_post_url'] = $gallery->find('div.-name',0)->first_child()->href;
-
-                            
-                                
-
-                       
-
-                            //$iteminfo['crawl_sub_title'] = $gallery->find('span.displaynone',1)->next_sibling()->plaintext;
-                            if($gallery->find('div.-icons',0))
-                                if($gallery->find('div.-icons',0)->first_child())
-                                    if($gallery->find('div.-icons',0)->first_child()->alt)
-                                        if($gallery->find('div.-icons',0)->first_child()->alt==="품절")
-                                            $iteminfo['crawl_is_soldout'] = 1;
-                            
-
-                          
-                            if(!empty($iteminfo['crawl_price'])) {
-                                $crawl_info[$i]['crawl_price'] = $iteminfo['crawl_price'];
-                            } else {
-                                log_message('error', '$crawl_price post_id:'.$post_id);
-                                $is_pln_error=true;
-                                
-                            }
-
-                            if(!empty($iteminfo['crawl_title'])) {
-                                $crawl_info[$i]['crawl_title'] = $iteminfo['crawl_title'];
-                            } else {
-                                log_message('error', '$crawl_title post_id:'.$post_id);
-                               $is_pln_error=true;
-                            }
-
-                            if(!empty($iteminfo['crawl_sub_title'])) {
-                                $crawl_info[$i]['crawl_sub_title'] = $iteminfo['crawl_sub_title'];
-                            } else {
-                                log_message('error', '$crawl_sub_title post_id:'.$post_id);
-                                // $is_pln_error=true;
-                            }
-
-
-                            
-                           
-                            
-                            if(!empty($iteminfo['crawl_post_url'])) {
-                            
-                                $crawl_info[$i]['crawl_post_url'] = $iteminfo['crawl_post_url'];
-
-                                
-                                $crawl_post_url = parse_url($iteminfo['crawl_post_url']);
-                                parse_str($crawl_post_url['query'],$query_string);
-                                
-                                
-                                $iteminfo['crawl_goods_code'] = $query_string[$board_crawl['brd_goods_key']];
-                                
-                                
-                                
-                                
-                            } else {
-                                log_message('error', '$crawl_post_url post_id:'.$post_id);
-                                $is_pln_error=true;
-                            }
-                            
-                            if(!empty($iteminfo['crawl_goods_code'])) {
-                                $crawl_info[$i]['crawl_goods_code'] = $iteminfo['crawl_goods_code'];
-                            } else {
-                                log_message('error', '$crawl_goods_code post_id:'.$post_id);
-                               $is_pln_error=true;
-                            }
-
-                            if(!empty($iteminfo['crawl_is_soldout'])) {
-                                $crawl_info[$i]['crawl_is_soldout'] = 1;
-
-                                
-                            } else {
-                                log_message('error', '$crawl_is_soldout post_id:'.$post_id);
-                                // $is_pln_error=true;
-                            }
-
-                            
-                            
-
-                            
-
-
-                            if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0))
-                              if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child())
-                                if($gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child()->src)
-                                    $itemimg['img_src'] = $gallery->find('a[name=anchorBoxName_'.$iteminfo['crawl_goods_code'].']',0)->first_child()->src;
-
-                               
-                            
-                            if(!empty($itemimg['img_src'])) {
-                                $crawl_img[$i]['img_src'] = $itemimg['img_src'];
-                            } else {
-                                log_message('error', '$img_src post_id:'.$post_id);
-                                $is_pln_error=true;
-                            }
-                            
-                            
-
-                            $i++;
-                        }
-                        
-                    } else {
-                        log_message('error', '$html_dom post_id:'.$post_id);
-                        $is_pln_error=true;
-                    }
+                    
 
                     
             
@@ -2173,6 +1879,50 @@ class Crawl extends CB_Controller
                 //     eval(element('brd_content', $board_crawl));
                 
 
+                $html_dom = $html->find('div.-product-detail-right',0);
+
+                if(!$html_dom){
+                    log_message('error', '$html_dom post_id:'.$post_id);
+                    
+                }
+
+                $iteminfo = array();
+                $cit_info['crawl_title'] = '';
+                $cit_info['crawl_sub_title'] = '';
+                $cit_info['crawl_price'] = '';
+                $cit_info['crawl_brand'] = '';
+                $cit_info['crawl_size'] = '';
+                $cit_info['crawl_color'] = '';
+
+
+                if($html_dom->find('div.-name'))                
+                    if($html_dom->find('div.-name',0)->find('h1',0))           
+                        $cit_info['crawl_title'] = $html_dom->find('div.-name',0)->find('h1',0)->plaintext;
+               
+               if($html_dom->find('div.-name'))                
+                    if($html_dom->find('div.-name',0)->find('h2',0))           
+                        $cit_info['crawl_sub_title'] = $html_dom->find('div.-name',0)->find('h2',0)->plaintext;
+                        
+                
+
+                if($html_dom->find('td.price'))                
+                    if($html_dom->find('td.price',0))           
+                        $cit_info['crawl_price'] = $html_dom->find('td.price',0)->plaintext;
+
+                if($html_dom->find('td.sale'))                
+                    if($html_dom->find('td.sale',0))           
+                        $cit_info['crawl_price'] = $html_dom->find('td.sale',0)->plaintext;
+
+                if($html_dom->find('td.prd_brand'))                
+                    if($html_dom->find('td.prd_brand',0))           
+                        $cit_info['crawl_brand'] = $html_dom->find('td.prd_brand',0)->plaintext;
+                        
+                
+                    
+               
+                print_r($cit_info);
+                exit;
+                
                 $html_dom = $html->find('div.cont',0);
 
                 if(!$html_dom){
@@ -2188,10 +1938,10 @@ class Crawl extends CB_Controller
                     foreach($html_dom->find('img') as $gallery) {
                         $iteminfo = array();
 
-                        $cit_info[$i]['crawl_price'] = '';
-                        $cit_info[$i]['crawl_title'] = '';
-                        $cit_info[$i]['crawl_post_url'] = '';
-                        $cit_info[$i]['crawl_goods_code'] = '';
+                        
+                        
+                        $cit_info[$i]['img_src'] = '';
+                        
 
                         $itemimg = array();
 
@@ -2215,12 +1965,21 @@ class Crawl extends CB_Controller
                     log_message('error', '$html_dom post_id:'.$post_id);
                     
                 }
-
-                
-            
                 
 
+                $updatedata = array(                                        
+                    
+                    'cit_name' => element('crawl_title',$ivalue) ,
+                    'cit_summary' => element('crawl_sub_title',$ivalue) ,
+                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
+                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
+                    'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
+                    
+                );
+
                 
+
+                $this->Cmall_item_model->update(element('cit_id',$c_value),$updatedata);
 
                 foreach($cit_img as $ikey => $ivalue){
 
@@ -2263,7 +2022,7 @@ class Crawl extends CB_Controller
                         
                     }
                 }
-                
+                exit;
             } else {
                 continue;
             }
@@ -2364,25 +2123,25 @@ class Crawl extends CB_Controller
                 }
             }
 
-            $convert_text = $this->label_tag_convert($translate_text,$crawl_title);
-            $deletewhere = array(
-                'cit_id' => element('cit_id', $citem),
-            );
-            $this->Crawl_tag_model->delete_where($deletewhere);            
-            if ($convert_text && is_array($convert_text)) {
-                foreach ($convert_text as $key => $value) {
-                    $value = trim($value);
-                    if ($value) {
-                        $tagdata = array(
-                            'post_id' => element('post_id', $citem),
-                            'cit_id' => element('cit_id', $citem),
-                            'brd_id' => element('brd_id', $citem),
-                            'cta_tag' => $value,
-                        );
-                        $this->Crawl_tag_model->insert($tagdata);
-                    }
-                }
-            }
+            // $convert_text = $this->label_tag_convert($translate_text,$crawl_title);
+            // $deletewhere = array(
+            //     'cit_id' => element('cit_id', $citem),
+            // );
+            // $this->Crawl_tag_model->delete_where($deletewhere);            
+            // if ($convert_text && is_array($convert_text)) {
+            //     foreach ($convert_text as $key => $value) {
+            //         $value = trim($value);
+            //         if ($value) {
+            //             $tagdata = array(
+            //                 'post_id' => element('post_id', $citem),
+            //                 'cit_id' => element('cit_id', $citem),
+            //                 'brd_id' => element('brd_id', $citem),
+            //                 'cta_tag' => $value,
+            //             );
+            //             $this->Crawl_tag_model->insert($tagdata);
+            //         }
+            //     }
+            // }
             
         }
         
@@ -2417,21 +2176,20 @@ class Crawl extends CB_Controller
         # annotate the image
         $image = file_get_contents($path);
 
-        $response = $this->imageAnnotator->labelDetection($image);
-        $labels = $response->getLabelAnnotations();
+        $response = $this->imageAnnotator->textDetection($image);
+        $texts = $response->getTextAnnotations();
         $translate_text=array();
         $convert_text=array();
-
-        print_r($response);
-        exit;
+        
+       
         $target = 'ko';
 
-        if ($labels) {
+        if ($texts) {
             
-            foreach ($labels as $label) {
-
+            foreach ($texts as $text) {
+print_r($text->getDescription());
                 if($translate){
-                    $translation = $this->translate->translate($label->getDescription(), [
+                    $translation = $this->translate->translate($text->getDescription(), [
                         'target' => $target
                     ]);
                     
@@ -2439,40 +2197,40 @@ class Crawl extends CB_Controller
                 
                 } else {
 
-                    array_push($translate_text,$label->getDescription());
+                    array_push($translate_text,$text->getDescription());
                 }        
             }
             
                 
-            
+           // print_r($translate_text);
         } else {
             return 'No label found';
         }
         
-        if(count($translate_text)){
+        // if(count($translate_text)){
             
 
-            $convert_text = $this->label_tag_convert(element('cit_id', $citem),$translate_text,$crawl_title);
-            // $deletewhere = array(
-            //     'cit_id' => element('cit_id', $citem),
-            // );
-            // $this->Crawl_tag_model->delete_where($deletewhere);            
-            if ($convert_text && is_array($convert_text)) {
-                foreach ($convert_text as $key => $value) {
-                    $value = trim($value);
-                    if ($value) {
-                        $tagdata = array(
-                            'post_id' => element('post_id', $citem),
-                            'cit_id' => element('cit_id', $citem),
-                            'brd_id' => element('brd_id', $citem),
-                            'cta_tag' => $value,
-                        );
-                        $this->Crawl_tag_model->insert($tagdata);
-                    }
-                }
-            }
+        //     $convert_text = $this->label_tag_convert(element('cit_id', $citem),$translate_text,$crawl_title);
+        //     // $deletewhere = array(
+        //     //     'cit_id' => element('cit_id', $citem),
+        //     // );
+        //     // $this->Crawl_tag_model->delete_where($deletewhere);            
+        //     if ($convert_text && is_array($convert_text)) {
+        //         foreach ($convert_text as $key => $value) {
+        //             $value = trim($value);
+        //             if ($value) {
+        //                 $tagdata = array(
+        //                     'post_id' => element('post_id', $citem),
+        //                     'cit_id' => element('cit_id', $citem),
+        //                     'brd_id' => element('brd_id', $citem),
+        //                     'cta_tag' => $value,
+        //                 );
+        //                 $this->Crawl_tag_model->insert($tagdata);
+        //             }
+        //         }
+        //     }
             
-        }
+        // }
         
 
         $this->imageAnnotator->close();

@@ -1079,11 +1079,9 @@ class Board_post extends CB_Controller
 		 */
 		$param =& $this->querystring;
 		$page = (((int) $this->input->get('page_sub')) > 0) ? ((int) $this->input->get('page_sub')) : 1;
-		$order_by_field = element('order_by_field', $board)
-			? element('order_by_field', $board)
-			: 'cit_id asc';
+		
 
-		$order_by_field = 'cit_id asc';
+		$order_by_field = 'cit_order,cit_id';
 		$findex = $this->input->get('findex', null, $order_by_field);
 		$sfield = $sfieldchk = $this->input->get('sfield', null, '');
 		
@@ -1100,6 +1098,7 @@ class Board_post extends CB_Controller
 
 		$this->Cmall_item_model->allow_search_field = array('cit_id', 'cit_name'); // 검색이 가능한 필드
 		$this->Cmall_item_model->search_field_equal = array('cit_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Cmall_item_model->allow_order_field = array('cit_order,cit_id'); // 정렬이 가능한 필드
 
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['step1'] = Events::trigger('list_step1', $eventname);
@@ -1172,7 +1171,7 @@ class Board_post extends CB_Controller
 		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model'));
 		
 		$result = $this->Cmall_item_model
-			->get_list($per_page, $offset, $where, '', $findex,'', $sfield, $skeyword);
+			->get_list($per_page, $offset, $where, '', $findex,'asc', $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
