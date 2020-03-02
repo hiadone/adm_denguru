@@ -21,6 +21,7 @@ $config['admin_page_menu']['cmall'] =
 			'pendingbank'			=> array('무통장입금알림', ''),
 			'orderlist'				=> array('구매내역', ''),
 			'cmallcategory'			=> array('분류관리', ''),
+			'cmallbrand'			=> array('브랜드관리', ''),
 			'cmallitem'				=> array('상품관리', ''),
 			'qna'					=> array('상품문의', ''),
 			'review'				=> array('상품사용후기', ''),

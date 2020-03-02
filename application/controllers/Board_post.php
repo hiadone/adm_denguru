@@ -1166,22 +1166,50 @@ class Board_post extends CB_Controller
 			'post_id' => $post_id,
 		);
 		
-		
+		if(!empty($this->input->get('warning'))){
+			$or_where = array(
+				'cit_name' => '',
+				'cit_price' => 0,
+				'cit_post_url' => '',
+				'cit_goods_code' => '',
+				'cit_brand' => 0,
+			);
+			
+			$this->Cmall_item_model->or_where($or_where);
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model'));
+			
+		} 
+
+		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_brand_model'));
 		
 		$result = $this->Cmall_item_model
 			->get_list($per_page, $offset, $where, '', $findex,'asc', $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
+
+		
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
 				
-
+				$cmall_brand='';
 				
 				
 				
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
 
+				if(element('cit_brand', $val))
+					$cmall_brand = $this->Cmall_brand_model->get_one(element('cit_brand', $val));
+
+				if(element('cbr_value_kr',$cmall_brand))
+					$result['list'][$key]['display_brand'] = element('cbr_value_kr',$cmall_brand);
+				elseif(element('cbr_value_en',$cmall_brand))
+					$result['list'][$key]['display_brand'] = element('cbr_value_en',$cmall_brand);
+				else
+					$result['list'][$key]['display_brand'] = '-';
+
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cit_brand', $val)))
+					$result['list'][$key]['warning'] = 1 ; 
+				else 
+					$result['list'][$key]['warning'] = '' ; 
 				$result['list'][$key]['display_datetime'] = display_datetime(
 					element('cit_updated_datetime', $val),
 					$list_date_style,
@@ -1189,6 +1217,8 @@ class Board_post extends CB_Controller
 				);
 
 				$result['list'][$key]['display_price'] = element('cit_price', $val) ? element('cit_price', $val) : 0 ; 
+
+				
 
 				$result['list'][$key]['cit_link'] = site_url('item/' . element('cit_key', $val)); 
 				$result['list'][$key]['cit_link'] = site_url('/postact/cit_link/' . element('cit_id', $val)); 
@@ -1661,6 +1691,14 @@ class Board_post extends CB_Controller
 					);
 
 				$result['list'][$key]['pln_error'] = $this->Post_link_model
+					->count_by($linkwhere);
+
+				$linkwhere = array(
+						'post_id' => element('post_id', $val),
+						'pln_error' => 2,
+					);
+
+				$result['list'][$key]['pln_error2'] = $this->Post_link_model
 					->count_by($linkwhere);
 			}
 		}

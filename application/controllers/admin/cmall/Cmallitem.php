@@ -24,7 +24,7 @@ class Cmallitem extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post');
+	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -84,6 +84,20 @@ class Cmallitem extends CB_Controller
 		$sfield = $this->input->get('sfield', null, '');
 		$skeyword = $this->input->get('skeyword', null, '');
 
+		if(!empty($this->input->get('warning'))){
+			$or_where = array(
+				'cit_name' => '',
+				'cit_price' => 0,
+				'cit_post_url' => '',
+				'cit_goods_code' => '',
+				'cit_brand' => 0,
+			);
+			
+			$this->Cmall_item_model->or_where($or_where);
+
+			
+		} 
+		
 		$per_page = admin_listnum();
 		$offset = ($page - 1) * $per_page;
 
@@ -112,7 +126,10 @@ class Cmallitem extends CB_Controller
 
 				$result['list'][$key]['cmall_wishlist_count'] = $cmall_wishlist_count ? $cmall_wishlist_count : 0;
 
-				
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cit_brand', $val)))
+					$result['list'][$key]['warning'] = 1 ; 
+				else 
+					$result['list'][$key]['warning'] = '' ; 
 
 
 				$result['list'][$key]['display_tag'] = '';
@@ -288,6 +305,11 @@ class Cmallitem extends CB_Controller
 				'field' => 'cit_name',
 				'label' => '상품명',
 				'rules' => 'trim|required',
+			),
+			array(
+				'field' => 'cit_brand_text',
+				'label' => '브랜드',
+				'rules' => 'trim',
 			),
 			array(
 				'field' => 'cit_order',
@@ -733,6 +755,7 @@ class Cmallitem extends CB_Controller
 			}
 
 			$getdata = array();
+			$brand_text = '';
 			$getdata['cit_status'] = '1';
 			if ($pid) {
 				$getdata = $this->{$this->modelname}->get_one($pid);
@@ -784,8 +807,19 @@ class Cmallitem extends CB_Controller
 				
 				$getdata['postlist'] = $this->Post_model->get_post_list('','',array('brd_id' => element('brd_id',$getdata)));
 			}
+			if(element('cit_brand', $getdata))
+				$brand_text = $this->Cmall_brand_model->get_one(element('cit_brand', $getdata));
+
+			if(element('cbr_value_kr',$brand_text))
+				$getdata['cit_brand_text']	= element('cbr_value_kr',$brand_text);
+			elseif(element('cbr_value_kr',$brand_text))
+				$getdata['cit_brand_text']	= element('cbr_value_en',$brand_text);
+			else
+				$getdata['cit_brand_text']	= '';
 
 			$getdata['boardlist'] = $this->Board_model->get_board_list();
+
+			$getdata['brand_list'] = $this->Cmall_brand_model->get();
 			$view['view']['data'] = $getdata;
 			$view['view']['data']['item_layout_option'] = get_skin_name(
 				'_layout',
@@ -835,7 +869,19 @@ class Cmallitem extends CB_Controller
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
+			
+			
+			if($this->input->post('cit_brand_text',null,'')){
+				$this->db->select('cbr_id');			
+				$this->db->from('cmall_brand');
+				$this->db->where('cbr_value_kr', $this->input->post('cit_brand_text',null,''));
+				$this->db->or_where('cbr_value_en', $this->input->post('cit_brand_text',null,''));
+				$result = $this->db->get();
+				$cit_brand = $result->row_array();
+			}
+
 			$cit_order = $this->input->post('cit_order') ? $this->input->post('cit_order') : 0;
+			$cit_brand = empty($cit_brand) ? 0 : $cit_brand;
 			$cit_type1 = $this->input->post('cit_type1') ? $this->input->post('cit_type1') : 0;
 			$cit_type2 = $this->input->post('cit_type2') ? $this->input->post('cit_type2') : 0;
 			$cit_type3 = $this->input->post('cit_type3') ? $this->input->post('cit_type3') : 0;
@@ -851,6 +897,7 @@ class Cmallitem extends CB_Controller
 			$updatedata = array(
 				'cit_key' => $this->input->post('cit_key', null, ''),
 				'cit_name' => $this->input->post('cit_name', null, ''),
+				'cit_brand' => element('cbr_id',$cit_brand),
 				'cit_order' => $cit_order,
 				'cit_type1' => $cit_type1,
 				'cit_type2' => $cit_type2,

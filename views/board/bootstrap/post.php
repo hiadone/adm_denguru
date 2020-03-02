@@ -66,7 +66,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			<?php
 			foreach (element('link', $view) as $key => $value) {
 			?>
-				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><?php if (element('pln_page', $value)) echo '~'.element('pln_page', $value); ?><?php if (element('pln_error', $value)) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } ?><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
+				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><?php if (element('pln_page', $value)) echo '~'.element('pln_page', $value); ?><?php if (element('pln_error', $value) === '1') { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } ?><?php if (element('pln_error', $value) === '2') { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
 					<?php if (element('show_url_qrcode', element('board', $view))) { ?>
 						<span class="url-qrcode" data-qrcode-url="<?php echo urlencode(element('pln_url', $value)); ?>"><i class="fa fa-qrcode"></i></span>
 					<?php } ?>
@@ -108,7 +108,9 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			}
 			?>
 		</div>
-
+		<!-- 코멘트 시작 -->
+		<div><?php echo element('post_comment', element('post', $view)); ?></div>
+		<!-- 코멘트 끝 -->
 		<!-- 본문 내용 시작 -->
 		<div id="post-content"><?php echo element('content', element('post', $view)); ?></div>
 		<!-- 본문 내용 끝 -->

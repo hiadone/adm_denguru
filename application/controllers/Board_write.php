@@ -323,6 +323,16 @@ class Board_write extends CB_Controller
 				'label' => '내용',
 				'rules' => 'trim',
 			),
+			array(
+				'field' => 'post_content_detail',
+				'label' => '내용',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'post_comment',
+				'label' => '코멘트',
+				'rules' => 'trim',
+			),
 		);
 		if ($form && is_array($form)) {
 			foreach ($form as $key => $value) {
@@ -408,7 +418,7 @@ class Board_write extends CB_Controller
 			$config[] = array(
 				'field' => 'post_category',
 				'label' => '카테고리',
-				'rules' => 'trim|required',
+				'rules' => 'trim',
 			);
 		}
 		$this->form_validation->set_rules($config);
@@ -803,6 +813,8 @@ class Board_write extends CB_Controller
 			$post_title = $this->input->post('post_title', null, '');
 			$post_page_key = $this->input->post('post_page_key', null, '');
 			$post_content = $this->input->post('post_content', null, '');
+			$post_content_detail = $this->input->post('post_content_detail', null, '');
+			$post_comment = $this->input->post('post_comment', null, '');
 			if (element('save_external_image', $board)) {
 				$post_content = $this->imagelib->replace_external_image($post_content);
 			}
@@ -813,6 +825,8 @@ class Board_write extends CB_Controller
 				'post_title' => $post_title,
 				'post_page_key' => $post_page_key,
 				'post_content' => $post_content,
+				'post_content_detail' => $post_content_detail,
+				'post_comment' => $post_comment,
 				'post_html' => $content_type,
 				'post_datetime' => cdate('Y-m-d H:i:s'),
 				'post_updated_datetime' => cdate('Y-m-d H:i:s'),
@@ -1684,6 +1698,16 @@ class Board_write extends CB_Controller
 				'label' => '내용',
 				'rules' => 'trim',
 			),
+			array(
+				'field' => 'post_content_detail',
+				'label' => '내용',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'post_commnet',
+				'label' => '코멘트',
+				'rules' => 'trim',
+			),
 		);
 
 		if ($form && is_array($form)) {
@@ -1767,7 +1791,7 @@ class Board_write extends CB_Controller
 			$config[] = array(
 				'field' => 'post_category',
 				'label' => '카테고리',
-				'rules' => 'trim|required',
+				'rules' => 'trim',
 			);
 		}
 
@@ -2124,6 +2148,8 @@ class Board_write extends CB_Controller
 			$post_title = $this->input->post('post_title', null, '');
 			$post_page_key = $this->input->post('post_page_key', null, '');
 			$post_content = $this->input->post('post_content', null, '');
+			$post_content_detail = $this->input->post('post_content_detail', null, '');
+			$post_comment = $this->input->post('post_comment', null, '');
 			if (element('save_external_image', $board)) {
 				$post_content = $this->imagelib->replace_external_image($post_content);
 			}
@@ -2133,6 +2159,8 @@ class Board_write extends CB_Controller
 				'post_title' => $post_title,
 				'post_page_key' => $post_page_key,
 				'post_content' => $post_content,
+				'post_content_detail' => $post_content_detail,
+				'post_comment' => $post_comment,
 				'post_html' => $content_type,
 				'post_updated_datetime' => cdate('Y-m-d H:i:s'),
 				'post_update_mem_id' => $mem_id,

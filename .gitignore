@@ -1,6 +1,10 @@
 !.gitignore
 .DS_Store
 *.json
+denguru_uploads/
+dev_denguru_uploads/
+
+
 application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess

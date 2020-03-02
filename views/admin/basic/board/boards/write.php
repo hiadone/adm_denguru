@@ -84,8 +84,8 @@ if (element('brd_id', element('data', $view))) {
 				<div class="form-group">
 					<label class="col-sm-2 control-label">사이트 명</label>
 					<div class="col-sm-8">
-						PC - <input type="text" class="form-control per30" name="brd_name" value="<?php echo set_value('brd_name', element('brd_name', element('data', $view))); ?>" />,
-						모바일 - <input type="text" class="form-control per30" name="brd_mobile_name" value="<?php echo set_value('brd_mobile_name', element('brd_mobile_name', element('data', $view))); ?>" />
+						한글 - <input type="text" class="form-control per30" name="brd_name" value="<?php echo set_value('brd_name', element('brd_name', element('data', $view))); ?>" />,
+						영어 - <input type="text" class="form-control per30" name="brd_mobile_name" value="<?php echo set_value('brd_mobile_name', element('brd_mobile_name', element('data', $view))); ?>" />
 						<span class="help-block">모바일용 제목을 입력하지 않으시면, 모바일에서 PC 용 제목이 보이게 됩니다</span>
 					</div>
 				</div>				

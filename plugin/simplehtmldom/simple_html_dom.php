@@ -539,7 +539,8 @@ class simple_html_dom_node
 		$ret = '';
 
 		foreach ($this->nodes as $n) {
-			$ret .= $n->outertext();
+			$ret .= $n->text();
+			break;
 		}
 
 		return $ret;
@@ -653,6 +654,7 @@ class simple_html_dom_node
 				if ($n->tag === 'span') {
 					$ret .= $this->dom->default_span_text;
 				}
+				
 			}
 		}
 		return trim($ret);
@@ -2742,7 +2744,7 @@ class simple_html_dom
 	{
 		switch ($name) {
 			case 'outertext':
-				return $this->root->innertext();
+				return $this->root->outertext();
 			case 'innertext':
 				return $this->root->innertext();
 			case 'plaintext':

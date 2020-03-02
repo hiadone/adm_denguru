@@ -104,6 +104,18 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 control-label">판매가격</label>
+					<div class="col-sm-10 form-inline">
+						<input type="number" class="form-control" name="cit_price" value="<?php echo set_value('cit_price', element('cit_price', element('data', $view))); ?>" /> 원
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">브랜드</label>
+					<div class="col-sm-10 form-inline">
+						<input type="text" class="form-control" id="cit_brand_text" name="cit_brand_text" value="<?php echo set_value('cit_brand_text', element('cit_brand_text', element('data', $view))); ?>" /> 
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 control-label">정렬순서</label>
 					<div class="col-sm-10 form-inline">
 						<input type="number" class="form-control" name="cit_order" value="<?php echo set_value('cit_order', element('cit_order', element('data', $view))); ?>" />
@@ -145,12 +157,7 @@
 				<a data-toggle="collapse" href="#cmalltab3" aria-expanded="true" aria-controls="cmalltab3"><i class="fa fa-chevron-up pull-right"></i></a>
 			</div>
 			<div class="collapse in" id="cmalltab3">
-				<div class="form-group">
-					<label class="col-sm-2 control-label">판매가격</label>
-					<div class="col-sm-10 form-inline">
-						<input type="number" class="form-control" name="cit_price" value="<?php echo set_value('cit_price', element('cit_price', element('data', $view))); ?>" /> 원
-					</div>
-				</div>
+				
 				<div class="form-group">
 					<label class="col-sm-2 control-label">기본설명</label>
 					<div class="col-sm-10">
@@ -378,7 +385,10 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+<!-- CSS , JS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 jQuery(function($) {
@@ -468,5 +478,69 @@ function get_post_list(brd_id){
 			
 	});
 }
+
+function split( val ) {
+
+    return val.split( /,\s*/ );
+
+}
+
+function extractLast( term ) {
+
+    return split( term ).pop();
+
+}
+
+
+
+
+    
+var searchSource = [
+	<?php
+	if (element('brand_list', element('data', $view))) {
+	    foreach (element('brand_list', element('data', $view)) as $result) {
+	 		echo '"'.element('cbr_value_kr',$result).'","'.element('cbr_value_en',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
+$("#cit_brand_text")
+.on("keydown", function( event ) {
+    if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+        event.preventDefault();
+    }
+})
+.autocomplete({  //오토 컴플릿트 시작
+    source : searchSource,    // source 는 자동 완성 대상
+    select: function(event, ui) {
+        this.value = "";
+        this.value = ui.item.value;
+
+        return false;
+    },
+    focus : function(event, ui) {    //포커스 가면
+        return false;//한글 에러 잡기용도로 사용됨
+    },
+    minLength: 1,// 최소 글자수
+    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+    classes: {    //잘 모르겠음
+        "ui-autocomplete": "highlight"
+    },
+    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//            disabled: true, //자동완성 기능 끄기
+    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+    close : function(event){    //자동완성창 닫아질때 호출
+        console.log(1);
+    }
+});
+        
+    
+
 //]]>
 </script>
+			
+
+
+

@@ -216,6 +216,7 @@
 						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
 						<?php if (element('pln_error', $result)) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } ?>
+						<?php if (element('pln_error2', $result)) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
 						
 					<td><?php echo element('display_name', $result); ?></td>
 					<td><?php echo element('display_datetime', $result); ?></td>

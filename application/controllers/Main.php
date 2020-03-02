@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 메인 페이지를 담당하는 controller 입니다.
  */
+
+
 class Main extends CB_Controller
 {
 

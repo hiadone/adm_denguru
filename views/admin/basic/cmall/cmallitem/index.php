@@ -11,6 +11,7 @@
 				?>
 					<div class="btn-group pull-right" role="group" aria-label="...">
 						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+						<a href="<?php echo element('listall_url', $view); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택수정</button>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
@@ -46,7 +47,7 @@
 					if (element('list', element('data', $view))) {
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
-						<tr>
+						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
 							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><?php echo html_escape(element('cit_key', $result)); ?></a></td>
 							<td style="width:130px;">
 								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>

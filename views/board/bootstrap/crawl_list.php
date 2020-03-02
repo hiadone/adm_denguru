@@ -104,7 +104,7 @@
                     <th>Vision API label</th>
                     <th>태그</th>
                     <th>날짜</th>
-                    <th>노출여부</th>
+                    <th>판매여부</th>
                     <th>판매량</th>
                     <th>조회수</th>
                     <th>스크랩</th>
@@ -118,7 +118,7 @@
             if (element('list', element('data', element('list', $view)))) {
                 foreach (element('list', element('data', element('list', $view))) as $result) {
             ?>
-                <tr>
+                <tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
                     <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
                     <td ><?php echo element('num', $result); ?></td>
                     <td>
@@ -149,10 +149,16 @@
                         <?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
                         <?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
                         <?php 
+                            if(element('display_brand', $result))
+                                echo '<div>브랜드 : <label class="label label-default">'.element('display_brand', $result).'</label></div>';
+                        ?>
+                        <?php 
                         if(element('cit_summary', $result)){
                             echo '<div><sub>'.element('cit_summary', $result). '</sub></div>';
                         }    
                         ?>
+                        
+                    </td>
                     <td style="width:130px;">
                                 <?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
                                 <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
@@ -168,6 +174,7 @@
                                 echo '<div><button class="btn btn-danger btn-xs" type="button">Sold out</button></div>';
                         ?>
                         
+                        
                     </td>
                     <td ><textarea name="cit_color[<?php echo element('cit_id', $result); ?>]" id="cit_color_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options px100" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_color', $result)); ?></textarea>
                         </td>
@@ -178,7 +185,7 @@
                         <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
                         </td>
                     <td><?php echo element('display_datetime', $result); ?></td>
-                    <td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'hide' : 'show'; ?></a></td>
+                    <td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
                     <td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
                     <td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
                     <td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>
@@ -203,7 +210,7 @@
 
     <div class="border_button">
         <div class="pull-left mr10">
-            <a href="<?php echo element('list_url', element('list', $view)); ?>" class="btn btn-default btn-sm">목록</a>
+            <a href="<?php echo element('list_url', element('list', $view)); ?>" class="btn btn-default btn-sm">전체목록</a>
             <?php if (element('search_list_url', element('list', $view))) { ?>
                 <a href="<?php echo element('search_list_url', element('list', $view)); ?>" class="btn btn-default btn-sm">검색목록</a>
             <?php } ?>
@@ -212,8 +219,9 @@
             <div class="pull-left">
                 
                     <div class="btn btn-danger btn-sm" onClick="post_multi_action('cit_multi_delete', '0', '선택하신 항목을 완전삭제하시겠습니까?');"><i class="fa fa-trash-o"></i> 선택삭제하기</div>
+                    <a href="<?php echo element('list_url', element('list', $view)); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
                     <div class="btn btn-primary btn-sm" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
-                    <div class="btn btn-warning btn-sm" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
+                    <div class="btn btn-primary btn-sm" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
             </div>
 
             <div class="pull-right">

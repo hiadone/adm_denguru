@@ -41,6 +41,8 @@ class CB_Model extends CI_Model
 	 */
 	public $search_field_equal = array();
 
+	public $or_where = array();
+
 	/* --------------------------------------------------------------
 	 * GENERIC METHODS
 	 * ------------------------------------------------------------ */
@@ -107,6 +109,12 @@ class CB_Model extends CI_Model
 		return $result;
 	}
 
+	public function or_where($or_where)
+	{
+		$this->or_where = $or_where;
+		
+	}
+
 
 	public function get_admin_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
 	{
@@ -114,6 +122,15 @@ class CB_Model extends CI_Model
 		return $result;
 	}
 
+	// public function _or_where($or_where){
+	// 	$this->db->group_start();
+		
+	// 	foreach ($or_where as $skey => $sval) {
+	// 		$this->db->or_where($skey, $sval);
+	// 	}
+		
+	// 	$this->db->group_end();
+	// }
 
 	public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
 	{
@@ -194,6 +211,16 @@ class CB_Model extends CI_Model
 			$this->db->where($where);
 		}
 		
+		if($this->or_where){
+			$this->db->group_start();
+					
+			foreach ($this->or_where as $skey => $sval) {
+				$this->db->or_where($skey, $sval);
+			}
+			
+			$this->db->group_end();
+		}
+
 		if ($where_in) {
 			$this->db->where_in(key($where_in),$where_in[key($where_in)]);
 		}
@@ -230,6 +257,7 @@ class CB_Model extends CI_Model
 		$qry = $this->db->get();
 		$result['list'] = $qry->result_array();
 
+
 		$this->db->select('count(*) as rownum');
 		$this->db->from($this->_table);
 		if ( ! empty($join['table']) && ! empty($join['on'])) {
@@ -250,6 +278,17 @@ class CB_Model extends CI_Model
 		if ($where) {
 			$this->db->where($where);
 		}
+
+		if($this->or_where){
+			$this->db->group_start();
+					
+			foreach ($this->or_where as $skey => $sval) {
+				$this->db->or_where($skey, $sval);
+			}
+			
+			$this->db->group_end();
+		}
+		
 		if ($search_where) {
 			$this->db->where($search_where);
 		}

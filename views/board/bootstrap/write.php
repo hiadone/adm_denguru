@@ -63,6 +63,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 				</div>
 			</div>
+			<div class="form-group">
+				<label for="post_comment" class="col-sm-2 control-label">코멘트</label>
+				<div class="col-sm-10" style="display:table;">
+					<input type="text" class="form-control" name="post_comment" id="post_comment" value="<?php echo set_value('post_comment', element('post_comment', element('post', $view))); ?>" />
+					
+				</div>
+			</div>
 			<?php if (element('use_subject_style', element('board', $view))) { ?>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">제목옵션</label>
@@ -181,27 +188,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			<?php } ?>
 			<div class="form-group">
-				<div class="col-sm-12">
-					<?php if ( ! element('use_dhtml', element('board', $view))) { ?>
-						<div>
-							<div class="btn-group pull-right mb10">
-								<?php if (element('use_emoticon', element('board', $view))) { ?>
-									<button type="button" class="btn btn-default btn-sm" onclick="window.open('<?php echo site_url('helptool/emoticon?id=post_content'); ?>', 'emoticon', 'width=600,height=400,scrollbars=yes')"><i class="fa fa-smile-o fa-lg"></i></button>
-								<?php } ?>
-								<?php if (element('use_specialchars', element('board', $view))) { ?>
-									<button type="button" class="btn btn-default btn-sm" onclick="window.open('<?php echo site_url('helptool/specialchars?id=post_content'); ?>', 'specialchars', 'width=490,height=245,scrollbars=yes')"><i class="fa fa-star-o fa-lg"></i></button>
-								<?php } ?>
-								<button type="button" class="btn btn-default btn-sm" onClick="resize_textarea('post_content', 'down');"><i class="fa fa-plus fa-lg"></i></button>
-								<button type="button" class="btn btn-default btn-sm" onClick="resize_textarea('post_content', 'up');"><i class="fa fa-minus fa-lg"></i></button>
-							</div>
-						</div>
-					<?php } ?>
+				<label class="col-sm-2 control-label">크롤링 로직</label>
+
+				<div class="col-sm-10">
+					
 
 					<?php echo display_dhtml_editor('post_content', set_value('post_content', element('post_content', element('post', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = element('use_dhtml', element('board', $view)), $editor_type = $this->cbconfig->item('post_editor_type')); ?>
 
+
+
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label">상세 페이지 크롤링 로직</label>
 
+				<div class="col-sm-10">
+					
+
+					<?php echo display_dhtml_editor('post_content_detail', set_value('post_content_detail', element('post_content_detail', element('post', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = element('use_dhtml', element('board', $view)), $editor_type = $this->cbconfig->item('post_editor_type')); ?>
+
+					
+
+				</div>
+			</div>
 			<?php
 			if (element('link_count', element('board', $view)) > 0) {
 				$link_count = element('link_count', element('board', $view));
@@ -456,9 +466,7 @@ $(function() {
 			, captcha_key : {required: true, captchaKey:true}
 <?php } ?>
 <?php } ?>
-<?php if (element('use_category', element('board', $view))) { ?>
-			, post_category : {required: true}
-<?php } ?>
+
 		},
 		messages: {
 			recaptcha: '',

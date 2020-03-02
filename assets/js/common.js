@@ -952,7 +952,7 @@ if (typeof(COMMON_JS) === 'undefined') {
         var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
 
         
-        var t = $('#'+input_key+action_id).val().replace(regExp, "");
+        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : input_key;
         
         
         href = cb_url + '/postact/' + action_type + '/' + action_id + '/' + encodeURIComponent(t);
@@ -976,8 +976,9 @@ if (typeof(COMMON_JS) === 'undefined') {
                     return false;
                 } else if (data.success) {
                     // alert(data.success);
-                    if (data.url) {
-                        document.location.href=data.url;
+                    if (data.reload) {
+                        // document.location.href=data.url;
+                        document.location.reload();
                         return false;
                     } else {
                         // document.location.reload();

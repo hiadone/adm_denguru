@@ -6,6 +6,9 @@
 			<?php if(element('pln_error', $view)){ ?>
 				<button class="btn btn-danger btn-xs">크롤링 error</button>
 			<?php } ?>
+			<?php if(element('pln_error2', $view)){ ?>
+				<button class="btn btn-warning btn-xs">태킹 error</button>
+			<?php } ?>
 			<div class="view-all pull-right">
 				<a href="<?php echo board_url(element('brd_key', element('board', $view))); ?>" title="<?php echo html_escape(element('board_name', element('board', $view))); ?>">더보기 <i class="fa fa-angle-right"></i></a>
 			</div>

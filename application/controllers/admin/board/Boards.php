@@ -637,6 +637,11 @@ class Boards extends CB_Controller
 				'label' => '사이트 크롤링 로직',
 				'rules' => 'trim',
 			),
+			array(
+				'field' => 'brd_content_detail',
+				'label' => '사이트 상품 상세 페이지 크롤링 로직',
+				'rules' => 'trim',
+			),
 		);
 		
 		$this->form_validation->set_rules($config);
@@ -669,6 +674,7 @@ class Boards extends CB_Controller
 				'brd_order_url' => $this->input->post('brd_order_url', null, ''),
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),
 				'brd_content' => $this->input->post('brd_content', null, ''),
+				'brd_content_detail' => $this->input->post('brd_content_detail', null, ''),
 			);
 
 			/**
@@ -4481,11 +4487,6 @@ class Boards extends CB_Controller
 
 			$bgr_id = $this->input->post('bgr_id');
 			$brd_name = $this->input->post('brd_name');
-			$brd_url = $this->input->post('brd_url');
-			$brd_goods_key = $this->input->post('brd_goods_key');
-			$brd_order_url = $this->input->post('brd_order_url');
-			$brd_register_url = $this->input->post('brd_register_url');
-			$brd_content = $this->input->post('brd_content');
 			$brd_mobile_name = $this->input->post('brd_mobile_name');
 			$brd_search = $this->input->post('brd_search');
 			$brd_order = $this->input->post('brd_order');
@@ -4509,11 +4510,6 @@ class Boards extends CB_Controller
 					$updatedata = array(
 						'bgr_id' => element($val, $bgr_id),
 						'brd_name' => element($val, $brd_name),
-						'brd_url' => element($val, $brd_url),
-						'brd_goods_key' => element($val, $brd_goods_key),
-						'brd_order_url' => element($val, $brd_order_url),
-						'brd_register_url' => element($val, $brd_register_url),
-						'brd_content' => element($val, $brd_content),
 						'brd_mobile_name' => element($val, $brd_mobile_name),
 						'brd_search' => $brd_search_update,
 						'brd_order' => $update_brd_order,

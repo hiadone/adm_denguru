@@ -73,6 +73,13 @@
                         <textarea class="form-control" rows="10" name="brd_content"><?php echo set_value('brd_content', element('brd_content', element('data', $view))); ?></textarea>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">사이트 상품 상세 페이지 크롤링 로직</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="10" name="brd_content_detail"><?php echo set_value('brd_content_detail', element('brd_content_detail', element('data', $view))); ?></textarea>
+                    </div>
+                </div>
             </div>
             <div class="box-table">
                 <div class="box-table-header">
