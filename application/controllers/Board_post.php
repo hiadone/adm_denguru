@@ -374,7 +374,7 @@ class Board_post extends CB_Controller
 			
 			$view['view']['post']['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
 			if(empty($view['view']['post']['category'])) 
-			$view['view']['post']['category'] = $this->Board_group_category_model->get_category_info(element('bgr_id', $board), element('post_category', $post));
+			$view['view']['post']['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
 			
 		}
 
@@ -1458,7 +1458,7 @@ class Board_post extends CB_Controller
 			
 			$board['category'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
 			if(empty($board['category']))
-			$board['category'] = $this->Board_group_category_model->get_all_category(element('bgr_id', $board));
+			$board['category'] = $this->Board_group_category_model->get_all_category(1);
 			
 
 			$this->db->select('count(cb_cmall_item.cit_id) as cnt,post_category');
@@ -1531,7 +1531,7 @@ class Board_post extends CB_Controller
 					
 					$noticeresult[$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
 					if(empty($noticeresult[$key]['category']))
-					$noticeresult[$key]['category'] = $this->Board_group_category_model->get_category_info(element('bgr_id', $board), element('post_category', $val));
+					$noticeresult[$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
 					
 
 						
@@ -1620,7 +1620,7 @@ class Board_post extends CB_Controller
 					
 					$result['list'][$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
 					if(empty($result['list'][$key]['category']))
-					$result['list'][$key]['category'] = $this->Board_group_category_model->get_category_info(element('bgr_id', $board), element('post_category', $val));
+					$result['list'][$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
 					
 					
 				}

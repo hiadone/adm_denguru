@@ -716,7 +716,7 @@ class Board_write extends CB_Controller
 				
 				$view['view']['category'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
 				if(empty($view['view']['category'])) 
-				$view['view']['category'] = $this->Board_group_category_model->get_all_category(element('bgr_id', $board));
+				$view['view']['category'] = $this->Board_group_category_model->get_all_category(1);
 				
 			}
 
@@ -2067,7 +2067,7 @@ class Board_write extends CB_Controller
 				
 				$view['view']['category'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
 				if(empty($view['view']['category'])) 
-				$view['view']['category'] = $this->Board_group_category_model->get_all_category(element('bgr_id', $board));
+				$view['view']['category'] = $this->Board_group_category_model->get_all_category(1);
 				
 			}
 

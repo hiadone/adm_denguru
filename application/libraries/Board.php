@@ -660,7 +660,7 @@ class Board extends CI_Controller
 						
 						$view['view']['latest'][$key]['category'] = $this->CI->Board_category_model->get_category_info(element('brd_id', $value), element('post_category', $value));
 						if(empty($view['view']['latest'][$key]['category']))
-						$view['view']['latest'][$key]['category'] = $this->CI->Board_group_category_model->get_category_info(element('bgr_id', $cboard), element('post_category', $value));
+						$view['view']['latest'][$key]['category'] = $this->CI->Board_group_category_model->get_category_info(1, element('post_category', $value));
 						
 
 				}

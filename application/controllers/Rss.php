@@ -150,7 +150,7 @@ class Rss extends CB_Controller
 					$result['list'][$key]['category'] = element('bca_value', $category);
 
 					if(empty($result['list'][$key]['category'])){
-						$category = $this->CI->Board_group_category_model->get_category_info(element('bgr_id', $board), element('post_category', $val));
+						$category = $this->CI->Board_group_category_model->get_category_info(1, element('post_category', $val));
 						$result['list'][$key]['category'] = element('bca_value', $category);
 					}
 				}

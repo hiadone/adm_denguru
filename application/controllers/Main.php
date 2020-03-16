@@ -13,7 +13,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 메인 페이지를 담당하는 controller 입니다.
  */
 
+// $imageUrl="http://cocochien.img9.kr/TEE/cape/mantoman한 글/001한 글.jpg";
+// echo "<br>".urldecode($imageUrl)."<br>";
+                    
+//                     # 이미지 파일명 추출
+//                     $img_src_array = parse_url(urldecode($imageUrl));
+//                         // $img_src_array= explode('://', $imageUrl);
+//                         $img_src_array_= explode('/', $img_src_array['path']);
+//                         $imageName = end($img_src_array_);
 
+//                         $encode_url=array();
+//                         foreach($img_src_array as $u_key => $u_value){
+//                             $img_src_array[$u_key] = rawurlencode($img_src_array[$u_key]);
+//                         }
+//                         $imageUrl = $img_src_array['scheme'].'://'.$img_src_array['host'].$img_src_array['path'];
+//                         // $imageUrl = $img_src_array[0].'://'.$imageUrl;
+                        
+//                         // $imageUrl = str_replace("%3F","?",$imageUrl);
+//                         // $imageUrl = str_replace("%26","&",$imageUrl);
+//                         $imageUrl = str_replace("%2F","/",$imageUrl);
+//                         echo "<br>".$imageUrl."<br>";
+//                         exit;
 class Main extends CB_Controller
 {
 

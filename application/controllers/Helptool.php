@@ -1034,7 +1034,7 @@ class Helptool extends CB_Controller
 			
 			$view['view']['data'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
 			if(empty($view['view']['data']))
-			$view['view']['data'] = $this->Board_group_category_model->get_all_category(element('bgr_id', $board));
+			$view['view']['data'] = $this->Board_group_category_model->get_all_category(1);
 			
 
 			// 이벤트가 존재하면 실행합니다
