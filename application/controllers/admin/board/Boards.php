@@ -287,6 +287,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim|numeric',
 			),
 			array(
+				'field' => 'brd_blind',
+				'label' => '블라인드',
+				'rules' => 'trim|numeric',
+			),
+			array(
 				'field' => 'board_use_captcha',
 				'label' => '검색여부',
 				'rules' => 'trim|numeric',
@@ -334,6 +339,7 @@ class Boards extends CB_Controller
 
 			$brd_order = $this->input->post('brd_order') ? $this->input->post('brd_order') : 0;
 			$brd_search = $this->input->post('brd_search') ? $this->input->post('brd_search') : 0;
+			$brd_blind = $this->input->post('brd_blind') ? $this->input->post('brd_blind') : 0;
 			$updatedata = array(
 				'bgr_id' => $this->input->post('bgr_id', null, ''),
 				'brd_key' => $this->input->post('brd_key', null, ''),
@@ -341,6 +347,7 @@ class Boards extends CB_Controller
 				'brd_mobile_name' => $this->input->post('brd_mobile_name', null, ''),
 				'brd_order' => $brd_order,
 				'brd_search' => $brd_search,
+				'brd_blind' => $brd_blind,
 			);
 
 			$array = array('board_layout', 'board_mobile_layout', 'board_sidebar',
@@ -4489,6 +4496,7 @@ class Boards extends CB_Controller
 			$brd_name = $this->input->post('brd_name');
 			$brd_mobile_name = $this->input->post('brd_mobile_name');
 			$brd_search = $this->input->post('brd_search');
+			$brd_blind = $this->input->post('brd_blind');
 			$brd_order = $this->input->post('brd_order');
 			$board_layout = $this->input->post('board_layout');
 			$board_mobile_layout = $this->input->post('board_mobile_layout');
@@ -4505,6 +4513,7 @@ class Boards extends CB_Controller
 				if ($val) {
 
 					$brd_search_update = element($val, $brd_search) ? 1 : 0;
+					$brd_blind_update = element($val, $brd_blind) ? 1 : 0;
 					$update_brd_order = element($val, $brd_order) ? element($val, $brd_order) : 0;
 
 					$updatedata = array(
@@ -4512,6 +4521,7 @@ class Boards extends CB_Controller
 						'brd_name' => element($val, $brd_name),
 						'brd_mobile_name' => element($val, $brd_mobile_name),
 						'brd_search' => $brd_search_update,
+						'brd_blind' => $brd_blind_update,
 						'brd_order' => $update_brd_order,
 					);
 					$metadata = array(

@@ -582,15 +582,15 @@ class Board extends CI_Controller
 
 			$linkwhere = array(
 					'brd_id' => $brd_id,
-					'pln_error' => 1,
+					'pln_status' => 1,
 				);
 
-			$view['view']['pln_error'] = $this->CI->Post_link_model
+			$view['view']['pln_status'] = $this->CI->Post_link_model
 				->count_by($linkwhere);
 
 			$linkwhere = array(
 					'brd_id' => $brd_id,
-					'pln_error' => 2,
+					'pln_status' => 2,
 				);
 
 			$view['view']['pln_error2'] = $this->CI->Post_link_model

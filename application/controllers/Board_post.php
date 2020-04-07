@@ -831,6 +831,7 @@ class Board_post extends CB_Controller
 				$sfield = array('post_title', 'post_content');
 			}
 			$skeyword = $this->input->get('skeyword', null, '');
+
 			$view['view']['next_post'] = $next_post
 				= $this->Post_model
 				->get_prev_next_post(
@@ -843,7 +844,7 @@ class Board_post extends CB_Controller
 				);
 
 			if (element('post_id', $next_post)) {
-				$view['view']['next_post']['url'] = post_url(element('brd_key', $board), element('post_id', $next_post)) . '?' . $param->output();
+				$view['view']['next_post']['url'] = post_url(element('brd_key', $board), element('post_id', $next_post)) . '?' . $param->replace('page_sub');
 			}
 
 			$view['view']['prev_post'] = $prev_post
@@ -857,7 +858,7 @@ class Board_post extends CB_Controller
 					$skeyword
 				);
 			if (element('post_id', $prev_post)) {
-				$view['view']['prev_post']['url'] = post_url(element('brd_key', $board), element('post_id', $prev_post)) . '?' . $param->output();
+				$view['view']['prev_post']['url'] = post_url(element('brd_key', $board), element('post_id', $prev_post)) . '?' .  $param->replace('page_sub');
 			}
 		}
 
@@ -1470,7 +1471,8 @@ class Board_post extends CB_Controller
 			$result = $qry->result_array();
 			
 			foreach($result as $value){
-				$board['category_cnt'][element('post_category',$value)] = element('cnt',$value);
+				
+				$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] = element('cnt',$value);
 				if(empty($board['category_cnt']['total']))
 					$board['category_cnt']['total'] = element('cnt',$value);
 				else 
@@ -1687,15 +1689,15 @@ class Board_post extends CB_Controller
 
 				$linkwhere = array(
 						'post_id' => element('post_id', $val),
-						'pln_error' => 1,
+						'pln_status' => 1,
 					);
 
-				$result['list'][$key]['pln_error'] = $this->Post_link_model
+				$result['list'][$key]['pln_status'] = $this->Post_link_model
 					->count_by($linkwhere);
 
 				$linkwhere = array(
 						'post_id' => element('post_id', $val),
-						'pln_error' => 2,
+						'pln_status' => 2,
 					);
 
 				$result['list'][$key]['pln_error2'] = $this->Post_link_model
@@ -1878,11 +1880,12 @@ class Board_post extends CB_Controller
 		}
 		if($is_admin && element('bgr_id', $board) !== "4" ){
 			$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
+			$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
+			$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
+			$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
 		}
 
-		if($is_admin && element('bgr_id', $board) !== "4" ){
-			$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
-		}
+		
 
 		$return['list_delete_url'] = site_url('postact/listdelete/' . $brd_key . '?' . $param->output());
 

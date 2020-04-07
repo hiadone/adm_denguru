@@ -13,27 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 메인 페이지를 담당하는 controller 입니다.
  */
 
-// $imageUrl="http://cocochien.img9.kr/TEE/cape/mantoman한 글/001한 글.jpg";
-// echo "<br>".urldecode($imageUrl)."<br>";
-                    
-//                     # 이미지 파일명 추출
-//                     $img_src_array = parse_url(urldecode($imageUrl));
-//                         // $img_src_array= explode('://', $imageUrl);
-//                         $img_src_array_= explode('/', $img_src_array['path']);
-//                         $imageName = end($img_src_array_);
 
-//                         $encode_url=array();
-//                         foreach($img_src_array as $u_key => $u_value){
-//                             $img_src_array[$u_key] = rawurlencode($img_src_array[$u_key]);
-//                         }
-//                         $imageUrl = $img_src_array['scheme'].'://'.$img_src_array['host'].$img_src_array['path'];
-//                         // $imageUrl = $img_src_array[0].'://'.$imageUrl;
-                        
-//                         // $imageUrl = str_replace("%3F","?",$imageUrl);
-//                         // $imageUrl = str_replace("%26","&",$imageUrl);
-//                         $imageUrl = str_replace("%2F","/",$imageUrl);
-//                         echo "<br>".$imageUrl."<br>";
-//                         exit;
 class Main extends CB_Controller
 {
 
@@ -92,7 +72,7 @@ class Main extends CB_Controller
 
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
-
+		
 		/**
 		 * 레이아웃을 정의합니다
 		 */
@@ -101,7 +81,7 @@ class Main extends CB_Controller
 		$meta_keywords = $this->cbconfig->item('site_meta_keywords_main');
 		$meta_author = $this->cbconfig->item('site_meta_author_main');
 		$page_name = $this->cbconfig->item('site_page_name_main');
-
+		
 		$layoutconfig = array(
 			'path' => 'main',
 			'layout' => 'layout',

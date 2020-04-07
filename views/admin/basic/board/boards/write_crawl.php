@@ -5,7 +5,7 @@
         <div class="pull-right">
             <select name="brd_id" class="form-control" onChange="location.href='<?php echo admin_url($this->pagedir . '/write_crawl'); ?>/' + this.value;">
                 <?php foreach (element('boardlist', $view) as $key => $value) { ?>
-                    <option value="<?php echo element('brd_id', $value); ?>" <?php echo set_select('brd_id', element('brd_id', $value), (element('brd_id', element('data', $view)) === element('brd_id', $value) ? true : false)); ?>><?php echo html_escape(element('brd_name', $value)); ?></option>
+                    <option value="<?php echo element('brd_id', $value); ?>" <?php echo set_select('brd_id', element('brd_id', $value), (element('brd_id', element('data', $view)) == element('brd_id', $value) ? true : false)); ?>><?php echo html_escape(element('brd_name', $value)); ?></option>
                 <?php } ?>
             </select>
         </div>

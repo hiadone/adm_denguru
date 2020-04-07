@@ -261,6 +261,14 @@ if (element('brd_id', element('data', $view))) {
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 control-label">블라인드</label>
+					<div class="col-sm-8">
+						<label for="brd_blind" class="checkbox-inline">
+							<input type="checkbox" name="brd_blind" id="brd_blind" value="1" <?php echo set_checkbox('brd_blind', '1', (element('brd_blind', element('data', $view)) ? true : false)); ?> /> 블라인드 처리
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 control-label">검색여부</label>
 					<div class="col-sm-8">
 						<label for="brd_search" class="checkbox-inline">

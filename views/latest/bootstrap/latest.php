@@ -3,7 +3,7 @@
 	<!-- Default panel contents -->
 		<div class="panel-heading">
 			<?php echo html_escape(element('board_name', element('board', $view))); ?>
-			<?php if(element('pln_error', $view)){ ?>
+			<?php if(element('pln_status', $view)){ ?>
 				<button class="btn btn-danger btn-xs">크롤링 error</button>
 			<?php } ?>
 			<?php if(element('pln_error2', $view)){ ?>
