@@ -2161,15 +2161,15 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                 $cit_info['cit_brand'] = $this->cmall_brand($cit_info['crawl_brand']);
                 
-                if(empty($cit_info['cit_brand'])){
-                    $crawl_title_ = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
+                // if(empty($cit_info['cit_brand'])){
+                //     $crawl_title_ = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
 
-                    $crawl_title_ = str_replace(" ","",$crawl_title_);
-                    $crawl_title_ = str_replace("[","",$crawl_title_);
-                    $crawl_title_ = str_replace("]","",$crawl_title_);
+                //     $crawl_title_ = str_replace(" ","",$crawl_title_);
+                //     $crawl_title_ = str_replace("[","",$crawl_title_);
+                //     $crawl_title_ = str_replace("]","",$crawl_title_);
 
-                    $cit_info['cit_brand'] = $this->cmall_brand($crawl_title_);
-                }
+                //     $cit_info['cit_brand'] = $this->cmall_brand($crawl_title_);
+                // }
                 
 
                 $updatedata = array(                                        

@@ -349,6 +349,12 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			</div>
 		<?php } ?>
 		
+		<?php if (element('crawl_category_update', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update', $view); ?>" class="btn btn-warning btn-sm">카테고리 및 제품특성 update</a>
+			</div>
+		<?php } ?>
+		
 		<?php if (element('crawl_tag_update', $view)) { ?>
 			<div class="pull-right pr10">
 				<a href="<?php echo element('crawl_tag_update', $view); ?>" class="btn btn-warning btn-sm">태그 update</a>
@@ -356,11 +362,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 		<?php } ?>
 
 
-		<?php if (element('crawl_category_update', $view)) { ?>
-			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', $view); ?>" class="btn btn-warning btn-sm">카테고리 및 제품특성 update</a>
-			</div>
-		<?php } ?>
+		
 
 		<?php if (element('crawl_update', $view)) { ?>
 			<div class="pull-right pr10">

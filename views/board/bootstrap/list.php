@@ -269,7 +269,11 @@
 			</div>
 		<?php } ?>
 
-		
+		<?php if (element('crawl_category_update', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 및 제품특성 update</a>
+			</div>
+		<?php } ?>
 
 		<?php if (element('crawl_tag_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
@@ -277,11 +281,7 @@
 			</div>
 		<?php } ?>
 
-		<?php if (element('crawl_category_update', element('list', $view))) { ?>
-			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 및 제품특성 update</a>
-			</div>
-		<?php } ?>
+		
 
 		<?php if (element('crawl_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
