@@ -319,7 +319,7 @@ class Crawl extends CB_Controller
                                             @fclose($f);
                                             @chmod($file, 0644);
                                         }
-                                        $upload_path .= cdate('Y') . '/';
+                                        $upload_path .= element('brd_id', $board_crawl) . '/';
                                         if (is_dir($upload_path) === false) {
                                             mkdir($upload_path, 0707);
                                             $file = $upload_path . 'index.php';
@@ -328,7 +328,7 @@ class Crawl extends CB_Controller
                                             @fclose($f);
                                             @chmod($file, 0644);
                                         }
-                                        $upload_path .= cdate('m') . '/';
+                                        $upload_path .= $post_id . '/';
                                         if (is_dir($upload_path) === false) {
                                             mkdir($upload_path, 0707);
                                             $file = $upload_path . 'index.php';
@@ -359,7 +359,7 @@ class Crawl extends CB_Controller
 
                                             $i=1;
                                             $uploadfiledata[$i] = array();
-                                            $uploadfiledata[$i]['cfi_filename'] = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $filedata);
+                                            $uploadfiledata[$i]['cfi_filename'] = element('brd_id', $board_crawl) . '/' . $post_id . '/' . element('file_name', $filedata);
                                             $uploadfiledata[$i]['cfi_originname'] = element('orig_name', $filedata);
                                             $uploadfiledata[$i]['cfi_filesize'] = intval(element('file_size', $filedata) * 1024);
                                             $uploadfiledata[$i]['cfi_width'] = element('image_width', $filedata) ? element('image_width', $filedata) : 0;
@@ -584,7 +584,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                         @fclose($f);
                                         @chmod($file, 0644);
                                     }
-                                    $upload_path .= cdate('Y') . '/';
+                                    $upload_path .= element('brd_id', $board_crawl) . '/';
                                     if (is_dir($upload_path) === false) {
                                         mkdir($upload_path, 0707);
                                         $file = $upload_path . 'index.php';
@@ -593,7 +593,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                         @fclose($f);
                                         @chmod($file, 0644);
                                     }
-                                    $upload_path .= cdate('m') . '/';
+                                    $upload_path .= $post_id . '/';
                                     if (is_dir($upload_path) === false) {
                                         mkdir($upload_path, 0707);
                                         $file = $upload_path . 'index.php';
@@ -624,7 +624,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                                         $i=1;
                                         $uploadfiledata[$i] = array();
-                                        $uploadfiledata[$i]['cfi_filename'] = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $filedata);
+                                        $uploadfiledata[$i]['cfi_filename'] = element('brd_id', $board_crawl) . '/' . $post_id . '/' . element('file_name', $filedata);
                                         $uploadfiledata[$i]['cfi_originname'] = element('orig_name', $filedata);
                                         $uploadfiledata[$i]['cfi_filesize'] = intval(element('file_size', $filedata) * 1024);
                                         $uploadfiledata[$i]['cfi_width'] = element('image_width', $filedata) ? element('image_width', $filedata) : 0;
@@ -1450,7 +1450,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                     @fclose($f);
                                     @chmod($file, 0644);
                                 }
-                                $upload_path .= cdate('Y') . '/';
+                                $upload_path .= element('brd_id', $board_crawl) . '/';
                                 if (is_dir($upload_path) === false) {
                                     mkdir($upload_path, 0707);
                                     $file = $upload_path . 'index.php';
@@ -1459,7 +1459,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                     @fclose($f);
                                     @chmod($file, 0644);
                                 }
-                                $upload_path .= cdate('m') . '/';
+                                $upload_path .= $post_id . '/';
                                 if (is_dir($upload_path) === false) {
                                     mkdir($upload_path, 0707);
                                     $file = $upload_path . 'index.php';
@@ -1490,7 +1490,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                                     $i=1;
                                     $uploadfiledata[$i] = array();
-                                    $uploadfiledata[$i]['cfi_filename'] = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $filedata);
+                                    $uploadfiledata[$i]['cfi_filename'] = element('brd_id', $board_crawl) . '/' . $post_id . '/' . element('file_name', $filedata);
                                     $uploadfiledata[$i]['cfi_originname'] = element('orig_name', $filedata);
                                     $uploadfiledata[$i]['cfi_filesize'] = intval(element('file_size', $filedata) * 1024);
                                     $uploadfiledata[$i]['cfi_width'] = element('image_width', $filedata) ? element('image_width', $filedata) : 0;
@@ -1668,7 +1668,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 @fclose($f);
                                 @chmod($file, 0644);
                             }
-                            $upload_path .= cdate('Y') . '/';
+                            $upload_path .= element('brd_id', $board_crawl) . '/';
                             if (is_dir($upload_path) === false) {
                                 mkdir($upload_path, 0707);
                                 $file = $upload_path . 'index.php';
@@ -1677,7 +1677,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 @fclose($f);
                                 @chmod($file, 0644);
                             }
-                            $upload_path .= cdate('m') . '/';
+                            $upload_path .= $post_id . '/';
                             if (is_dir($upload_path) === false) {
                                 mkdir($upload_path, 0707);
                                 $file = $upload_path . 'index.php';
@@ -1708,7 +1708,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                                 $i=1;
                                 $uploadfiledata[$i] = array();
-                                $uploadfiledata[$i]['cfi_filename'] = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $filedata);
+                                $uploadfiledata[$i]['cfi_filename'] = element('brd_id', $board_crawl) . '/' . $post_id . '/' . element('file_name', $filedata);
                                 $uploadfiledata[$i]['cfi_originname'] = element('orig_name', $filedata);
                                 $uploadfiledata[$i]['cfi_filesize'] = intval(element('file_size', $filedata) * 1024);
                                 $uploadfiledata[$i]['cfi_width'] = element('image_width', $filedata) ? element('image_width', $filedata) : 0;
