@@ -1565,6 +1565,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         eval(element('brd_content', $board_crawl));
                     
                     
+                    
 
 
                     foreach($crawl_info as $ikey => $ivalue){
@@ -2101,7 +2102,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $postwhere = array(
             'post_id' => $post_id,
-            // 'cit_id' => 6699,
+            // 'cit_id' => 9347,
         );
         
 
@@ -2154,7 +2155,6 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     eval(element('post_content_detail', $post));
                 elseif(element('brd_content_detail', $board_crawl))
                     eval(element('brd_content_detail', $board_crawl));
-                
                 
                 
                 
@@ -2238,9 +2238,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         fclose($filetemp); // Closing file handle
 
                         
-                        // if($imageName)
-                        //     $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
-
+                        if($imageName && filesize($imageName) < 8920868) {
+                            $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
+                        }
 
                          @unlink($imageName);
                         
@@ -2307,6 +2307,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                 $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
             } else {
+
                 $linkupdate = array(
                     'pln_status' => 7,
                 );

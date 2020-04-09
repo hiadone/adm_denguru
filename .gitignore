@@ -1,6 +1,6 @@
 !.gitignore
 .DS_Store
-*.json
+/*.json
 denguru_uploads/
 dev_denguru_uploads/
 
