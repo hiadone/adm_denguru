@@ -3777,4 +3777,107 @@ class Postact extends CB_Controller
                 exit(json_encode($result));
 
     }
+
+
+    public function crawling_update($post_id = 0)
+    {
+    	if(empty($post_id)){
+            $result = array('success' => '실패');
+            alert('post_id 값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_update '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_update.log';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+
+    	$result = array('success' => '실행되었습니다');
+        alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
+    public function crawling_overwrite($post_id=0)
+    {
+    	if(empty($post_id)){
+            $result = array('success' => '실패');
+            alert('post_id 값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_overwrite '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_overwrite.log ';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+    	$result = array('success' => '실행되었습니다');
+        alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
+    public function crawling_category_update($post_id=0)
+    {	
+    	if(empty($post_id)){
+            $result = array('success' => '실패');
+            alert('post_id 값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_category_update '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_category_update.log';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+
+    	$result = array('success' => '실행되었습니다');
+        alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
+    public function crawling_tag_update($post_id=0)
+    {	
+    	if(empty($post_id)){
+            $result = array('success' => '실패');
+            alert('post_id 값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_tag_update '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_tag_update.log';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+
+    	
+    	$result = array('success' => '실행되었습니다');
+        alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
+    function crawling_item_update($crawl_key,$crawl_mode,$crawl_type)
+    {	
+
+    	if(empty($crawl_key) && empty($crawl_mode) && empty($crawl_type)){    		
+            $result = array('success' => '실패');
+            alert('crawl_key crawl_mode crawl_type  값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_item_update '.$crawl_key.' '.$crawl_mode.' '.$crawl_type.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_item_update.log';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+
+    	$result = array('success' => '실행되었습니다');
+    	alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
 }

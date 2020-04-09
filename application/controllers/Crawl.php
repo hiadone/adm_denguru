@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -145,8 +145,9 @@ class Crawl extends CB_Controller
             $cmall = $cmall_out = $this->Cmall_item_model
                 ->get('', '', $cmallwhere, '', '', 'pln_id', 'ASC');
             
+            // 1. 완료,2. 크롤링중,3. 크롤링실패,4. 크롤링업데이트중,5. 크롤링업데이트 실패,6. 태그화중,7. 태그화 실
             $linkupdate = array(
-                'pln_status' => 1,
+                'pln_status' => 4,
             );
 
             $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
@@ -428,11 +429,11 @@ class Crawl extends CB_Controller
                         $this->board->delete_cmall(element('cit_id',$o_value));
                     }
                 }
-                $linkupdate = array(
-                    'pln_status' => 0,
-                );
+                
                 if(!$is_pln_error)
-                    $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+                    $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 1));
+                if($is_pln_error)
+                    $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
             } else {
                 echo element('pln_url', $value)."<br>";
                 $result = $this->extract_html(element('pln_url', $value), $proxy, $proxy_userpwd);
@@ -682,11 +683,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 $this->board->delete_cmall(element('cit_id',$o_value));
                             }
                         }
-                        $linkupdate = array(
-                            'pln_status' => 0,
-                        );
                         if(!$is_pln_error)
-                            $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+                            $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 1));
+                        if($is_pln_error)
+                            $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                     } else {
                         continue;    
                     }
@@ -1300,7 +1300,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             
             
             $linkupdate = array(
-                'pln_status' => 1,
+                'pln_status' => 2,
             );
 
             $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
@@ -1532,11 +1532,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                             }
 
                         }
-                        $linkupdate = array(
-                            'pln_status' => 0,
-                        );
                         if(!$is_pln_error)
-                            $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+                            $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 1));
+                        if($is_pln_error)
+                            $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                     } else {
                         continue;
                     }
@@ -1565,7 +1564,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     // elseif(element('brd_content', $board_crawl))
                     //     eval(element('brd_content', $board_crawl));
                     
-                    $html_dom = $html->find('ul.new-items  ',0);
+                    $html_dom = $html->find('div.prdtList ',0);
  
                      if(!$html_dom){
                          log_message('error', '$html_dom post_id:'.$post_id);
@@ -1575,8 +1574,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
                      $i=0;
       
  
-                     if($html->find('ul.new-items   > li')){
-                         foreach($html->find('ul.new-items  > li') as $gallery) {
+                     if($html->find('div.prdtList > ul > li')){
+                         foreach($html->find('div.prdtList > ul > li') as $gallery) {
                              $iteminfo = array();
 
 
@@ -1632,6 +1631,19 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                  
                              }
 
+                             if($gallery->find('div.thumbnail_main ',0)){
+                                 if($gallery->find('div.thumbnail_main',0)->parent()){
+                                     ;
+                                     $iteminfo['crawl_post_url'] = $gallery->find('div.thumbnail_main',0)->parent()->parent()->find('a',0)->href;
+                                     if($gallery->find('div.thumbnail_main > p >img ',0)){
+                                         if($gallery->find('div.thumbnail_main   > p >img',0)->{'data-src'})
+                                             $itemimg['img_src'] = $gallery->find('div.thumbnail_main   > p >img',0)->{'data-src'};
+                                         elseif($gallery->find('div.thumbnail_main   > p >img',0)->src) 
+                                             $itemimg['img_src'] = $gallery->find('div.thumbnail_main   > p >img',0)->src;
+                                     }
+                                 }
+                                 
+                             }
 
                              if($gallery->find('div.item_photo_box ',0)){
                                  if($gallery->find('div.item_photo_box  > a',0)){
@@ -2000,6 +2012,19 @@ $img_src_array = parse_url(urldecode($imageUrl));
                              }
 
 
+                             if($gallery->find('div.itemWrap',0)){
+                                 if($gallery->find('div.itemWrap > a',0)->href)
+                                 $iteminfo['crawl_post_url'] = $gallery->find('div.itemWrap > a',0)->href;
+ 
+ 
+                                 if($gallery->find('div.itemWrap > a',0))
+                                     if($gallery->find('div.itemWrap > a > img',0))
+                                         if($gallery->find('div.itemWrap > a > img',0)->src)
+                                             $itemimg['img_src'] = $gallery->find('div.itemWrap > a > img',0)->src;
+                                         
+                             }
+
+
 
                              if(!empty($iteminfo['crawl_post_url'])) {
                              
@@ -2043,12 +2068,16 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                  if(strpos($gallery->id,'anchorBoxId') !== false)
                                      if(str_replace("anchorBoxId_","",$gallery->id))
                                          $iteminfo['crawl_goods_code'] = str_replace("anchorBoxId_","",$gallery->id);
- 
+                                
+                                if($gallery->find('input[name="prdct_id"]',0))
+                                     if($gallery->find('input[name="prdct_id"]',0)->value){
+                                        if($gallery->find('input[name="itm_id"]',0)->value)
+                                         $iteminfo['crawl_goods_code'] = $gallery->find('input[name="prdct_id"]',0)->value.$gallery->find('input[name="itm_id"]',0)->value;
+                                     }
                                  // if(element(1,explode("product/",$iteminfo['crawl_post_url'])))
                                  //     $iteminfo['crawl_goods_code'] = element(1,explode("product/",$iteminfo['crawl_post_url']));
  
-                                 if($gallery->{'data-productno'})
-                                     $iteminfo['crawl_goods_code'] = $gallery->{'data-productno'};
+
                              } else {
                                  log_message('error', '$crawl_post_url post_id:'.$post_id);
                                  $is_pln_error=true;
@@ -2270,6 +2299,11 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                  if($gallery->find('h3.pro_name > a',0))
                                     if($gallery->find('h3.pro_name > a ',0)->plaintext)                                    
                                      $iteminfo['crawl_title'] = $gallery->find('h3.pro_name > a',0)->plaintext;
+
+                            if($gallery->find('strong.item_rel_name'))                                 
+                                    if($gallery->find('strong.item_rel_name',0)->innertext)
+                                     $iteminfo['crawl_title'] = $gallery->find('strong.item_rel_name',0)->innertext;
+
 
 
                              if($gallery->find('div.description',0))
@@ -2731,11 +2765,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         }
 
                     }
-                    $linkupdate = array(
-                        'pln_status' => 0,
-                    );
                     if(!$is_pln_error)
-                        $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+                        $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 1));
+                    if($is_pln_error)
+                        $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                 } else {
                     continue;
                 }
@@ -2858,6 +2891,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $c_category=array();
         $category='';
         $all_category=array();
+        $all_attr=array();
 
         $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
         if($category)
@@ -2878,6 +2912,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         
         $all_category = $this->Cmall_category_model->get_all_category();
+        $all_attr = $this->Cmall_attr_model->get_all_attr();
         
         
         
@@ -2902,10 +2937,33 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         foreach ($crawl as $c_key => $c_value) {
             $cmall_category=array();
+            $cmall_attr=array();
+            $crawl_tag_arr=array();
+            $vision_label_arr=array();
+            $crawl_tag_text=array();
+
+
+            $crawl_tag_arr = $this->Crawl_tag_model->get('','',array('cit_id' => element('cit_id',$c_value)));
+
+            foreach($crawl_tag_arr as $t_value){
+                
+                array_push($crawl_tag_text,element('cta_tag',$t_value));
+            }
+
+
+            $vision_label_arr = $this->Vision_api_label_model->get('','',array('cit_id' => element('cit_id',$c_value)));
+
+            foreach($vision_label_arr as $l_value){
+                
+                array_push($crawl_tag_text,element('val_tag',$l_value));
+            }
+
+            
 
             $deletewhere = array(
                 'cit_id' => element('cit_id',$c_value),
             );
+
             $this->Cmall_category_rel_model->delete_where($deletewhere);   
 
             foreach($all_category as $a_cvalue){
@@ -2915,7 +2973,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     
                     if(empty(element('cca_text',$a_cvalue_))) continue; 
 
-                    if($this->crawl_title_to_category(element('cca_text',$a_cvalue_),element('cit_name',$c_value))){
+                    if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),$crawl_tag_text)){
                         $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
 
                         if(element('cca_parent',$a_cvalue_)){
@@ -2925,21 +2983,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                         
                     }
-                    if(element('cit_summary',$c_value) && $this->crawl_title_to_category(element('cca_text',$a_cvalue_),element('cit_summary',$c_value))){
-                        $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
-
-                        if(element('cca_parent',$a_cvalue_)){
-                            $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
-                            $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
-                        }
-                    }
-
                                         
                 }
                 
                 
             }
-            if($cmall_category){                      
+            if($cmall_category){                                      
                 $this->Cmall_category_rel_model->save_category(element('cit_id',$c_value), $cmall_category);    
 
             }
@@ -2960,13 +3009,45 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 }
             }
 
-            // if($cmall_category)
-            //     $this->Cmall_category_rel_model->save_category(element('cit_id',$c_value), $cmall_category);
+            if($cmall_category)
+                $this->Cmall_category_rel_model->save_category(element('cit_id',$c_value), $cmall_category);
+
+
+            $deletewhere = array(
+                'cit_id' => element('cit_id',$c_value),
+            );
+
+            $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+
+            foreach($all_attr as $a_cvalue){
+                
+                foreach($a_cvalue as $a_cvalue_){
+                    
+                    
+                    if(empty(element('cat_text',$a_cvalue_))) continue; 
+
+                    if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$crawl_tag_text)){
+                        $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+
+                        if(element('cat_parent',$a_cvalue_)){
+                            $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                            $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
+                        }
+
+                        
+                    }
+                                        
+                }
+                
+                
+            }
+            if($cmall_attr){                                      
+                $this->Cmall_attr_rel_model->save_attr(element('cit_id',$c_value), $cmall_attr);    
+
+            }
+
         }
 
-        
-        
-        
     }
 
     public function crawling_tag_update($post_id=0)
@@ -2997,14 +3078,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
 
         if(empty($post['category']['bca_parent']))
-            $this->tag_word = element($post['category']['bca_key'],config_item('tag_word'));
+            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_key']));
         else 
-            $this->tag_word = element($post['category']['bca_parent'],config_item('tag_word'));
+            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_parent'])); 
 
 
         $all_category=array();
         
-
         
         // $all_category = $this->Cmall_category_model->get_all_category();
         
@@ -3055,7 +3135,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             $result = $this->extract_html(element('cit_post_url', $value), $proxy, $proxy_userpwd);
             
             $linkupdate = array(
-                'pln_status' => 2,
+                'pln_status' => 6,
             );
 
             $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
@@ -3092,7 +3172,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 // elseif(element('brd_content_detail', $board_crawl))
                 //     eval(element('brd_content_detail', $board_crawl));
                 
-                  
+                
                 if($html->find('div.infoArea',0))
                      $html_dom = $html->find('div.infoArea',0);
 
@@ -3149,8 +3229,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
 
                 
-                 if(empty($html_dom) && $html->find('div.info',0))
-                     $html_dom = $html->find('div.info',0);
+                 if( $html->find('div.prdtInfoWrap',0))
+                     $html_dom = $html->find('div.prdtInfoWrap',0);
                 
                  
  
@@ -3213,9 +3293,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
  
                      
   
-                  // if($html_dom->find('span#shopProductCaption',0))
-                  //     if($html_dom->find('span#shopProductCaption',0))
-                  //     $cit_info['crawl_sub_title'] = $html_dom->find('span#shopProductCaption',0)->plaintext;
+                  if($html_dom->find('div.goods_summary',0))
+                      if($html_dom->find('div.goods_summary > div',0))
+                      $cit_info['crawl_sub_title'] = $html_dom->find('div.goods_summary > div',0)->plaintext;
  
  
                       
@@ -3293,50 +3373,26 @@ $img_src_array = parse_url(urldecode($imageUrl));
                      
                        }
 
-                       if($html_dom->find('dl'))
-                        foreach($html_dom->find('dl') as $node){                         
-                          
-                          if(strpos($node->plaintext,"제조사") !==false){
-                              $cit_info['crawl_brand'] = str_replace(" ","",str_replace("제조사","",$node->plaintext));
-                     
-                              break;
-                          }
-                     
-                          if(strpos($node->plaintext,"브랜드") !==false){
-                              $cit_info['crawl_brand'] = str_replace(" ","",str_replace("브랜드","",$node->plaintext));
-                              break;
-                          }
- 
-                          if(strpos($node->plaintext,"BRAND") !==false){
-                              $cit_info['crawl_brand'] = str_replace(" ","",str_replace("BRAND","",$node->plaintext));
-                              break;
-                          }
- 
-                          if(strpos($node->plaintext,"원산지") !==false){
-                              $cit_info['crawl_brand'] = str_replace(" ","",str_replace("원산지","",$node->plaintext));
-                              break;
-                          }
-                     
-                       }
+                       
 
-                       if($html_dom->find('li'))
-                       foreach($html_dom->find('li') as $node){
-                            // echo $node->plaintext."<br>";
+                       if($html_dom->find('dl'))
+                       foreach($html_dom->find('dl') as $node){
+                            
                             if(strpos($node->plaintext,"제조사") !==false){
                                 $cit_info['crawl_brand'] = str_replace(" ","",str_replace("제조사","",$node->plaintext));
-                       
+                                $cit_info['crawl_brand'] = str_replace(" ","",str_replace("/원산지","",$cit_info['crawl_brand']));
                                 break;
                             }
                        
-                            if(strpos($node->plaintext,"브랜드") !==false){
-                                $cit_info['crawl_brand'] = str_replace(" ","",str_replace("브랜드","",$node->plaintext));
+                            if(strpos($node->plaintext,"원산지") !==false){
+                                $cit_info['crawl_brand'] = str_replace(" ","",str_replace("원산지","",$node->plaintext));
+                                $cit_info['crawl_brand'] = str_replace(" ","",str_replace("/제조사","",$cit_info['crawl_brand']));
                                 break;
                             }
                        
                          }      
  
-                    
- 
+                
                      if($html_dom->find('img[alt="품절"]',0))                           
                          $cit_info['crawl_is_soldout'] = 1;
                      
@@ -3470,9 +3526,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
                      $html_dom = $html->find('div.detail_cont ',0);
                  }
 
-                 if(empty($html_dom) && $html->find('div.detail ',0)){                    
-                     if($html->find('div.detail',0)->find('img'))                                    
-                     $html_dom = $html->find('div.detail',0);
+                 if(empty($html_dom) && $html->find('div.prdtDtlCont ',0)){                    
+                     if($html->find('div.prdtDtlCont',0)->find('img'))                                    
+                     $html_dom = $html->find('div.prdtDtlCont',0);
                  }
 
                  if(empty($html_dom) && $html->find('div#sit_inf_explan',0)){                    
@@ -3551,27 +3607,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                      
                      
                  }
-
-
-
-                // if($html_dom->find('div.cont')){
-                //     foreach($html_dom->find('div.cont') as $gallery) {
-                //         $iteminfo = array();
-
-
-                        
-                //         $cit_text[$i]['text'] = '';
-                        
-                //         if($gallery->plaintext)
-                //             $cit_text[$i]['text'] = $gallery->plaintext;
-
-                //         $i++;
-                //     }
-                    
-                // } else {
-                //     log_message('error', '$html_dom post_id:'.$post_id);
-                    
-                // }
+                
 
                 $cit_info['cit_brand'] = $this->cmall_brand($cit_info['crawl_brand']);
                 
@@ -3661,13 +3697,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     }
                 }
 
-echo "<br>cit_info";
-print_r($cit_info);
-echo "<br>cit_text";
-print_r($cit_text);
-echo "<br>cit_img";
-print_r($cit_img);
-continue;
+// echo "<br>cit_info";
+// print_r($cit_info);
+// echo "<br>cit_text";
+// print_r($cit_text);
+// echo "<br>cit_img";
+// print_r($cit_img);
+// continue;
 
                 foreach($cit_text as $tkey => $tvalue){
                     if(element('text',$tvalue))
@@ -3715,14 +3751,17 @@ continue;
                         }
                     }
                 }
-                
+                $linkupdate = array(
+                    'pln_status' => 1,
+                );
+
+                $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+            } else {
+                $linkupdate = array(
+                    'pln_status' => 7,
+                );
+                $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
             }
-
-            $linkupdate = array(
-                'pln_status' => 0,
-            );
-
-            $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
 
             // $itemupdate = array(
             //     'cit_val1' => 0,
@@ -3730,6 +3769,7 @@ continue;
             // if($cit_info['cit_brand'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
             //     $this->Cmall_item_model->update(element('cit_id',$value),$itemupdate);  
         }
+        
 
 
     }
@@ -3766,7 +3806,7 @@ continue;
     function detect_label($cit_id=0,$path='',$crawl_title,$translate=0)
     {
 
-        return;
+        // return;
         
 
         if (empty($cit_id) OR $cit_id < 1) {
@@ -3900,9 +3940,9 @@ continue;
         foreach($this->tag_word as $word){
             foreach ($naturalentity as $val) {
                 // if(strpos(strtolower($val),strtolower(str_replace(" ","",$word))) !== false ){
-                if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",$word))){
-                    if(!in_array($word,$translate_text))
-                        array_push($translate_text,$word);       
+                if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                    if(!in_array(element('tgw_value',$word),$translate_text))
+                        array_push($translate_text,element('tgw_value',$word));       
                 } 
             }
         }
@@ -3983,9 +4023,9 @@ continue;
                     foreach($this->tag_word as $word){
                         foreach ($naturalentity as $val) {
                             // if(strpos(strtolower($val),strtolower(str_replace(" ","",$word))) !== false ){
-                            if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",$word))){                                
-                                if(!in_array($word,$translate_text))
-                                    array_push($translate_text,$word);       
+                            if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){                                
+                                if(!in_array(element('tgw_value',$word),$translate_text))
+                                    array_push($translate_text,element('tgw_value',$word));       
                             } 
                         }
                     }
@@ -4051,17 +4091,17 @@ continue;
 
         foreach($this->tag_word as $word){
             foreach ($naturalentity_ as $val) {
-                $arr_str = preg_split("//u", $word, -1, PREG_SPLIT_NO_EMPTY);
+                $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                 
                 if(count($arr_str) > 1){
-                    if(strpos(strtolower(str_replace(" ","",$val)),strtolower(str_replace(" ","",$word))) !== false ){
-                        if(!in_array($word,$translate_text))
-                            array_push($translate_text,$word);       
+                    if(strpos(strtolower(str_replace(" ","",$val)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                        if(!in_array(element('tgw_value',$word),$translate_text))
+                            array_push($translate_text,element('tgw_value',$word));       
                     }     
                 } else {
-                    if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",$word))){
-                        if(!in_array($word,$translate_text))
-                            array_push($translate_text,$word);       
+                    if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                        if(!in_array(element('tgw_value',$word),$translate_text))
+                            array_push($translate_text,element('tgw_value',$word));       
                     }     
                 }
                 
@@ -4269,13 +4309,41 @@ continue;
 
     }
 
-    function crawl_title_to_category($value,$string)
+    function crawl_tag_to_category($cca_text,$crawl_tag_text)
     {   
-        $v_arr = explode(',',$value);
+        $cca_text_arr = explode(',',$cca_text);
 
-        foreach($v_arr as $v){            
-            if(strpos($string,$v) !== false)
-                return true;
+        foreach($cca_text_arr as $c_value){
+
+            foreach($crawl_tag_text as $t_value){
+
+                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+                
+                
+                
+                if(strtolower($c_value) === strtolower($t_value))
+                    return true;
+            }
+        }
+        
+
+    }
+
+    function crawl_tag_to_attr($cat_text,$crawl_tag_text)
+    {   
+        $cat_text_arr = explode(',',$cat_text);
+
+        foreach($cat_text_arr as $c_value){
+
+            foreach($crawl_tag_text as $t_value){
+
+                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+                
+                
+                
+                if(strtolower($c_value) === strtolower($t_value))
+                    return true;
+            }
         }
         
 

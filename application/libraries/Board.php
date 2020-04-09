@@ -579,22 +579,17 @@ class Board extends CI_Controller
 		}
 		if ($brd_id && ! is_array($brd_id)) {
 			$view['view']['board'] = $this->CI->board->item_all($brd_id);
+			
+			for($s = 1;$s <8;$s++){
+				$linkwhere = array(
+						'brd_id' => $brd_id,
+						'pln_status' => $s,
+					);
 
-			$linkwhere = array(
-					'brd_id' => $brd_id,
-					'pln_status' => 1,
-				);
+				$view['view']['pln_status'][$s] = $this->CI->Post_link_model
+					->count_by($linkwhere);
+			}
 
-			$view['view']['pln_status'] = $this->CI->Post_link_model
-				->count_by($linkwhere);
-
-			$linkwhere = array(
-					'brd_id' => $brd_id,
-					'pln_status' => 2,
-				);
-
-			$view['view']['pln_error2'] = $this->CI->Post_link_model
-				->count_by($linkwhere);
 		}
 		$where = array();
 		$where['post_del'] = 0;

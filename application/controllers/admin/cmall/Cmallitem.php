@@ -24,7 +24,7 @@ class Cmallitem extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand');
+	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand', 'Cmall_attr', 'Cmall_attr_rel');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -115,6 +115,7 @@ class Cmallitem extends CB_Controller
 			foreach (element('list', $result) as $key => $val) {
 				$result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
+				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
 				
 
 				$cmall_wishlist_where = array(
@@ -247,6 +248,12 @@ class Cmallitem extends CB_Controller
 			if ($cat) {
 				foreach ($cat as $ck => $cv) {
 					$getdata['category'][] = $cv['cca_id'];
+				}
+			}
+			$cattr = $this->Cmall_attr_model->get_attr(element('cit_id', $getdata));
+			if ($cattr) {
+				foreach ($cattr as $ctk => $ctv) {
+					$getdata['attr'][] = $ctv['cat_id'];
 				}
 			}
 		} else {
@@ -769,6 +776,12 @@ class Cmallitem extends CB_Controller
 						$getdata['category'][] = $cv['cca_id'];
 					}
 				}
+				$cattr = $this->Cmall_attr_model->get_attr(element('cit_id', $getdata));
+				if ($cattr) {
+					foreach ($cattr as $ctk => $ctv) {
+						$getdata['attr'][] = $ctv['cat_id'];
+					}
+				}
 				$where = array(
 					'cit_id' => element('cit_id', $getdata),
 				);
@@ -842,6 +855,7 @@ class Cmallitem extends CB_Controller
 				'기본설정따름'
 			);
 			$view['view']['data']['all_category'] = $this->Cmall_category_model->get_all_category();
+			$view['view']['data']['all_attr'] = $this->Cmall_attr_model->get_all_attr();
 
 			/**
 			 * primary key 정보를 저장합니다
@@ -955,11 +969,13 @@ class Cmallitem extends CB_Controller
 			 * 게시물을 수정하는 경우입니다
 			 */
 			$cmall_category = $this->input->post('cmall_category', null, '');
+			$cmall_attr = $this->input->post('cmall_attr', null, '');
 
 			if ($this->input->post($primary_key)) {
 				$this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
 				$this->Cmall_item_meta_model->save($pid, $metadata);
 				$this->Cmall_category_rel_model->save_category($this->input->post($primary_key), $cmall_category);
+				$this->Cmall_attr_rel_model->save_attr($this->input->post($primary_key), $cmall_attr);
 
 				$this->session->set_flashdata(
 					'message',
@@ -977,6 +993,7 @@ class Cmallitem extends CB_Controller
 
 				$this->Cmall_item_meta_model->save($pid, $metadata);
 				$this->Cmall_category_rel_model->save_category($pid, $cmall_category);
+				$this->Cmall_attr_rel_model->save_attr($pid, $cmall_attr);
 
 				$this->session->set_flashdata(
 					'message',

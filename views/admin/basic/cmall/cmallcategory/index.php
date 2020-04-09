@@ -1,4 +1,11 @@
 <div class="box">
+	<div class="box-header">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">카테고리 관리</a></li>
+			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/attr'); ?>" onclick="return check_form_changed();">제품특성 관리</a></li>
+			
+		</ul>
+	</div>
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
@@ -34,7 +41,8 @@
 						$return .= '<input type="hidden" name="cca_id"	value="' . element('cca_id', $result) . '" />
 															<input type="hidden" name="type" value="modify" />
 															<div class="form-group" style="margin-left:0;">
-																분류명 <input type="text" class="form-control" name="cca_value" value="' . html_escape(element('cca_value', $result)) . '" />
+																카테고리명 <input type="text" class="form-control" name="cca_value" value="' . html_escape(element('cca_value', $result)) . '" />
+																사전 <textarea  class="form-control" style="width:300px;" name="cca_text" rows="1" >' . html_escape(element('cca_text', $result)) . '</textarea>
 																정렬순서 <input type="number" class="form-control" name="cca_order" value="' . html_escape(element('cca_order', $result)) . '"/>
 																<button class="btn btn-primary btn-xs" type="submit" >저장</button>
 																<a href="javascript:;" class="btn btn-default btn-xs" onClick="cat_cancel(\'' . element('cca_id', $result) . '\')">취소</a>
@@ -63,10 +71,10 @@
 				<input type="hidden" name="is_submit" value="1" />
 				<input type="hidden" name="type" value="add" />
 				<div class="form-group">
-					<label class="col-sm-2 control-label">분류 추가</label>
-					<div class="col-sm-8 form-inline">
+					<label class="col-sm-1 control-label"> 추가</label>
+					<div class="col-sm-11 form-inline">
 						<select name="cca_parent" class="form-control">
-							<option value="0">최상위분류</option>
+							<option value="0">최상위카테고리</option>
 							<?php
 							$data = element('data', $view);
 							function cmall_ca_select($p, $data)
@@ -74,7 +82,7 @@
 								$return = '';
 								if ($p && is_array($p)) {
 									foreach ($p as $result) {
-										$return .= '<option value="' . html_escape(element('cca_id', $result)) . '">' . html_escape(element('cca_value', $result)) . '의 하위분류</option>';
+										$return .= '<option value="' . html_escape(element('cca_id', $result)) . '">' . html_escape(element('cca_value', $result)) . '의 하위카테고리</option>';
 										$parent = element('cca_id', $result);
 										$return .= cmall_ca_select(element($parent, $data), $data);
 									}
@@ -84,8 +92,9 @@
 							echo cmall_ca_select(element(0, $data), $data);
 							?>
 						</select>
-						<input type="text" name="cca_value" class="form-control" value="" placeholder="분류명 입력" />
-						<input type="number" name="cca_order" class="form-control" value="0" placeholder="정렬순서" />
+						<input type="text" name="cca_value" class="form-control" value="" placeholder="카테고리명 입력" />
+						<textarea class="form-control" style="width:300px;" name="cca_text" id="cca_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"><?php echo set_value('cca_text', element('cca_text', element('data', $view))); ?></textarea>
+						<input type="number" name="cca_order" class="form-control" value="0" />
 						<button type="submit" class="btn btn-success btn-sm">추가하기</button>
 					</div>
 				</div>

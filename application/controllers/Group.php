@@ -84,6 +84,18 @@ class Group extends CB_Controller
 			? element('mobile_footer_content', $group)
 			: element('footer_content', $group);
 
+		$is_admin = $this->member->is_admin(
+			array(				
+				'group_id' => element('bgr_id', $group)
+			)
+		);
+		if($is_admin && element('bgr_id', $group) !== "4" ){
+			$group['crawl_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/update');
+			$group['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/overwrite');
+			$group['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/category_update');
+			$group['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/tag_update');
+		}
+		
 		$view['view']['group'] = $group;
 
 		$view['view']['board_list'] = $board_list;
@@ -110,6 +122,8 @@ class Group extends CB_Controller
 			element('bgr_name', $group),
 			$bgr_key,
 		);
+
+		
 
 		$page_title = str_replace($searchconfig, $replaceconfig, $page_title);
 		$meta_description = str_replace($searchconfig, $replaceconfig, $meta_description);

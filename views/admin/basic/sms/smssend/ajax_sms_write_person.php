@@ -45,7 +45,7 @@
 		<label for="smg_id">그룹</label>
 		<select name="smg_id" id="smg_id" class="form-control">
 			<option value=""> 전체 </option>
-			<option value="n" <?php echo set_select('smg_id', 'n', ($this->input->get('smg_id') === 'n' ? true : false)); ?>> 미분류 </option>
+			<option value="n" <?php echo set_select('smg_id', 'n', ($this->input->get('smg_id') === 'n' ? true : false)); ?>> 미카테고리 </option>
 			<?php
 			if (element('group', $view)) {
 				foreach (element('group', $view) as $gval) {

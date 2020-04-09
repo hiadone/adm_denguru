@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * 관리자>컨텐츠몰관리>분류관리 controller 입니다.
+ * 관리자>컨텐츠몰관리>카테고리관리 controller 입니다.
  */
 class Cmallbrand extends CB_Controller
 {
@@ -47,7 +47,7 @@ class Cmallbrand extends CB_Controller
     }
 
     /**
-     * 분류관리를 가져오는 메소드입니다
+     * 카테고리관리를 가져오는 메소드입니다
      */
     public function index()
     {
@@ -68,6 +68,7 @@ class Cmallbrand extends CB_Controller
          */
         $this->load->library('form_validation');
 
+        $config = array();
         /**
          * 전송된 데이터의 유효성을 체크합니다
          */
@@ -84,7 +85,7 @@ class Cmallbrand extends CB_Controller
                     'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_en]',
                 ),
             );
-        } else {
+        } elseif ($this->input->post('type') === 'modify') {
             $config = array(
                 array(
                     'field' => 'cbr_id',
@@ -94,14 +95,15 @@ class Cmallbrand extends CB_Controller
                 array(
                     'field' => 'cbr_value_kr',
                     'label' => '한글 브랜드명',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_kr]',
+                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_kr.cbr_id.' . $this->input->post('cbr_id') . ']',
                 ),
                 array(
                     'field' => 'cbr_value_en',
                     'label' => '영문 브랜드명 ',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_en]',
+                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_en.cbr_id.' . $this->input->post('cbr_id') . ']',
                 ),
             );
+            
         }
         $this->form_validation->set_rules($config);
 
@@ -136,8 +138,10 @@ class Cmallbrand extends CB_Controller
                 $this->cache->delete('cmall-brand-all');
                 $this->cache->delete('cmall-brand-detail');
 
-                $view['view']['alert_message'] = '브랜드 설정이 저장되었습니다';
-
+                $this->session->set_flashdata(
+                    'message',
+                    '정상적으로 저장되었습니다'
+                );
                 redirect(admin_url($this->pagedir), 'refresh');
 
             }
@@ -150,7 +154,12 @@ class Cmallbrand extends CB_Controller
                 $this->cache->delete('cmall-brand-all');
                 $this->cache->delete('cmall-brand-detail');
 
-                $view['view']['alert_message'] = '브랜드 정보가 수정되었습니다';
+                
+
+                $this->session->set_flashdata(
+                    'message',
+                    '정상적으로 수정되었습니다'
+                );
 
                 redirect(admin_url($this->pagedir), 'refresh');
 

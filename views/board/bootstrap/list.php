@@ -215,9 +215,9 @@
 						<?php if (element('is_new', $result)) { ?><span class="label label-warning">New</span><?php } ?>
 						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
-						<?php if (element('pln_status', $result)) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } ?>
-						<?php if (element('pln_error2', $result)) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
-						
+						<?php if (element(2,element('pln_status', $result)) || element(4,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php } elseif (element(3,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } elseif (element(5,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?>
+						<?php if (element(6,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }  elseif (element(7,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
+					</td>
 					<td><?php echo element('display_name', $result); ?></td>
 					<td><?php echo element('display_datetime', $result); ?></td>
 					<td><?php echo number_format(element('post_hit', $result)); ?></td>
@@ -279,7 +279,7 @@
 
 		<?php if (element('crawl_category_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 update</a>
+				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 및 제품특성 update</a>
 			</div>
 		<?php } ?>
 

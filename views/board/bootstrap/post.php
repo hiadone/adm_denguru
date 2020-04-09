@@ -66,7 +66,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			<?php
 			foreach (element('link', $view) as $key => $value) {
 			?>
-				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><?php if (element('pln_page', $value)) echo '~'.element('pln_page', $value); ?><?php if (element('pln_status', $value) === '1') { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } ?><?php if (element('pln_status', $value) === '2') { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
+				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><?php if (element('pln_page', $value)) echo '~'.element('pln_page', $value); ?><?php if (element('pln_status', $value) === '2' || element('pln_status', $value) === '4') { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php } elseif (element('pln_status', $value) === '3') { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } elseif (element('pln_status', $value) === '5') { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?><?php if (element('pln_status', $value) === '6') { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }  elseif (element('pln_status', $value) === '7') { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
 					<?php if (element('show_url_qrcode', element('board', $view))) { ?>
 						<span class="url-qrcode" data-qrcode-url="<?php echo urlencode(element('pln_url', $value)); ?>"><i class="fa fa-qrcode"></i></span>
 					<?php } ?>
@@ -358,7 +358,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 
 		<?php if (element('crawl_category_update', $view)) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', $view); ?>" class="btn btn-warning btn-sm">카테고리 update</a>
+				<a href="<?php echo element('crawl_category_update', $view); ?>" class="btn btn-warning btn-sm">카테고리 및 제품특성 update</a>
 			</div>
 		<?php } ?>
 

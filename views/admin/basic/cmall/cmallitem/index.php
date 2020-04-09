@@ -27,11 +27,11 @@
 					<thead>
 						<tr>
 							<th>상품코드</th>
-							<th>분류</th>
+							<th>카테고리</th>
 							<th>이미지</th>
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
-							<th>Vision API label</th>
+							<!-- <th>Vision API label</th> -->
                     		<th>태그</th>
 							<th><a href="<?php echo element('cit_order', element('sort', $view)); ?>">정렬순서</a></th>
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
@@ -66,9 +66,9 @@
 							<td><input type="text" name="cit_name[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_name', $result)); ?>" /></td>
 							<td><input type="number" name="cit_price[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_price', $result)); ?>" /></td>
 							
-							<td>
+							<!-- <td>
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
-		                    </td>
+		                    </td> -->
 		                    <td>
 		                       <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
 		                    </td>

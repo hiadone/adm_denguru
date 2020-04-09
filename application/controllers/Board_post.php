@@ -723,11 +723,18 @@ class Board_post extends CB_Controller
 			OR (element('mem_id', $post) && $mem_id === abs(element('mem_id', $post)))) ? true : false;
 
 		$return['cit_url'] = '';
-		if($is_admin && element('bgr_id', $board) !== "4" ){
-			$view['view']['crawl_update'] = base_url('crawl/crawling_update/'.element('post_id', $post));
-			$view['view']['crawl_overwrite'] = base_url('crawl/crawling_overwrite/'.element('post_id', $post));
-			$view['view']['crawl_category_update'] = base_url('crawl/crawling_category_update/'.element('post_id', $post));
-			$view['view']['crawl_tag_update'] = base_url('crawl/crawling_tag_update/'.element('post_id', $post));
+		if($is_admin && element('bgr_id', $board) !== "4" ){			
+			if($mem_id === 2) {
+				$view['view']['crawl_update'] = base_url('crawl/crawling_update/'.element('post_id', $post));
+				$view['view']['crawl_overwrite'] = base_url('crawl/crawling_overwrite/'.element('post_id', $post));
+				$view['view']['crawl_category_update'] = base_url('crawl/crawling_category_update/'.element('post_id', $post));
+				$view['view']['crawl_tag_update'] = base_url('crawl/crawling_tag_update/'.element('post_id', $post));
+			} else {
+				$view['view']['crawl_update'] = base_url('postact/crawling_update/'.element('post_id', $post));
+				$view['view']['crawl_overwrite'] = base_url('postact/crawling_overwrite/'.element('post_id', $post));
+				$view['view']['crawl_category_update'] = base_url('postact/crawling_category_update/'.element('post_id', $post));
+				$view['view']['crawl_tag_update'] = base_url('postact/crawling_tag_update/'.element('post_id', $post));
+			}
 		}
 
 		
@@ -1181,7 +1188,7 @@ class Board_post extends CB_Controller
 			
 		} 
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_brand_model'));
+		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model'));
 		
 		$result = $this->Cmall_item_model
 			->get_list($per_page, $offset, $where, '', $findex,'asc', $sfield, $skeyword);
@@ -1196,6 +1203,7 @@ class Board_post extends CB_Controller
 				
 				
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
+				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
 
 				if(element('cit_brand', $val))
 					$cmall_brand = $this->Cmall_brand_model->get_one(element('cit_brand', $val));
@@ -1687,21 +1695,16 @@ class Board_post extends CB_Controller
 					}
 				}
 
-				$linkwhere = array(
-						'post_id' => element('post_id', $val),
-						'pln_status' => 1,
-					);
+				for($s = 1;$s <8;$s++){
+					$linkwhere = array(
+							'post_id' => element('post_id', $val),
+							'pln_status' => $s,
+						);
 
-				$result['list'][$key]['pln_status'] = $this->Post_link_model
-					->count_by($linkwhere);
-
-				$linkwhere = array(
-						'post_id' => element('post_id', $val),
-						'pln_status' => 2,
-					);
-
-				$result['list'][$key]['pln_error2'] = $this->Post_link_model
-					->count_by($linkwhere);
+					$result['list'][$key]['pln_status'][$s] = $this->Post_link_model
+						->count_by($linkwhere);
+				}
+				
 			}
 		}
 
@@ -1879,10 +1882,10 @@ class Board_post extends CB_Controller
 			$return['write_url'] = 'javascript:alert(\'비회원은 글쓰기 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.\');';
 		}
 		if($is_admin && element('bgr_id', $board) !== "4" ){
-			$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
-			$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
-			$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
-			$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
+			$return['crawl_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/update');
+			$return['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
+			$return['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
+			$return['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
 		}
 
 		

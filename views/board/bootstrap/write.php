@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 			<?php if (element('use_category', element('board', $view))) { ?>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">분류</label>
+					<label class="col-sm-2 control-label">카테고리</label>
 					<div class="col-sm-10">
 						<div class="form-inline">
 							<select name="post_category" class="form-control">

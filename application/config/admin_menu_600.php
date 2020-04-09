@@ -13,14 +13,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['admin_page_menu']['cmall'] =
 	array(
-		'__config'					=> array('컨텐츠몰관리', 'fa-shopping-cart'),
+		'__config'					=> array('댕구루관리', 'fa-shopping-cart'),
 		'menu'						=> array(
-			'cmallcfg'				=> array('컨텐츠몰환경설정', ''),
+			'cmallcfg'				=> array('댕구루환경설정', ''),
 			'emailform'				=> array('메일/쪽지발송양식', ''),
 			'cmallorder'			=> array('주문내역', ''),
 			'pendingbank'			=> array('무통장입금알림', ''),
 			'orderlist'				=> array('구매내역', ''),
-			'cmallcategory'			=> array('분류관리', ''),
+			'tagwordadm'			=> array('태그사전관리', ''),
+			'cmallcategory'			=> array('카테고리 및 특성관리', ''),
 			'cmallbrand'			=> array('브랜드관리', ''),
 			'cmallitem'				=> array('상품관리', ''),
 			'qna'					=> array('상품문의', ''),

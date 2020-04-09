@@ -97,10 +97,10 @@
                     <th>번호</th>
                     <th>IMG</th>
                     <th>제목</th>
-                    <th>분류</th>
+                    <th>카테고리</th>
                     <th>상품코드</th>
                     <th>가격</th>
-                    <th>색상</th>
+                    <th>제품특성</th>
                     <th>Vision API label</th>
                     <th>태그</th>
                     <th>날짜</th>
@@ -176,8 +176,9 @@
                         
                         
                     </td>
-                    <td ><textarea name="cit_color[<?php echo element('cit_id', $result); ?>]" id="cit_color_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options px100" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_color', $result)); ?></textarea>
-                        </td>
+                    <td style="width:130px;">
+                        <?php foreach (element('attr', $result) as $cv) { echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv)) . '</label> ';} ?>
+                    </td>
                     <td>
                         <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="이미지 분석 라벨입니다(수정 불가)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
                         </td>

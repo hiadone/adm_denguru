@@ -34,4 +34,32 @@ if ($is_open) {
 	$is_open = false;
 }
 
+
 echo display_html_content(element('footercontent', element('group', $view)));
+
+?>
+<?php if (element('crawl_tag_update', element('group', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_update', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 태그 update</a>
+			</div>
+		<?php } ?>
+
+
+		<?php if (element('crawl_category_update', element('group', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 카테고리 및 제품특성 update</a>
+			</div>
+		<?php } ?>
+
+		<?php if (element('crawl_update', element('group', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_update', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 크롤링 update</a>
+			</div>
+		<?php } ?>
+
+
+		<?php if (element('crawl_overwrite', element('group', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_overwrite', element('group', $view)); ?>" class="btn btn-danger btn-sm">group 크롤링 overWrite</a>
+			</div>
+		<?php } ?>
