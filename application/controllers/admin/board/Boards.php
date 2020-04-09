@@ -24,7 +24,7 @@ class Boards extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Board', 'Board_meta', 'Board_crawl');
+	protected $models = array('Board', 'Board_meta', 'Board_crawl','Cmall_brand');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -227,6 +227,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim|required|numeric',
 			),
 			array(
+				'field' => 'brd_brand_text',
+				'label' => '브랜드',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'board_layout',
 				'label' => '레이아웃',
 				'rules' => 'trim',
@@ -326,8 +331,7 @@ class Boards extends CB_Controller
 			$group_cnt = $this->Board_group_model->count_by();
 			if ($group_cnt === 0) {
 				alert('최소 1개 그룹이 생성되어야 합니다. 그룹관리 페이지로 이동합니다', admin_url('board/boardgroup'));
-			}
-
+			}			
 		} else {
 			/**
 			 * 유효성 검사를 통과한 경우입니다.
@@ -337,13 +341,24 @@ class Boards extends CB_Controller
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
+			if($this->input->post('brd_brand_text',null,'')){
+				$this->db->select('cbr_id');			
+				$this->db->from('cmall_brand');
+				$this->db->where('cbr_value_kr', $this->input->post('brd_brand_text',null,''));
+				$this->db->or_where('cbr_value_en', $this->input->post('brd_brand_text',null,''));
+				$result = $this->db->get();
+				$brd_brand = $result->row_array();
+			}
+
 			$brd_order = $this->input->post('brd_order') ? $this->input->post('brd_order') : 0;
+			$brd_brand = empty($brd_brand) ? 0 : $brd_brand;
 			$brd_search = $this->input->post('brd_search') ? $this->input->post('brd_search') : 0;
 			$brd_blind = $this->input->post('brd_blind') ? $this->input->post('brd_blind') : 0;
 			$updatedata = array(
 				'bgr_id' => $this->input->post('bgr_id', null, ''),
 				'brd_key' => $this->input->post('brd_key', null, ''),
 				'brd_name' => $this->input->post('brd_name', null, ''),
+				'brd_brand' => element('cbr_id',$brd_brand),
 				'brd_mobile_name' => $this->input->post('brd_mobile_name', null, ''),
 				'brd_order' => $brd_order,
 				'brd_search' => $brd_search,
@@ -513,6 +528,7 @@ class Boards extends CB_Controller
 		}
 
 		$getdata = array();
+		$brand_text = '';
 		if ($pid) {
 			$getdata = $this->{$this->modelname}->get_one($pid);
 			$board_meta = $this->Board_meta_model->get_all_meta(element('brd_id', $getdata));
@@ -523,6 +539,18 @@ class Boards extends CB_Controller
 			// 기본값 설정
 			$getdata['brd_search'] = 1;
 		}
+
+		if(element('brd_brand', $getdata))			
+			$brand_text = $this->Cmall_brand_model->get_one(element('brd_brand', $getdata));
+
+			if(element('cbr_value_kr',$brand_text))
+				$getdata['cit_brand_text']	= element('cbr_value_kr',$brand_text);
+			elseif(element('cbr_value_kr',$brand_text))
+				$getdata['brd_brand_text']	= element('cbr_value_en',$brand_text);
+			else
+				$getdata['brd_brand_text']	= '';
+
+		$getdata['brand_list'] = $this->Cmall_brand_model->get();
 
 		$view['view']['data'] = $getdata;
 		$view['view']['data']['group_option'] = $this->{$this->modelname}

@@ -99,6 +99,12 @@ if (element('brd_id', element('data', $view))) {
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 control-label">스토어브랜드</label>
+					<div class="col-sm-10 form-inline">
+						<input type="text" class="form-control" id="brd_brand_text" name="brd_brand_text" value="<?php echo set_value('brd_brand_text', element('brd_brand_text', element('data', $view))); ?>" /> 
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 control-label">레이아웃</label>
 					<div class="col-sm-8 form-inline">
 						<select name="board_layout" id="board_layout" class="form-control" >
@@ -302,7 +308,8 @@ if (element('brd_id', element('data', $view))) {
 		<?php echo form_close(); ?>
 	</div>
 </div>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -326,5 +333,46 @@ function check_form_changed() {
 	}
 	return true;
 }
+
+var searchSource = [
+	<?php
+	if (element('brand_list', element('data', $view))) {
+	    foreach (element('brand_list', element('data', $view)) as $result) {
+	 		echo '"'.element('cbr_value_kr',$result).'","'.element('cbr_value_en',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
+$("#brd_brand_text")
+.on("keydown", function( event ) {
+    if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+        event.preventDefault();
+    }
+})
+.autocomplete({  //오토 컴플릿트 시작
+    source : searchSource,    // source 는 자동 완성 대상
+    select: function(event, ui) {
+        this.value = "";
+        this.value = ui.item.value;
+
+        return false;
+    },
+    focus : function(event, ui) {    //포커스 가면
+        return false;//한글 에러 잡기용도로 사용됨
+    },
+    minLength: 1,// 최소 글자수
+    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+    classes: {    //잘 모르겠음
+        "ui-autocomplete": "highlight"
+    },
+    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//            disabled: true, //자동완성 기능 끄기
+    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+    close : function(event){    //자동완성창 닫아질때 호출
+        console.log(1);
+    }
+});
 //]]>
 </script>

@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['admin_page_menu']['cmall'] =
 	array(
-		'__config'					=> array('댕구루관리', 'fa-shopping-cart'),
+		'__config'					=> array('댕구루상품관리', 'fa-shopping-cart'),
 		'menu'						=> array(
 			'cmallcfg'				=> array('댕구루환경설정', ''),
 			'emailform'				=> array('메일/쪽지발송양식', ''),
