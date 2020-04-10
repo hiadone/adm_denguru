@@ -1,7 +1,7 @@
 <div class="box">
     <div class="box-header">
         <ul class="nav nav-tabs">
-            <li role="presentation" ><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">제품특성 관리</a></li>
+            <li role="presentation" ><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">카테고리 관리</a></li>
             <li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir . '/attr'); ?>" onclick="return check_form_changed();">제품특성 관리</a></li>
             
         </ul>
