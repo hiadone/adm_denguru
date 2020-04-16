@@ -728,7 +728,7 @@ class Board_post extends CB_Controller
 		if($is_admin && element('bgr_id', $board) !== "4" ){			
 			if(strpos(base_url(),'devadm.denguru.kr') !== false) {
 				$view['view']['crawl_update'] = base_url('crawl/crawling_update/'.element('post_id', $post));
-				$view['view']['crawl_overwrite'] = base_url('crawl/crawling_overwrite/'.element('post_id', $post));
+				$view['view']['crawl_overwrite'] = base_url('postact/crawling_overwrite/'.element('post_id', $post));
 				$view['view']['crawl_category_update'] = base_url('crawl/crawling_category_update/'.element('post_id', $post));
 				$view['view']['crawl_tag_update'] = base_url('crawl/crawling_tag_update/'.element('post_id', $post));
 			} else {
