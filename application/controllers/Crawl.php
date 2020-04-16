@@ -124,7 +124,7 @@ class Crawl extends CB_Controller
         
         foreach ($link as $key => $value) {
             
-            sleep(5);
+            
         
             $proxy_userpwd = 'username:password';
             $proxy_userpwd = '';
@@ -151,7 +151,7 @@ class Crawl extends CB_Controller
             );
 
             $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
-
+            sleep(5);
 
             if(element('pln_page', $value)){
                 $param =& $this->querystring;
