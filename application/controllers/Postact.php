@@ -3811,8 +3811,7 @@ class Postact extends CB_Controller
     	$cmd='';
 
     	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_overwrite '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_overwrite.log ';
-    	echo $cmd;
-    	sdfsdf
+    	echo $cmd;    	
     	@exec($cmd, $output, $retval);
     	$result = array('success' => '실행되었습니다');
         alert('실행되었습니다');
