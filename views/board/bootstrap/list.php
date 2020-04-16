@@ -3,7 +3,7 @@
 <?php echo element('headercontent', element('board', element('list', $view))); ?>
 
 <div class="board">
-	<h3><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', element('list', $view))); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', element('list', $view))); ?></a></span></h3>
+	<h3><a href="<?php echo admin_url('board/boards/write/'.element('brd_id', element('board', element('list', $view)))); ?>"><span class="glyphicon glyphicon-new-window"></span></a><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', element('list', $view))); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', element('list', $view))); ?></a></span></h3>
 	<div class="row mb20">
 		<div class="col-xs-6 form-inline">
 			<?php if ( ! element('access_list', element('board', element('list', $view))) && element('use_rss_feed', element('board', element('list', $view)))) { ?>

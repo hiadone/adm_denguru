@@ -1884,10 +1884,20 @@ class Board_post extends CB_Controller
 			$return['write_url'] = 'javascript:alert(\'비회원은 글쓰기 권한이 없습니다.\\n\\n회원이시라면 로그인 후 이용해 보십시오.\');';
 		}
 		if($is_admin && element('bgr_id', $board) !== "4" ){
-			$return['crawl_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/update');
-			$return['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
-			$return['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
-			$return['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
+
+			if(strpos(base_url(),'devadm.denguru.kr') !== false) {
+				$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
+				$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
+				$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
+				$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
+			} else {
+				$return['crawl_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/update');
+				$return['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
+				$return['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
+				$return['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
+			}
+
+			
 		}
 
 		

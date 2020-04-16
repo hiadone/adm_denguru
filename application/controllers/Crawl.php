@@ -124,7 +124,7 @@ class Crawl extends CB_Controller
         
         foreach ($link as $key => $value) {
             
-            
+            sleep(5);
         
             $proxy_userpwd = 'username:password';
             $proxy_userpwd = '';
@@ -205,7 +205,7 @@ class Crawl extends CB_Controller
                                             'post_id' => $post_id,
                                             'cit_name' => element('crawl_title',$ivalue) ? element('crawl_title',$ivalue) : element('cit_name',$c_value) ,
                                             'cit_summary' => element('crawl_sub_title',$ivalue) ? element('crawl_sub_title',$ivalue) : element('cit_summary',$c_value) ,
-                                            'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ? preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) : element('cit_price',$c_value) ,
+                                            'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$ivalue))) : element('cit_price',$c_value) ,
                                             'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                             'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) ? $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) : element('cit_post_url', $c_value),
                                             'brd_id' => element('brd_id', $board_crawl),
@@ -239,7 +239,7 @@ class Crawl extends CB_Controller
                                         'post_id' => $post_id,
                                         'cit_name' => element('crawl_title',$ivalue) ,
                                         'cit_summary' => element('crawl_sub_title',$ivalue) ,
-                                        'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
+                                        'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$ivalue))) ,
                                         'cit_datetime' => cdate('Y-m-d H:i:s'),
                                         'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                         'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))),
@@ -413,6 +413,7 @@ class Crawl extends CB_Controller
 
                             
                         } else {
+                            $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                             continue;    
                         }
                     } else {
@@ -439,6 +440,7 @@ class Crawl extends CB_Controller
                 echo element('pln_url', $value)."<br>";
                 $result = $this->extract_html(element('pln_url', $value), $proxy, $proxy_userpwd);
 
+                echo $result['code']."<br>";
                 if($result['code']===200){
                     // 기존 항목을 모두 지운다.
                     
@@ -474,7 +476,7 @@ class Crawl extends CB_Controller
                                         'post_id' => $post_id,
                                         'cit_name' => element('crawl_title',$ivalue) ? element('crawl_title',$ivalue) : element('cit_name',$c_value) ,
                                         'cit_summary' => element('crawl_sub_title',$ivalue) ? element('crawl_sub_title',$ivalue) : element('cit_summary',$c_value) ,
-                                        'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ? preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) : element('cit_price',$c_value) ,
+                                        'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$ivalue))) : element('cit_price',$c_value) ,
                                         'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                         'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) ? $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) : element('cit_post_url', $c_value),
                                         'brd_id' => element('brd_id', $board_crawl),
@@ -506,7 +508,7 @@ class Crawl extends CB_Controller
                                     'post_id' => $post_id,
                                     'cit_name' => element('crawl_title',$ivalue) ,
                                     'cit_summary' => element('crawl_sub_title',$ivalue) ,
-                                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
+                                    'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$ivalue))) ,
                                     'cit_datetime' => cdate('Y-m-d H:i:s'),
                                     'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                     'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))),
@@ -689,11 +691,15 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         if($is_pln_error)
                             $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                     } else {
+                        $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                         continue;    
                     }
+                    
+                } else {
                     $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                 }
-                $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
+                
+                
             }
         }
 
@@ -1368,7 +1374,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 'post_id' => $post_id,
                                 'cit_name' => element('crawl_title',$ivalue) ,
                                 'cit_summary' => element('crawl_sub_title',$ivalue) ,
-                                'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) ,
+                                'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$ivalue))) ,
                                 'cit_datetime' => cdate('Y-m-d H:i:s'),
                                 'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
                                 'cit_post_url' => $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))),
@@ -2181,7 +2187,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     
                     'cit_name' => element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),
                     'cit_summary' => element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value) ,
-                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) ? preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) : element('cit_price',$value) ,
+                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$cit_info))) : element('cit_price',$value) ,
                     'cit_brand' => element('cit_brand',$cit_info) ? element('cit_brand',$cit_info) : element('cit_brand', $value),
                     'cit_is_soldout' => element('crawl_is_soldout', $cit_info) ? element('crawl_is_soldout', $cit_info) : element('cit_is_soldout', $value),
                     
