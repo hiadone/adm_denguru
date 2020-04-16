@@ -416,6 +416,7 @@ class Crawl extends CB_Controller
                             continue;    
                         }
                     } else {
+                        $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                         continue;
                     }
                 }
@@ -690,7 +691,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     } else {
                         continue;    
                     }
+                    $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
                 }
+                $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 5));
             }
         }
 
@@ -786,7 +789,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $response['status']=false;  
         
         $agent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1';
-        
+        // $agent = 'Mozilla/5.0 (iPad; CPU OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53',
         // Some websites require referrer
         $host = parse_url($url, PHP_URL_HOST);
         $scheme = parse_url($url, PHP_URL_SCHEME);
@@ -1537,6 +1540,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         if($is_pln_error)
                             $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                     } else {
+                        $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                         continue;
                     }
                 }
@@ -1754,6 +1758,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     if($is_pln_error)
                         $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                 } else {
+                    $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 3));
                     continue;
                 }
             
@@ -2266,6 +2271,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
            
                 // if($a > 10 ) exit;
             } else {
+                $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 7));
                 continue;
             }
 
