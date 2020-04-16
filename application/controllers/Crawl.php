@@ -248,10 +248,10 @@ class Crawl extends CB_Controller
                                         'cit_goods_code' => element('crawl_goods_code', $ivalue),                        
                                         'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
                                         'cit_status' => 1,
-                                        'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                                        'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                                        'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                                        'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+                                        // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+                                        // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+                                        'cit_type3' => 1,
+                                        // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                                         
                                         
                                     );
@@ -515,10 +515,10 @@ class Crawl extends CB_Controller
                                     'cit_goods_code' => element('crawl_goods_code', $ivalue),                        
                                     'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
                                     'cit_status' => 1,
-                                    'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                                    'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                                    'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                                    'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+                                    // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+                                    // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+                                    'cit_type3' =>  1 ,
+                                    // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                                     
                                 );
 
@@ -1377,10 +1377,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 'cit_goods_code' => element('crawl_goods_code', $ivalue),                        
                                 'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
                                 'cit_status' => 1,
-                                'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                                'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                                'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                                'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+                                // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+                                // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+                                // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
+                                // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                                 
                             );
 
@@ -1600,10 +1600,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                             'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
                             'cit_status' => 1,
                             'cit_brand' => element('cit_brand',$ivalue) ? element('cit_brand',$ivalue) : 0,
-                            'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                            'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                            'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                            'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+                            // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+                            // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+                            // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
+                            // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                             
                         );
 
