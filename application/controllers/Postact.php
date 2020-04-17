@@ -3810,11 +3810,11 @@ class Postact extends CB_Controller
     	$retval = 1;
     	$cmd='';
 
-    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_overwrite '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_overwrite.log ';
+    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_overwrite/'.$post_id).' --connect-timeout 6000 > /tmp/crawl_crawling_overwrite.log ';
     	echo $cmd;    	
     	@exec($cmd, $output, $retval);
     	$result = array('success' => '실행되었습니다');
-        alert('실행되었습니다');
+        // alert('실행되었습니다');
         // exit(json_encode($result));
     }
 
@@ -3829,7 +3829,7 @@ class Postact extends CB_Controller
     	$retval = 1;
     	$cmd='';
 
-    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_category_update '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_category_update.log';
+    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_category_update/'.$post_id).' --connect-timeout 6000 >  /tmp/crawl_crawling_category_update.log';
     	echo $cmd;
     	@exec($cmd, $output, $retval);
 
@@ -3849,7 +3849,7 @@ class Postact extends CB_Controller
     	$retval = 1;
     	$cmd='';
 
-    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_tag_update '.$post_id.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_tag_update.log';
+    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_tag_update/'.$post_id).' --connect-timeout 6000 >  /tmp/crawl_crawling_tag_update.log';
     	echo $cmd;
     	@exec($cmd, $output, $retval);
 
@@ -3871,7 +3871,7 @@ class Postact extends CB_Controller
     	$retval = 1;
     	$cmd='';
 
-    	$cmd='/usr/bin/php '.FCPATH.'/index.php Crawl crawling_item_update '.$crawl_key.' '.$crawl_mode.' '.$crawl_type.'> /dev/null 2>/dev/null & /tmp/crawl_crawling_item_update.log';
+    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_item_update/'.$crawl_key.'/'.$crawl_mode.'/'.$crawl_type).' --connect-timeout 6000 > /tmp/crawl_crawling_item_update.log';
     	echo $cmd;
     	@exec($cmd, $output, $retval);
 

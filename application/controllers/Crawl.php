@@ -388,7 +388,7 @@ class Crawl extends CB_Controller
                                                        $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                        
                                                    } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8920868) {
-                                                       $this->detect_label($cit_id,thumb_url(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
+                                                       $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                                    }
 
                                                    // if(element('crawl_title',$ivalue) && preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) && $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) && element('crawl_goods_code', $ivalue))
@@ -661,7 +661,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                                    $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                    
                                                } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8920868) {
-                                                   $this->detect_label($cit_id,thumb_url(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
+                                                   $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                                }
 
                                                // if(element('crawl_title',$ivalue) && preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) && $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) && element('crawl_goods_code', $ivalue))
@@ -1544,7 +1544,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                                 $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                 
                                             } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8920868) {
-                                                $this->detect_label($cit_id,thumb_url(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
+                                                $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                             }
                                             // if(element('crawl_title',$ivalue) && preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) && $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) && element('crawl_goods_code', $ivalue))
                                             // $updatedata['cit_val1'] = 0 ;
@@ -1764,12 +1764,14 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 foreach ($uploadfiledata as $pkey => $pval) {
                                     if ($pval) {
                                         $updatedata['cit_file_' . $pkey] = element('cfi_filename', $pval);
-
+                                        
                                         if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 8920868) {
                                             $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                             
                                         } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8920868) {
-                                            $this->detect_label($cit_id,thumb_url(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
+
+
+                                            $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                         }
                                         
                                         // if(element('crawl_title',$ivalue) && preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) && $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) && element('crawl_goods_code', $ivalue))
@@ -1781,8 +1783,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 $this->Cmall_item_model->update($cit_id, $updatedata);
                                 
                             }
-                        }
-
+                        } else 
+                            $is_pln_error = true;
                     }
                     if(!$is_pln_error)
                         $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 1));
@@ -2150,6 +2152,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
         require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
         $a=0;
         foreach ($crawl as  $value) {
+
+
+            $where = array(
+                    'cit_id' => element('cit_id',$value),
+                );
+            $crawl_tag_count = $this->Crawl_tag_model->count_by($where);            
+            if($crawl_tag_count) continue;
             $tag_ = array();
             echo 'cit_post_url : '.element('cit_post_url', $value)."<br>";
             $result = $this->extract_html(element('cit_post_url', $value), $proxy, $proxy_userpwd);
@@ -2277,7 +2286,302 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         if($imageName && filesize($imageName) < 8920868) {
                             $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
                         } elseif($imageName && filesize($imageName) > 8920868) {
-                            $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url($imageName));
+                            $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
+                        }
+
+                         @unlink($imageName);
+                        
+                    }
+                }
+
+// echo "<br>cit_info";
+// print_r($cit_info);
+// echo "<br>cit_text";
+// print_r($cit_text);
+// echo "<br>cit_img";
+// print_r($cit_img);
+// continue;
+
+                foreach($cit_text as $tkey => $tvalue){
+                    if(element('text',$tvalue))
+                        $tag_[] = $this->detect_tag2(element('text',$tvalue));
+                }
+
+                   
+                $tag_[] = $this->detect_tag3(element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value));
+                $a++;
+           
+                // if($a > 10 ) exit;
+            } else {
+                $this->Post_link_model->update(element('pln_id',$value),array( 'pln_status' => 7));
+                continue;
+            }
+
+            $translate_text = array();
+            foreach($tag_ as $word){
+                foreach($word as $val_){                            
+                    
+                    if(!in_array($val_,$translate_text))
+                        array_push($translate_text,$val_);       
+                     
+                }
+            }
+
+            if(count($translate_text)){
+                
+
+                
+                // $deletewhere = array(
+                //     'cit_id' => element('cit_id',$value),
+                // );
+                // $this->Crawl_tag_model->delete_where($deletewhere);            
+                if ($translate_text && is_array($translate_text)) {
+                    foreach ($translate_text as  $text) {
+                        // $value = trim($value);
+                        if ($text) {
+                            $tagdata = array(
+                                'post_id' => element('post_id', $value),
+                                'cit_id' => element('cit_id', $value),
+                                'brd_id' => element('brd_id', $value),
+                                'cta_tag' => $text,
+                            );
+                            $this->Crawl_tag_model->insert($tagdata);
+                        }
+                    }
+                }
+                $linkupdate = array(
+                    'pln_status' => 1,
+                );
+
+                $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+            } else {
+
+                $linkupdate = array(
+                    'pln_status' => 7,
+                );
+                $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+            }
+
+            // $itemupdate = array(
+            //     'cit_val1' => 0,
+            // );
+            // if($cit_info['cit_brand'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
+            //     $this->Cmall_item_model->update(element('cit_id',$value),$itemupdate);  
+        }
+        
+
+
+    }
+
+
+    public function crawling_tag_overwrite($post_id=0)
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_crawl_index';
+        $this->load->event($eventname);
+
+        $post_id = (int) $post_id;
+        if (empty($post_id) OR $post_id < 1) {
+            show_404();
+        }
+
+        $post = $this->Post_model->get_one($post_id);
+        if ( ! element('post_id', $post)) {
+            show_404();
+        }
+        
+
+        $post['extravars'] = $this->Post_extra_vars_model->get_all_meta($post_id);
+        $post['meta'] = $this->Post_meta_model->get_all_meta($post_id);
+
+        $board = $this->board->item_all(element('brd_id', $post));
+        
+        $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
+        if(empty($post['category'])) 
+        $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+
+        if(empty($post['category']['bca_parent']))
+            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_key']));
+        else 
+            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_parent'])); 
+
+
+        $all_category=array();
+        
+        
+        // $all_category = $this->Cmall_category_model->get_all_category();
+        
+
+        
+        
+        $crawlwhere = array(
+            'brd_id' => element('brd_id', $post),
+        );
+
+        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
+        if ( ! element('brd_id', $board_crawl)) {
+            show_404();
+        }
+
+        
+        $proxy_userpwd = 'username:password';
+        $proxy_userpwd = '';
+        $proxies[] = '10.0.0.1:80';
+        $proxies[] = '10.0.0.2:8080'; 
+        $proxies[] = '10.0.0.3:80'; 
+        $proxies[] = '10.0.0.4:8080'; 
+        $proxies[] = '10.0.0.5:80'; 
+
+
+        $proxy_count = count($proxies) - 1;
+         
+
+        $proxy = $proxies[rand(0,$proxy_count)];
+        $proxy = 0;
+
+        $postwhere = array(
+            'post_id' => $post_id,
+            // 'cit_id' => 9347,
+        );
+        
+
+        $crawl = $this->Cmall_item_model
+            ->get('', '', $postwhere, '', '', 'pln_id', 'asc');
+
+
+        
+        require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
+        $a=0;
+        foreach ($crawl as  $value) {
+            $tag_ = array();
+            echo 'cit_post_url : '.element('cit_post_url', $value)."<br>";
+            $result = $this->extract_html(element('cit_post_url', $value), $proxy, $proxy_userpwd);
+            
+            $linkupdate = array(
+                'pln_status' => 6,
+            );
+
+            $this->Post_link_model->update(element('pln_id',$value),$linkupdate);
+
+            // $itemupdate = array(
+            //     'cit_val1' => 1,
+            // );
+
+            // $this->Cmall_item_model->update(element('cit_id',$value),$itemupdate);  
+            if($result['code']===200){
+
+                // 기존 항목을 모두 지운다.
+                
+
+                $html = new simple_html_dom();
+                
+                $html->load($result['content']);
+
+                $cit_info=array();
+                $cit_img=array();
+                $cit_text=array();
+                
+                $cit_info['crawl_title'] = '';
+                $cit_info['crawl_sub_title'] = '';
+                $cit_info['crawl_price'] = '';
+                $cit_info['crawl_brand'] = '';
+                $cit_info['crawl_size'] = '';
+                $cit_info['crawl_color'] = '';
+                $cit_info['cit_is_soldout'] = '';
+                $cit_info['crawl_material'] = '';
+
+                if(element('post_content_detail', $post))
+                    eval(element('post_content_detail', $post));
+                elseif(element('brd_content_detail', $board_crawl))
+                    eval(element('brd_content_detail', $board_crawl));
+                
+                
+                
+
+                $cit_info['cit_brand'] = $this->cmall_brand($cit_info['crawl_brand']);
+                
+                // if(empty($cit_info['cit_brand'])){
+                //     $crawl_title_ = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
+
+                //     $crawl_title_ = str_replace(" ","",$crawl_title_);
+                //     $crawl_title_ = str_replace("[","",$crawl_title_);
+                //     $crawl_title_ = str_replace("]","",$crawl_title_);
+
+                //     $cit_info['cit_brand'] = $this->cmall_brand($crawl_title_);
+                // }
+                
+
+                $updatedata = array(                                        
+                    
+                    'cit_name' => element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),
+                    'cit_summary' => element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value) ,
+                    'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$cit_info))) : element('cit_price',$value) ,
+                    'cit_brand' => element('cit_brand',$cit_info) ? element('cit_brand',$cit_info) : element('cit_brand', $value),
+                    'cit_is_soldout' => element('crawl_is_soldout', $cit_info) ? element('crawl_is_soldout', $cit_info) : element('cit_is_soldout', $value),
+                    
+                );
+
+                
+
+                $this->Cmall_item_model->update(element('cit_id',$value),$updatedata);
+
+                foreach($cit_img as $ikey => $ivalue){
+
+
+                    
+
+
+                    
+
+
+
+                    # 이미지 URL 추출
+                   
+
+                    $imageUrl = $this->valid_url($board_crawl,$this->http_path_to_url(element('img_src', $ivalue),element('cit_post_url', $value)));
+
+
+                    
+                    # 이미지 파일명 추출
+                    $img_src_array = parse_url(urldecode($imageUrl));
+                        // $img_src_array= explode('://', $imageUrl);
+                        $img_src_array_= explode('/', $img_src_array['path']);
+                        $imageName = end($img_src_array_);
+
+                        $encode_url=array();
+                        foreach($img_src_array as $u_key => $u_value){
+                            $img_src_array[$u_key] = rawurlencode($img_src_array[$u_key]);
+                        }
+                        $imageUrl = $img_src_array['scheme'].'://'.$img_src_array['host'].$img_src_array['path'];
+                        // $imageUrl = $img_src_array[0].'://'.$imageUrl;
+                        
+                        // $imageUrl = str_replace("%3F","?",$imageUrl);
+                        // $imageUrl = str_replace("%26","&",$imageUrl);
+                        $imageUrl = str_replace("%2F","/",$imageUrl);
+                        echo "<br>".$imageUrl."<br>";
+
+                    if($this->get_extension($imageName) ==='gif') continue;
+
+                    # 이미지 파일이 맞는 경우
+                    if ($fileinfo = getimagesize($imageUrl)) {
+                        
+                        
+                        if($fileinfo['1'] < 80) continue;
+                        # 이미지 다운로드
+                        
+                        $imageFile = $this->extract_html($imageUrl,'','',element('referrer', $ivalue,''));
+
+                        # 파일 생성 후 저장
+                        $filetemp = fopen($imageName, 'w');
+                        fwrite($filetemp, $imageFile['content']);
+                        fclose($filetemp); // Closing file handle
+
+                        
+                        if($imageName && filesize($imageName) < 8920868) {
+                            $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
+                        } elseif($imageName && filesize($imageName) > 8920868) {
+                            $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
                         }
 
                          @unlink($imageName);
@@ -2877,6 +3181,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         if($crawl_type==='tag_update'){
                             
                             $this->crawling_tag_update(element('post_id', $val));
+                        }
+                        if($crawl_type==='tag_overwrite'){
+                            
+                            $this->crawling_tag_overwrite(element('post_id', $val));
                         }
                         if($crawl_type==='category_update'){
                             $this->crawling_category_update(element('post_id', $val));

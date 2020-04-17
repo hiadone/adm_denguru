@@ -361,6 +361,12 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			</div>
 		<?php } ?>
 
+		<?php if (element('crawl_tag_overwrite', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_overwrite', $view); ?>" class="btn btn-warning btn-sm">태그 overWrite</a>
+			</div>
+		<?php } ?>
+
 
 		
 
