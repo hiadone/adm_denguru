@@ -351,14 +351,14 @@ class Boards extends CB_Controller
 			}
 
 			$brd_order = $this->input->post('brd_order') ? $this->input->post('brd_order') : 0;
-			$brd_brand = empty($brd_brand) ? 0 : $brd_brand;
+			$brd_brand = empty($brd_brand) ? 0 : element('cbr_id',$brd_brand);
 			$brd_search = $this->input->post('brd_search') ? $this->input->post('brd_search') : 0;
 			$brd_blind = $this->input->post('brd_blind') ? $this->input->post('brd_blind') : 0;
 			$updatedata = array(
 				'bgr_id' => $this->input->post('bgr_id', null, ''),
 				'brd_key' => $this->input->post('brd_key', null, ''),
 				'brd_name' => $this->input->post('brd_name', null, ''),
-				'brd_brand' => element('cbr_id',$brd_brand),
+				'brd_brand' => $brd_brand,
 				'brd_mobile_name' => $this->input->post('brd_mobile_name', null, ''),
 				'brd_order' => $brd_order,
 				'brd_search' => $brd_search,
