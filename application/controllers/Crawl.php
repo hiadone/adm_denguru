@@ -384,10 +384,10 @@ class Crawl extends CB_Controller
                                                if ($pval) {
                                                    $updatedata['cit_file_' . $pkey] = element('cfi_filename', $pval);
                                                    
-                                                   if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 8020868) {
+                                                   if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 5020868) {
                                                        $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                        
-                                                   } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8020868) {
+                                                   } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 5020868) {
                                                        $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                                    }
 
@@ -657,10 +657,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                            if ($pval) {
                                                $updatedata['cit_file_' . $pkey] = element('cfi_filename', $pval);
 
-                                               if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 8020868) {
+                                               if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 5020868) {
                                                    $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                    
-                                               } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8020868) {
+                                               } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 5020868) {
                                                    $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                                }
 
@@ -1540,10 +1540,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                             
                                             
 
-                                            if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 8020868) {
+                                            if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 5020868) {
                                                 $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                                 
-                                            } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8020868) {
+                                            } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 5020868) {
                                                 $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
                                             }
                                             // if(element('crawl_title',$ivalue) && preg_replace("/[^0-9]*/s", "", element('crawl_price',$ivalue)) && $this->valid_url($board_crawl,$this->http_path_to_url(element('crawl_post_url',$ivalue),element('pln_url', $value))) && element('crawl_goods_code', $ivalue))
@@ -1765,10 +1765,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                     if ($pval) {
                                         $updatedata['cit_file_' . $pkey] = element('cfi_filename', $pval);
                                         
-                                        if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 8020868) {
+                                        if(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) < 7020868) {
                                             $this->detect_label($cit_id,config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval),$ivalue['crawl_title']);
                                             
-                                        } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 8020868) {
+                                        } elseif(element('cfi_filename', $pval) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)) > 5020868) {
 
 
                                             $this->detect_label($cit_id,thumb_url('cmallitem',config_item('uploads_dir') . '/cmallitem/' . element('cfi_filename', $pval)),$ivalue['crawl_title']);
@@ -2283,9 +2283,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         fclose($filetemp); // Closing file handle
 
                         
-                        if($imageName && filesize($imageName) < 8020868) {
+                        if($imageName && filesize($imageName) < 5020868) {
                             $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
-                        } elseif($imageName && filesize($imageName) > 8020868) {
+                        } elseif($imageName && filesize($imageName) > 5020868) {
                             $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
                         }
 
@@ -2578,9 +2578,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         fclose($filetemp); // Closing file handle
 
                         
-                        if($imageName && filesize($imageName) < 8020868) {
+                        if($imageName && filesize($imageName) < 5020868) {
                             $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
-                        } elseif($imageName && filesize($imageName) > 8020868) {
+                        } elseif($imageName && filesize($imageName) > 5020868) {
                             $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
                         }
 
