@@ -293,7 +293,7 @@ class Crawl extends CB_Controller
                                     
 
                                     # 이미지 파일이 맞는 경우
-                                    if ($fileinfo = getimagesize($imageUrl)) {
+                                    if ($fileinfo = @getimagesize($imageUrl)) {
 
 
                                         # 이미지 다운로드
@@ -567,7 +567,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                                 
 
                                 # 이미지 파일이 맞는 경우
-                                if ($fileinfo = getimagesize($imageUrl)) {
+                                if ($fileinfo = @getimagesize($imageUrl)) {
 
 
                                     # 이미지 다운로드
@@ -1445,7 +1445,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                             
                             
                             # 이미지 파일이 맞는 경우
-                            if ($fileinfo = getimagesize($imageUrl)) {
+                            if ($fileinfo = @getimagesize($imageUrl)) {
 
 
                                 # 이미지 다운로드
@@ -1672,7 +1672,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         
                         
                         # 이미지 파일이 맞는 경우
-                        if ($fileinfo = getimagesize($imageUrl)) {
+                        if ($fileinfo = @getimagesize($imageUrl)) {
 
 
                             # 이미지 다운로드
@@ -2269,7 +2269,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     if($this->get_extension($imageName) ==='gif') continue;
 
                     # 이미지 파일이 맞는 경우
-                    if ($fileinfo = getimagesize($imageUrl)) {
+                    if ($fileinfo = @getimagesize($imageUrl)) {
                         
                         
                         if($fileinfo['1'] < 80) continue;
@@ -2564,7 +2564,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     if($this->get_extension($imageName) ==='gif') continue;
 
                     # 이미지 파일이 맞는 경우
-                    if ($fileinfo = getimagesize($imageUrl)) {
+                    if ($fileinfo = @getimagesize($imageUrl)) {
                         
                         
                         if($fileinfo['1'] < 80) continue;
