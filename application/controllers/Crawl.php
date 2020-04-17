@@ -2716,8 +2716,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
         // $projectId = 'petproject-235609';
 
         # annotate the image
-        $image = file_get_contents($path);
-        $response = $this->imageAnnotator->labelDetection($image);
+        $image = @file_get_contents($path);
+        $response = @$this->imageAnnotator->labelDetection($image);
         $labels = $response->getLabelAnnotations();
         $translate_text=array();
         $convert_text=array();
