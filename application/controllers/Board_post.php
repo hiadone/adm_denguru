@@ -1887,7 +1887,7 @@ class Board_post extends CB_Controller
 		}
 		if($is_admin && element('bgr_id', $board) !== "4" ){
 
-			if(!strpos(base_url(),'devadm.denguru.kr') !== false) {
+			if(strpos(base_url(),'devadm.denguru.kr') !== false) {
 				$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
 				$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
 				$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
