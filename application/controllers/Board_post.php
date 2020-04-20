@@ -1484,7 +1484,11 @@ class Board_post extends CB_Controller
 			
 			foreach($result as $value){
 				
-				$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] = element('cnt',$value);
+				 
+				if(empty($board['category_cnt'][element(0,explode('.',element('post_category',$value)))]))
+					$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] = element('cnt',$value);
+				else 
+					$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] += element('cnt',$value);
 				if(empty($board['category_cnt']['total']))
 					$board['category_cnt']['total'] = element('cnt',$value);
 				else 
