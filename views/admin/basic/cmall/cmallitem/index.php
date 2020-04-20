@@ -48,7 +48,7 @@
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
 						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><?php echo html_escape(element('cit_key', $result)); ?></a></td>
+							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><span class="glyphicon glyphicon-new-window"></span> <?php echo html_escape(element('cit_key', $result)); ?></a></td>
 							<td style="width:130px;">
 								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
 								<?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>

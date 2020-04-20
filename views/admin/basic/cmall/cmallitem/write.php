@@ -160,8 +160,9 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">내부상품페이지주소</label>
 					<div class="col-sm-10 form-inline">
-						<?php echo cmall_item_url(); ?> <input type="text" class="form-control" name="cit_key" value="<?php echo set_value('cit_key', element('cit_key', element('data', $view))); ?>" /> 페이지주소를 입력해주세요
+						<?php echo cmall_item_url(); ?> <input type="text" class="form-control" name="cit_key" value="<?php echo set_value('cit_key', element('cit_key', element('data', $view))); ?>" /> 페이지주소를 입력해주세요 <a href="<?php echo cmall_item_url(element('cit_key', element('data', $view))); ?>" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>
 					</div>
+
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">실제상품페이지주소</label>
