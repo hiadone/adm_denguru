@@ -7,6 +7,7 @@ if (element('board_list', $view)) {
 		$config = array(
 			'skin' => 'bootstrap',
 			'brd_key' => element('brd_key', $board),
+			'brd_id' => element('brd_id', $board),
 			'limit' => 5,
 			'length' => 40,
 			'is_gallery' => '',
