@@ -521,7 +521,7 @@ class Board extends CI_Controller
 		$view = array();
 		$view['view'] = array();
 
-		$this->CI->load->model( array('Board_category_model','Board_group_category_model', 'Post_file_model','Post_link_model'));
+		$this->CI->load->model( array('Board_category_model','Board_group_category_model', 'Post_file_model','Post_link_model','Cmall_item_model'));
 
 		$skin = element('skin', $config);
 		$brd_id = element('brd_id', $config);
@@ -559,6 +559,15 @@ class Board extends CI_Controller
 		}
 		$view['view']['config'] = $config;
 		$view['view']['length'] = $length;
+
+		$view['view']['cmallitem_count'] = '';
+
+		$itemwhere = array(
+					'brd_id' => $brd_id,
+				);
+
+		$view['view']['cmallitem_count'] = $this->CI->Cmall_item_model->count_by($itemwhere);;
+
 		if ($brd_key) {
 			if (is_array($brd_key)) {
 				foreach ($brd_key as $v) {
@@ -650,6 +659,9 @@ class Board extends CI_Controller
 				$view['view']['latest'][$key]['title'] = $length ? cut_str(element('post_title', $value), $length) : element('post_title', $value);
 				$view['view']['latest'][$key]['display_datetime'] = display_datetime(element('post_datetime', $value), '');
 				$view['view']['latest'][$key]['category'] = '';
+
+				
+
 				if (element('post_category', $value)) {
 						$cboard = $this->CI->board->item_all(element('brd_id', $value));
 						

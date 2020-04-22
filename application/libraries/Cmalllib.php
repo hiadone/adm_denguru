@@ -108,7 +108,7 @@ class Cmalllib extends CI_Controller
 
 		if ($detail_array && is_array($detail_array)) {
 			foreach ($detail_array as $cde_id) {
-				$detail = $this->CI->Cmall_item_detail_model->get_one($cde_id, 'cit_id');
+				$detail = $this->CI->Cmall_item_model->get_one($cde_id, 'cit_id');
 				if ( ! element('cit_id', $detail) OR (int) element('cit_id', $detail) !== $cit_id) {
 					return;
 				}
@@ -157,7 +157,7 @@ class Cmalllib extends CI_Controller
 
 		if ($detail_array && is_array($detail_array)) {
 			foreach ($detail_array as $cde_id) {
-				$detail = $this->CI->Cmall_item_detail_model->get_one($cde_id, 'cit_id');
+				$detail = $this->CI->Cmall_item_model->get_one($cde_id, 'cit_id');
 				if ( ! element('cit_id', $detail) OR (int) element('cit_id', $detail) !== $cit_id) {
 					return;
 				}

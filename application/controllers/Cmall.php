@@ -289,6 +289,7 @@ class Cmall extends CB_Controller
 
 		$data['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $data));
 		$data['detail'] = $this->Cmall_item_detail_model->get_all_detail(element('cit_id', $data));
+		
 
 		$alertmessage = $this->member->is_member()
 			? '회원님은 상품 페이지를 볼 수 있는 권한이 없습니다'

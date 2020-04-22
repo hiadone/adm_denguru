@@ -22,5 +22,6 @@ $config['admin_page_menu']['page'] =
 			'faq'					=> array('FAQ 내용', '', 'hide'),
 			'banner'				=> array('배너관리', ''),
 			'bannerclick'			=> array('배너클릭로그', ''),
+			'other'					=> array('기타관리', ''),
 		),
 	);

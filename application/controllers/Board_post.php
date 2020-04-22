@@ -1712,6 +1712,14 @@ class Board_post extends CB_Controller
 					$result['list'][$key]['pln_status'][$s] = $this->Post_link_model
 						->count_by($linkwhere);
 				}
+
+				$result['list'][$key]['cmallitem_count'] = '';
+
+				$itemwhere = array(
+							'post_id' => element('post_id', $val),
+						);
+
+				$result['list'][$key]['cmallitem_count'] = $this->Cmall_item_model->count_by($itemwhere);
 				
 			}
 		}
