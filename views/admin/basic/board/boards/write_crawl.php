@@ -55,6 +55,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">사이트 코멘트</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_comment" value="<?php echo set_value('brd_comment', element('brd_comment', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">사이트 주문정보 URL</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_order_url" value="<?php echo set_value('brd_order_url', element('brd_order_url', element('data', $view))); ?>" />

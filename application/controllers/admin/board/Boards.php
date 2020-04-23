@@ -658,6 +658,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
+				'field' => 'brd_comment',
+				'label' => '사이트 코멘트',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'brd_order_url',
 				'label' => '사이트주문정보URL',
 				'rules' => 'trim',
@@ -706,6 +711,7 @@ class Boards extends CB_Controller
 				'brd_id' => $pid,
 				'brd_url' => $this->input->post('brd_url', null, ''),
 				'brd_goods_key' => $this->input->post('brd_goods_key', null, ''),
+				'brd_comment' => $this->input->post('brd_comment', null, ''),
 				'brd_order_url' => $this->input->post('brd_order_url', null, ''),
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),
 				'brd_content' => $this->input->post('brd_content', null, ''),

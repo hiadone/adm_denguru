@@ -231,7 +231,7 @@ class Banner extends CB_Controller
 			array(
 				'field' => 'ban_url',
 				'label' => '이미지 URL',
-				'rules' => 'trim|valid_url',
+				'rules' => 'trim',
 			),
 			array(
 				'field' => 'ban_target',
