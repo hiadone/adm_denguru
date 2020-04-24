@@ -2074,6 +2074,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
     public function crawling_tag_update($post_id=0)
     {
 
+
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
@@ -2139,7 +2140,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $postwhere = array(
             'post_id' => $post_id,
-            // 'cit_id' => 9347,
+            // 'cit_id' => 67464,
         );
         
 
@@ -2151,14 +2152,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
         require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
         $a=0;
         foreach ($crawl as  $value) {
-
-
-            $where = array(
-                    'cit_id' => element('cit_id',$value),
-                );
-            $crawl_tag_count = $this->Crawl_tag_model->count_by($where);            
-            if($crawl_tag_count) continue;
             $tag_ = array();
+            $row_tag = array();
             echo 'cit_post_url : '.element('cit_post_url', $value)."<br>";
             $result = $this->extract_html(element('cit_post_url', $value), $proxy, $proxy_userpwd);
             
@@ -2283,9 +2278,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                         
                         if($imageName && filesize($imageName) < 5020868) {
-                            $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
+                            $row_tag['detect_tag'] = $this->detect_tag(element('cit_id',$value),$imageName);
                         } elseif($imageName && filesize($imageName) > 5020868) {
-                            $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
+                            $row_tag['detect_tag'] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
                         }
 
                          @unlink($imageName);
@@ -2293,21 +2288,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     }
                 }
 
-// echo "<br>cit_info";
-// print_r($cit_info);
-// echo "<br>cit_text";
-// print_r($cit_text);
-// echo "<br>cit_img";
-// print_r($cit_img);
+
 // continue;
 
-                foreach($cit_text as $tkey => $tvalue){
-                    if(element('text',$tvalue))
-                        $tag_[] = $this->detect_tag2(element('text',$tvalue));
-                }
+                // foreach($cit_text as $tkey => $tvalue){
+                //     if(element('text',$tvalue))
+                //         $row_tag['cit_text'][] = element('text',$tvalue);
+                // }
 
-                   
-                $tag_[] = $this->detect_tag3(element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value));
+                $row_tag['cit_text'] = $cit_text ? implode("\n",$cit_text) : '';
+                $row_tag['cit_name'] = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
+                $row_tag['cit_summary'] = element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value);
                 $a++;
            
                 // if($a > 10 ) exit;
@@ -2317,13 +2308,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
 
             $translate_text = array();
+
+            
+            $tag_ = $this->getnaturallanguage($row_tag);
+
             foreach($tag_ as $word){
-                foreach($word as $val_){                            
+                   
                     
-                    if(!in_array($val_,$translate_text))
-                        array_push($translate_text,$val_);       
+                    if(!in_array($word,$translate_text))
+                        array_push($translate_text,$word);       
                      
-                }
+              
             }
 
             if(count($translate_text)){
@@ -2334,10 +2329,27 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 //     'cit_id' => element('cit_id',$value),
                 // );
                 // $this->Crawl_tag_model->delete_where($deletewhere);            
+                
+                
+
+                $crawlwhere = array(
+                    'cit_id' => element('cit_id', $value),
+                );
+                $crawl_tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+                if ($crawl_tag && is_array($crawl_tag)) {
+                    $tag_array=array();
+                    foreach ($crawl_tag as $tvalue) {
+                        if (element('cta_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('cta_tag', $tvalue)));
+                        }
+                    }
+                }
+
                 if ($translate_text && is_array($translate_text)) {
                     foreach ($translate_text as  $text) {
                         // $value = trim($value);
-                        if ($text) {
+                        
+                        if ($text && !in_array($text,$tag_array)) {
                             $tagdata = array(
                                 'post_id' => element('post_id', $value),
                                 'cit_id' => element('cit_id', $value),
@@ -2370,6 +2382,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
 
 
+    
     }
 
 
@@ -2441,7 +2454,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $postwhere = array(
             'post_id' => $post_id,
-            // 'cit_id' => 9347,
+            // 'cit_id' => 67464,
         );
         
 
@@ -2454,6 +2467,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $a=0;
         foreach ($crawl as  $value) {
             $tag_ = array();
+            $row_tag = array();
             echo 'cit_post_url : '.element('cit_post_url', $value)."<br>";
             $result = $this->extract_html(element('cit_post_url', $value), $proxy, $proxy_userpwd);
             
@@ -2578,9 +2592,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                         
                         if($imageName && filesize($imageName) < 5020868) {
-                            $tag_[] = $this->detect_tag(element('cit_id',$value),$imageName);
+                            $row_tag['detect_tag'] = $this->detect_tag(element('cit_id',$value),$imageName);
                         } elseif($imageName && filesize($imageName) > 5020868) {
-                            $tag_[] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
+                            $row_tag['detect_tag'] = $this->detect_tag(element('cit_id',$value),thumb_url('cmallitem',$imageName));
                         }
 
                          @unlink($imageName);
@@ -2588,21 +2602,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     }
                 }
 
-// echo "<br>cit_info";
-// print_r($cit_info);
-// echo "<br>cit_text";
-// print_r($cit_text);
-// echo "<br>cit_img";
-// print_r($cit_img);
+
 // continue;
 
-                foreach($cit_text as $tkey => $tvalue){
-                    if(element('text',$tvalue))
-                        $tag_[] = $this->detect_tag2(element('text',$tvalue));
-                }
+                // foreach($cit_text as $tkey => $tvalue){
+                //     if(element('text',$tvalue))
+                //         $row_tag['cit_text'][] = element('text',$tvalue);
+                // }
 
-                   
-                $tag_[] = $this->detect_tag3(element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value));
+                $row_tag['cit_text'] = $cit_text ? implode("\n",$cit_text) : '';
+                $row_tag['cit_name'] = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
+                $row_tag['cit_summary'] = element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value);
                 $a++;
            
                 // if($a > 10 ) exit;
@@ -2612,13 +2622,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
 
             $translate_text = array();
+
+            
+            $tag_ = $this->getnaturallanguage($row_tag);
+
             foreach($tag_ as $word){
-                foreach($word as $val_){                            
+                   
                     
-                    if(!in_array($val_,$translate_text))
-                        array_push($translate_text,$val_);       
+                    if(!in_array($word,$translate_text))
+                        array_push($translate_text,$word);       
                      
-                }
+              
             }
 
             if(count($translate_text)){
@@ -2798,52 +2812,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
     }   
 
-    function detect_tag2($crawl_text='',$translate=0)
-    {   
-// return;
-        $translate_text=array();
-
-
-        
-
-        
-            
-             
-            
-        
-        $naturalentity =array();
-        $naturalentity_word = '';
-        
-        $language = $this->naturallanguage->analyzeEntities($crawl_text);
-
-        foreach ($language->entities() as $entity) {
-             $naturalentity[$entity['name']] = $entity['name'];
-        }
-        
-        // foreach ($naturalentity as $val) {
-
-            
-
-        //     $naturalentity_word .= $val;
-        // }
-
-        
-            
-            
-        foreach($this->tag_word as $word){
-            foreach ($naturalentity as $val) {
-                // if(strpos(strtolower($val),strtolower(str_replace(" ","",$word))) !== false ){
-                if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                    if(!in_array(element('tgw_value',$word),$translate_text))
-                        array_push($translate_text,element('tgw_value',$word));       
-                } 
-            }
-        }
-
-        
-        
-        return $translate_text;
-    }
+    
 
 
     function detect_tag($cit_id=0,$path='',$crawl_title='',$translate=0)
@@ -2872,7 +2841,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $translate_text=array();
         $convert_text=array();
         $all_category=array();
-
+        $row_language=array();
         // $all_category = $this->Cmall_category_model->get_all_category();
 
         $target = 'ko';
@@ -2888,13 +2857,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                 if(strlen($text->getDescription()) < 20) continue;
                 
-                $language = $this->naturallanguage->analyzeEntities($text->getDescription());
+                $row_language[] = $text->getDescription();
                 
 
-                foreach ($language->entities() as $entity) {
-                     $naturalentity[$entity['name']] = $entity['name'];
+                // foreach ($language->entities() as $entity) {
+                //      $naturalentity[$entity['name']] = $entity['name'];
 
-                }
+                // }
                 
                 // foreach ($naturalentity as $val) {
 
@@ -2903,27 +2872,27 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 //     $naturalentity_word .= $val;
                 // }
 
-                if($translate){
-                    $translation = $this->translate->translate($text->getDescription(), [
-                        'target' => $target
-                    ]);
+                // if($translate){
+                //     $translation = $this->translate->translate($text->getDescription(), [
+                //         'target' => $target
+                //     ]);
                     
-                    array_push($translate_text,$translation['text']);
+                //     array_push($translate_text,$translation['text']);
                 
-                } else {
+                // } else {
                     
                     
-                    foreach($this->tag_word as $word){
-                        foreach ($naturalentity as $val) {
-                            // if(strpos(strtolower($val),strtolower(str_replace(" ","",$word))) !== false ){
-                            if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){                                
-                                if(!in_array(element('tgw_value',$word),$translate_text))
-                                    array_push($translate_text,element('tgw_value',$word));       
-                            } 
-                        }
-                    }
+                //     foreach($this->tag_word as $word){
+                //         foreach ($naturalentity as $val) {
+                //             // if(strpos(strtolower($val),strtolower(str_replace(" ","",$word))) !== false ){
+                //             if(strtolower(str_replace(" ","",$val)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){                                
+                //                 if(!in_array(element('tgw_value',$word),$translate_text))
+                //                     array_push($translate_text,element('tgw_value',$word));       
+                //             } 
+                //         }
+                //     }
                     
-                }       
+                // }       
 
                 
                
@@ -2939,14 +2908,34 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $this->imageAnnotator->close();
         
-        return $translate_text;
+        return implode("\n",$row_language);
 
 
 
         
-    }   
+        }   
 
-    function detect_tag3($cit_name='',$cit_summary ='')
+    // function getSubstring($str, $length)
+    // {
+    //     $str = trim($str);
+    //     if (strlen($str) <= $length)
+    //         return $str;
+    //     $strArr = preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
+    //     $cutStr = '';
+    //     $i=0;
+    //     foreach ($strArr as $s) {
+    //         $len1 = strlen($s);
+    //         $len2 = strlen($cutStr) + $len1;
+    //         if ($len2 > $length)
+    //             break;
+    //         else
+    //             $cutStr .= $s;
+    //         $i++;
+    //     }
+    //     return $cutStr;
+    // }
+
+    function getnaturallanguage($row_tag=array())
     {
 
 
@@ -2955,31 +2944,26 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         
         $translate_text=array();
-
-        $all_category=array();
-
-        // $all_category = $this->Cmall_category_model->get_all_category();
-        
-            
-             
             
             
         
         $naturalentity_ =array();
-        if($cit_name){
-            $language_ = explode(" ",$cit_name);
+        if($row_tag['cit_name']){
+            $language_ = explode(" ",$row_tag['cit_name']);
 
             foreach ($language_ as $entity) {
                  $naturalentity_[$entity] = $entity;
             }
         }
         
-        if($cit_summary){
-            $language_ = $this->naturallanguage->analyzeEntities($cit_summary);
+        if($row_tag){
+            $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag));
 
-            foreach ($language_->entities() as $entity) {
-                 $naturalentity_[$entity['name']] = $entity['name'];
-            }
+            
+        }
+
+        foreach ($language_->entities() as $entity) {
+            $naturalentity_[$entity['name']] = $entity['name'];
         }
 
         foreach($this->tag_word as $word){
