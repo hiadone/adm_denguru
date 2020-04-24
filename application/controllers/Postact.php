@@ -3880,6 +3880,27 @@ class Postact extends CB_Controller
         // exit(json_encode($result));
     }
 
+    public function vision_api_label($post_id=0)
+    {	
+    	if(empty($post_id)){
+            $result = array('success' => '실패');
+            alert('post_id 값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+    	$retval = 1;
+    	$cmd='';
+
+    	$cmd='/usr/bin/curl -k '.base_url('crawl/vision_api_label/'.$post_id).' --connect-timeout 6000 >  /tmp/vision_api_label'.$_SERVER['HTTP_HOST'].'.log';
+    	echo $cmd;
+    	@exec($cmd, $output, $retval);
+
+    	
+    	$result = array('success' => '실행되었습니다');
+        alert('실행되었습니다');
+        // exit(json_encode($result));
+    }
+
     function crawling_item_update($crawl_key,$crawl_mode,$crawl_type)
     {	
 

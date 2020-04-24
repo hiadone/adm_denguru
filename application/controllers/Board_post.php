@@ -732,12 +732,14 @@ class Board_post extends CB_Controller
 				$view['view']['crawl_category_update'] = base_url('crawl/crawling_category_update/'.element('post_id', $post));
 				$view['view']['crawl_tag_update'] = base_url('crawl/crawling_tag_update/'.element('post_id', $post));
 				$view['view']['crawl_tag_overwrite'] = base_url('crawl/crawling_tag_overwrite/'.element('post_id', $post));
+				$view['view']['vision_api_label'] = base_url('crawl/vision_api_label/'.element('post_id', $post));
 			} else {
 				$view['view']['crawl_update'] = base_url('postact/crawling_update/'.element('post_id', $post));
 				$view['view']['crawl_overwrite'] = base_url('postact/crawling_overwrite/'.element('post_id', $post));
 				$view['view']['crawl_category_update'] = base_url('postact/crawling_category_update/'.element('post_id', $post));
 				$view['view']['crawl_tag_update'] = base_url('postact/crawling_tag_update/'.element('post_id', $post));
 				$view['view']['crawl_tag_overwrite'] = base_url('postact/crawling_tag_overwrite/'.element('post_id', $post));
+				$view['view']['vision_api_label'] = base_url('postact/vision_api_label/'.element('post_id', $post));
 			}
 		}
 
@@ -1904,13 +1906,15 @@ class Board_post extends CB_Controller
 				$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
 				$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
 				$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
-				$return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_overwrite/'.element('brd_id', $board).'/board/tag_overwrite');
+				$return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
+				$return['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/vision_api_label');
 			} else {
 				$return['crawl_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/update');
 				$return['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
 				$return['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
 				$return['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
-				$return['crawl_tag_overwrite'] = base_url('postact/crawling_item_overwrite/'.element('brd_id', $board).'/board/tag_overwrite');
+				$return['crawl_tag_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
+				$return['vision_api_label'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/vision_api_label');
 			}
 
 			
