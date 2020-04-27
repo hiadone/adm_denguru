@@ -316,7 +316,7 @@ class Banner extends CB_Controller
 					$img = $this->upload->data();
 					$updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
 
-					$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+					// $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
 				} else {
 					$file_error = $this->upload->display_errors();
 				}
@@ -403,7 +403,7 @@ class Banner extends CB_Controller
 				// 기존 파일 삭제
 				@unlink(config_item('uploads_dir') . '/banner/' . element('ban_image', $getdata));
 
-				$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('ban_image', $getdata));
+				// $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('ban_image', $getdata));
 			}
 
 			/**
@@ -566,7 +566,7 @@ class Banner extends CB_Controller
 							// 기존 파일 삭제
 							@unlink(config_item('uploads_dir') . '/banner/' . element('ban_image', $getdata));
 
-							$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('ban_image', $getdata));
+							// $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('ban_image', $getdata));
 						}
 					}
 

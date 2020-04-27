@@ -18,7 +18,7 @@ class Group extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Board');
+	protected $models = array('Board','Cmall_item');
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -52,7 +52,7 @@ class Group extends CB_Controller
 		
 		$view = array();
 		$view['view'] = array();
-
+		$view['view']['cmallitem_count'] = 0;
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
@@ -73,6 +73,12 @@ class Group extends CB_Controller
 		if ($board_id && is_array($board_id)) {
 			foreach ($board_id as $key => $val) {
 				$board_list[] = $this->board->item_all(element('brd_id', $val));
+
+				$itemwhere = array(
+							'brd_id' => element('brd_id', $val),
+						);
+
+				$view['view']['cmallitem_count'] += $this->Cmall_item_model->count_by($itemwhere);;
 			}
 		}
 

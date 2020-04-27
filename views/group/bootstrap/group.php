@@ -1,8 +1,19 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 echo display_html_content(element('headercontent', element('group', $view)));
 
+
+?>
+<div class="board">
+	<h3><?php echo html_escape(element('bgr_name', element('group', $view))); ?>
+		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format(element('cmallitem_count',$view)); ?> 개</button>
+		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format(element('cmallitem_count',$view)); ?> 개</button>
+	</h3>
+</div>
+
+<?php
 $k = 0;
 $is_open = false;
 if (element('board_list', $view)) {
