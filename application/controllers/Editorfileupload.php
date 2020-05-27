@@ -29,6 +29,7 @@ class Editorfileupload extends CB_Controller
 	{
 		parent::__construct();
 		$this->load->library('upload');
+		$this->load->library('aws_s3');
 	}
 
 
@@ -92,6 +93,8 @@ class Editorfileupload extends CB_Controller
 				Events::trigger('doupload', $eventname);
 
 				$filedata = $this->upload->data();
+
+				$this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 				$fileupdate = array(
 					'mem_id' => $mem_id,
 					'eim_originname' => element('orig_name', $filedata),
@@ -145,6 +148,8 @@ class Editorfileupload extends CB_Controller
 
 				unlink($upload_path . $this->input->get('file'));
 				$this->Editor_image_model->delete_where($where);
+
+				$this->aws_s3->delete_file($upload_path . $this->input->get('file'));
 			}
 		}
 	}
@@ -199,6 +204,7 @@ class Editorfileupload extends CB_Controller
 				Events::trigger('doupload', $eventname);
 
 				$filedata = $this->upload->data();
+				$this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 				$fileupdate = array(
 					'mem_id' => $mem_id,
 					'eim_originname' => element('orig_name', $filedata),

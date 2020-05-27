@@ -57,7 +57,7 @@ class Imagelib extends CI_Controller
 		if (empty($url)) {
 			return;
 		}
-
+		$this->CI->load->library('aws_s3');
 		$ch = curl_init ($url);
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -107,6 +107,8 @@ class Imagelib extends CI_Controller
 			$fp = fopen($save_dir, 'w');
 			fwrite($fp, $rawdata);
 			fclose($fp);
+
+			$this->CI->aws_s3->upload_file($upload_path,$file_name,$upload_path);
 
 			if (file_exists($save_dir)) {
 				return $save_url;

@@ -286,6 +286,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						{
 							// 은행계좌를 배열로 만든후
 							$str = explode("\n", $this->cbconfig->item('payment_bank_info'));
+							$bank_account='';
 							$bank_account .= '<select name="cor_bank_info" id="cor_bank_info">'.PHP_EOL;
 							$bank_account .= '<option value="">선택하십시오</option>'.PHP_EOL;
 							for ($i=0; $i<count($str); $i++) {

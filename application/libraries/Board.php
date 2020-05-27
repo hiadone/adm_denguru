@@ -237,7 +237,7 @@ class Board extends CI_Controller
 			foreach ($postfiles as $postfile) {
 				@unlink(config_item('uploads_dir') . '/post/' . element('pfi_filename', $postfile));
 
-				// $deleted = $this->CI->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $postfile));
+				$deleted = $this->CI->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $postfile));
 
 				
 			}

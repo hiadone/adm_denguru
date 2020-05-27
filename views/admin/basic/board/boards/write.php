@@ -63,7 +63,7 @@ if (element('brd_id', element('data', $view))) {
 		echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
 		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
-		echo form_open(current_full_url(), $attributes);
+		echo form_open_multipart(current_full_url(), $attributes);
 		?>
 			<input type="hidden" name="is_submit" value="1" />
 			<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
@@ -104,6 +104,24 @@ if (element('brd_id', element('data', $view))) {
 						<input type="text" class="form-control" id="brd_brand_text" name="brd_brand_text" value="<?php echo set_value('brd_brand_text', element('brd_brand_text', element('data', $view))); ?>" /> 
 					</div>
 				</div>
+				<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
+							<div class="form-group">
+								<label class="col-sm-2 control-label">스토어이미지 업로드</label>
+								<div class="col-sm-10">
+									<?php
+									if (element('brd_image', element('data', $view))) {
+									?>
+										<img src="<?php echo base_url(config_item('uploads_dir') . '/board/'.element('brd_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+										<label for="brd_image_del">
+											<input type="checkbox" name="brd_image_del" id="brd_image_del" value="1" <?php echo set_checkbox('brd_image_del', '1'); ?> /> 삭제
+										</label>
+									<?php
+									}
+									?>
+									<input type="file" name="brd_image" id="brd_image" />
+									<p class="help-block">gif, jpg, png 파일 업로드가 가능합니다</p>
+								</div>
+							</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">레이아웃</label>
 					<div class="col-sm-8 form-inline">

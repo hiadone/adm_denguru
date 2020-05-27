@@ -296,6 +296,40 @@ class Cmalllib extends CI_Controller
 		return $cwi_id;
 	}
 
+	public function addstore($mem_id = 0, $brd_id = 0)
+	{
+		$mem_id = (int) $mem_id;
+		if (empty($mem_id) OR $mem_id < 1) {
+			return;
+		}
+		$brd_id = (int) $brd_id;
+		if (empty($brd_id) OR $brd_id < 1) {
+			return;
+		}
+
+		$this->CI->load->model(array('Cmall_item_model', 'Cmall_storewishlist_model'));
+
+		$insertdata = array(
+			'mem_id' => $mem_id,
+			'brd_id' => $brd_id,
+			'csi_datetime' => cdate('Y-m-d H:i:s'),
+			'csi_ip' => $this->CI->input->ip_address(),
+		);
+		$csi_id = $this->CI->Cmall_storewishlist_model->replace($insertdata);
+
+		$where = array(
+			'brd_id' => $brd_id,
+		);
+		$count = $this->CI->Cmall_storewishlist_model->count_by($where);
+
+		$updatedata = array(
+			'brd_storewish_count' => $count,
+		);
+		$this->CI->Board_model->update($brd_id, $updatedata);
+
+		return $csi_id;
+	}
+
 
 	public function is_ordered_item($mem_id = 0, $cit_id = 0)
 	{

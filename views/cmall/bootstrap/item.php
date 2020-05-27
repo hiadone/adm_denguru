@@ -109,6 +109,51 @@
 					</div>
 				<?php
 					echo form_close();
+				} elseif (element('data', $view)) {
+
+					$attributes = array('class' => 'form-horizontal', 'name' => 'fitem', 'id' => 'fitem', 'onSubmit' => 'return fitem_submit(this)');
+					echo form_open(current_full_url(), $attributes);
+				?>
+					<input type="hidden" name="stype" id="stype" value="" />
+					<input type="hidden" name="cit_id" value="<?php echo element('cit_id', element('data', $view)); ?>" />
+					<div class="product-option">
+
+						<ul>
+						<?php
+						
+							$price = element('cit_price', element('data', $view)) ;
+						?>
+							<li>
+								<div class="opt-name">
+									<span class="span-chk"><input type="checkbox" name="chk_detail[]" value="<?php echo element('cit_id', element('data', $view)); ?>" /></span>
+									<?php echo html_escape(element('cit_name', element('data', $view))); ?>
+								</div>
+								<div>
+									<span class="span-qty">
+										<div class="btn-group" role="group" aria-label="...">
+											<button type="button" class="btn btn-default btn-xs btn-change-qty" data-change-type="minus">-</button>
+											<input type="text" name="detail_qty[<?php echo element('cit_id', element('data', $view)); ?>]" class="btn btn-default btn-xs detail_qty" value="1" />
+											<button type="button" class="btn btn-default btn-xs btn-change-qty" data-change-type="plus">+</button>
+										</div>
+									</span>
+									<span class="detail_price">
+										<input type="hidden" name="item_price[<?php echo element('cit_id', element('data', $view)); ?>]" value="<?php echo $price; ?>" />
+										<span><?php echo number_format($price); ?></span>원
+									</span>
+								</div>
+							</li>
+						
+						</ul>
+	
+						<div class="cart_total_price">총금액 : <span id="total_order_price">0</span>원</div>
+					</div>
+					<div class="item-btn">
+						<button type="submit" onClick="$('#stype').val('order');" class="btn btn-order">바로구매</button>
+						<button type="submit" onClick="$('#stype').val('cart');" class="btn btn-cart btn-border">장바구니</button>
+						<button type="submit" onClick="$('#stype').val('wish');" class="btn btn-wish btn-border">찜하기</button>
+					</div>
+				<?php
+					echo form_close();
 				}
 				?>
 

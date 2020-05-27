@@ -298,6 +298,11 @@ class Editorimage extends CB_Controller
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			foreach ($this->input->post('chk') as $val) {
 				if ($val) {
+
+					$file = $this->{$this->modelname}->get_one($eim_id);
+					$this->load->library('aws_s3');
+					@unlink(config_item('uploads_dir') . '/editor/' . element('eim_filename', $file)); // Read the file's contents
+					$this->aws_s3->delete_file(config_item('uploads_dir') . '/editor/' . element('eim_filename', $file));
 					$this->{$this->modelname}->delete($val);
 				}
 			}

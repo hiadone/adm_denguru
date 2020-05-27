@@ -605,7 +605,7 @@ class Board_write extends CB_Controller
 							$uploadfiledata[$i]['pfi_type'] = str_replace('.', '', element('file_ext', $filedata));
 							$uploadfiledata[$i]['is_image'] = element('is_image', $filedata) ? 1 : 0;
 
-							// $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
+							$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 							
 							// element('ObjectURL',$upload);
 						} else {
@@ -1860,7 +1860,7 @@ class Board_write extends CB_Controller
 							$uploadfiledata[$i]['pfi_type'] = str_replace('.', '', element('file_ext', $filedata));
 							$uploadfiledata[$i]['is_image'] = element('is_image', $filedata) ? element('is_image', $filedata) : 0;
 
-							// $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+							$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
 						} else {
 							$file_error = $this->upload->display_errors();
 							break;
@@ -1924,7 +1924,7 @@ class Board_write extends CB_Controller
 							}
 							@unlink(config_item('uploads_dir') . '/post/' . element('pfi_filename', $oldpostfile));
 
-							// $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $oldpostfile));
+							$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $oldpostfile));
 
 							$uploadfiledata2[$i] = array();
 							$uploadfiledata2[$i]['pfi_id'] = $i;
@@ -1939,7 +1939,7 @@ class Board_write extends CB_Controller
 							$uploadfiledata2[$i]['is_image'] = element('is_image', $filedata)
 								? element('is_image', $filedata) : 0;
 
-							// $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+							$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
 						} else {
 							$file_error = $this->upload->display_errors();
 							break;
@@ -2484,7 +2484,7 @@ class Board_write extends CB_Controller
 						}
 						@unlink(config_item('uploads_dir') . '/post/' . element('pfi_filename', $oldpostfile));
 
-						// $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $oldpostfile));
+						$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/post/' . element('pfi_filename', $oldpostfile));
 
 						$this->Post_file_model->delete($key);
 						$this->point->delete_point(

@@ -59,7 +59,7 @@ $this->managelayout->add_css(element('view_skin_url', $layout) . '/css/style.css
 					<div>
 						<span>다운로드 :</span>
 						<?php
-						if (element('cod_download_days', $detail)) {
+						if ( element('cod_download_days', $detail)) {
 							echo '구매후 <strong>' . element('cod_download_days', $detail) . '</strong>일간';
 							if( element('download_end_date', element('item', $result)) ){
 								echo '<br>(~' . element('download_end_date', element('item', $result)) . ' 까지)';

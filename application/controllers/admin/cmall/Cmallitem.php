@@ -71,13 +71,14 @@ class Cmallitem extends CB_Controller
 		$view['view']['sort'] = array(
 			'cit_id' => $param->sort('cit_id', 'asc'),
 			'cit_key' => $param->sort('cit_key', 'asc'),
-			'cit_order' => $param->sort('cit_order', 'asc'),
+			'cit_price_sale' => $param->sort('cit_price_sale', 'asc'),
 			'cit_name' => $param->sort('cit_name', 'asc'),
 			'cit_datetime' => $param->sort('cit_datetime', 'asc'),
 			'cit_updated_datetime' => $param->sort('cit_updated_datetime', 'asc'),
 			'cit_hit' => $param->sort('cit_hit', 'asc'),
 			'cit_sell_count' => $param->sort('cit_sell_count', 'asc'),
 			'cit_price' => $param->sort('cit_price', 'asc'),
+
 		);
 		$findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
 		$forder = $this->input->get('forder', null, 'desc');
@@ -106,7 +107,7 @@ class Cmallitem extends CB_Controller
 		 */
 		$this->{$this->modelname}->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
 		$this->{$this->modelname}->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-		$this->{$this->modelname}->allow_order_field = array('cit_id', 'cit_key', 'cit_order', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+		$this->{$this->modelname}->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
 		$result = $this->{$this->modelname}
 			->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
 
@@ -371,6 +372,11 @@ class Cmallitem extends CB_Controller
 			array(
 				'field' => 'cit_price',
 				'label' => '상품가격',
+				'rules' => 'trim|required|numeric|is_natural',
+			),
+			array(
+				'field' => 'cit_price_sale',
+				'label' => '할인가격',
 				'rules' => 'trim|required|numeric|is_natural',
 			),
 			array(
@@ -904,6 +910,7 @@ class Cmallitem extends CB_Controller
 			$cit_is_soldout = $this->input->post('cit_is_soldout') ? 1 : 0;
 			$content_type = $this->cbconfig->item('use_cmall_product_dhtml') ? 1 : 0;
 			$cit_price = $this->input->post('cit_price') ? $this->input->post('cit_price') : 0;
+			$cit_price_sale = $this->input->post('cit_price_sale') ? $this->input->post('cit_price_sale') : 0;
 			$cit_download_days = $this->input->post('cit_download_days') ? $this->input->post('cit_download_days') : 0;
 			$cta_tag = $this->input->post('cta_tag') ? $this->input->post('cta_tag') : '';
 
@@ -924,6 +931,7 @@ class Cmallitem extends CB_Controller
 				'cit_mobile_content' => $this->input->post('cit_mobile_content', null, ''),
 				'cit_content_html_type' => $content_type,
 				'cit_price' => $cit_price,
+				'cit_price_sale' => $cit_price_sale,
 				'cit_updated_datetime' => cdate('Y-m-d H:i:s'),
 				'cit_download_days' => $cit_download_days,
 				'post_id' => $this->input->post('post_id', null, ''),
@@ -1130,7 +1138,7 @@ class Cmallitem extends CB_Controller
 
 			$cit_name = $this->input->post('cit_name');
 			$cit_price = $this->input->post('cit_price');
-			$cit_order = $this->input->post('cit_order');
+			$cit_price_sale = $this->input->post('cit_price_sale');
 			$cit_status = $this->input->post('cit_status');
 
 			$item_layout = $this->input->post('item_layout');
@@ -1143,12 +1151,12 @@ class Cmallitem extends CB_Controller
 			foreach ($this->input->post('chk') as $val) {
 				if ($val) {
 					$cit_price_update = element($val, $cit_price) ? element($val, $cit_price) : 0;
-					$cit_order_update = element($val, $cit_order) ? element($val, $cit_order) : 0;
+					$cit_price_sale_update = element($val, $cit_price_sale) ? element($val, $cit_price_sale) : 0;
 					$cit_status_update = element($val, $cit_status) ? 1 : 0;
 					$updatedata = array(
 						'cit_name' => element($val, $cit_name),
 						'cit_price' => $cit_price_update,
-						'cit_order' => $cit_order_update,
+						'cit_price_sale' => $cit_price_sale_update,
 						'cit_status' => $cit_status_update,
 					);
 					$metadata = array(

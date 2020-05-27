@@ -183,6 +183,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 control-label">할인가격</label>
+					<div class="col-sm-10 form-inline">
+						<input type="number" class="form-control" name="cit_price_sale" value="<?php echo set_value('cit_price_sale', element('cit_price_sale', element('data', $view))); ?>" /> 원
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 control-label">브랜드</label>
 					<div class="col-sm-10 form-inline">
 						<input type="text" class="form-control" id="cit_brand_text" name="cit_brand_text" value="<?php echo set_value('cit_brand_text', element('cit_brand_text', element('data', $view))); ?>" /> 

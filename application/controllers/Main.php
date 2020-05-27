@@ -47,7 +47,7 @@ class Main extends CB_Controller
 		$eventname = 'event_main_index';
 		$this->load->event($eventname);
 
-
+		
 		
 		$view = array();
 		$view['view'] = array();

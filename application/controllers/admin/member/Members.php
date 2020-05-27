@@ -381,6 +381,7 @@ class Members extends CB_Controller
 
 		if ($form_validation) {
 			$this->load->library('upload');
+			$this->load->library('aws_s3');
 			if (isset($_FILES) && isset($_FILES['mem_photo']) && isset($_FILES['mem_photo']['name']) && $_FILES['mem_photo']['name']) {
 				$upload_path = config_item('uploads_dir') . '/member_photo/';
 				if (is_dir($upload_path) === false) {
@@ -423,6 +424,7 @@ class Members extends CB_Controller
 				if ($this->upload->do_upload('mem_photo')) {
 					$img = $this->upload->data();
 					$updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+					$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 				} else {
 					$file_error = $this->upload->display_errors();
 
@@ -473,6 +475,7 @@ class Members extends CB_Controller
 				if ($this->upload->do_upload('mem_icon')) {
 					$img = $this->upload->data();
 					$updateicon = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+					$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 				} else {
 					$file_error2 = $this->upload->display_errors();
 
@@ -669,7 +672,8 @@ class Members extends CB_Controller
 			}
 			if (element('mem_photo', $getdata) && ($this->input->post('mem_photo_del') OR $updatephoto)) {
 				// 기존 파일 삭제
-				@unlink(config_item('uploads_dir') . '/member_photo/' . element('mem_photo', $getdata));
+				@unlink(config_item('uploads_dir') . '/member_photo/' . element('mem_photo', $getdata));				
+				$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_photo/' . element('mem_photo', $getdata));
 			}
 			if ($this->input->post('mem_icon_del')) {
 				$updatedata['mem_icon'] = '';
@@ -679,6 +683,7 @@ class Members extends CB_Controller
 			if (element('mem_icon', $getdata) && ($this->input->post('mem_icon_del') OR $updateicon)) {
 				// 기존 파일 삭제
 				@unlink(config_item('uploads_dir') . '/member_icon/' . element('mem_icon', $getdata));
+				$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_icon/' . element('mem_icon', $getdata));
 			}
 
 			/**
@@ -1237,14 +1242,26 @@ class Members extends CB_Controller
 
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('before', $eventname);
-
+		$this->load->library('aws_s3');
 		/**
 		 * 체크한 게시물의 삭제를 실행합니다
 		 */
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			foreach ($this->input->post('chk') as $val) {
 				if ($val) {
-					$this->member->delete_member($val);
+					$getdata = $this->{$this->modelname}->get_one($val);
+					if($this->member->delete_member($val)){
+						if (element('mem_photo', $getdata)) {
+							
+							@unlink(config_item('uploads_dir') . '/member_photo/' . element('mem_photo', $getdata));				
+							$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_photo/' . element('mem_photo', $getdata));
+						}
+						if (element('mem_icon', $getdata)) {
+							
+							@unlink(config_item('uploads_dir') . '/member_icon/' . element('mem_icon', $getdata));
+							$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_icon/' . element('mem_icon', $getdata));
+						}
+					}
 				}
 			}
 		}

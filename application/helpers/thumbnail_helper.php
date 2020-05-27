@@ -50,6 +50,8 @@ if ( ! function_exists('thumb_url')) {
 if ( ! function_exists('thumbnail')) {
 	function thumbnail($type = '', $filename = '', $thumb_width = 0, $thumb_height = 0, $is_create = false, $is_crop = true, $crop_mode = 'center', $is_sharpen = false, $um_value = '80/0.5/3', $create_animate_thumb = false)
 	{
+		// $aws_s3 = get_instance()->load->library('aws_s3');;
+		
 		$source_file = config_item('uploads_dir') . '/';
 		if ($type) {
 			$source_file .= $type . '/';
@@ -131,7 +133,11 @@ if ( ! function_exists('thumbnail')) {
 
 		if (file_exists($thumb_file)) {
 			if ($is_create === false && $source_time < $thumb_time) {
+
+				// $upload = get_instance()->aws_s3->upload_file($target_path,'thumb-' . $thumb_filename . '_' . $thumb_width . 'x' . $thumb_height . '.' . $ext[$size[2]],$target_path);
 				return $thumb_file;
+
+
 			}
 		}
 
@@ -314,6 +320,7 @@ if ( ! function_exists('thumbnail')) {
 		}
 
 		chmod($thumb_file, 0644); // 추후 삭제를 위하여 파일모드 변경
+
 
 		imagedestroy($src);
 		imagedestroy($dst);

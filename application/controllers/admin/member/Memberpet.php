@@ -193,6 +193,7 @@ class Memberpet extends CB_Controller
         }
         $getdata['mem_userid'] = element('mem_userid',$this->Member_model->get_by_memid(element('mem_id',$getdata),'mem_userid'));
 
+        
         /**
          * Validation 라이브러리를 가져옵니다
          */
@@ -214,12 +215,12 @@ class Memberpet extends CB_Controller
             array(
                 'field' => 'pet_name',
                 'label' => '펫 이름',
-                'rules' => 'trim|min_length[2]|max_length[20]',
+                'rules' => 'trim|required|min_length[2]|max_length[20]',
             ),
             array(
                 'field' => 'pet_birthday',
                 'label' => '펫 생일',
-                'rules' => 'trim|exact_length[10]',
+                'rules' => 'trim|required|exact_length[10]',
             ),
             array(
                 'field' => 'pet_sex',
@@ -244,6 +245,7 @@ class Memberpet extends CB_Controller
 
         if ($form_validation) {
             $this->load->library('upload');
+            $this->load->library('aws_s3');
             if (isset($_FILES) && isset($_FILES['pet_photo']) && isset($_FILES['pet_photo']['name']) && $_FILES['pet_photo']['name']) {
                 $upload_path = config_item('uploads_dir') . '/member_photo/';
                 if (is_dir($upload_path) === false) {
@@ -286,6 +288,8 @@ class Memberpet extends CB_Controller
                 if ($this->upload->do_upload('pet_photo')) {
                     $img = $this->upload->data();
                     $updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+
+                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
                 } else {
                     $file_error = $this->upload->display_errors();
 
@@ -336,6 +340,7 @@ class Memberpet extends CB_Controller
                 if ($this->upload->do_upload('pet_backgroundimg')) {
                     $img = $this->upload->data();
                     $updateicon = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
                 } else {
                     $file_error2 = $this->upload->display_errors();
 
@@ -355,6 +360,8 @@ class Memberpet extends CB_Controller
             $view['view']['message'] = $file_error . $file_error2;
 
             $view['view']['data'] = $getdata;
+
+            
 
             /**
              * primary key 정보를 저장합니다
@@ -389,16 +396,26 @@ class Memberpet extends CB_Controller
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
             $mem_id = element('mem_id',$this->Member_model->get_by_userid($this->input->post('mem_userid'),'mem_id'));
             $pet_sex = $this->input->post('pet_sex') ? $this->input->post('pet_sex') : 0;
+            $pet_neutral = $this->input->post('pet_neutral') ? $this->input->post('pet_neutral') : 0;
+            $pet_weight = $this->input->post('pet_weight') ? $this->input->post('pet_weight') : 0;
+            $pet_attr = $this->input->post('pet_attr') ? implode(",",$this->input->post('pet_attr')) : '';
+            $pet_allergy = $this->input->post('pet_allergy') ? $this->input->post('pet_allergy') : 0;
 
             $updatedata = array(
                 'mem_id' => $mem_id,
                 'pet_name' => $this->input->post('pet_name', null, ''),
                 'pet_birthday' => $this->input->post('pet_birthday', null, ''),
                 'pet_sex' => $pet_sex,
+                'pet_neutral' => $pet_neutral,
+                'pet_weight' => $pet_weight,                
+                'pet_attr' => $pet_attr,
+                'pet_allergy' => $pet_allergy,
                 'pet_profile_content' => $this->input->post('pet_profile_content', null, ''),
                 
             );
 
+            
+            
             $metadata = array();
 
            
@@ -416,6 +433,7 @@ class Memberpet extends CB_Controller
             if (element('pet_photo', $getdata) && ($this->input->post('pet_photo_del') OR $updatephoto)) {
                 // 기존 파일 삭제
                 @unlink(config_item('uploads_dir') . '/member_photo/' . element('pet_photo', $getdata));
+                $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_photo/' . element('pet_photo', $getdata));
             }
             if ($this->input->post('pet_backgroundimg_del')) {
                 $updatedata['pet_backgroundimg'] = '';
@@ -425,6 +443,7 @@ class Memberpet extends CB_Controller
             if (element('pet_backgroundimg', $getdata) && ($this->input->post('pet_backgroundimg_del') OR $updateicon)) {
                 // 기존 파일 삭제
                 @unlink(config_item('uploads_dir') . '/member_icon/' . element('pet_backgroundimg', $getdata));
+                $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/member_icon/' . element('pet_backgroundimg', $getdata));
             }
 
             /**
@@ -451,6 +470,11 @@ class Memberpet extends CB_Controller
                     'message',
                     '정상적으로 입력되었습니다'
                 );
+            }
+
+            if($pet_id && $this->input->post('pet_main', null, '')){
+
+                $this->{$this->modelname}->update($pet_id,array('pet_main' => 1));
             }
 
             // 이벤트가 존재하면 실행합니다

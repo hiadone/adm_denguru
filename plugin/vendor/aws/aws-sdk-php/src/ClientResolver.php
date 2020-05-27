@@ -13,6 +13,8 @@ use Aws\Endpoint\PartitionEndpointProvider;
 use Aws\EndpointDiscovery\ConfigurationInterface;
 use Aws\EndpointDiscovery\ConfigurationProvider;
 use Aws\EndpointDiscovery\EndpointDiscoveryMiddleware;
+use Aws\Retry\ConfigurationInterface as RetryConfigInterface;
+use Aws\Retry\ConfigurationProvider as RetryConfigProvider;
 use Aws\Signature\SignatureProvider;
 use Aws\Endpoint\EndpointProvider;
 use Aws\Credentials\CredentialProvider;
@@ -139,7 +141,7 @@ class ClientResolver
             'valid'   => [CredentialsInterface::class, CacheInterface::class, 'array', 'bool', 'callable'],
             'doc'     => 'Specifies the credentials used to sign requests. Provide an Aws\Credentials\CredentialsInterface object, an associative array of "key", "secret", and an optional "token" key, `false` to use null credentials, or a callable credentials provider used to create credentials or return null. See Aws\\Credentials\\CredentialProvider for a list of built-in credentials providers. If no credentials are provided, the SDK will attempt to load them from the environment.',
             'fn'      => [__CLASS__, '_apply_credentials'],
-            'default' => [CredentialProvider::class, 'defaultProvider'],
+            'default' => [__CLASS__, '_default_credential_provider'],
         ],
         'endpoint_discovery' => [
             'type'     => 'value',
@@ -157,10 +159,10 @@ class ClientResolver
         ],
         'retries' => [
             'type'    => 'value',
-            'valid'   => ['int'],
-            'doc'     => 'Configures the maximum number of allowed retries for a client (pass 0 to disable retries). ',
+            'valid'   => ['int', RetryConfigInterface::class, CacheInterface::class, 'callable', 'array'],
+            'doc'     => "Configures the retry mode and maximum number of allowed retries for a client (pass 0 to disable retries). Provide an integer for 'legacy' mode with the specified number of retries. Otherwise provide an instance of Aws\Retry\ConfigurationInterface, an instance of  Aws\CacheInterface, a callable function, or an array with the following keys: mode: (string) Set to 'legacy', 'standard' (uses retry quota management), or 'adapative' (an experimental mode that adds client-side rate limiting to standard mode); max_attempts: (int) The maximum number of attempts for a given request. ",
             'fn'      => [__CLASS__, '_apply_retries'],
-            'default' => 3,
+            'default' => [RetryConfigProvider::class, 'defaultProvider']
         ],
         'validate' => [
             'type'    => 'value',
@@ -399,12 +401,28 @@ class ClientResolver
 
     public static function _apply_retries($value, array &$args, HandlerList $list)
     {
+        // A value of 0 for the config option disables retries
         if ($value) {
-            $decider = RetryMiddleware::createDefaultDecider($value);
-            $list->appendSign(
-                Middleware::retry($decider, null, $args['stats']['retries']),
-                'retry'
-            );
+            $config = RetryConfigProvider::unwrap($value);
+
+            if ($config->getMode() === 'legacy') {
+                // # of retries is 1 less than # of attempts
+                $decider = RetryMiddleware::createDefaultDecider(
+                    $config->getMaxAttempts() - 1
+                );
+                $list->appendSign(
+                    Middleware::retry($decider, null, $args['stats']['retries']),
+                    'retry'
+                );
+            } else {
+                $list->appendSign(
+                    RetryMiddlewareV2::wrap(
+                        $config,
+                        ['collect_stats' => $args['stats']['retries']]
+                    ),
+                    'retry'
+                );
+            }
         }
     }
 
@@ -441,6 +459,11 @@ class ClientResolver
                 . 'array that contains "key", "secret", and an optional "token" '
                 . 'key-value pairs, a credentials provider function, or false.');
         }
+    }
+
+    public static function _default_credential_provider(array $args)
+    {
+        return CredentialProvider::defaultProvider($args);
     }
 
     public static function _apply_csm($value, array &$args, HandlerList $list)
@@ -511,7 +534,8 @@ class ClientResolver
             $result = EndpointProvider::resolve($value, [
                 'service' => $endpointPrefix,
                 'region'  => $args['region'],
-                'scheme'  => $args['scheme']
+                'scheme'  => $args['scheme'],
+                'options' => self::getEndpointProviderOptions($args),
             ]);
 
             $args['endpoint'] = $result['endpoint'];
@@ -694,7 +718,8 @@ class ClientResolver
 
     public static function _default_endpoint_provider(array $args)
     {
-        return PartitionEndpointProvider::defaultProvider()
+        $options = self::getEndpointProviderOptions($args);
+        return PartitionEndpointProvider::defaultProvider($options)
             ->getPartition($args['region'], $args['service']);
     }
 
@@ -807,5 +832,23 @@ A "region" configuration value is required for the "{$service}" service
 (e.g., "us-west-2"). A list of available public regions and endpoints can be
 found at http://docs.aws.amazon.com/general/latest/gr/rande.html.
 EOT;
+    }
+
+    /**
+     * Extracts client options for the endpoint provider to its own array
+     *
+     * @param array $args
+     * @return array
+     */
+    private static function getEndpointProviderOptions(array $args)
+    {
+        $options = [];
+        $optionKeys = ['sts_regional_endpoints', 's3_us_east_1_regional_endpoint'];
+        foreach ($optionKeys as $key) {
+            if (isset($args[$key])) {
+                $options[$key] = $args[$key];
+            }
+        }
+        return $options;
     }
 }

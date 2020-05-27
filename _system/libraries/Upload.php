@@ -579,7 +579,9 @@ class CI_Upload {
 		 * in the "data" function.
 		 */
 		$this->set_image_properties($this->upload_path.$this->file_name);
+		// $this->_CI->load->library('aws_s3');
 
+		// $this->_CI->aws_s3->upload_file($this->upload_path,$this->file_name,$this->upload_path);
 		return TRUE;
 	}
 

@@ -1531,6 +1531,7 @@ if ( ! function_exists('check_cache_dir')) {
 
 		if ( ! is_dir($cache_path) OR ! is_really_writable($cache_path))
 		{
+			echo $cache_path;
 			if (mkdir($cache_path , 0755)) {
 				return true;
 			} else {
@@ -1616,4 +1617,20 @@ if ( ! function_exists('get_fcm_send_selectbox')) {
 
 		return $result;
 	}
+}
+
+/**
+ * 이벤트 이미지 가져오기
+ */
+if ( ! function_exists('event_image_url')) {
+    function event_image_url($img = '', $width = '', $height = '')
+    {
+        if (empty($img)) {
+            return false;
+        }
+        is_numeric($width) OR $width = '';
+        is_numeric($height) OR $height = '';
+
+        return thumb_url('event', $img, $width, $height);
+    }
 }

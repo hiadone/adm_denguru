@@ -244,7 +244,7 @@ class Member extends CI_Controller
 				'Member_level_history_model', 'Member_login_log_model', 'Member_meta_model',
 				'Member_register_model', 'Notification_model', 'Point_model',
 				'Scrap_model', 'Social_meta_model',
-				'Tempsave_model', 'Member_userid_model'
+				'Tempsave_model', 'Member_userid_model','Member_pet_model'
 			)
 		);
 
@@ -359,18 +359,20 @@ class Member extends CI_Controller
 				'Member_pet_model',
 			)
 		);
-
+		$this->CI->load->library('aws_s3');
 		$getdata = $this->CI->Member_pet_model->get_one($pet_id);
 		print_r($getdata);
 
 		if (element('pet_photo', $getdata)) {
 			// 기존 파일 삭제
 			@unlink(config_item('uploads_dir') . '/member_photo/' . element('pet_photo', $getdata));
+			$deleted = $this->CI->aws_s3->delete_file(config_item('s3_folder_name') . '/member_photo/' . element('pet_photo', $getdata));
 		}
 
 		if (element('pet_backgroundimg', $getdata)) {
 			// 기존 파일 삭제
 			@unlink(config_item('uploads_dir') . '/member_icon/' . element('pet_backgroundimg', $getdata));
+			$deleted = $this->CI->aws_s3->delete_file(config_item('s3_folder_name') . '/member_icon/' . element('pet_backgroundimg', $getdata));
 		}
 
 		$deletewhere = array(

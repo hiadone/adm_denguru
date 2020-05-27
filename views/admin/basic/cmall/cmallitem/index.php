@@ -33,7 +33,7 @@
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
 							<!-- <th>Vision API label</th> -->
                     		<th>태그</th>
-							<th><a href="<?php echo element('cit_order', element('sort', $view)); ?>">정렬순서</a></th>
+							<th><a href="<?php echo element('cit_price_sale', element('sort', $view)); ?>">할인가격</a></th>
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
 							<th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
 							<th><a href="<?php echo element('cit_hit', element('sort', $view)); ?>">조회수</a></th>
@@ -73,7 +73,7 @@
 		                       <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
 		                    </td>
 							
-							<td><input type="number" name="cit_order[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_order', $result)); ?>" /></td>
+							<td><input type="number" name="cit_price_sale[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_price_sale', $result)); ?>" /></td>
 							<td><input type="checkbox" name="cit_status[<?php echo element(element('primary_key', $view), $result); ?>]" value="1" <?php echo set_checkbox('cit_status', '1', (element('cit_status', $result) ? true : false)); ?> /></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>

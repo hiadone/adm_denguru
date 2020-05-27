@@ -1,9 +1,175 @@
-URI.OverrideAllowedSchemes
-TYPE: bool
-DEFAULT: true
---DESCRIPTION--
-If this is set to true (which it is by default), you can override
-%URI.AllowedSchemes by simply registering a HTMLPurifier_URIScheme to the
-registry.  If false, you will also have to update that directive in order
-to add more schemes.
---# vim: et sw=4 sts=4
+$html_dom = $html->find('div.prd-list',0);
+
+                    if(!$html_dom){
+                        log_message('error', '$html_dom post_id:'.$post_id);
+                        $is_pln_error=true;
+                    }
+
+                    $i=0;
+     
+         
+
+                    if($html_dom->find('div.tb-center')){
+                        foreach($html->find('div.tb-center') as $gallery) {
+                            $iteminfo = array();
+
+                            $crawl_info[$i]['crawl_price'] = '';
+                            $crawl_info[$i]['crawl_title'] = '';
+                            $crawl_info[$i]['crawl_post_url'] = '';
+                            $crawl_info[$i]['crawl_goods_code'] = '';
+
+                            $itemimg = array();
+
+                            $crawl_info[$i]['img_src'] = '';
+
+
+                            
+                            if($gallery->find('div.thumb',0))
+                                if($gallery->find('div.thumb > a',0))
+                                $iteminfo['crawl_post_url'] = $gallery->find('div.thumb > a',0)->href;
+
+
+                            if(!empty($iteminfo['crawl_post_url'])) {
+                            
+                                $crawl_info[$i]['crawl_post_url'] = $iteminfo['crawl_post_url'];
+
+                                
+                                $crawl_post_url = parse_url($iteminfo['crawl_post_url']);
+                                parse_str($crawl_post_url['query'],$query_string);
+                                
+                                $iteminfo['crawl_goods_code'] = $query_string['branduid'];
+                                
+
+                                
+                                // if($gallery->find('a[aria-label="찜하기"]',0))
+                                //     if($gallery->find('a[aria-label="찜하기"]',0)->{'data-scrap-item-id'})
+                                //         $iteminfo['crawl_goods_code'] = $gallery->find('a[aria-label="찜하기"]',0)->{'data-scrap-item-id'};
+                                
+                            } else {
+                                log_message('error', '$crawl_post_url post_id:'.$post_id);
+                                $is_pln_error=true;
+                            }
+                            
+                            if(!empty($iteminfo['crawl_goods_code'])) {
+                                $crawl_info[$i]['crawl_goods_code'] = $iteminfo['crawl_goods_code'];
+                            } else {
+                                log_message('error', '$crawl_goods_code post_id:'.$post_id);
+                               $is_pln_error=true;
+                            }
+
+
+                          
+                            if($gallery->find('div.thumb',0))
+                                if($gallery->find('div.thumb > a',0))
+                                    if($gallery->find('div.thumb > a > img',0)->{'data-src'})
+                                        $itemimg['img_src'] = $gallery->find('div.thumb > a > img',0)->{'data-src'};
+                                    elseif($gallery->find('div.thumb > a > img',0)->src) 
+                                        $itemimg['img_src'] = $gallery->find('div.thumb > a > img',0)->src;
+
+
+                            if(!empty($itemimg['img_src'])) {
+                                $crawl_info[$i]['img_src'] = $itemimg['img_src'];
+                            } else {
+                                log_message('error', '$img_src post_id:'.$post_id);
+                                $is_pln_error=true;
+                            }
+
+
+
+                            if($gallery->find('ul.info',0))
+                                if($gallery->find('ul.info > li.dsc',0))                                    
+                                    $iteminfo['crawl_title'] = $gallery->find('ul.info > li.dsc',0)->innertext;
+
+                            
+                            
+
+
+                            // if($gallery->find('div.item-summary',0))                                
+                            //     if($gallery->find('div.item-summary > p',0))
+                            //         $iteminfo['crawl_sub_title'] = $gallery->find('div.item-summary > p',0)->plaintext;
+
+
+                            // if($gallery->find('span#span_product_tax_type_text',0))
+                            if($gallery->find('ul.info',0))
+                                if($gallery->find('ul.info > li.price',0))                                    
+                                    $iteminfo['crawl_price'] = $gallery->find('ul.info > li.price',0)->innertext;
+
+                            
+                            // if($gallery->find('div.item_icon_box',0))
+                            //  if($gallery->find('div.item_icon_box',0)->first_child()->first_child()->next_sibling()->next_sibling()->next_sibling())                            
+                            //    if($gallery->find('div.thumb-info',0)->first_child()->first_child()->next_sibling()->next_sibling()->next_sibling()->first_child()->src)
+                            // $iteminfo['crawl_is_soldout'] = $gallery->find('div.thumb-info',0)->first_child()->first_child()->next_sibling()->next_sibling()->next_sibling()->first_child()->src;
+                            //$iteminfo['crawl_sub_title'] = $gallery->find('span.displaynone',1)->next_sibling()->innertext;
+                            
+                            
+
+                            if($gallery->find('img[alt="품절"]',0))                           
+                                $iteminfo['crawl_is_soldout'] = 1;
+
+                            if($gallery->find('div[title="품절"]',0))
+                                $iteminfo['crawl_is_soldout'] = 1;
+
+                            if($gallery->find('div.sold_out',0))
+                                $iteminfo['crawl_is_soldout'] = 1;
+
+                            if($gallery->find('li.soldout',0))
+                                $iteminfo['crawl_is_soldout'] = 1;
+
+                
+
+                
+                            if(!empty($iteminfo['crawl_price'])) {
+                                $crawl_info[$i]['crawl_price'] = $iteminfo['crawl_price'];
+                            } else {
+                                
+
+                                if(!$iteminfo['crawl_is_soldout'])
+                                    $is_pln_error=true;
+                                
+                            }
+
+                            if(!empty($iteminfo['crawl_title'])) {
+
+                                $crawl_info[$i]['crawl_title'] = mb_convert_encoding($iteminfo['crawl_title'], "UTF-8", "EUC-KR");
+                            } else {
+                                log_message('error', '$crawl_title post_id:'.$post_id);
+                               $is_pln_error=true;
+                            }
+
+                            if(!empty($iteminfo['crawl_sub_title'])) {
+                                $crawl_info[$i]['crawl_sub_title'] = $iteminfo['crawl_sub_title'];
+                            } else {
+                                log_message('error', '$crawl_sub_title post_id:'.$post_id);
+                                // $is_pln_error=true;
+                            }
+
+
+                            
+                           
+                            
+                            
+
+                            if(!empty($iteminfo['crawl_is_soldout'])) {
+                                $crawl_info[$i]['crawl_is_soldout'] = 1;
+
+                                
+                            } else {
+                                log_message('error', '$crawl_is_soldout post_id:'.$post_id);
+                                // $is_pln_error=true;
+                            }
+
+                            
+                            
+                            
+                            
+                            
+                            
+
+                            $i++;
+                            
+                        }
+                        
+                    } else {
+                        log_message('error', '$html_dom post_id:'.$post_id);
+                        $is_pln_error=true;
+                    }

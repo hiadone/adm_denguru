@@ -103,4 +103,37 @@ class Board_model extends CB_Model
 		}
 		return $option;
 	}
+
+	public function get_crawl_list($where)
+	{
+		$this->db->select('*');
+		$this->db->from($this->_table);
+		$this->db->join('board_crawl', 'board.brd_id = board_crawl.brd_id', 'inner');
+
+		if ($where) {
+			$this->db->where($where);
+		}
+		
+
+		
+		$qry = $this->db->get();
+		$result['list'] = $qry->result_array();
+
+		$this->db->select('count(*) as rownum');
+		$this->db->from($this->_table);
+		$this->db->join('board_crawl', 'board.brd_id = board_crawl.brd_id', 'inner');
+		if ($where) {
+			$this->db->where($where);
+		}
+		
+		$qry = $this->db->get();
+		$rows = $qry->row_array();
+		$result['total_rows'] = $rows['rownum'];
+
+		return $result;
+	}
+
+	
 }
+
+

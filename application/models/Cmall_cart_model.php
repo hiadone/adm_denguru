@@ -72,13 +72,14 @@ class Cmall_cart_model extends CB_Model
 			return;
 		}
 
-		$this->db->select('cmall_item_detail.*, cmall_cart.cct_count, cct_datetime');
-		$this->db->join('cmall_item_detail', 'cmall_item_detail.cde_id = cmall_cart.cde_id', 'inner');
+		// $this->db->select('cmall_item_detail.*, cmall_cart.cct_count, cct_datetime');
+		// $this->db->join('cmall_item_detail', 'cmall_item_detail.cde_id = cmall_cart.cde_id', 'inner');
+		$this->db->select(' cmall_cart.cct_count, cct_datetime');
 		$this->db->where(array('cmall_cart.cit_id' => $cit_id));
 		$this->db->where(array('cmall_cart.mem_id' => $mem_id));
 		$this->db->where(array('cmall_cart.cct_cart' => 1));
-		$this->db->where(array('cmall_item_detail.cde_status' => 1));
-		$this->db->order_by('cmall_item_detail.cde_id', 'asc');
+		// $this->db->where(array('cmall_item_detail.cde_status' => 1));
+		$this->db->order_by('cmall_cart.cde_id', 'asc');
 		$qry = $this->db->get($this->_table);
 		$result = $qry->result_array();
 
@@ -135,12 +136,13 @@ class Cmall_cart_model extends CB_Model
 			return;
 		}
 
-		$this->db->select('cmall_item_detail.*, cmall_cart.cct_count, cct_datetime');
-		$this->db->join('cmall_item_detail', 'cmall_item_detail.cde_id = cmall_cart.cde_id', 'inner');
+		// $this->db->select('cmall_item_detail.*, cmall_cart.cct_count, cct_datetime');
+		// $this->db->join('cmall_item_detail', 'cmall_item_detail.cde_id = cmall_cart.cde_id', 'inner');
+		$this->db->select(' cmall_cart.cct_count, cct_datetime');
 		$this->db->where(array('cmall_cart.cit_id' => $cit_id));
 		$this->db->where(array('cmall_cart.mem_id' => $mem_id));
 		$this->db->where(array('cmall_cart.cct_order' => 1));
-		$this->db->order_by('cmall_item_detail.cde_id', 'asc');
+		$this->db->order_by('cmall_cart.cde_id', 'asc');
 		$qry = $this->db->get($this->_table);
 		$result = $qry->result_array();
 

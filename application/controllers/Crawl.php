@@ -1366,7 +1366,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
 
                             $where = array(
-                                'post_id' => $post_id,
+                                'brd_id' => element('brd_id', $board_crawl),
                                 'cit_goods_code' => element('crawl_goods_code', $ivalue),
                             );
                             
@@ -1580,15 +1580,14 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         eval(element('brd_content', $board_crawl));
                     
                     
-                    
-
+                
 
                     foreach($crawl_info as $ikey => $ivalue){
 
 
                         
                         $where = array(
-                            'post_id' => $post_id,
+                            'brd_id' => element('brd_id', $board_crawl),
                             'cit_goods_code' => element('crawl_goods_code', $ivalue),
                         );
                         
@@ -3365,6 +3364,924 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $ext = end($x);
         return $ext;
+    }
+
+    public function get_storelist()
+    {
+
+        $this->load->model(array('Board_model'));
+
+        $where = array(
+            'brd_blind' => 0,
+        );
+        $result = $this->Board_model->get_crawl_list($where);
+        $data = array();
+                    $storelist = array(
+'https://smartstore.naver.com/heedong',
+'https://smartstore.naver.com/petworldstore',
+'https://smartstore.naver.com/marcostore',
+'https://smartstore.naver.com/thesoy',
+'https://smartstore.naver.com/0002shop',
+'https://smartstore.naver.com/my_fluffy',
+'https://smartstore.naver.com/wandookongmom',
+'https://smartstore.naver.com/petsoban',
+'https://smartstore.naver.com/rayvonne',
+'https://smartstore.naver.com/dajunghanmarket',
+'https://smartstore.naver.com/pop_and_puppy',
+'https://smartstore.naver.com/barbichon',
+'https://smartstore.naver.com/triplebees',
+'https://smartstore.naver.com/groomingdale',
+'https://smartstore.naver.com/bandalpet',
+'https://smartstore.naver.com/chocopet',
+'https://smartstore.naver.com/mungsday_party',
+'https://smartstore.naver.com/dd2planet',
+'https://smartstore.naver.com/i_love_to_eat',
+'https://smartstore.naver.com/market-ben',
+'https://smartstore.naver.com/lilalovesit',
+'https://smartstore.naver.com/matroospetshop',
+'https://smartstore.naver.com/smilepet',
+'https://smartstore.naver.com/peakrise',
+'https://smartstore.naver.com/maykit',
+'https://smartstore.naver.com/jbwoody',
+'https://smartstore.naver.com/cherrypet',
+'https://smartstore.naver.com/chunilcarpet/products/2769620857',
+'https://smartstore.naver.com/hyponic/category/fe53dade98044ff2b8f73b298baddddb?cp=1',
+'https://smartstore.naver.com/collie',
+'https://smartstore.naver.com/wellcare_pet',
+'https://smartstore.naver.com/uglobal',
+'https://smartstore.naver.com/oguogu_',
+'https://smartstore.naver.com/habit_',
+'https://smartstore.naver.com/ruruandmimi',
+'https://smartstore.naver.com/breezytail',
+'https://smartstore.naver.com/benebone',
+'https://smartstore.naver.com/robedog',
+'https://smartstore.naver.com/deilive/category/50000155?cp=1',
+'https://smartstore.naver.com/gucci0209',
+'https://smartstore.naver.com/greydog',
+'https://smartstore.naver.com/byglam/category/f4b6025ef5714a8d822ecadb8a231f82?cp=1',
+'https://smartstore.naver.com/carrepetian',
+'https://smartstore.naver.com/colettemungmung',
+'https://smartstore.naver.com/marafiki_official',
+'https://smartstore.naver.com/lattefood',
+'https://smartstore.naver.com/momsmind123',
+'https://smartstore.naver.com/alldayorganic',
+'https://smartstore.naver.com/mabelles',
+'https://smartstore.naver.com/starpets',
+'https://smartstore.naver.com/cozyrosyday',
+'https://smartstore.naver.com/riruri_jmom',
+'https://smartstore.naver.com/moodonpet',
+'https://smartstore.naver.com/ribbongbong',
+'https://smartstore.naver.com/petpang',
+'https://smartstore.naver.com/mymarie',
+'https://smartstore.naver.com/dellalola',
+'https://smartstore.naver.com/munglab',
+'https://smartstore.naver.com/mong_n_cheek',
+'https://smartstore.naver.com/mongtailor',
+'https://smartstore.naver.com/ruhena',
+'https://smartstore.naver.com/looloofit',
+'https://smartstore.naver.com/krono',
+'https://smartstore.naver.com/timbiriche',
+'https://smartstore.naver.com/woolly',
+'https://smartstore.naver.com/pepemall',
+'https://smartstore.naver.com/awesomepuppy',
+'https://smartstore.naver.com/littledeus',
+'https://smartstore.naver.com/kuma1231',
+'https://smartstore.naver.com/littlepaw',
+'https://smartstore.naver.com/dancingdogginuts',
+'https://smartstore.naver.com/zamboakr',
+'https://smartstore.naver.com/myvef',
+'https://smartstore.naver.com/gansikmeokdog',
+'https://smartstore.naver.com/dogcat2',
+'https://smartstore.naver.com/gaebabking',
+'https://smartstore.naver.com/dajunghagae',
+'https://smartstore.naver.com/doggune?NaPm=ct%3Dk6by3qcw%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3D6a92852d3dbc644eee9b649f248ad3ce5655eae5',
+'https://smartstore.naver.com/romancedog',
+'https://smartstore.naver.com/dm-',
+'https://smartstore.naver.com/brooklynpetco?NaPm=ct%3Dk65udf9o%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3Dc16c520c26ea2002ab7d19b059b645e5ab42753d',
+'https://smartstore.naver.com/blueneko',
+'https://smartstore.naver.com/slowstep3',
+'https://smartstore.naver.com/mbtq',
+'https://smartstore.naver.com/cocker_sister',
+'https://smartstore.naver.com/cocomn8642',
+'https://smartstore.naver.com/titano',
+'https://smartstore.naver.com/purefriends',
+'https://smartstore.naver.com/fromb/category/7f79a8993de5493cb1fb881efd49e1d9?cp=1',
+'https://smartstore.naver.com/langdog',
+'https://smartstore.naver.com/petdodam0',
+'https://smartstore.naver.com/pet-story',
+'https://smartstore.naver.com/dogjeja',
+'https://smartstore.naver.com/aa4070809',
+'https://stellaandchewys.modoo.at/?link=au07evou',
+'https://smallbatch.modoo.at/?link=7gtln3pc',
+'https://noondog.modoo.at/?link=dm8uma4d',
+'https://dogtoc.modoo.at/?link=1maty8ji',
+'http://bonpuppy.com/',
+'https://shopping.naver.com/pet/stores/100045370',
+'https://shopping.naver.com/pet/stores/100144583',
+'https://shopping.naver.com/pet/stores/100205785',
+'https://shopping.naver.com/pet/stores/100161745',
+'https://shopping.naver.com/pet/stores/100131988',
+'https://shopping.naver.com/pet/stores/100167771',
+'https://www.biteme.co.kr/main/index.php',
+'https://www.fitpetmall.com/',
+'http://www.gaenimshop.com/',
+'http://ssfw.kr',
+'http://www.diditable.com/',
+'http://ainsoap.com/',
+'http://www.gulliverdog.co.kr/main/index.php',
+'http://www.edenchien.com/main/index.php',
+'http://mytrianon.co.kr/shop/goods/goods_list.php?&category=003',
+'http://www.petesthe.co.kr/main/index.php',
+'http://bourdog.com/main/index.php',
+'http://www.naturalex.co.kr/shop/main/index.php',
+'http://vlab.kr/',
+'https://www.wangzzang.com/',
+'www.petgear.kr/',
+'https://duit.kr/',
+'https://eledog.co.kr/',
+'http://andblank.com/home',
+'https://yosemite.pet/',
+'http://baumeo.net/33',
+'https://www.varram.co.kr/all#',
+'https://hipaw.co.kr',
+'https://www.vuumpet.co.kr/',
+'https://plumstudio.co.kr/78',
+'http://vavox.co.kr/',
+'http://gettouch.co.kr/',
+'https://www.cheesesun.com/',
+'http://www.oraeorae.com/',
+'http://www.cocochien.kr/',
+'http://www.hydewolf.co.kr/index.html',
+'http://www.itsdog.com/index.html',
+'http://www.petnoriter.co.kr/',
+'http://www.ecofoam.co.kr/index.html',
+'http://www.puppygallery.co.kr/index.html',
+'http://www.amylovespet.co.kr/index.html',
+'http://www.dermadog.co.kr/index.html',
+'http://www.affetto.co.kr/index.html',
+'http://howlpot.com/',
+'https://www.smallstuff.kr/',
+'https://www.guilty-pleasure.co.kr/shop',
+'https://www.comercotte.com/',
+'https://melonicoco.com/',
+'https://www.ddoang.com/',
+'https://pawunion.kr/shop',
+'http://www.harryspet.com/',
+'https://www.wilddog.co.kr/shop',
+'https://bonjourtou-tou.com/',
+'https://pethod.co.kr/',
+'http://purplestore.co.kr/shop/',
+'http://www.dhuman.co.kr/view/main',
+'http://www.montraum.com/common/process/shopmain.asp?iniCategory=2&thisCategory=22',
+'http://www.petsandme.co.kr/main/main.php',
+'http://gubas.co.kr/',
+'http://www.bodeum.co.kr/html/shop/index.php',
+'http://www.queenpuppy.co.kr/index.html',
+'https://www.wekino.co.kr/products/category/6',
+'https://dog114.kr/main/index',
+'http://i-avec.com/',
+'https://www.wconcept.co.kr/Life/001014',
+'http://www.betterskorea.com/',
+'http://m.rudolphshop.kr/',
+'http://monchouchou.co.kr/',
+'https://pethroom.com/',
+'http://double-comma.com/product/list.html?cate_no=70',
+'http://honestmeal.kr/',
+'http://uglugl.com/',
+'http://peppymeal.kr/',
+'http://su-su.kr/index.html',
+'https://aboutmeal.co.kr/',
+'http://bowbowpet.com/',
+'http://www.yolohollo.com/',
+'http://beatto.kr/',
+'https://munikund.com/index.html',
+'http://terrylatte.com/',
+'http://its-sunnyoutside.com/',
+'http://littlecollin.kr/',
+'http://opaaap.com/',
+'http://www.hutsandbay.com/index.html',
+'https://tustus.co.kr/',
+'http://choandkang.com/',
+'http://dfang.co.kr/',
+'https://www.arrr.kr/index.html',
+'http://bridge.dog/#&panel1-1',
+'http://eyoushop.co.kr/',
+'http://www.coteacote.kr/',
+'http://dogshower.co.kr/',
+'http://lora.kr/',
+'http://buildapuppy.com/product/list.html?cate_no=59',
+'http://www.inherent.co.kr/',
+'http://pet-paradise.kr/index.html',
+);
+        $list_num = $result['total_rows'];
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                
+                $flag=true;
+                $b = parse_url(prep_url(rtrim(trim(element('brd_url',$val)), '/').'/'));
+                
+                
+                foreach ($storelist as $skey => $sval) {
+                    
+                    $a = parse_url(prep_url(rtrim(trim($sval), '/').'/'));
+                    if($b['host'] == $a['host']){
+                        $flag = false;
+                        if($b['path'] == $a['path']){
+                            
+                        }                        
+                        
+                    }
+
+                    if(!$flag) break;
+                    
+                }
+                if($flag) continue;
+                else {
+                    $data['list'][$key]['brd_id'] = element('brd_id',$val);
+                    $data['list'][$key]['brd_name'] = element('brd_name',$val);
+                    $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
+                    $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
+                }
+                
+                
+            }
+        }
+        
+
+
+
+        // if ($storelist) {
+        //     foreach ($storelist as $skey => $sval) {
+                
+        //         $flag=true;
+                
+        //         $a = parse_url(prep_url(rtrim(trim($sval), '/').'/'));
+                
+        //         foreach (element('list', $result) as $key => $val) {
+        //             $b = parse_url(prep_url(rtrim(trim(element('brd_url',$val)), '/').'/' ));    
+                    
+        //             if($b['host'] == $a['host']){                       
+                        
+                        
+        //                     if($b['path'] == $a['path']){
+        //                     // $flag = false;
+        //                     }                           
+        //                   $flag = false;
+        //             }
+
+        //             if(!$flag) break;
+                    
+        //         }
+        //         if(!$flag) continue;
+        //         else {
+        //             echo $sval."<br>";
+        //         }
+                
+                
+        //     }
+        // }
+        print_r2($data);
+        exit(json_encode($data));
+        
+    }
+
+    public function insert_itemlist($brd_id = 0,$crw_id = 0)
+    {
+        
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if(empty($crw_id)){
+            if (empty($this->input->post('crw_name'))) {
+                $result = array('resultcode'=>1002,'message' => 'crw_name 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+
+            if (empty($this->input->post('crw_price'))) {
+                $result = array('resultcode'=>1004,'message' => 'crw_price 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if (!isset($_FILES['crw_file_1'])) {
+                $result = array('resultcode'=>1005,'message' => 'crw_file_1 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if ($this->input->post('crw_is_soldout') == '') {
+                $result = array('resultcode'=>1006,'message' => 'crw_is_soldout 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if (empty($this->input->post('crw_goods_code'))) {
+                $result = array('resultcode'=>1007,'message' => 'crw_goods_code 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if (empty($this->input->post('crw_post_url'))) {
+                $result = array('resultcode'=>1008,'message' => 'crw_post_url 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if (empty($this->input->post('crw_price_sale'))) {
+                $result = array('resultcode'=>1009,'message' => 'crw_price_sale 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            if (empty($this->input->post('crw_category1'))) {
+                $result = array('resultcode'=>1010,'message' => 'crw_category1 가 없습니다.');
+                exit(json_encode($result));
+            }
+
+            $DB2 = $this->load->database('db2', TRUE);
+            
+            $DB2->where(array('brd_id' => $brd_id ,'crw_goods_code' => $this->input->post('crw_goods_code')));
+
+            
+
+            if ($DB2->count_all_results('crawl_item')) {
+                $result = array('resultcode'=>1007,'message' => '중복된 crw_goods_code 가 존재 합니다.');
+                exit(json_encode($result));
+            }
+
+
+            $this->load->library('upload');
+            
+            for ($k = 1; $k <= 10; $k++) {
+                if (isset($_FILES) && isset($_FILES['crw_file_' . $k]) && isset($_FILES['crw_file_' . $k]['name']) && $_FILES['crw_file_' . $k]['name']) {
+                    $upload_path = config_item('uploads_dir') . '/crawlitem/';
+                    if (is_dir($upload_path) === false) {
+                        mkdir($upload_path, 0707);
+                        $file = $upload_path . 'index.php';
+                        $f = @fopen($file, 'w');
+                        @fwrite($f, '');
+                        @fclose($f);
+                        @chmod($file, 0644);
+                    }
+                    $upload_path .= $brd_id . '/';
+                    if (is_dir($upload_path) === false) {
+                        mkdir($upload_path, 0707);
+                        $file = $upload_path . 'index.php';
+                        $f = @fopen($file, 'w');
+                        @fwrite($f, '');
+                        @fclose($f);
+                        @chmod($file, 0644);
+                    }
+                    $upload_path .= rawurlencode($this->input->post('crw_category1')) . '/';
+                    if (is_dir($upload_path) === false) {
+                        mkdir($upload_path, 0707);
+                        $file = $upload_path . 'index.php';
+                        $f = @fopen($file, 'w');
+                        @fwrite($f, '');
+                        @fclose($f);
+                        @chmod($file, 0644);
+                    }
+
+                    $uploadconfig = array();
+                    $uploadconfig['upload_path'] = $upload_path;
+                    $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+                    $uploadconfig['max_size'] = '10000';
+                    $uploadconfig['encrypt_name'] = true;
+
+                    $this->upload->initialize($uploadconfig);
+
+                    if ($this->upload->do_upload('crw_file_' . $k)) {
+                        $img = $this->upload->data();
+                        $crw_file[$k] = $brd_id . '/' . rawurlencode($this->input->post('crw_category1')) . '/' . element('file_name', $img);
+                    } else {
+                        $file_error = $this->upload->display_errors();
+                        return $file_error;
+                        // break;
+
+                    }
+                }
+            }
+
+           
+
+            $crw_name = $this->input->post('crw_name');
+            $crw_price = $this->input->post('crw_price');
+            $crw_post_url = $this->input->post('crw_post_url');
+            $crw_goods_code = $this->input->post('crw_goods_code');
+            $crw_is_soldout = $this->input->post('crw_is_soldout');        
+            $crw_price_sale = $this->input->post('crw_price_sale');
+
+            $DB2 = $this->load->database('db2', TRUE);
+
+            $updatedata = array(
+                
+                'crw_name' => $crw_name,
+                'crw_price' => $crw_price ,
+                'crw_datetime' => cdate('Y-m-d H:i:s'),
+                'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
+                'crw_post_url' => $crw_post_url,
+                'brd_id' => $brd_id,
+                'crw_goods_code' => $crw_goods_code,
+                'crw_is_soldout' => $crw_is_soldout,
+                'crw_price_sale' => $crw_price_sale ,
+                
+            );
+
+            for ($k = 1; $k <= 10; $k++) {
+                if (isset($crw_file[$k]) && $crw_file[$k]) {
+                    $updatedata['crw_file_' . $k] = $crw_file[$k];
+                }
+            }
+
+            for ($k = 1; $k <= 6; $k++) {
+                if (!empty($this->input->post('crw_brand' . $k))) {
+                    $updatedata['crw_brand' . $k] = $this->input->post('crw_brand' . $k);
+                }
+            }
+
+            for ($k = 1; $k <= 3; $k++) {
+                if (!empty($this->input->post('crw_category' . $k))) {
+                    $updatedata['crw_category' . $k] = rawurlencode($this->input->post('crw_category' . $k));
+                }
+            }
+
+            $DB2->insert('crawl_item', $updatedata);
+            $crw_id = $DB2->insert_id();
+            
+
+            if(empty($crw_id)){
+                $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                exit(json_encode($result));
+            }
+        } else {
+
+            $DB2 = $this->load->database('db2', TRUE);
+            $DB2->from('crawl_item');
+            if ($crw_id) {
+                $DB2->where('crw_id', $crw_id);
+            }
+            
+            
+            $DB2->limit(1,0);
+            
+            $result = $DB2->get();
+            $crawl_item = $result->row_array();
+
+            if (empty(element('crw_id',$crawl_item))) {
+                $result = array('resultcode'=>1000,'message' => '없는 crw_id 입니다..');
+                exit(json_encode($result));
+            }
+
+            
+
+            $updatedata = array(
+                'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
+            );
+
+            for ($k = 1; $k <= 6; $k++) {
+                if (!empty($this->input->post('crw_brand' . $k))) {
+                    $updatedata['crw_brand' . $k] = $this->input->post('crw_brand' . $k);
+                }
+            }
+
+            for ($k = 1; $k <= 3; $k++) {
+                if (!empty($this->input->post('crw_category' . $k))) {
+                    $updatedata['crw_category' . $k] = rawurlencode($this->input->post('crw_category' . $k));
+                }
+            }
+
+            $array = array(
+                'crw_name', 'crw_price', 'crw_post_url', 'crw_goods_code',
+                'crw_price_sale'
+            );
+            foreach ($array as $value) {
+                if(!empty($this->input->post($value)))
+                    $updatedata[$value] = $this->input->post($value);
+            }
+            if($this->input->post('crw_is_soldout') !=='')
+                $updatedata['crw_is_soldout'] = $this->input->post('crw_is_soldout');
+            
+
+            if ( ! empty($updatedata)) {
+                if ( ! empty($crw_id)) {
+                    $DB2->where('crw_id', $crw_id);
+                }
+                
+                $DB2->set($updatedata);
+                $crw_id = $DB2->update('crawl_item');
+
+                if(empty($crw_id)){
+                    $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                    exit(json_encode($result));
+                }
+            } else {
+                $result = array('resultcode'=>9000,'message' => 'updatedata 에 오류가 발생하였습니다.');
+                    exit(json_encode($result));
+            }
+
+        }
+        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        exit(json_encode($result));
+    }
+
+    public function insert_itemdetail($brd_id , $crw_id)
+    {
+
+        if (empty($crw_id)) {
+            $result = array('resultcode'=>1000,'message' => 'crw_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        $DB2 = $this->load->database('db2', TRUE);
+        $DB2->from('crawl_item');
+        if ($crw_id) {
+            $DB2->where('crw_id', $crw_id);
+        }
+        
+        
+        $DB2->limit(1,0);
+        
+        $result = $DB2->get();
+        $crawl_item = $result->row_array();
+
+        
+        if (empty(element('crw_id',$crawl_item))) {
+            $result = array('resultcode'=>1000,'message' => '없는 crw_id 입니다..');
+            exit(json_encode($result));
+        }
+
+       if (element('brd_id', $crawl_item) !== $brd_id) {
+            $result = array('resultcode'=>1001,'message' => '잘못된 brd_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        $this->load->library('upload');
+        
+        for ($k = 1; $k <= 10; $k++) {
+            if (isset($_FILES) && isset($_FILES['cdt_file_' . $k]) && isset($_FILES['cdt_file_' . $k]['name']) && $_FILES['cdt_file_' . $k]['name']) {
+                $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= $brd_id . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= element('crw_category1',$crawl_item) . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+
+                $uploadconfig = array();
+                $uploadconfig['upload_path'] = $upload_path;
+                $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+                // $uploadconfig['max_size'] = '10000';
+                $uploadconfig['encrypt_name'] = true;
+
+                $this->upload->initialize($uploadconfig);
+
+                if ($this->upload->do_upload('cdt_file_' . $k)) {
+                    $img = $this->upload->data();
+                    $cdt_file[$k] = $brd_id . '/' . element('crw_category1',$crawl_item) . '/' . element('file_name', $img);
+                    
+                } else {
+                    $file_error = $this->upload->display_errors();
+                    return $file_error;
+                    // break;
+
+                }
+            }
+        }
+
+       
+
+        $cdt_content = $this->input->post('cdt_content');
+
+        $DB2 = $this->load->database('db2', TRUE);
+
+        
+
+        $updatedata = array(
+            'crw_id' => $crw_id,
+            'cdt_content' => $cdt_content,
+            'brd_id' => $brd_id,
+            'cdt_datetime' => cdate('Y-m-d H:i:s'),
+            'cdt_updated_datetime' => cdate('Y-m-d H:i:s'),
+            
+        );
+
+        for ($k = 1; $k <= 10; $k++) {
+            if (isset($cdt_file[$k]) && $cdt_file[$k]) {
+                $updatedata['cdt_file_' . $k] = $cdt_file[$k];
+            }
+        }
+
+        for ($k = 1; $k <= 6; $k++) {
+            if (!empty($this->input->post('cdt_brand' . $k))) {
+                $updatedata['cdt_brand' . $k] = $this->input->post('cdt_brand' . $k);
+            }
+        }
+
+        $DB2->insert('crawl_detail', $updatedata);
+        $cdt_id = $DB2->insert_id();
+        
+
+        if(empty($cdt_id)){
+            $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+            exit(json_encode($result));
+        }
+        
+
+        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        exit(json_encode($result));
+    
+    }
+
+    public function get_itemlist($brd_id = 0, $crw_id = 0)
+    {
+        $DB2 = $this->load->database('db2', TRUE);
+        $DB2->select('crawl_item.*');
+        $DB2->from('crawl_item');
+
+        $where = array();
+        if($brd_id){
+            $where['brd_id'] = $brd_id;
+        }
+
+        if($crw_id){
+            $where['crw_id'] = $crw_id;
+        }
+        
+        $DB2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result = $qry->result_array();
+        
+        exit(json_encode($result));
+    }
+
+    public function get_itemdetail($brd_id, $cdt_id = 0)
+    {
+         $DB2 = $this->load->database('db2', TRUE);
+        $DB2->select('cb_crawl_detail.*');
+        $DB2->from('cb_crawl_detail');
+        
+        $where = array(
+            'brd_id' => $brd_id
+        );
+            
+        if($cdt_id){
+            $where['cdt_id'] = $cdt_id;
+        }
+        $DB2->where($where);
+        // $this->db2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result = $qry->result_array();
+        
+        exit(json_encode($result));
+    }
+
+    public function insert_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
+    {   
+
+        $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
+        
+        if (empty($mem_id)) {
+            $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if (empty($cor_key)) {
+            $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        
+        
+
+        
+
+        $member = $this->Member_model->get_by_memid($mem_id,'mem_id,mem_userid,mem_nickname,mem_email,mem_phone');
+
+
+        if ( ! element('mem_id', $member)) {
+            $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        $unique_id = $this->Unique_id_model->get_id($this->input->ip_address());
+
+        $cor_goods_code = array();
+        $total_price_sum = (int) $this->input->post('total_price_sum',null,0);
+        $cor_goods_code = $this->input->post('cor_goods_code');
+        $cor_content = $this->input->post('cor_content');
+        $od_status = 'order'; //주문상태
+        $cor_id = $unique_id;
+
+
+
+        $insertdata['cor_id'] = $cor_id;
+        $insertdata['mem_id'] = $mem_id;
+        $insertdata['mem_nickname'] = element('mem_nickname', $member,'');
+        $insertdata['mem_email'] = element('mem_email', $member,'');
+        $insertdata['mem_phone'] = element('mem_phone', $member,'');
+        $insertdata['cor_pay_type'] = $this->input->post('pay_type', null, '');
+        $insertdata['cor_content'] = $cor_content;
+        $insertdata['cor_ip'] = $this->input->ip_address();
+        $insertdata['cor_useragent'] = $this->agent->agent_string();
+        $insertdata['is_test'] = $this->cbconfig->item('use_pg_test');
+        $insertdata['status'] = $od_status;
+        $insertdata['cor_status'] = 0;
+        $insertdata['cor_datetime'] = date('Y-m-d H:i:s');
+        $insertdata['mem_realname'] = element('mem_nickname', $member,'');
+        $insertdata['cor_total_money'] = $total_price_sum;        
+        $insertdata['cor_key'] = $cor_key;
+        $insertdata['brd_id'] = $brd_id;
+        
+        
+        $res = $this->Cmall_order_model->insert($insertdata);
+        if ($res) {
+            if($cor_goods_code && is_array($cor_goods_code)){
+                foreach ($cor_goods_code as $key => $val) {
+                    $item = $this->Cmall_item_model
+                        ->get_one('', '',array('brd_id' => $brd_id,'cit_goods_code' => $val));
+                    $insertdetail = array(
+                        'cor_id' => $cor_id,
+                        'mem_id' => $mem_id,
+                        'brd_id' => $brd_id,
+                        'cit_id' => element('cit_id', $item,0),
+                        'cde_id' => element('cit_id', $item,0),
+                        'cod_download_days' => '',
+                        'cod_count' => 1,
+                        'cod_status' => $od_status,
+                    );
+                    $this->Cmall_order_detail_model->insert($insertdetail);
+                    
+                }
+            }
+        }
+
+        if(empty($res)){
+            $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+            exit(json_encode($result));
+        }
+        
+
+        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        exit(json_encode($result));
+        
+    }
+
+    public function update_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
+    {   
+
+        $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
+        
+        if (empty($mem_id)) {
+            $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        if (empty($cor_key)) {
+            $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_key' =>$cor_key));
+        if ( ! element('cor_id', $order)) {
+            $result = array('resultcode'=>1003,'message' => '없는 cor_key 입니다.');
+            exit(json_encode($result));
+        }
+
+        
+        if ($this->member->is_admin() === false
+            && element('mem_id', $order) !== $mem_id) {
+            $result = array('resultcode'=>1004,'message' => '잘못된 접근입니다.');
+            exit(json_encode($result));
+        }
+        
+
+        
+
+        $member = $this->Member_model->get_by_memid($mem_id,'mem_id,mem_userid,mem_nickname,mem_email,mem_phone');
+
+
+        if ( ! element('mem_id', $member)) {
+            $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        $updatedata = array();
+        $array = array(
+            'cor_carrier', 'cor_track', 'cor_memo'
+        );
+        foreach ($array as $value) {
+            if(!empty($this->input->post($value)))
+                $updatedata[$value] = $this->input->post($value);
+        }
+        
+        $updatedata['cor_status'] = 1;
+        $updatedata['cor_approve_datetime'] = date('Y-m-d H:i:s');
+        $updatedata['status'] = 'deposit';
+        
+        $mod_history = '';
+        $mod_history .= date('Y-m-d H:i:s', time()).' '.$mem_id.' 주문'.element('cor_memo',$updatedata,'').' 처리'."\n";
+        
+        if($mod_history){
+
+            $mod_history = $order['cor_order_history'].$mod_history;
+
+            $updatedata['cor_order_history'] = $mod_history;
+        }
+
+        $res = $this->Cmall_order_model->update(element('cor_id', $order), $updatedata);
+
+        if(empty($res)){
+            $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+            exit(json_encode($result));
+        }
+        
+
+        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        exit(json_encode($result));
+        
+    }
+
+    public function get_order($cor_id)
+    {   
+        
+        if (empty($cor_id)) {
+            $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        $this->load->model(array('Cmall_order_model'));
+        $order = $this->Cmall_order_model->get_one($cor_id);
+
+        if (element('cor_id',$order)) {
+            $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        exit(json_encode($order));
+        
+    }
+
+    public function get_orderdetail($cor_id)
+    {
+        if (empty($cor_id)) {
+            $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
+            exit(json_encode($result));
+        }
+
+        $this->load->model(array('Cmall_order_model','Cmall_order_detail_model'));
+
+        $order = $this->Cmall_order_model->get_one($cor_id);
+
+        if (element('cor_id',$order)) {
+            $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        $orderdetail = $this->Cmall_order_detail_model->get_by_key(element('cor_key',$order));
+
+        if (element('cor_id',$orderdetail)) {
+            $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
+            exit(json_encode($result));
+        }
+
+        exit(json_encode($orderdetail));
     }
     
 }

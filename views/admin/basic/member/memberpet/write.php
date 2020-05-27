@@ -20,7 +20,17 @@
 					<input type="text" class="form-control" name="pet_name" value="<?php echo set_value('pet_name', element('pet_name', element('data', $view))); ?>" />
 				</div>
 			</div>
-			
+		
+			<div class="form-group">
+				<label class="col-sm-2 control-label">성별</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+						<input type="radio" name="pet_sex" value="1" <?php echo set_radio('pet_sex', '1', (element('pet_sex', element('data', $view)) === '1' ? true : false)); ?> /> 남자
+						<input type="radio" name="pet_sex" value="2" <?php echo set_radio('pet_sex', '2', (element('pet_sex', element('data', $view)) === '2' ? true : false)); ?> /> 여자						
+					</div>
+					<input type="checkbox" name="pet_neutral" value="1" <?php echo set_checkbox('pet_neutral', '1', (element('pet_neutral', element('data', $view)) ? true : false)); ?> /> 중성
+				</div>
+			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">펫 생일</label>
 				<div class="col-sm-10">
@@ -28,16 +38,77 @@
 					<p class="help-block">YYYY-MM-DD</p>
 				</div>
 			</div>
-		
+
 			<div class="form-group">
-				<label class="col-sm-2 control-label">성별</label>
-				<div class="col-sm-10">
-					<div class="input-group">
-						<input type="radio" name="pet_sex" value="1" <?php echo set_radio('pet_sex', '1', (element('pet_sex', element('data', $view)) === '1' ? true : false)); ?> /> 남자
-						<input type="radio" name="pet_sex" value="2" <?php echo set_radio('pet_sex', '2', (element('pet_sex', element('data', $view)) === '2' ? true : false)); ?> /> 여자
+				<label class="col-sm-2 control-label">펫 몸무게</label>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" name="pet_weight" value="<?php echo set_value('pet_weight', element('pet_weight', element('data', $view))); ?>" /> 숫자만 입력하세요 
+				</div>
+			</div>
+
+			<div class="form-group">
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">펫 체형</label>
+					<div class="col-sm-10">
+						<div class="input-group">
+						
+						<input type="radio" name="pet_form" value="1" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) === '1' ? true : false)); ?> /> 날씬해요
+						<input type="radio" name="pet_form" value="2" <?php echo set_radio('pet_form', '2', (element('pet_form', element('data', $view)) === '2' ? true : false)); ?> /> 딱좋아요					
+						<input type="radio" name="pet_form" value="3" <?php echo set_radio('pet_form', '3', (element('pet_form', element('data', $view)) === '2' ? true : false)); ?> /> 통통해요						
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">펫 품종</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="pet_kind" value="<?php echo set_value('pet_kind', element('pet_kind', element('data', $view))); ?>" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label">펫 특징</label>
+				<div class="col-sm-10">
+					<div class="input-group">
+					<?php 
+					
+					foreach(config_item('pet_attr') as $key => $val){
+						echo '<div class="col-sm-2"><input type="checkbox" name="pet_attr[]" value="'.$key.'" '.set_checkbox('pet_attr', $key, (in_array($key,explode(',',element('pet_attr', element('data', $view)))) ? true : false)).' /> '.$val .'</div>';
+					}
+					?>
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">펫 알레르기</label>
+					<div class="col-sm-10">
+						<div class="input-group">
+						
+						<input type="radio" name="pet_allergy" value="1" <?php echo set_radio('pet_allergy', '1', (element('pet_allergy', element('data', $view)) === '1' ? true : false)); ?> /> 있어요
+						<input type="radio" name="pet_allergy" value="2" <?php echo set_radio('pet_allergy', '2', (element('pet_allergy', element('data', $view)) === '2' ? true : false)); ?> /> 없어요					
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+			<div class="form-group">
+					<label class="col-sm-2 control-label">메인 펫 </label>
+					<div class="col-sm-10">
+						<label for="pet_main" class="checkbox-inline">
+							<input type="checkbox" name="pet_main" id="pet_main" value="1" <?php echo set_checkbox('pet_main', '1', (element('pet_main', element('data', $view)) ? true : false)); ?> /> 메인
+						</label>
+						
+						<div class="help-inline" >체크하시면, 메인페이지에 메인 펫으로 출력됩니다</div>
+					</div>
+				</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">펫 사진</label>
 				<div class="col-sm-10">

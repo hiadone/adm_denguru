@@ -121,7 +121,7 @@ $autoload['helper'] = array('url', 'basic', 'thumbnail', 'cookie');
  *	기본적으로 autoload 되고 있는 config 파일은 지우시면 안됩니다
  *	그러나 필요한 경우 새로운 config 파일을 추가히시는 건 괜찮습니다
  */
-$autoload['config'] = array('cb_config', 'cb_version');
+$autoload['config'] = array('cb_config', 'cb_version', 'cb_denguru');
 
 /*
 | -------------------------------------------------------------------

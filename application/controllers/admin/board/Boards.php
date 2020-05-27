@@ -316,13 +316,66 @@ class Boards extends CB_Controller
 			);
 		}
 		$this->form_validation->set_rules($config);
+		$form_validation = $this->form_validation->run();
+		$file_error = '';
+		$updatephoto = '';
+		if ($form_validation) {
+			$this->load->library('upload');
+			$this->load->library('aws_s3');
+			if (isset($_FILES) && isset($_FILES['brd_image']) && isset($_FILES['brd_image']['name']) && $_FILES['brd_image']['name']) {
+				$upload_path = config_item('uploads_dir') . '/board/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
+				$upload_path .= cdate('Y') . '/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
+				$upload_path .= cdate('m') . '/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
 
+				$uploadconfig = array();
+				$uploadconfig['upload_path'] = $upload_path;
+				$uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+				$uploadconfig['max_size'] = '2000';
+				$uploadconfig['max_width'] = '1000';
+				$uploadconfig['max_height'] = '1000';
+				$uploadconfig['encrypt_name'] = true;
 
+				$this->upload->initialize($uploadconfig);
+
+				if ($this->upload->do_upload('brd_image')) {
+					$img = $this->upload->data();
+					$updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+
+					$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+				} else {
+					$file_error = $this->upload->display_errors();
+				}
+			}
+		}
 		/**
 		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
 		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
 		 */
-		if ($this->form_validation->run() === false) {
+		if ($form_validation === false OR $file_error !== '') {
 
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
@@ -364,7 +417,17 @@ class Boards extends CB_Controller
 				'brd_search' => $brd_search,
 				'brd_blind' => $brd_blind,
 			);
+			if ($this->input->post('brd_image_del')) {
+				$updatedata['brd_image'] = '';
+			} elseif ($updatephoto) {
+				$updatedata['brd_image'] = $updatephoto;
+			}
+			if (element('brd_image', $getdata) && ($this->input->post('brd_image_del') OR $updatephoto)) {
+				// 기존 파일 삭제
+				@unlink(config_item('uploads_dir') . '/board/' . element('brd_image', $getdata));
 
+				$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('brd_image', $getdata));
+			}
 			$array = array('board_layout', 'board_mobile_layout', 'board_sidebar',
 				'board_mobile_sidebar', 'board_skin', 'board_mobile_skin', 'header_content',
 				'footer_content', 'mobile_header_content', 'mobile_footer_content', 'board_use_captcha');
