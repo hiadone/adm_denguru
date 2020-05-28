@@ -3703,6 +3703,16 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 exit(json_encode($result));
             }
 
+            $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+            $str = $this->input->post('crw_category1');
+            
+            preg_match_all($pattern, $str, $match);
+            $crw_category1 = implode('', $match[0]);
+            
+
+
+
+
             $DB2 = $this->load->database('db2', TRUE);
             
             $DB2->where(array('brd_id' => $brd_id ,'crw_goods_code' => $this->input->post('crw_goods_code')));
@@ -3737,7 +3747,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         @fclose($f);
                         @chmod($file, 0644);
                     }
-                    $upload_path .= rawurlencode($this->input->post('crw_category1')) . '/';
+                    $upload_path .= $crw_category1 . '/';
                     if (is_dir($upload_path) === false) {
                         mkdir($upload_path, 0707);
                         $file = $upload_path . 'index.php';
@@ -3757,7 +3767,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                     if ($this->upload->do_upload('crw_file_' . $k)) {
                         $img = $this->upload->data();
-                        $crw_file[$k] = $brd_id . '/' . rawurlencode($this->input->post('crw_category1')) . '/' . element('file_name', $img);
+                        $crw_file[$k] = $brd_id . '/' . $crw_category1 . '/' . element('file_name', $img);
                     } else {
                         $file_error = $this->upload->display_errors();
                         return $file_error;
@@ -3806,7 +3816,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             for ($k = 1; $k <= 3; $k++) {
                 if (!empty($this->input->post('crw_category' . $k))) {
-                    $updatedata['crw_category' . $k] = rawurlencode($this->input->post('crw_category' . $k));
+                    $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                    $str = $this->input->post('crw_category' . $k);
+                    
+                    preg_match_all($pattern, $str, $match);
+                    $updatedata['crw_category' . $k] = implode('', $match[0]);
+                    
                 }
             }
 
@@ -3851,7 +3866,14 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             for ($k = 1; $k <= 3; $k++) {
                 if (!empty($this->input->post('crw_category' . $k))) {
-                    $updatedata['crw_category' . $k] = rawurlencode($this->input->post('crw_category' . $k));
+
+                    $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                    $str = $this->input->post('crw_category' . $k);
+                    
+                    preg_match_all($pattern, $str, $match);
+                    $updatedata['crw_category' . $k] = implode('', $match[0]);
+
+                    
                 }
             }
 
@@ -3886,6 +3908,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         }
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+
         exit(json_encode($result));
     }
 
