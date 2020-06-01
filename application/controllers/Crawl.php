@@ -4083,8 +4083,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
         // $this->db2->limit($limit);
         
         $qry = $DB2->get();
-        $result = $qry->result_array();
+        $res = $qry->result_array();
         
+        $result = array('brd_id'=>$brd_id,'item' => $res);
+
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
