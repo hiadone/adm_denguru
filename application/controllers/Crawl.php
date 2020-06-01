@@ -3368,7 +3368,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function get_storelist()
     {
-
+        $this->output->set_content_type('application/json');
         $this->load->model(array('Board_model'));
 
         $where = array(
@@ -3648,7 +3648,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
     public function insert_itemlist($brd_id = 0,$crw_id = 0)
     {
         
-
+        $this->output->set_content_type('application/json');
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -3917,7 +3917,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function insert_itemdetail($brd_id , $crw_id)
     {
-
+        $this->output->set_content_type('application/json');
         if (empty($crw_id)) {
             $result = array('resultcode'=>1000,'message' => 'crw_id 가 없습니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -4057,6 +4057,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function get_itemlist($brd_id = 0, $crw_id = 0)
     {   
+
+        $this->output->set_content_type('application/json');
         $board = $this->board->item_all($brd_id);
 
         if ( ! element('brd_id', $board)) {
@@ -4092,6 +4094,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function get_itemdetail($brd_id, $cdt_id = 0)
     {   
+        $this->output->set_content_type('application/json');
         $board = $this->board->item_all($brd_id);
 
         if ( ! element('brd_id', $board)) {
@@ -4122,7 +4125,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function insert_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
     {   
-
+        $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
         
 
@@ -4235,7 +4238,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function update_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
     {   
-
+        $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
         
         if (empty($mem_id)) {
@@ -4315,7 +4318,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function get_order($cor_id)
     {   
-        
+        $this->output->set_content_type('application/json');
         if (empty($cor_id)) {
             $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -4335,6 +4338,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
     public function get_orderdetail($cor_id)
     {
+        $this->output->set_content_type('application/json');
         if (empty($cor_id)) {
             $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -4363,7 +4367,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
     {
 
             
-
+        $this->output->set_content_type('application/json');
         // if (empty($brd_id)) {
         //     $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
         //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
