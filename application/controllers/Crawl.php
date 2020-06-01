@@ -3833,6 +3833,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
+
+            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.','crw_id' => $crw_id);
         } else {
 
             $DB2 = $this->load->database('db2', TRUE);
@@ -3906,9 +3908,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
+            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
         }
 
-	$result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+	
 	exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
