@@ -3907,9 +3907,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
 
         }
-        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
 
-        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+	$result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+	exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
     public function insert_itemdetail($brd_id , $crw_id)
