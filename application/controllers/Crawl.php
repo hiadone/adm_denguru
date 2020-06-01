@@ -4356,5 +4356,78 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         exit(json_encode($orderdetail,JSON_UNESCAPED_UNICODE));
     }
+
+    public function is_delete($crw_id)
+    {
+
+            
+
+        // if (empty($brd_id)) {
+        //     $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+        //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        // }
+
+        // $board = $this->board->item_all($brd_id);
+
+        // if ( ! element('brd_id', $board)) {
+        //     $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
+        //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        // }
+
+         $crw_id = (int) $crw_id;
+        if (empty($crw_id) OR $crw_id < 1) {
+            $result = array('resultcode'=>1000,'message' => '잘못된  crw_id 입니다..');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        $DB2 = $this->load->database('db2', TRUE);
+        $DB2->from('crawl_item');
+        if ($crw_id) {
+            $DB2->where('crw_id', $crw_id);
+        }
+        
+        
+        $DB2->limit(1,0);
+        
+        $result = $DB2->get();
+        $crawl_item = $result->row_array();
+
+        if (empty(element('crw_id',$crawl_item))) {
+            $result = array('resultcode'=>1000,'message' => '없는 crw_id 입니다..');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+            
+
+        $updatedata = array(
+            'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
+            'is_del' => 1,
+        );  
+            
+
+        if ( ! empty($updatedata)) {
+            if ( ! empty($crw_id)) {
+                $DB2->where('crw_id', $crw_id);
+            }
+            
+            $DB2->set($updatedata);
+            $crw_id = $DB2->update('crawl_item');
+
+            if(empty($crw_id)){
+                $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+        } else {
+            $result = array('resultcode'=>9000,'message' => 'updatedata 에 오류가 발생하였습니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        
+
+        
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        
+    }
     
 }
