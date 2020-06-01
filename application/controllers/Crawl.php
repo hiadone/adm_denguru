@@ -3641,7 +3641,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         //     }
         // }
         
-        exit(json_encode($data));
+        exit(json_encode($data,JSON_UNESCAPED_UNICODE));
         
     }
 
@@ -3651,56 +3651,56 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $board = $this->board->item_all($brd_id);
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if(empty($crw_id)){
             if (empty($this->input->post('crw_name'))) {
                 $result = array('resultcode'=>1002,'message' => 'crw_name 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
 
             if (empty($this->input->post('crw_price'))) {
                 $result = array('resultcode'=>1004,'message' => 'crw_price 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if (!isset($_FILES['crw_file_1'])) {
                 $result = array('resultcode'=>1005,'message' => 'crw_file_1 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if ($this->input->post('crw_is_soldout') == '') {
                 $result = array('resultcode'=>1006,'message' => 'crw_is_soldout 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if (empty($this->input->post('crw_goods_code'))) {
                 $result = array('resultcode'=>1007,'message' => 'crw_goods_code 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if (empty($this->input->post('crw_post_url'))) {
                 $result = array('resultcode'=>1008,'message' => 'crw_post_url 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if (empty($this->input->post('crw_price_sale'))) {
                 $result = array('resultcode'=>1009,'message' => 'crw_price_sale 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             if (empty($this->input->post('crw_category1'))) {
                 $result = array('resultcode'=>1010,'message' => 'crw_category1 가 없습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
@@ -3721,7 +3721,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             if ($DB2->count_all_results('crawl_item')) {
                 $result = array('resultcode'=>1007,'message' => '중복된 crw_goods_code 가 존재 합니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
 
@@ -3831,7 +3831,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             if(empty($crw_id)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
         } else {
 
@@ -3849,7 +3849,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             if (empty(element('crw_id',$crawl_item))) {
                 $result = array('resultcode'=>1000,'message' => '없는 crw_id 입니다..');
-                exit(json_encode($result));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             
@@ -3899,17 +3899,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
                 if(empty($crw_id)){
                     $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-                    exit(json_encode($result));
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
             } else {
                 $result = array('resultcode'=>9000,'message' => 'updatedata 에 오류가 발생하였습니다.');
-                    exit(json_encode($result));
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
         }
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
 
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
     public function insert_itemdetail($brd_id , $crw_id)
@@ -3917,19 +3917,19 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if (empty($crw_id)) {
             $result = array('resultcode'=>1000,'message' => 'crw_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $board = $this->board->item_all($brd_id);
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $DB2 = $this->load->database('db2', TRUE);
@@ -3947,12 +3947,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         if (empty(element('crw_id',$crawl_item))) {
             $result = array('resultcode'=>1000,'message' => '없는 crw_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
        if (element('brd_id', $crawl_item) !== $brd_id) {
             $result = array('resultcode'=>1001,'message' => '잘못된 brd_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $this->load->library('upload');
@@ -4043,12 +4043,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if(empty($cdt_id)){
             $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
 
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     
     }
 
@@ -4058,7 +4058,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $DB2 = $this->load->database('db2', TRUE);
@@ -4082,7 +4082,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $qry = $DB2->get();
         $result = $qry->result_array();
         
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
     public function get_itemdetail($brd_id, $cdt_id = 0)
@@ -4091,7 +4091,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
          $DB2 = $this->load->database('db2', TRUE);
@@ -4112,7 +4112,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $qry = $DB2->get();
         $result = $qry->result_array();
         
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
     public function insert_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
@@ -4125,22 +4125,22 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($mem_id)) {
             $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($cor_key)) {
             $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         
@@ -4153,14 +4153,14 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! element('mem_id', $member)) {
             $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
 
         $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_key' =>$cor_key));
         if (element('cor_id', $order)) {
             $result = array('resultcode'=>1003,'message' => '이미 존재하는 cor_key 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         
@@ -4219,12 +4219,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if(empty($res)){
             $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
 
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
     }
 
@@ -4235,30 +4235,30 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         if (empty($mem_id)) {
             $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($cor_key)) {
             $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_key' =>$cor_key));
         if ( ! element('cor_id', $order)) {
             $result = array('resultcode'=>1003,'message' => '없는 cor_key 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         
         if ($this->member->is_admin() === false
             && element('mem_id', $order) !== $mem_id) {
             $result = array('resultcode'=>1004,'message' => '잘못된 접근입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
 
@@ -4269,7 +4269,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! element('mem_id', $member)) {
             $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $updatedata = array();
@@ -4299,12 +4299,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if(empty($res)){
             $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
 
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-        exit(json_encode($result));
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
     }
 
@@ -4313,7 +4313,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         if (empty($cor_id)) {
             $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $this->load->model(array('Cmall_order_model'));
@@ -4321,10 +4321,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if (element('cor_id',$order)) {
             $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        exit(json_encode($order));
+        exit(json_encode($order,JSON_UNESCAPED_UNICODE));
         
     }
 
@@ -4332,7 +4332,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
     {
         if (empty($cor_id)) {
             $result = array('resultcode'=>1000,'message' => 'cor_id 가 없습니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $this->load->model(array('Cmall_order_model','Cmall_order_detail_model'));
@@ -4341,17 +4341,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if (element('cor_id',$order)) {
             $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         $orderdetail = $this->Cmall_order_detail_model->get_by_key(element('cor_key',$order));
 
         if (element('cor_id',$orderdetail)) {
             $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
-            exit(json_encode($result));
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        exit(json_encode($orderdetail));
+        exit(json_encode($orderdetail,JSON_UNESCAPED_UNICODE));
     }
     
 }
