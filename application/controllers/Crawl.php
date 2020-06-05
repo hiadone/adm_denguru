@@ -3668,7 +3668,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
 
 
-            if (empty($this->input->post('crw_price'))) {
+            if ($this->input->post('crw_price') == '') {
                 $result = array('resultcode'=>1004,'message' => 'crw_price 가 없습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
@@ -3683,7 +3683,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
-            if (empty($this->input->post('crw_goods_code'))) {
+            if ($this->input->post('crw_goods_code')=='') {
                 $result = array('resultcode'=>1007,'message' => 'crw_goods_code 가 없습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
