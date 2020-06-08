@@ -3,7 +3,7 @@
 <?php echo element('headercontent', element('board', element('list', $view))); ?>
 
 <div class="board">
-	<h3><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?></h3>
+	<h3><a href="<?php echo admin_url('board/boards/write/'.element('brd_id', element('board', element('list', $view)))); ?>"><span class="glyphicon glyphicon-new-window"></span></a><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?><?php echo element('brd_comment', element('board_crawl', element('list', $view))) ? '('.element('brd_comment', element('board_crawl', element('list', $view))).')' : '' ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', element('list', $view))); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', element('list', $view))); ?></a></span></h3>
 	<div class="row mb20">
 		<div class="col-xs-6 form-inline">
 			<?php if ( ! element('access_list', element('board', element('list', $view))) && element('use_rss_feed', element('board', element('list', $view)))) { ?>
@@ -28,16 +28,30 @@
 						$return = '';
 						if ($p && is_array($p)) {
 							foreach ($p as $result) {
-								$exp = explode('.', element('bca_key', $result));
-								$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
-								$space = str_repeat('-', $len);
-								$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
-								if (element('bca_key', $result) === $category_id) {
-									$return .= 'selected="selected"';
+								if(element('bca_key', $result)){
+									$exp = explode('.', element('bca_key', $result));
+									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+									$space = str_repeat('-', $len);
+									$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+									if (element('bca_key', $result) === $category_id) {
+										$return .= 'selected="selected"';
+									}
+									$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+									$parent = element('bca_key', $result);
+									$return .= ca_select(element($parent, $category), $category, $category_id);
+								} else {
+									$exp = explode('.', element('bca_key', $result));
+									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+									$space = str_repeat('-', $len);
+									$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+									if (element('bca_key', $result) === $category_id) {
+										$return .= 'selected="selected"';
+									}
+									$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+									$parent = element('bca_key', $result);
+									$return .= ca_select(element($parent, $category), $category, $category_id);
 								}
-								$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
-								$parent = element('bca_key', $result);
-								$return .= ca_select(element($parent, $category), $category, $category_id);
+								
 							}
 						}
 						return $return;
@@ -66,9 +80,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="searchbuttonbox">
-				<button class="btn btn-primary btn-sm pull-right" type="button" onClick="toggleSearchbox();"><i class="fa fa-search"></i></button>
-			</div>
+			
 			<?php if (element('point_info', element('list', $view))) { ?>
 				<div class="point-info pull-right mr10">
 					<button class="btn-point-info btn-link" data-toggle="popover" data-trigger="focus" data-placement="left" title="포인트안내" data-content="<?php echo element('point_info', element('list', $view)); ?>"
@@ -87,15 +99,7 @@
 			}
 			return true;
 		}
-		function toggleSearchbox() {
-			$('.searchbox').show();
-			$('.searchbuttonbox').hide();
-		}
-		<?php
-		if ($this->input->get('skeyword')) {
-			echo 'toggleSearchbox();';
-		}
-		?>
+		
 		$('.btn-point-info').popover({
 			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-title"></div><div class="popover-content"></div></div>',
 			html : true
@@ -107,14 +111,15 @@
 	<?php
 	if (element('use_category', element('board', element('list', $view))) && element('cat_display_style', element('board', element('list', $view))) === 'tab') {
 		$category = element('category', element('board', element('list', $view)));
+		$category_cnt = element('category_cnt', element('board', element('list', $view)));
 	?>
 		<ul class="nav nav-tabs clearfix">
-			<li role="presentation" <?php if ( ! $this->input->get('category_id')) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=">전체</a></li>
+			<li role="presentation" <?php if ( ! $this->input->get('category_id')) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=">전체 (<?php echo number_format(element('total', $category_cnt)); ?>)</a></li>
 			<?php
 			if (element(0, $category)) {
 				foreach (element(0, $category) as $ckey => $cval) {
 			?>
-				<li role="presentation" <?php if ($this->input->get('category_id') === element('bca_key', $cval)) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=<?php echo element('bca_key', $cval); ?>"><?php echo html_escape(element('bca_value', $cval)); ?></a></li>
+				<li role="presentation" <?php if ($this->input->get('category_id') === element('bca_key', $cval)) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=<?php echo element('bca_key', $cval); ?>"><?php echo html_escape(element('bca_value', $cval)); ?> (<?php echo number_format(element(element('bca_key', $cval), $category_cnt)); ?>)</a></li>
 			<?php
 				}
 			}
@@ -128,12 +133,14 @@
 	$attributes = array('name' => 'fboardlist', 'id' => 'fboardlist');
 	echo form_open('', $attributes);
 	?>
+
 		<table class="table table-hover">
 			<thead>
 				<tr>
 					<?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_boardlist_checked(true); else all_boardlist_checked(false);" type="checkbox" /></th><?php } ?>
 					<th>번호</th>
 					<th>제목</th>
+					<th>상품수</th>
 					<th>글쓴이</th>
 					<th>날짜</th>
 					<th>조회수</th>
@@ -170,6 +177,7 @@
 						<?php if (element('post_secret', $result)) { ?><span class="fa fa-lock"></span><?php } ?>
 						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
+					<td><?php echo element('cmallitem_count', $result); ?></td>
 					<td><?php echo element('display_name', $result); ?></td>
 					<td><?php echo element('display_datetime', $result); ?></td>
 					<td><?php echo number_format(element('post_hit', $result)); ?></td>
@@ -209,6 +217,10 @@
 						<?php if (element('is_new', $result)) { ?><span class="label label-warning">New</span><?php } ?>
 						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
+						<?php if (element(2,element('pln_status', $result)) || element(4,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php } elseif (element(3,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } elseif (element(5,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?>
+						<?php if (element(6,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }  elseif (element(7,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
+					</td>
+					<td><?php echo element('cmallitem_count', $result); ?> 개</td>
 					<td><?php echo element('display_name', $result); ?></td>
 					<td><?php echo element('display_datetime', $result); ?></td>
 					<td><?php echo number_format(element('post_hit', $result)); ?></td>
@@ -257,6 +269,38 @@
 		<?php if (element('write_url', element('list', $view))) { ?>
 			<div class="pull-right">
 				<a href="<?php echo element('write_url', element('list', $view)); ?>" class="btn btn-success btn-sm">글쓰기</a>
+			</div>
+		<?php } ?>
+
+		<?php if (element('crawl_category_update', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 및 제품특성 update</a>
+			</div>
+		<?php } ?>
+
+		<?php if (element('crawl_tag_update', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 태그 update</a>
+			</div>
+		<?php } ?>
+	
+		<?php if (element('vision_api_label', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('vision_api_label', element('list', $view)); ?>" class="btn btn-warning btn-sm">vision_api_label update</a>
+			</div>
+		<?php } ?>	
+		
+
+		<?php if (element('crawl_update', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 크롤링 update</a>
+			</div>
+		<?php } ?>
+
+
+		<?php if (element('crawl_overwrite', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_overwrite', element('list', $view)); ?>" class="btn btn-danger btn-sm">게시글 전체 크롤링 overWrite</a>
 			</div>
 		<?php } ?>
 	</div>

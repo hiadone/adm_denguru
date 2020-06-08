@@ -918,6 +918,21 @@ class Cbconfigs extends CB_Controller
 				'rules' => 'trim|numeric',
 			),
 			array(
+				'field' => 'notification_review_blame',
+				'label' => '내 글이 신고 당했을때',
+				'rules' => 'trim|numeric',
+			),
+			array(
+				'field' => 'notification_review_like',
+				'label' => '내 글에 좋아요 일때 알림',
+				'rules' => 'trim|numeric',
+			),
+			array(
+				'field' => 'notification_reviewer',
+				'label' => '나를 리뷰어로 선정할때  알림',
+				'rules' => 'trim|numeric',
+			),
+			array(
 				'field' => 'notification_note',
 				'label' => '쪽지가 도착하였을 때 알림',
 				'rules' => 'trim|numeric',
@@ -943,7 +958,7 @@ class Cbconfigs extends CB_Controller
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-			$array = array('use_notification', 'notification_reply', 'notification_comment', 'notification_comment_comment', 'notification_note');
+			$array = array('use_notification', 'notification_reply', 'notification_comment', 'notification_comment_comment', 'notification_note', 'notification_review_blame', 'notification_review_like', 'notification_reviewer');
 			foreach ($array as $value) {
 				$savedata[$value] = $this->input->post($value, null, '');
 			}

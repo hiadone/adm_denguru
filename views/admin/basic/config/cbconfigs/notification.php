@@ -55,6 +55,31 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label">내 글이 신고 당했을때  </label>
+				<div class="col-sm-10">
+					<label for="notification_review_blame" class="checkbox-inline">
+						<input type="checkbox" name="notification_review_blame" id="notification_review_blame" class="chk" value="1" <?php echo set_checkbox('notification_review_blame', '1', (element('notification_review_blame', element('data', $view)) ? true : false)); ?> /> 사용합니다
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">내 글에 좋아요 일때 알림</label>
+				<div class="col-sm-10">
+					<label for="notification_review_like" class="checkbox-inline">
+						<input type="checkbox" name="notification_review_like" id="notification_review_like" class="chk" value="1" <?php echo set_checkbox('notification_review_like', '1', (element('notification_review_like', element('data', $view)) ? true : false)); ?> /> 사용합니다
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">나를 리뷰어로 선정할때  알림</label>
+				<div class="col-sm-10">
+					<label for="notification_reviewer" class="checkbox-inline">
+						<input type="checkbox" name="notification_reviewer" id="notification_reviewer" class="chk" value="1" <?php echo set_checkbox('notification_reviewer', '1', (element('notification_reviewer', element('data', $view)) ? true : false)); ?> /> 사용합니다
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
 				<label class="col-sm-2 control-label">쪽지가 도착하였을 때 알림</label>
 				<div class="col-sm-10">
 					<label for="notification_note" class="checkbox-inline">

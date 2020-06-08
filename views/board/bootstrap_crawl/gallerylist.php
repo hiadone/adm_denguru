@@ -28,16 +28,30 @@
 						$return = '';
 						if ($p && is_array($p)) {
 							foreach ($p as $result) {
-								$exp = explode('.', element('bca_key', $result));
-								$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
-								$space = str_repeat('-', $len);
-								$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
-								if (element('bca_key', $result) === $category_id) {
-									$return .= 'selected="selected"';
+								if(element('bca_key', $result)){
+									$exp = explode('.', element('bca_key', $result));
+									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+									$space = str_repeat('-', $len);
+									$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+									if (element('bca_key', $result) === $post_category) {
+										$return .= 'selected="selected"';
+									}
+									$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+									$parent = element('bca_key', $result);
+									$return .= ca_select(element($parent, $category), $category, $post_category);
+								} else {
+									$exp = explode('.', element('bgc_key', $result));
+									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+									$space = str_repeat('-', $len);
+									$return .= '<option value="' . html_escape(element('bgc_key', $result)) . '"';
+									if (element('bgc_key', $result) === $post_category) {
+										$return .= 'selected="selected"';
+									}
+									$return .= '>' . $space . html_escape(element('bgc_value', $result)) . '</option>';
+									$parent = element('bgc_key', $result);
+									$return .= ca_select(element($parent, $category), $category, $post_category);
 								}
-								$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
-								$parent = element('bca_key', $result);
-								$return .= ca_select(element($parent, $category), $category, $category_id);
+								
 							}
 						}
 						return $return;
@@ -92,9 +106,9 @@
 			$('.searchbuttonbox').hide();
 		}
 		<?php
-		if ($this->input->get('skeyword')) {
-			echo 'toggleSearchbox();';
-		}
+			if ($this->input->get('skeyword')) {
+				echo 'toggleSearchbox();';
+			}
 		?>
 		$('.btn-point-info').popover({
 			template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-title"></div><div class="popover-content"></div></div>',
@@ -120,110 +134,128 @@
 			}
 			?>
 		</ul>
-	<?php
-	}
-	?>
+	<?php } ?>
 
 	<?php
 	$attributes = array('name' => 'fboardlist', 'id' => 'fboardlist');
 	echo form_open('', $attributes);
 	?>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_boardlist_checked(true); else all_boardlist_checked(false);" type="checkbox" /></th><?php } ?>
-					<th>번호</th>
-					<th>제목</th>
-					<th>글쓴이</th>
-					<th>날짜</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-			if (element('notice_list', element('list', $view))) {
+		<?php if (element('is_admin', $view)) { ?>
+			<div><label for="all_boardlist_check"><input id="all_boardlist_check" onclick="if (this.checked) all_boardlist_checked(true); else all_boardlist_checked(false);" type="checkbox" /> 전체선택</label></div>
+		<?php } ?>
+
+		<?php
+		if (element('notice_list', element('list', $view))) {
+		?>
+			<table class="table table-hover">
+				<tbody>
+				<?php
 				foreach (element('notice_list', element('list', $view)) as $result) {
-			?>
-				<tr>
-					<?php if (element('is_admin', $view)) { ?><th scope="row"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('post_id', $result); ?>" /></th><?php } ?>
-					<td><span class="label label-primary">공지</span></td>
-					<td>
-						<?php if (element('post_reply', $result)) { ?><span class="label label-primary" style="margin-left:<?php echo strlen(element('post_reply', $result)) * 10; ?>px">Re</span><?php } ?>
-						<a href="<?php echo element('post_url', $result); ?>" style="
-							<?php
-							if (element('title_color', $result)) {
-								echo 'color:' . element('title_color', $result) . ';';
-							}
-							if (element('title_font', $result)) {
-								echo 'font-family:' . element('title_font', $result) . ';';
-							}
-							if (element('title_bold', $result)) {
-								echo 'font-weight:bold;';
-							}
-							if (element('post_id', element('post', $view)) === element('post_id', $result)) {
-								echo 'font-weight:bold;';
-							}
-							?>
-						" title="<?php echo html_escape(element('title', $result)); ?>"><?php echo html_escape(element('title', $result)); ?></a>
-						<?php if (element('is_mobile', $result)) { ?><span class="fa fa-wifi"></span><?php } ?>
-						<?php if (element('post_file', $result)) { ?><span class="fa fa-download"></span><?php } ?>
-						<?php if (element('post_secret', $result)) { ?><span class="fa fa-lock"></span><?php } ?>
-						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
-						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
-					<td><?php echo element('display_name', $result); ?></td>
-					<td><?php echo element('display_datetime', $result); ?></td>
-					<td><?php echo number_format(element('post_hit', $result)); ?></td>
-				</tr>
-			<?php
-				}
-			}
-			if (element('list', element('data', element('list', $view)))) {
-				foreach (element('list', element('data', element('list', $view))) as $result) {
-			?>
-				<tr>
-					<?php if (element('is_admin', $view)) { ?><th scope="row"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('post_id', $result); ?>" /></th><?php } ?>
-					<td><?php echo element('num', $result); ?></td>
-					<td>
-						<?php if (element('category', $result)) { ?><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?category_id=<?php echo html_escape(element('bca_key', element('category', $result))); ?>"><span class="label label-default"><?php echo html_escape(element('bca_value', element('category', $result))); ?></span></a><?php } ?>
-						<?php if (element('post_reply', $result)) { ?><span class="label label-primary" style="margin-left:<?php echo strlen(element('post_reply', $result)) * 10; ?>px">Re</span><?php } ?>
-						<a href="<?php echo element('post_url', $result); ?>" style="
-							<?php
-							if (element('title_color', $result)) {
-								echo 'color:' . element('title_color', $result) . ';';
-							}
-							if (element('title_font', $result)) {
-								echo 'font-family:' . element('title_font', $result) . ';';
-							}
-							if (element('title_bold', $result)) {
-								echo 'font-weight:bold;';
-							}
-							if (element('post_id', element('post', $view)) === element('post_id', $result)) {
-								echo 'font-weight:bold;';
-							}
-							?>
-						" title="<?php echo html_escape(element('title', $result)); ?>"><?php echo html_escape(element('title', $result)); ?></a>
-						<?php if (element('is_mobile', $result)) { ?><span class="fa fa-wifi"></span><?php } ?>
-						<?php if (element('post_file', $result)) { ?><span class="fa fa-download"></span><?php } ?>
-						<?php if (element('post_secret', $result)) { ?><span class="fa fa-lock"></span><?php } ?>
-						<?php if (element('is_hot', $result)) { ?><span class="label label-danger">Hot</span><?php } ?>
-						<?php if (element('is_new', $result)) { ?><span class="label label-warning">New</span><?php } ?>
-						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
-						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
-					<td><?php echo element('display_name', $result); ?></td>
-					<td><?php echo element('display_datetime', $result); ?></td>
-					<td><?php echo number_format(element('post_hit', $result)); ?></td>
-				</tr>
-			<?php
-				}
-			}
-			if ( ! element('notice_list', element('list', $view)) && ! element('list', element('data', element('list', $view)))) {
-			?>
-				<tr>
-					<td colspan="6" class="nopost">게시물이 없습니다</td>
-				</tr>
-			<?php } ?>
+				?>
+					<tr>
+						<?php if (element('is_admin', $view)) { ?><th scope="row"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('post_id', $result); ?>" /></th><?php } ?>
+						<td><span class="label label-primary">공지</span></td>
+						<td>
+							<?php if (element('post_reply', $result)) { ?><span class="label label-primary" style="margin-left:<?php echo strlen(element('post_reply', $result)) * 10; ?>px">Re</span><?php } ?>
+							<a href="<?php echo element('post_url', $result); ?>" style="
+								<?php
+								if (element('title_color', $result)) {
+									echo 'color:' . element('title_color', $result) . ';';
+								}
+								if (element('title_font', $result)) {
+									echo 'font-family:' . element('title_font', $result) . ';';
+								}
+								if (element('title_bold', $result)) {
+									echo 'font-weight:bold;';
+								}
+								if (element('post_id', element('post', $view)) === element('post_id', $result)) {
+									echo 'font-weight:bold;';
+								}
+								?>
+							" title="<?php echo html_escape(element('title', $result)); ?>"><?php echo html_escape(element('title', $result)); ?></a>
+							<?php if (element('is_mobile', $result)) { ?><span class="fa fa-wifi"></span><?php } ?>
+							<?php if (element('post_file', $result)) { ?><span class="fa fa-download"></span><?php } ?>
+							<?php if (element('post_secret', $result)) { ?><span class="fa fa-lock"></span><?php } ?>
+							<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
+							<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
+						<td><?php echo element('display_name', $result); ?></td>
+						<td><?php echo element('display_datetime', $result); ?></td>
+						<td><?php echo number_format(element('post_hit', $result)); ?></td>
+					</tr>
+				<?php
+					}
+				?>
 			</tbody>
 		</table>
+	<?php
+	}
+	?>
+
+	<div class="table-image">
+		<?php
+		$i = 0;
+		$open = false;
+		$cols = element('gallery_cols', element('board', element('list', $view)));
+		if (element('list', element('data', element('list', $view)))) {
+			foreach (element('list', element('data', element('list', $view))) as $result) {
+				if ($cols && $i % $cols === 0) {
+					echo '<div class="row">';
+					$open = true;
+				}
+				$marginright = (($i+1)% $cols === 0) ? 0 : 2;
+		?>
+			<div class="gallery-box" style="width:<?php echo element('gallery_percent', element('board', element('list', $view))); ?>%;margin-right:<?php echo $marginright;?>%;">
+				<?php if (element('is_admin', $view)) { ?><input type="checkbox" name="chk_post_id[]" value="<?php echo element('post_id', $result); ?>" /><?php } ?>
+				<span class="label label-default"><?php echo element('num', $result); ?></span>
+				<?php if (element('is_mobile', $result)) { ?><span class="fa fa-wifi"></span><?php } ?>
+				<?php if (element('category', $result)) { ?><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?category_id=<?php echo html_escape(element('bca_key', element('category', $result))); ?>"><span class="label label-default"><?php echo html_escape(element('bca_value', element('category', $result))); ?></span></a><?php } ?>
+				<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
+				<div>
+					<a href="<?php echo element('post_url', $result); ?>" title="<?php echo html_escape(element('title', $result)); ?>"><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('title', $result)); ?>" title="<?php echo html_escape(element('title', $result)); ?>" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', element('list', $view))); ?>px;height:<?php echo element('gallery_image_height', element('board', element('list', $view))); ?>px;" /></a>
+				</div>
+				<p>
+					<?php if (element('post_reply', $result)) { ?><span class="label label-primary">Re</span><?php } ?>
+					<a href="<?php echo element('post_url', $result); ?>" style="
+						<?php
+						if (element('title_color', $result)) {
+							echo 'color:' . element('title_color', $result) . ';';
+						}
+						if (element('title_font', $result)) {
+							echo 'font-family:' . element('title_font', $result) . ';';
+						}
+						if (element('title_bold', $result)) {
+							echo 'font-weight:bold;';
+						}
+						if (element('post_id', element('post', $view)) === element('post_id', $result)) {
+							echo 'font-weight:bold;';
+						}
+						?>
+					" title="<?php echo html_escape(element('title', $result)); ?>"><?php echo html_escape(element('title', $result)); ?></a>
+				</p>
+				<p>
+					<?php echo element('display_name', $result); ?>
+					<?php //echo element('display_datetime', $result); ?>
+					<?php if (element('is_hot', $result)) { ?><span class="label label-danger">Hot</span><?php } ?>
+					<?php if (element('is_new', $result)) { ?><span class="label label-warning">New</span><?php } ?>
+					<?php if (element('post_secret', $result)) { ?><span class="fa fa-lock"></span><?php } ?>
+					<?php if (element('post_comment_count', $result)) { ?><span class="comment-count"><i class="fa fa-comments"></i><?php echo element('post_comment_count', $result); ?></span><?php } ?>
+					<span class="hit-count"><i class="fa fa-eye"></i> <?php echo number_format(element('post_hit', $result)); ?></span>
+				</p>
+			</div>
+		<?php
+				$i++;
+				if ($cols && $i > 0 && $i % $cols === 0 && $open) {
+					echo '</div>';
+					$open = false;
+				}
+			}
+		}
+		if ($open) {
+			echo '</div>';
+			$open = false;
+		}
+		?>
+	</div>
 	<?php echo form_close(); ?>
 
 	<div class="border_button">
@@ -258,9 +290,9 @@
 			<div class="pull-right">
 				<a href="<?php echo element('write_url', element('list', $view)); ?>" class="btn btn-success btn-sm">글쓰기</a>
 			</div>
-		<?php } ?>
-	</div>
-	<nav><?php echo element('paging', element('list', $view)); ?></nav>
+			<?php } ?>
+		</div>
+		<nav><?php echo element('paging', element('list', $view)); ?></nav>
 </div>
 
 <?php echo element('footercontent', element('board', element('list', $view))); ?>

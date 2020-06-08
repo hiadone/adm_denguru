@@ -398,6 +398,7 @@ class Memberpet extends CB_Controller
             $pet_sex = $this->input->post('pet_sex') ? $this->input->post('pet_sex') : 0;
             $pet_neutral = $this->input->post('pet_neutral') ? $this->input->post('pet_neutral') : 0;
             $pet_weight = $this->input->post('pet_weight') ? $this->input->post('pet_weight') : 0;
+            $pet_form = $this->input->post('pet_form') ? $this->input->post('pet_form') : 0;
             $pet_attr = $this->input->post('pet_attr') ? implode(",",$this->input->post('pet_attr')) : '';
             $pet_allergy = $this->input->post('pet_allergy') ? $this->input->post('pet_allergy') : 0;
 
@@ -408,6 +409,7 @@ class Memberpet extends CB_Controller
                 'pet_sex' => $pet_sex,
                 'pet_neutral' => $pet_neutral,
                 'pet_weight' => $pet_weight,                
+                'pet_form' => $pet_form,                
                 'pet_attr' => $pet_attr,
                 'pet_allergy' => $pet_allergy,
                 'pet_profile_content' => $this->input->post('pet_profile_content', null, ''),

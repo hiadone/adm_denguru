@@ -1186,7 +1186,7 @@ class Board_post extends CB_Controller
 				'cit_price' => 0,
 				'cit_post_url' => '',
 				'cit_goods_code' => '',
-				'cit_brand' => 0,
+				'cbr_id' => 0,
 			);
 			
 			$this->Cmall_item_model->or_where($or_where);
@@ -1211,8 +1211,8 @@ class Board_post extends CB_Controller
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
 				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
 
-				if(element('cit_brand', $val))
-					$cmall_brand = $this->Cmall_brand_model->get_one(element('cit_brand', $val));
+				if(element('cbr_id', $val))
+					$cmall_brand = $this->Cmall_brand_model->get_one(element('cbr_id', $val));
 
 				if(element('cbr_value_kr',$cmall_brand))
 					$result['list'][$key]['display_brand'] = element('cbr_value_kr',$cmall_brand);
@@ -1221,7 +1221,7 @@ class Board_post extends CB_Controller
 				else
 					$result['list'][$key]['display_brand'] = '-';
 
-				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cit_brand', $val)))
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
 					$result['list'][$key]['warning'] = 1 ; 
 				else 
 					$result['list'][$key]['warning'] = '' ; 

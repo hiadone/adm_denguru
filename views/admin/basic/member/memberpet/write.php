@@ -53,9 +53,10 @@
 					<div class="col-sm-10">
 						<div class="input-group">
 						
-						<input type="radio" name="pet_form" value="1" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) === '1' ? true : false)); ?> /> 날씬해요
-						<input type="radio" name="pet_form" value="2" <?php echo set_radio('pet_form', '2', (element('pet_form', element('data', $view)) === '2' ? true : false)); ?> /> 딱좋아요					
-						<input type="radio" name="pet_form" value="3" <?php echo set_radio('pet_form', '3', (element('pet_form', element('data', $view)) === '2' ? true : false)); ?> /> 통통해요						
+						<?php foreach(config_item('pet_form') as $key => $val){ ?>
+							<input type="radio" name="pet_form" value="<?php echo $key ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == $key ? true : false)); ?> /> <?php echo $val ?>
+						<?php } ?>
+						
 						</div>
 					</div>
 				</div>
@@ -91,7 +92,7 @@
 						<div class="input-group">
 						
 						<input type="radio" name="pet_allergy" value="1" <?php echo set_radio('pet_allergy', '1', (element('pet_allergy', element('data', $view)) === '1' ? true : false)); ?> /> 있어요
-						<input type="radio" name="pet_allergy" value="2" <?php echo set_radio('pet_allergy', '2', (element('pet_allergy', element('data', $view)) === '2' ? true : false)); ?> /> 없어요					
+						<input type="radio" name="pet_allergy" value="0" <?php echo set_radio('pet_allergy', '0', (element('pet_allergy', element('data', $view)) !== '1' ? true : false)); ?> /> 없어요					
 						
 						</div>
 					</div>

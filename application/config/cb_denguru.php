@@ -19,6 +19,18 @@ $config['pet_attr']  = array(
     15 => '신장/요로',
     );
 
+$config['pet_form']  = array(
+    1 => '날씬해요',
+    2 => '딱좋아요 ',
+    3 => '통통해요',
+);  
+
+$config['pet_age']  = array(
+    1 => '1살 이하',
+    2 => '1살 ~ 6살 ',
+    3 => '7살 이상',
+);  
+    
 $config['tag_word']  = array(
 1 => array(
     '당일배송',

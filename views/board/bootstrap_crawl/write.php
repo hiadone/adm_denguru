@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php $this->managelayout->add_js('/assets/js/jquery-ui-timepicker-addon.js'); ?>
+<?php $this->managelayout->add_css('/assets/css/jquery-ui-timepicker-addon.css'); ?>
 <?php $this->managelayout->add_css(element('view_skin_url', $layout) . '/css/style.css'); ?>
 
 <?php echo element('headercontent', element('board', $view)); ?>
@@ -54,6 +56,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<?php } ?>
 				</div>
 			</div>
+			<div class="form-group">
+				<label for="post_page_key" class="col-sm-2 control-label">Page Key</label>
+				<div class="col-sm-2" style="display:table;">
+					<input type="text" class="form-control" name="post_page_key" id="post_page_key" value="<?php echo set_value('post_page_key', element('post_page_key', element('post', $view))); ?>" />
+					
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="post_comment" class="col-sm-2 control-label">코멘트</label>
+				<div class="col-sm-10" style="display:table;">
+					<input type="text" class="form-control" name="post_comment" id="post_comment" value="<?php echo set_value('post_comment', element('post_comment', element('post', $view))); ?>" />
+					
+				</div>
+			</div>
 			<?php if (element('use_subject_style', element('board', $view))) { ?>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">제목옵션</label>
@@ -98,34 +114,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			<?php } ?>
-			<?php if (element('can_post_notice', element('post', $view)) OR element('can_post_secret', element('post', $view)) OR element('can_post_receive_email', element('post', $view))) { ?>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">옵션</label>
-					<div class="col-sm-10">
-						<?php if (element('can_post_notice', element('post', $view))) { ?>
-							<label class="checkbox-inline" for="post_notice_1">
-								<input type="checkbox" name="post_notice" id="post_notice_1" value="1" <?php echo set_checkbox('post_notice', '1', (element('post_notice', element('post', $view)) === '1' ? true : false)); ?> onChange="if (this.checked) {$('#post_notice_2').prop('disabled', true);} else {$('#post_notice_2').prop('disabled', false);}" <?php if (element('post_notice', element('post', $view)) === '2')echo "disabled='disabled'"; ?> /> 공지
-							</label>
-							<label class="checkbox-inline" for="post_notice_2">
-								<input type="checkbox" name="post_notice" id="post_notice_2" value="2" <?php echo set_checkbox('post_notice', '2', (element('post_notice', element('post', $view)) === '2' ? true : false)); ?> onChange="if (this.checked) {$('#post_notice_1').prop('disabled', true);} else {$('#post_notice_1').prop('disabled', false);}" <?php if (element('post_notice', element('post', $view)) === '1')echo "disabled='disabled'"; ?> /> 전체공지
-							</label>
-						<?php } ?>
-						<?php if (element('can_post_secret', element('post', $view))) { ?>
-							<label class="checkbox-inline" for="post_secret">
-								<input type="checkbox" name="post_secret" id="post_secret" value="1" <?php echo set_checkbox('post_secret', '1', (element('post_secret', element('post', $view)) ? true : false)); ?> /> 비밀글
-							</label>
-						<?php } ?>
-						<?php if (element('can_post_receive_email', element('post', $view))) { ?>
-							<label class="checkbox-inline" for="post_receive_email">
-								<input type="checkbox" name="post_receive_email" id="post_receive_email" value="1" <?php echo set_checkbox('post_receive_email', '1', (element('post_receive_email', element('post', $view)) ? true : false)); ?> /> 답변메일받기
-							</label>
-						<?php } ?>
-					</div>
-				</div>
-			<?php } ?>
+			
 			<?php if (element('use_category', element('board', $view))) { ?>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">분류</label>
+					<label class="col-sm-2 control-label">카테고리</label>
 					<div class="col-sm-10">
 						<div class="form-inline">
 							<select name="post_category" class="form-control">
@@ -137,16 +129,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									$return = '';
 									if ($p && is_array($p)) {
 										foreach ($p as $result) {
-											$exp = explode('.', element('bca_key', $result));
-											$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
-											$space = str_repeat('-', $len);
-											$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
-											if (element('bca_key', $result) === $post_category) {
-												$return .= 'selected="selected"';
+											if(element('bca_key', $result)){
+												$exp = explode('.', element('bca_key', $result));
+												$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+												$space = str_repeat('-', $len);
+												$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+												if (element('bca_key', $result) === $post_category) {
+													$return .= 'selected="selected"';
+												}
+												$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+												$parent = element('bca_key', $result);
+												$return .= ca_select(element($parent, $category), $category, $post_category);
+											} else {
+												$exp = explode('.', element('bca_key', $result));
+												$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+												$space = str_repeat('-', $len);
+												$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+												if (element('bca_key', $result) === $post_category) {
+													$return .= 'selected="selected"';
+												}
+												$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+												$parent = element('bca_key', $result);
+												$return .= ca_select(element($parent, $category), $category, $post_category);
 											}
-											$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
-											$parent = element('bca_key', $result);
-											$return .= ca_select(element($parent, $category), $category, $post_category);
 										}
 									}
 									return $return;
@@ -183,38 +188,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			<?php } ?>
 			<div class="form-group">
-				<div class="col-sm-12">
-					<?php if ( ! element('use_dhtml', element('board', $view))) { ?>
-						<div>
-							<div class="btn-group pull-right mb10">
-								<?php if (element('use_emoticon', element('board', $view))) { ?>
-									<button type="button" class="btn btn-default btn-sm" onclick="window.open('<?php echo site_url('helptool/emoticon?id=post_content'); ?>', 'emoticon', 'width=600,height=400,scrollbars=yes')"><i class="fa fa-smile-o fa-lg"></i></button>
-								<?php } ?>
-								<?php if (element('use_specialchars', element('board', $view))) { ?>
-									<button type="button" class="btn btn-default btn-sm" onclick="window.open('<?php echo site_url('helptool/specialchars?id=post_content'); ?>', 'specialchars', 'width=490,height=245,scrollbars=yes')"><i class="fa fa-star-o fa-lg"></i></button>
-								<?php } ?>
-								<button type="button" class="btn btn-default btn-sm" onClick="resize_textarea('post_content', 'down');"><i class="fa fa-plus fa-lg"></i></button>
-								<button type="button" class="btn btn-default btn-sm" onClick="resize_textarea('post_content', 'up');"><i class="fa fa-minus fa-lg"></i></button>
-							</div>
-						</div>
-					<?php } ?>
+				<label class="col-sm-2 control-label">크롤링 로직</label>
+
+				<div class="col-sm-10">
+					
 
 					<?php echo display_dhtml_editor('post_content', set_value('post_content', element('post_content', element('post', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = element('use_dhtml', element('board', $view)), $editor_type = $this->cbconfig->item('post_editor_type')); ?>
 
+
+
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label">상세 페이지 크롤링 로직</label>
 
+				<div class="col-sm-10">
+					
+
+					<?php echo display_dhtml_editor('post_content_detail', set_value('post_content_detail', element('post_content_detail', element('post', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = element('use_dhtml', element('board', $view)), $editor_type = $this->cbconfig->item('post_editor_type')); ?>
+
+					
+
+				</div>
+			</div>
 			<?php
 			if (element('link_count', element('board', $view)) > 0) {
 				$link_count = element('link_count', element('board', $view));
 				for ($i = 0; $i < $link_count; $i++) {
-					$link = html_escape(element('pln_url', element($i, element('link', $view))));
+					// $link = html_escape(element('pln_url', element($i, element('link', $view))));
+					$link = element('pln_url', element($i, element('link', $view)));
 					$link_column = $link ? 'post_link_update[' . element('pln_id', element($i, element('link', $view))) . ']' : 'post_link[' . $i . ']';
+
+					$link_page = element('pln_page', element($i, element('link', $view)));
+					$link_page_column = $link ? 'post_link_page_update[' . element('pln_id', element($i, element('link', $view))) . ']' : 'post_link_page[' . $i . ']';
 			?>
 				<div class="form-group">
 					<label for="<?php echo $link_column; ?>" class="col-sm-2 control-label">링크 #<?php echo $i+1; ?></label>
-					<div class="col-sm-10">
+					<div class="col-sm-8">
 						<input type="text" class="form-control" name="<?php echo $link_column; ?>" id="<?php echo $link_column; ?>" value="<?php echo set_value($link_column, $link); ?>" />
+					</div>
+					<label for="<?php echo $link_page_column; ?>" class="col-sm-1 control-label">End Page</label>
+					<div class="col-sm-1">
+						<input type="text" class="form-control" name="<?php echo $link_page_column; ?>" id="<?php echo $link_page_column; ?>" value="<?php echo set_value($link_page_column, $link_page); ?>" />
 					</div>
 				</div>
 			<?php
@@ -435,7 +451,7 @@ $(function() {
 	$('#fwrite').validate({
 		rules: {
 			post_title: {required :true, minlength:2, maxlength:60},
-			post_content : {<?php echo (element('use_dhtml', element('board', $view))) ? 'required_' . $this->cbconfig->item('post_editor_type') : 'required'; ?> : true }
+			post_content : {<?php echo (element('use_dhtml', element('board', $view))) ? 'required_' . $this->cbconfig->item('post_editor_type') : 'required'; ?> : false }
 <?php if (element('is_post_name', element('post', $view))) { ?>
 			, post_nickname: {required :true, minlength:2, maxlength:20}
 			, post_email: {required :true, email:true}
@@ -450,9 +466,7 @@ $(function() {
 			, captcha_key : {required: true, captchaKey:true}
 <?php } ?>
 <?php } ?>
-<?php if (element('use_category', element('board', $view))) { ?>
-			, post_category : {required: true}
-<?php } ?>
+
 		},
 		messages: {
 			recaptcha: '',
@@ -463,5 +477,21 @@ $(function() {
 
 <?php if (element('has_tempsave', $view)) { ?>get_tempsave(cb_board); <?php } ?>
 <?php if ( ! element('post_id', element('post', $view))) { ?>window.onbeforeunload = function () { auto_tempsave(cb_board); } <?php } ?>
+
+
+$('.datetimepicker').datetimepicker({
+    dateFormat:'yy-mm-dd',
+    monthNamesShort:[ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+    dayNamesMin:[ '일', '월', '화', '수', '목', '금', '토' ],
+    changeMonth:true,
+    changeYear:true,
+    showMonthAfterYear:true,
+
+    // timepicker 설정
+    timeFormat:'HH:mm',
+    controlType:'select',
+    oneLine:true,
+});
+
 //]]>
 </script>

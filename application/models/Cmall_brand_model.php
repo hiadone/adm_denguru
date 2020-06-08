@@ -73,7 +73,7 @@ class Cmall_brand_model extends CB_Model
         }
 
         $this->db->select('cmall_brand.*');
-        $this->db->join('cmall_item', 'cmall_item.cit_brand = cmall_brand.cbr_id', 'inner');
+        $this->db->join('cmall_item', 'cmall_item.cbr_id = cmall_brand.cbr_id', 'inner');
         $this->db->where(array('cmall_item.cit_id' => $cit_id));
         $qry = $this->db->get($this->_table);
         $result = $qry->result_array();

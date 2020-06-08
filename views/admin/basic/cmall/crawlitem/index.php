@@ -63,6 +63,7 @@
 								<?php echo html_escape(element('crw_brand5', $result)); ?>
 							</td>
 							<td>
+								
 								<?php if (element('crw_file_1', $result)) {?>
 									<a href="<?php echo element('crw_post_url', $result); ?>" target="_blank">
 										<img src="<?php echo thumb_url('crawlitem', element('crw_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />

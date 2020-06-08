@@ -21,6 +21,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 <?php echo element('headercontent', element('board', $view)); ?>
 
 <div class="board">
+	<h3><a href="<?php echo admin_url('board/boards/write/'.element('brd_id', element('board', $view))); ?>"><span class="glyphicon glyphicon-new-window"></span></a><?php echo html_escape(element('board_name', element('board', $view))); ?><?php echo element('brd_comment', element('board_crawl', $view)) ? '('.element('brd_comment', element('board_crawl', $view)).')' : '' ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', $view)); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', $view)); ?></a></span></h3>
 	<?php echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>'); ?>
 	<h3>
 		<?php if (element('category', element('post', $view))) { ?>[<?php echo html_escape(element('bca_value', element('category', element('post', $view)))); ?>] <?php } ?>
@@ -65,7 +66,7 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			<?php
 			foreach (element('link', $view) as $key => $value) {
 			?>
-				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
+				<li class="list-group-item"><i class="fa fa-link"></i> <a href="<?php echo element('link_link', $value); ?>" target="_blank"><?php echo html_escape(element('pln_url', $value)); ?></a><?php if (element('pln_page', $value)) echo '~'.element('pln_page', $value); ?><?php if (element('pln_status', $value) === '2' || element('pln_status', $value) === '4') { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php } elseif (element('pln_status', $value) === '3') { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } elseif (element('pln_status', $value) === '5') { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?><?php if (element('pln_status', $value) === '6') { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }  elseif (element('pln_status', $value) === '7') { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?><span class="badge"><?php echo number_format(element('pln_hit', $value)); ?></span>
 					<?php if (element('show_url_qrcode', element('board', $view))) { ?>
 						<span class="url-qrcode" data-qrcode-url="<?php echo urlencode(element('pln_url', $value)); ?>"><i class="fa fa-qrcode"></i></span>
 					<?php } ?>
@@ -107,7 +108,9 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			}
 			?>
 		</div>
-
+		<!-- 코멘트 시작 -->
+		<div><?php echo element('post_comment', element('post', $view)); ?></div>
+		<!-- 코멘트 끝 -->
 		<!-- 본문 내용 시작 -->
 		<div id="post-content"><?php echo element('content', element('post', $view)); ?></div>
 		<!-- 본문 내용 끝 -->
@@ -263,44 +266,18 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 			<button type="button" class="btn btn-default btn-sm admin-manage-post"><i class="fa fa-cog big-fa"></i> 관리</button>
 			<div class="btn-admin-manage-layer admin-manage-post-layer">
 			<?php if (element('is_admin', $view) === 'super') { ?>
-				<div class="item" onClick="post_copy('copy', '<?php echo element('post_id', element('post', $view)); ?>');"><i class="fa fa-files-o"></i> 복사하기</div>
-				<div class="item" onClick="post_copy('move', '<?php echo element('post_id', element('post', $view)); ?>');"><i class="fa fa-arrow-right"></i> 이동하기</div>
 				<?php if (element('use_category', element('board', $view))) { ?>
 					<div class="item" onClick="post_change_category('<?php echo element('post_id', element('post', $view)); ?>');"><i class="fa fa-tags"></i> 카테고리변경</div>
 				<?php
 					}
 				}
-				if (element('use_post_secret', element('board', $view))) {
-					if (element('post_secret', element('post', $view))) {
-				?>
-					<div class="item" onClick="post_action('post_secret', '<?php echo element('post_id', element('post', $view)); ?>', '0');"><i class="fa fa-unlock"></i> 비밀글해제</div>
-				<?php } else { ?>
-					<div class="item" onClick="post_action('post_secret', '<?php echo element('post_id', element('post', $view)); ?>', '1');"><i class="fa fa-lock"></i> 비밀글로</div>
-				<?php
-					}
-				}
-				if (element('post_hide_comment', element('post', $view))) {
-				?>
-					<div class="item" onClick="post_action('post_hide_comment', '<?php echo element('post_id', element('post', $view)); ?>', '0');"><i class="fa fa-comments"></i> 댓글감춤해제</div>
-				<?php } else { ?>
-					<div class="item" onClick="post_action('post_hide_comment', '<?php echo element('post_id', element('post', $view)); ?>', '1');"><i class="fa fa-comments"></i> 댓글감춤</div>
-				<?php } ?>
-				<?php if (element('post_notice', element('post', $view))) { ?>
-					<div class="item" onClick="post_action('post_notice', '<?php echo element('post_id', element('post', $view)); ?>', '0');"><i class="fa fa-bullhorn"></i> 공지내림</div>
-				<?php } else { ?>
-					<div class="item" onClick="post_action('post_notice', '<?php echo element('post_id', element('post', $view)); ?>', '1');"><i class="fa fa-bullhorn"></i> 공지올림</div>
-				<?php } ?>
+				?>			
 				<?php if (element('post_blame', element('post', $view)) >= element('blame_blind_count', element('board', $view))) { ?>
 					<div class="item" onClick="post_action('post_blame_blind', '<?php echo element('post_id', element('post', $view)); ?>', '0');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
 				<?php } else { ?>
 					<div class="item" onClick="post_action('post_blame_blind', '<?php echo element('post_id', element('post', $view)); ?>', '1');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
 				<?php } ?>
-				<?php if (element('use_posthistory', element('board', $view))) { ?>
-					<div class="item" onClick="post_history('<?php echo element('post_id', element('post', $view)); ?>');" ><i class="fa fa-history"></i> 글변경로그</div>
-				<?php } ?>
-				<?php if (element('use_download_log', element('board', $view))) { ?>
-					<div class="item" onClick="download_log('<?php echo element('post_id', element('post', $view)); ?>');" ><i class="fa fa-download"></i> 다운로드로그</div>
-				<?php } ?>
+				
 				<?php	if (element('use_link_click_log', element('board', $view))) { ?>
 					<div class="item" onClick="link_click_log('<?php echo element('post_id', element('post', $view)); ?>');"><i class="fa fa-link"></i> 링크클릭로그</div>
 				<?php } ?>
@@ -371,9 +348,49 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 				<a href="<?php echo element('url', element('next_post', $view)); ?>" class="btn btn-default btn-sm">다음글</a>
 			<?php } ?>
 			</div>
+		
+
 		<?php if (element('write_url', $view)) { ?>
 			<div class="pull-right">
 				<a href="<?php echo element('write_url', $view); ?>" class="btn btn-success btn-sm">글쓰기</a>
+			</div>
+		<?php } ?>
+		
+		<?php if (element('crawl_category_update', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update', $view); ?>" class="btn btn-warning btn-sm">카테고리 및 제품특성 update</a>
+			</div>
+		<?php } ?>
+		
+		<?php if (element('crawl_tag_update', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_update', $view); ?>" class="btn btn-warning btn-sm">태그 update</a>
+			</div>
+		<?php } ?>
+
+		<?php if (element('crawl_tag_overwrite', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_overwrite', $view); ?>" class="btn btn-warning btn-sm">태그 overWrite</a>
+			</div>
+		<?php } ?>
+
+
+		<?php if (element('vision_api_label', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('vision_api_label', $view); ?>" class="btn btn-warning btn-sm">vision_api_label update</a>
+			</div>
+		<?php } ?>		
+
+		<?php if (element('crawl_update', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_update', $view); ?>" class="btn btn-warning btn-sm">크롤링 update</a>
+			</div>
+		<?php } ?>
+
+
+		<?php if (element('crawl_overwrite', $view)) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_overwrite', $view); ?>" class="btn btn-danger btn-sm">크롤링 overWrite</a>
 			</div>
 		<?php } ?>
 	</div>

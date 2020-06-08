@@ -28,30 +28,16 @@
 						$return = '';
 						if ($p && is_array($p)) {
 							foreach ($p as $result) {
-								if(element('bca_key', $result)){
-									$exp = explode('.', element('bca_key', $result));
-									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
-									$space = str_repeat('-', $len);
-									$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
-									if (element('bca_key', $result) === $post_category) {
-										$return .= 'selected="selected"';
-									}
-									$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
-									$parent = element('bca_key', $result);
-									$return .= ca_select(element($parent, $category), $category, $post_category);
-								} else {
-									$exp = explode('.', element('bgc_key', $result));
-									$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
-									$space = str_repeat('-', $len);
-									$return .= '<option value="' . html_escape(element('bgc_key', $result)) . '"';
-									if (element('bgc_key', $result) === $post_category) {
-										$return .= 'selected="selected"';
-									}
-									$return .= '>' . $space . html_escape(element('bgc_value', $result)) . '</option>';
-									$parent = element('bgc_key', $result);
-									$return .= ca_select(element($parent, $category), $category, $post_category);
+								$exp = explode('.', element('bca_key', $result));
+								$len = (element(1, $exp)) ? strlen(element(1, $exp)) : 0;
+								$space = str_repeat('-', $len);
+								$return .= '<option value="' . html_escape(element('bca_key', $result)) . '"';
+								if (element('bca_key', $result) === $category_id) {
+									$return .= 'selected="selected"';
 								}
-								
+								$return .= '>' . $space . html_escape(element('bca_value', $result)) . '</option>';
+								$parent = element('bca_key', $result);
+								$return .= ca_select(element($parent, $category), $category, $category_id);
 							}
 						}
 						return $return;

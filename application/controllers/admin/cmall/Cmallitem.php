@@ -91,7 +91,7 @@ class Cmallitem extends CB_Controller
 				'cit_price' => 0,
 				'cit_post_url' => '',
 				'cit_goods_code' => '',
-				'cit_brand' => 0,
+				'cbr_id' => 0,
 			);
 			
 			$this->Cmall_item_model->or_where($or_where);
@@ -128,7 +128,7 @@ class Cmallitem extends CB_Controller
 
 				$result['list'][$key]['cmall_wishlist_count'] = $cmall_wishlist_count ? $cmall_wishlist_count : 0;
 
-				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cit_brand', $val)))
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
 					$result['list'][$key]['warning'] = 1 ; 
 				else 
 					$result['list'][$key]['warning'] = '' ; 
@@ -826,8 +826,8 @@ class Cmallitem extends CB_Controller
 				
 				$getdata['postlist'] = $this->Post_model->get_post_list('','',array('brd_id' => element('brd_id',$getdata)));
 			}
-			if(element('cit_brand', $getdata))
-				$brand_text = $this->Cmall_brand_model->get_one(element('cit_brand', $getdata));
+			if(element('cbr_id', $getdata))
+				$brand_text = $this->Cmall_brand_model->get_one(element('cbr_id', $getdata));
 
 			if(element('cbr_value_kr',$brand_text))
 				$getdata['cit_brand_text']	= element('cbr_value_kr',$brand_text);
@@ -918,7 +918,7 @@ class Cmallitem extends CB_Controller
 			$updatedata = array(
 				'cit_key' => $this->input->post('cit_key', null, ''),
 				'cit_name' => $this->input->post('cit_name', null, ''),
-				'cit_brand' => element('cbr_id',$cit_brand),
+				'cbr_id' => element('cbr_id',$cit_brand),
 				'cit_order' => $cit_order,
 				'cit_type1' => $cit_type1,
 				'cit_type2' => $cit_type2,

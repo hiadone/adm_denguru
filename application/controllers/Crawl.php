@@ -1609,7 +1609,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                             'cit_goods_code' => element('crawl_goods_code', $ivalue),                        
                             'cit_is_soldout' => element('crawl_is_soldout', $ivalue),
                             'cit_status' => 1,
-                            'cit_brand' => element('cit_brand',$ivalue) ? element('cit_brand',$ivalue) : 0,
+                            'cbr_id' => element('cbr_id',$ivalue) ? element('cbr_id',$ivalue) : 0,
                             // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                             // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                             // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
@@ -2241,16 +2241,16 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 
                 
 
-                $cit_info['cit_brand'] = $this->cmall_brand($cit_info['crawl_brand']);
+                $cit_info['cbr_id'] = $this->cmall_brand($cit_info['crawl_brand']);
                 
-                // if(empty($cit_info['cit_brand'])){
+                // if(empty($cit_info['cbr_id'])){
                 //     $crawl_title_ = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
 
                 //     $crawl_title_ = str_replace(" ","",$crawl_title_);
                 //     $crawl_title_ = str_replace("[","",$crawl_title_);
                 //     $crawl_title_ = str_replace("]","",$crawl_title_);
 
-                //     $cit_info['cit_brand'] = $this->cmall_brand($crawl_title_);
+                //     $cit_info['cbr_id'] = $this->cmall_brand($crawl_title_);
                 // }
                 
 
@@ -2259,7 +2259,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     'cit_name' => element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),
                     'cit_summary' => element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value) ,
                     'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$cit_info))) : element('cit_price',$value) ,
-                    'cit_brand' => element('cit_brand',$cit_info) ? element('cit_brand',$cit_info) : element('cit_brand', $value),
+                    'cbr_id' => element('cbr_id',$cit_info) ? element('cbr_id',$cit_info) : element('cbr_id', $value),
                     'cit_is_soldout' => element('crawl_is_soldout', $cit_info) ? element('crawl_is_soldout', $cit_info) : element('cit_is_soldout', $value),
                     
                 );
@@ -2419,7 +2419,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             // $itemupdate = array(
             //     'cit_val1' => 0,
             // );
-            // if($cit_info['cit_brand'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
+            // if($cit_info['cbr_id'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
             //     $this->Cmall_item_model->update(element('cit_id',$value),$itemupdate);  
         }
         
@@ -2555,16 +2555,16 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 
                 
 
-                $cit_info['cit_brand'] = $this->cmall_brand($cit_info['crawl_brand']);
+                $cit_info['cbr_id'] = $this->cmall_brand($cit_info['crawl_brand']);
                 
-                // if(empty($cit_info['cit_brand'])){
+                // if(empty($cit_info['cbr_id'])){
                 //     $crawl_title_ = element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value);
 
                 //     $crawl_title_ = str_replace(" ","",$crawl_title_);
                 //     $crawl_title_ = str_replace("[","",$crawl_title_);
                 //     $crawl_title_ = str_replace("]","",$crawl_title_);
 
-                //     $cit_info['cit_brand'] = $this->cmall_brand($crawl_title_);
+                //     $cit_info['cbr_id'] = $this->cmall_brand($crawl_title_);
                 // }
                 
 
@@ -2573,7 +2573,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     'cit_name' => element('crawl_title',$cit_info) ? element('crawl_title',$cit_info) : element('cit_name',$value),
                     'cit_summary' => element('crawl_sub_title',$cit_info) ? element('crawl_sub_title',$cit_info) : element('cit_summary',$value) ,
                     'cit_price' => preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) ? preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crawl_price',$cit_info))) : element('cit_price',$value) ,
-                    'cit_brand' => element('cit_brand',$cit_info) ? element('cit_brand',$cit_info) : element('cit_brand', $value),
+                    'cbr_id' => element('cbr_id',$cit_info) ? element('cbr_id',$cit_info) : element('cbr_id', $value),
                     'cit_is_soldout' => element('crawl_is_soldout', $cit_info) ? element('crawl_is_soldout', $cit_info) : element('cit_is_soldout', $value),
                     
                 );
@@ -2716,7 +2716,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             // $itemupdate = array(
             //     'cit_val1' => 0,
             // );
-            // if($cit_info['cit_brand'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
+            // if($cit_info['cbr_id'] && (element('crawl_title',$cit_info) || element('cit_name',$value)) && (preg_replace("/[^0-9]*/s", "", element('crawl_price',$cit_info)) || element('cit_price',$value)))
             //     $this->Cmall_item_model->update(element('cit_id',$value),$itemupdate);  
         }
         
