@@ -712,37 +712,42 @@ class Boards extends CB_Controller
 			),
 			array(
 				'field' => 'brd_url',
-				'label' => '사이트주소URL',
+				'label' => '스토어주소URL',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_goods_key',
-				'label' => '사이트 상품 KEY',
+				'label' => '스토어 상품 KEY',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_comment',
-				'label' => '사이트 코멘트',
+				'label' => '스토어 코멘트',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_order_url',
-				'label' => '사이트주문정보URL',
+				'label' => '스토어주문URL',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_orderstatus_url',
+				'label' => '스토어주문현황URL',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_register_url',
-				'label' => '사이트회원가입URL',
+				'label' => '스토어회원가입URL',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_content',
-				'label' => '사이트 크롤링 로직',
+				'label' => '스토어 크롤링 로직',
 				'rules' => 'trim',
 			),
 			array(
 				'field' => 'brd_content_detail',
-				'label' => '사이트 상품 상세 페이지 크롤링 로직',
+				'label' => '스토어 상품 상세 페이지 크롤링 로직',
 				'rules' => 'trim',
 			),
 		);
@@ -787,7 +792,7 @@ class Boards extends CB_Controller
 			if (element('bdc_id',$getdata)) {
 				$this->Board_crawl_model->update(element('bdc_id',$getdata), $updatedata);
 				
-				$view['view']['alert_message'] = '메타사이트 정보 설정이 저장되었습니다';
+				$view['view']['alert_message'] = '메타스토어 정보 설정이 저장되었습니다';
 			} else {
 				/**
 				 * 게시물을 새로 입력하는 경우입니다
@@ -800,7 +805,7 @@ class Boards extends CB_Controller
 				$getdata = $this->Board_crawl_model->get_one($bdc_id);
 				
 				
-				$view['view']['alert_message'] = '메타사이트 정보 설정이 저장되었습니다';
+				$view['view']['alert_message'] = '메타스토어 정보 설정이 저장되었습니다';
 
 				$redirecturl = admin_url($this->pagedir . '/write_crawl/' . $pid);
 				redirect($redirecturl);

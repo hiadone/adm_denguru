@@ -38,41 +38,140 @@
             <input type="hidden" name="is_submit" value="1" />
             <input type="hidden" name="<?php echo element('primary_key', $view); ?>"    value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
             <div class="box-table-header">
-                <h4><a data-toggle="collapse" href="#boardtab1" aria-expanded="true" aria-controls="boardtab1">사이트 정보 페이지</a></h4>
+                <h4><a data-toggle="collapse" href="#boardtab1" aria-expanded="true" aria-controls="boardtab1">스토어 정보 페이지</a></h4>
                 <a data-toggle="collapse" href="#boardtab1" aria-expanded="true" aria-controls="boardtab1"><i class="fa fa-chevron-up pull-right"></i></a>
             </div>
             <div class="collapse in" id="boardtab1">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">사이트 주소 URL</label>
+                    <label class="col-sm-2 control-label">스토어 주소 URL</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_url" value="<?php echo set_value('brd_url', element('brd_url', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">사이트 상품 KEY</label>
+                    <label class="col-sm-2 control-label">스토어 상품 KEY</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_goods_key" value="<?php echo set_value('brd_goods_key', element('brd_goods_key', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">사이트 코멘트</label>
+                    <label class="col-sm-2 control-label">스토어 코멘트</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_comment" value="<?php echo set_value('brd_comment', element('brd_comment', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">사이트 주문정보 URL</label>
+                    <label class="col-sm-2 control-label">스토어 주문 URL</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_order_url" value="<?php echo set_value('brd_order_url', element('brd_order_url', element('data', $view))); ?>" />
+                        <p class="help-block">"구매해 주셔서 감사합니다." 에 해당되는 url</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">사이트 회원가입 URL</label>
+                    <label class="col-sm-2 control-label">스토어 주문현황 URL</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_orderstatus_url" value="<?php echo set_value('brd_orderstatus_url', element('brd_orderstatus_url', element('data', $view))); ?>" />
+                        <p class="help-block">주문현황(대기중,배송중,배송완료) 와 운송장 번호가 조회 되는 url</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-table-header">
+                <h4><a data-toggle="collapse" href="#boardtab2" aria-expanded="true" aria-controls="boardtab1">스토어 회원 정보 관리</a></h4>
+                <a data-toggle="collapse" href="#boardtab2" aria-expanded="true" aria-controls="boardtab2"><i class="fa fa-chevron-up pull-right"></i></a>
+            </div>
+            <div class="collapse in" id="boardtab2">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">스토어 회원가입 URL</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
                     </div>
                 </div>
-                
+                <!-- <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 id 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 이름 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 우편번호 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 주소 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 상세 주소 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 hidden 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <p class="help-block">우편번호를 절차 대로 잘 입력되엇다고 확인 하는 필드</p>
+                    </div>
+                </div>
+               <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 전화번호 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 핸드폰번호 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 이메일 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 생년월일 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <p class="help-block">YYYY-mm-dd 형태로 입력</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 질문 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">회원 질문 확인 필드</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        
+                    </div>
+                </div> -->
+            </div>
+
+           
+            
+            <div class="box-table-header">
+                <h4><a data-toggle="collapse" href="#boardtab3" aria-expanded="true" aria-controls="boardtab1">스토어 크롤링 관리</a></h4>
+                <a data-toggle="collapse" href="#boardtab3" aria-expanded="true" aria-controls="boardtab3"><i class="fa fa-chevron-up pull-right"></i></a>
+            </div>
+            <div class="collapse in" id="boardtab3">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">사이트 크롤링 로직</label>
                     <div class="col-sm-10">
