@@ -736,6 +736,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
+				'field' => 'brd_phone',
+				'label' => '스토어전화번호',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'brd_register_url',
 				'label' => '스토어회원가입URL',
 				'rules' => 'trim',
