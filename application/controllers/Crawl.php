@@ -3530,7 +3530,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 'https://www.wilddog.co.kr/shop',
 'https://bonjourtou-tou.com/',
 'https://pethod.co.kr/',
-'http://purplestore.co.kr/shop/',
+'https://purplestore.co.kr/',
 'http://www.dhuman.co.kr/view/main',
 'http://www.montraum.com/common/process/shopmain.asp?iniCategory=2&thisCategory=22',
 'http://www.petsandme.co.kr/main/main.php',
