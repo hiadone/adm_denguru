@@ -1,4 +1,21 @@
 <div class="box">
+	<form name="fsearch" id="fsearch" action="<?php echo current_full_url(); ?>" method="get">
+		<div class="box-search" style="padding-top: 20px;">
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					<select class="form-control" name="sfield" >
+						<?php echo element('search_option', $view); ?>
+					</select>
+					<div class="input-group">
+						<input type="text" class="form-control" name="skeyword" value="<?php echo html_escape(element('skeyword', $view)); ?>" placeholder="Search for..." />
+						<span class="input-group-btn">
+							<button class="btn btn-default btn-sm" name="search_submit" type="submit">검색!</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 	<div class="box-table">
 		<?php
 		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
