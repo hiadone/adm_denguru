@@ -3693,7 +3693,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
-            if (empty($this->input->post('crw_price_sale'))) {
+            if ($this->input->post('crw_price_sale') == '') {
                 $result = array('resultcode'=>1009,'message' => 'crw_price_sale 가 없습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
