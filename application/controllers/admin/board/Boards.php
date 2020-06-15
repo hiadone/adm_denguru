@@ -736,6 +736,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
+				'field' => 'brd_url_key',
+				'label' => '스토어 url KEY',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'brd_orderstatus_url',
 				'label' => '스토어주문현황URL',
 				'rules' => 'trim',
@@ -790,6 +795,7 @@ class Boards extends CB_Controller
 				'brd_url' => $this->input->post('brd_url', null, ''),
 				'brd_goods_key' => $this->input->post('brd_goods_key', null, ''),
 				'brd_order_key' => $this->input->post('brd_order_key', null, ''),
+				'brd_url_key' => $this->input->post('brd_url_key', null, ''),
 				'brd_comment' => $this->input->post('brd_comment', null, ''),
 				'brd_order_url' => $this->input->post('brd_order_url', null, ''),
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),

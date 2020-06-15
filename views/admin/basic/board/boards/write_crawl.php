@@ -78,7 +78,14 @@
                     <label class="col-sm-2 control-label">스토어 주문 key</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control " name="brd_order_key" value="<?php echo set_value('brd_order_key', element('brd_order_key', element('data', $view))); ?>" />
-                        <p class="help-block">주문현황(대기중,배송중,배송완료) 와 운송장 번호가 조회 되는 url</p>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">스토어 url key</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_url_key" value="<?php echo set_value('brd_url_key', element('brd_url_key', element('data', $view))); ?>" />
+                        
                     </div>
                 </div>
                 <div class="form-group">
