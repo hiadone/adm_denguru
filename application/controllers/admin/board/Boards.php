@@ -789,8 +789,11 @@ class Boards extends CB_Controller
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),
 				'brd_content' => $this->input->post('brd_content', null, ''),
 				'brd_content_detail' => $this->input->post('brd_content_detail', null, ''),
+				'brd_orderstatus_url' => $this->input->post('brd_orderstatus_url', null, ''),
+				'brd_phone' => $this->input->post('brd_phone', null, ''),
 			);
 
+			
 			/**
 			 * 게시물을 수정하는 경우입니다
 			 */
