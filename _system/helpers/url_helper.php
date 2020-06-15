@@ -567,3 +567,12 @@ if ( ! function_exists('redirect'))
 		exit;
 	}
 }
+
+
+if ( ! function_exists('cdn_url')) {
+	function cdn_url($type = '',$uri = '', $protocol = 'http://')
+	{	
+		
+		return get_instance()->config->cdn_url($type."/".$uri, $protocol);
+	}
+}

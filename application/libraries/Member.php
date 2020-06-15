@@ -77,6 +77,7 @@ class Member extends CI_Controller
 		if ($this->is_member()) {
 			if (empty($this->mb)) {
 				$member = $this->CI->Member_model->get_by_memid($this->is_member());
+				
 				$extras = $this->get_all_extras(element('mem_id', $member));
 				if (is_array($extras)) {
 					$member = array_merge($member, $extras);
@@ -86,7 +87,20 @@ class Member extends CI_Controller
 					$member = array_merge($member, $metas);
 				}
 				$member['social'] = $this->get_all_social_meta(element('mem_id', $member));
+
+				$this->CI->load->model(
+					array(
+						'Member_pet_model',
+					)
+				);
+				$pet = $this->CI->Member_pet_model->get_one('','',array('mem_id' => element('mem_id', $member),'pet_main' => 1));
+				
+				if (is_array($pet)) {
+					$member = array_merge($member, $pet);
+				}
+
 				$this->mb = $member;
+
 			}
 			return $this->mb;
 		} else {
@@ -244,12 +258,12 @@ class Member extends CI_Controller
 				'Member_level_history_model', 'Member_login_log_model', 'Member_meta_model',
 				'Member_register_model', 'Notification_model', 'Point_model',
 				'Scrap_model', 'Social_meta_model',
-				'Tempsave_model', 'Member_userid_model','Member_pet_model'
+				'Tempsave_model', 'Member_userid_model','Member_pet_model','Cmall_review_model','Cmall_storewishlist_model','Cmall_wishlist_model','Reviewer_model'
 			)
 		);
 
 
-		$getdata = $this->Member_pet_model->get('','pet_id',array('mem_id' => $mem_id));
+		$getdata = $this->CI->Member_pet_model->get('','pet_id',array('mem_id' => $mem_id));
 		if ($getdata && is_array($getdata)) {
 			foreach ($getdata as $pval) {
 				if (element('pet_id', $pval)) {
@@ -257,6 +271,19 @@ class Member extends CI_Controller
 				}
 			}
 		}
+
+		$this->CI->load->library('cmalllib');
+		
+		$getdata = $this->CI->Cmall_review_model->get('','cre_id',array('mem_id' => $mem_id));
+		if ($getdata && is_array($getdata)) {
+			foreach ($getdata as $pval) {
+				if (element('cre_id', $pval)) {
+					$this->CI->cmalllib->_review_delete(element('cre_id', $pval));
+				}
+			}
+		}
+
+		
 
 		$deletewhere = array(
 			'mem_id' => $mem_id,
@@ -280,8 +307,10 @@ class Member extends CI_Controller
 		$this->CI->Scrap_model->delete_where($deletewhere);
 		$this->CI->Social_meta_model->delete_where($deletewhere);
 		$this->CI->Tempsave_model->delete_where($deletewhere);
+		$this->CI->Cmall_storewishlist_model->delete_where($deletewhere);
+		$this->CI->Cmall_wishlist_model->delete_where($deletewhere);
+		$this->CI->Reviewer_model->delete_where($deletewhere);
 		
-
 		$this->CI->Member_userid_model->update($mem_id, array('mem_status' => 1));
 
 		return true;
@@ -361,7 +390,7 @@ class Member extends CI_Controller
 		);
 		$this->CI->load->library('aws_s3');
 		$getdata = $this->CI->Member_pet_model->get_one($pet_id);
-		print_r($getdata);
+		
 
 		if (element('pet_photo', $getdata)) {
 			// 기존 파일 삭제
@@ -385,4 +414,10 @@ class Member extends CI_Controller
 
 		return true;
 	}
+
+
+	
 }
+
+
+

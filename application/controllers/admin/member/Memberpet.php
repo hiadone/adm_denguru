@@ -476,6 +476,10 @@ class Memberpet extends CB_Controller
 
             if($pet_id && $this->input->post('pet_main', null, '')){
 
+                $petdata = $this->{$this->modelname}->get_one($pet_id);
+
+                $this->{$this->modelname}->update('',array('pet_main' => 0),array('mem_id' => element('mem_id',$petdata)));
+
                 $this->{$this->modelname}->update($pet_id,array('pet_main' => 1));
             }
 

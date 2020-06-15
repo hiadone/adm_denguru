@@ -434,4 +434,62 @@ class Cmallact extends CB_Controller
 		);
 		exit(json_encode($result));
 	}
+
+	public function storewishlist_delete($csi_id = 0)
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_cmallact_wishlist_delete';
+		$this->load->event($eventname);
+
+		/**
+		 * 로그인이 필요한 페이지입니다
+		 */
+		required_user_login();
+
+		$mem_id = (int) $this->member->item('mem_id');
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		$csi_id = (int) $csi_id;
+		if (empty($csi_id) OR $csi_id < 1) {
+			show_404();
+		}
+
+		$this->load->model(array('Cmall_storewishlist_model','Board_model'));
+		$wishlist = $this->Cmall_storewishlist_model->get_one($csi_id);
+
+		if ( ! element('csi_id', $wishlist)) {
+			alert('이 스토어는 즐겨찾기 목록에 존재하지 않습니다',"",406);
+		}
+
+		if ((int) element('mem_id', $wishlist) !== $mem_id) {
+			alert_close('본인외에는 접근하실 수 없습니다');
+		}
+
+		$this->Cmall_storewishlist_model->delete($csi_id);
+
+		$where = array(
+			'brd_id' => element('brd_id', $wishlist),
+		);
+		$count = $this->Cmall_storewishlist_model->count_by($where);
+
+		$updatedata = array(
+			'brd_storewish_count' => $count,
+		);
+		$this->Board_model->update(element('brd_id', $wishlist), $updatedata);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 삭제가 끝난 후 목록페이지로 이동합니다
+		 */
+		
+		$param =& $this->querystring;
+
+		return $this->response('', 204);
+		// redirect('cmall/wishlist?' . $param->output());
+
+	}
 }

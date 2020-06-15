@@ -307,7 +307,7 @@ class Cmalllib extends CI_Controller
 			return;
 		}
 
-		$this->CI->load->model(array('Cmall_item_model', 'Cmall_storewishlist_model'));
+		$this->CI->load->model(array( 'Cmall_storewishlist_model'));
 
 		$insertdata = array(
 			'mem_id' => $mem_id,
@@ -330,6 +330,71 @@ class Cmalllib extends CI_Controller
 		return $csi_id;
 	}
 
+	public function delwish($mem_id = 0, $cit_id = 0)
+	{
+		$mem_id = (int) $mem_id;
+		if (empty($mem_id) OR $mem_id < 1) {
+			return;
+		}
+		$cit_id = (int) $cit_id;
+		if (empty($cit_id) OR $cit_id < 1) {
+			return;
+		}
+
+		$this->CI->load->model(array('Cmall_item_model', 'Cmall_wishlist_model'));
+
+		
+		$deletewhere = array(
+			'mem_id' => $mem_id,
+			'cit_id' => $cit_id
+		);
+		$this->CI->Cmall_wishlist_model->delete_where($deletewhere);
+
+		$where = array(
+			'cit_id' => $cit_id,
+		);
+		$count = $this->CI->Cmall_wishlist_model->count_by($where);
+
+		$updatedata = array(
+			'cit_wish_count' => $count,
+		);
+		$result = $this->CI->Cmall_item_model->update($cit_id, $updatedata);
+
+		return $result;
+	}
+
+	public function delstore($mem_id = 0, $brd_id = 0)
+	{
+		$mem_id = (int) $mem_id;
+		if (empty($mem_id) OR $mem_id < 1) {
+			return;
+		}
+		$brd_id = (int) $brd_id;
+		if (empty($brd_id) OR $brd_id < 1) {
+			return;
+		}
+
+		$this->CI->load->model(array( 'Cmall_storewishlist_model','Board_model'));
+		
+
+		$deletewhere = array(
+			'mem_id' => $mem_id,
+			'brd_id' => $brd_id
+		);
+		$this->CI->Cmall_storewishlist_model->delete_where($deletewhere);
+
+		$where = array(
+			'brd_id' => $brd_id,
+		);
+		$count = $this->CI->Cmall_storewishlist_model->count_by($where);
+
+		$updatedata = array(
+			'brd_storewish_count' => $count,
+		);
+		$result = $this->CI->Board_model->update($brd_id, $updatedata);
+
+		return $result;
+	}
 
 	public function is_ordered_item($mem_id = 0, $cit_id = 0)
 	{
@@ -1371,4 +1436,91 @@ class Cmalllib extends CI_Controller
 			}
 		}
 	}
+
+	public function _storewishlist_delete($csi_id = 0)
+	{
+		
+		$this->CI->load->model(array( 'Cmall_storewishlist_model','Board_model'));
+
+		
+		$wishlist = $this->CI->Cmall_storewishlist_model->get_one($csi_id);
+		
+
+		$this->CI->Cmall_storewishlist_model->delete($csi_id);
+
+		$where = array(
+			'brd_id' => element('brd_id', $wishlist),
+		);
+		$count = $this->CI->Cmall_storewishlist_model->count_by($where);
+
+		$updatedata = array(
+			'brd_storewish_count' => $count,
+		);
+		$this->CI->Board_model->update(element('brd_id', $wishlist), $updatedata);
+
+		return true;
+	}
+
+	public function _wishlist_delete($cwi_id = 0)
+	{
+		
+
+		$this->CI->load->model(array('Cmall_item_model', 'Cmall_wishlist_model'));
+		
+		$wishlist = $this->CI->Cmall_wishlist_model->get_one($cwi_id);
+
+		$this->CI->Cmall_wishlist_model->delete($csi_id);
+
+		$where = array(
+			'cit_id' => element('cit_id', $wishlist),
+		);
+		$count = $this->CI->Cmall_wishlist_model->count_by($where);
+
+		$updatedata = array(
+			'cit_wish_count' => $count,
+		);
+		$this->CI->Cmall_item_model->update(element('cit_id', $wishlist), $updatedata);
+
+		return true;
+	}
+	
+	public function _review_delete($cre_id = 0)
+    {
+        $cre_id = (int) $cre_id;
+        if (empty($cre_id) OR $cre_id < 1) {
+            return;
+        }
+
+        $view['view'] = array();
+        $this->CI->load->model(array('Cmall_review_model','Review_file_model'));
+        $this->CI->load->library(array('cmalllib','aws_s3'));
+        
+        $review = $this->CI->Cmall_review_model->get_one($cre_id);
+        
+        
+        $this->CI->Cmall_review_model->delete($cre_id);
+        $cntresult = $this->CI->cmalllib->update_review_count(element('cit_id', $review));
+        
+        $deletewhere = array(
+           'cre_id' => $cre_id,
+        );
+
+        // 첨부 파일 삭제
+        $crefiles = $this->CI->Review_file_model->get('', '', $deletewhere);
+        if ($crefiles) {
+           foreach ($crefiles as $crefiles) {
+               @unlink(config_item('uploads_dir') . '/cmall_review/' . element('rfi_filename', $crefiles));
+
+               $deleted = $this->CI->aws_s3->delete_file(config_item('s3_folder_name') . '/cmall_review/' . element('rfi_filename', $crefiles));
+
+               $this->CI->Review_file_model->delete(element('rfi_id', $crefiles));
+           }
+        }
+
+        
+        return true;
+        
+    }
+
+	
 }

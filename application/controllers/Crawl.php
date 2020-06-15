@@ -4367,7 +4367,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
     {
 
             
-        $this->output->set_content_type('application/json');
+        
         // if (empty($brd_id)) {
         //     $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
         //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -4433,6 +4433,80 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        
+    }
+
+    public function html_write_file($brd_id,$type)
+    {
+
+        $this->load->helper('file');
+        $this->output->set_content_type('application/json');
+
+
+        $upload_path = config_item('uploads_dir') . '/html_write/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('Y') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('m') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= $brd_id . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+        
+
+
+        
+            $data      = $this->input->post('data');
+        
+
+        $write_file_path =  $upload_path;
+
+        if (write_file($write_file_path.$type.'.html', $data))
+        {
+            // chmod($write_file_path, 0644);
+            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+                    
+
+                    
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+                
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        
+
         
     }
     
