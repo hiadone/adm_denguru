@@ -111,7 +111,7 @@ if (element('brd_id', element('data', $view))) {
 									<?php
 									if (element('brd_image', element('data', $view))) {
 									?>
-										<img src="<?php echo cdn_url('/board/',element('brd_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+										<img src="<?php echo cdn_url('board',element('brd_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 										<label for="brd_image_del">
 											<input type="checkbox" name="brd_image_del" id="brd_image_del" value="1" <?php echo set_checkbox('brd_image_del', '1'); ?> /> 삭제
 										</label>
