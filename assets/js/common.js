@@ -1010,4 +1010,12 @@ if (typeof(COMMON_JS) === 'undefined') {
         else 
             $(this).parent().parent().removeClass("success")
     });
+
+    $(document).ready(function(){
+	    $("input[type=file]").change(function(e){
+	    	if($('#'+$(this).attr('name')+'_del').length > 0){
+	    	    $('#'+$(this).attr('name')+'_del').prop("checked", true);
+	    	}
+	    });
+	});
 }
