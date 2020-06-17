@@ -3858,6 +3858,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             $updatedata = array(
                 'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
+                'is_del' => 0,
             );
 
             for ($k = 1; $k <= 6; $k++) {
