@@ -4124,11 +4124,26 @@ $img_src_array = parse_url(urldecode($imageUrl));
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
-    public function insert_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
+    public function insert_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '',$cor_key = '')
     {   
         $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
         
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($cor_key)) {
+            $result = array('resultcode'=>1008,'message' => 'cor_key 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($cor_order_no)) {
+            $result = array('resultcode'=>1002,'message' => 'cor_order_no 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
 
         $board = $this->board->item_all($brd_id);
 
@@ -4142,15 +4157,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        if (empty($brd_id)) {
-            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-        }
-
-        if (empty($cor_key)) {
-            $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-        }
+        
 
         
         
@@ -4166,9 +4173,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
         }
 
 
-        $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_key' =>$cor_key));
+        $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_order_no' =>$cor_order_no));
         if (element('cor_id', $order)) {
-            $result = array('resultcode'=>1003,'message' => '이미 존재하는 cor_key 입니다.');
+            $result = array('resultcode'=>1003,'message' => '이미 존재하는 cor_order_no 입니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -4178,8 +4185,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $cor_goods_code = array();
         $total_price_sum = (int) $this->input->post('total_price_sum',null,0);
-        $cor_goods_code = $this->input->post('cor_goods_code');
-        $cor_content = $this->input->post('cor_content');
+        $cor_goods_code = $this->input->post('cor_goods_code',null,'');
+        $cor_content = $this->input->post('cor_content',null,'');
         $od_status = 'order'; //주문상태
         $cor_id = $unique_id;
 
@@ -4201,6 +4208,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['mem_realname'] = element('mem_nickname', $member,'');
         $insertdata['cor_total_money'] = $total_price_sum;        
         $insertdata['cor_key'] = $cor_key;
+        $insertdata['cor_order_no'] = $cor_key;
         $insertdata['brd_id'] = $brd_id;
         
         
@@ -4237,7 +4245,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
     }
 
-    public function update_order($brd_id  = 0,$mem_id = 0,$cor_key = '')
+    public function update_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '',$cor_key = '')
     {   
         $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
@@ -4253,13 +4261,18 @@ $img_src_array = parse_url(urldecode($imageUrl));
         }
 
         if (empty($cor_key)) {
-            $result = array('resultcode'=>1002,'message' => 'cor_key 가 없습니다.');
+            $result = array('resultcode'=>1008,'message' => 'cor_key 가 없습니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_key' =>$cor_key));
+        if (empty($cor_order_no)) {
+            $result = array('resultcode'=>1002,'message' => 'cor_order_no 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_order_no' =>$cor_order_no));
         if ( ! element('cor_id', $order)) {
-            $result = array('resultcode'=>1003,'message' => '없는 cor_key 입니다.');
+            $result = array('resultcode'=>1003,'message' => '없는 cor_order_no 입니다.');
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -4473,6 +4486,140 @@ $img_src_array = parse_url(urldecode($imageUrl));
             @fclose($f);
             @chmod($file, 0644);
         }
+ $upload_path .= $brd_id . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+
+
+
+            $data      = $this->input->post('data');
+
+
+        $write_file_path =  $upload_path;
+
+        if (write_file($write_file_path.$type.'.html', $data))
+        {
+            // chmod($write_file_path, 0644);
+            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+
+
+
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+
+
+
+    }
+
+
+    public function order_html_write_file($brd_id,$mem_id=2)
+    {   
+
+        $this->load->helper('file');
+        $this->output->set_content_type('application/json');
+
+        $this->load->model(array('Member_model','Board_crawl_model'));
+        
+
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        $board = $this->board->item_all($brd_id);
+
+        if ( ! element('brd_id', $board)) {
+            $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($mem_id)) {
+            $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($this->input->post('pointer_url'))) {
+            $result = array('resultcode'=>1002,'message' => 'pointer_url 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($this->input->post('data'))) {
+            $result = array('resultcode'=>1003,'message' => 'data 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $crawlwhere = array(
+            'brd_id' => $brd_id,
+        );
+
+        $board_crawl = $this->Board_crawl_model->get_one('','brd_id,brd_order_key',$crawlwhere);
+        if ( ! element('brd_id', $board_crawl)) {
+            show_404();
+        }
+
+
+        $pointer_url = $this->input->post('pointer_url',null,'');
+        $cor_key='';
+        $pointer_url_ = parse_url($pointer_url);
+
+
+
+        if($pointer_url_['query'])
+            parse_str($pointer_url_['query'] ,$query_);
+
+
+
+        if($query_[element('brd_order_key',$board_crawl)])
+            $cor_key = $query_[element('brd_order_key',$board_crawl)];
+        
+
+
+     
+
+
+        $upload_path = config_item('uploads_dir') . '/html_write/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('Y') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('m') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
 
         $upload_path .= $brd_id . '/';
         if (is_dir($upload_path) === false) {
@@ -4489,11 +4636,275 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
             $data      = $this->input->post('data');
         
+        $DB2 = $this->load->database('db2', TRUE);
+        
+        $DB2->select('cb_cmall_order.*');
+        $DB2->from('cb_cmall_order');
+        
+        $where = array(
+            'brd_id' => $brd_id,
+            'cor_key' => $cor_key,
+        );
+
+        $DB2->where($where);
+        // $this->db2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result_order = $qry->result_array();
+
+        foreach($result_order as $value_order){
+
+            if($value_order['cor_id']){
+                $DB2->where($where);
+                $del_result = $DB2->delete('cb_cmall_order');
+
+                @unlink(config_item('uploads_dir') . '/html_write/'.$value_order['cor_file_1']);
+            }
+        }
+
 
         $write_file_path =  $upload_path;
 
-        if (write_file($write_file_path.$type.'.html', $data))
-        {
+        if (write_file($write_file_path.'order_'.$cor_key.'.html', $data))
+        {   
+
+
+
+
+            
+            
+
+            
+
+            $member = $this->Member_model->get_by_memid($mem_id,'mem_id,mem_userid,mem_nickname,mem_email,mem_phone');
+
+
+            if ( ! element('mem_id', $member)) {
+                $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+
+
+          
+
+            
+            
+            $updatedata = array(
+                
+                'mem_id' => $mem_id,
+                
+                'cor_datetime' => cdate('Y-m-d H:i:s'),
+                'cor_ip' => $this->input->ip_address(),
+                'cor_useragent' => $this->agent->agent_string(),
+                
+                
+                'cor_key' => $cor_key,
+                'brd_id' => $brd_id,
+                'cor_file_1' => $write_file_path.'order_'.$cor_key.'.html',
+            );
+
+            
+            $DB2->insert('cb_cmall_order', $updatedata);
+            $cor_id = $DB2->insert_id();
+           
+            if(empty($cor_id)){
+                $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+
+            // chmod($write_file_path, 0644);
+            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+                    
+
+            $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key);
+                    
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+                
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        
+
+        
+    }
+    
+
+    public function orderstatus_html_write_file($brd_id,$mem_id=2,$cor_id=0)
+    {   
+
+        
+
+        $this->load->helper('file');
+        $this->output->set_content_type('application/json');
+
+        $this->load->model(array('Member_model','Board_crawl_model','Cmall_order_model'));
+        
+
+
+        if (empty($brd_id)) {
+            $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        $board = $this->board->item_all($brd_id);
+
+        if ( ! element('brd_id', $board)) {
+            $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($mem_id)) {
+            $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+
+        if (empty($this->input->post('data'))) {
+            $result = array('resultcode'=>1003,'message' => 'data 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+        
+        $crawlwhere = array(
+            'brd_id' => $brd_id,
+        );
+
+        $board_crawl = $this->Board_crawl_model->get_one('','brd_id,brd_order_key',$crawlwhere);
+        if ( ! element('brd_id', $board_crawl)) {
+            show_404();
+        }
+
+
+      
+        
+
+
+     
+
+
+        $upload_path = config_item('uploads_dir') . '/html_write/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('Y') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= cdate('m') . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+
+        $upload_path .= $brd_id . '/';
+        if (is_dir($upload_path) === false) {
+            mkdir($upload_path, 0707);
+            $file = $upload_path . 'index.php';
+            $f = @fopen($file, 'w');
+            @fwrite($f, '');
+            @fclose($f);
+            @chmod($file, 0644);
+        }
+        
+
+
+        
+            $data      = $this->input->post('data');
+        
+        $DB2 = $this->load->database('db2', TRUE);
+        
+        $DB2->select('cb_cmall_orderstatus.*');
+        $DB2->from('cb_cmall_orderstatus');
+        
+        $where = array(
+            'brd_id' => $brd_id,
+            'cor_id' => $cor_id,
+        );
+
+        $DB2->where($where);
+        // $this->db2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result_order = $qry->result_array();
+
+        foreach($result_order as $value_order){
+
+            if($value_order['cor_id']){
+                $DB2->where($where);
+                $del_result = $DB2->delete('cb_cmall_orderstatus');
+
+                @unlink(config_item('uploads_dir') . '/html_write/'.$value_order['cos_file_1']);
+            }
+        }
+
+        
+        $write_file_path =  $upload_path;
+
+        if (write_file($write_file_path.'orderstatus_'.$cor_id.'.html', $data))
+        {   
+
+
+
+
+            
+            
+
+            
+
+            $member = $this->Member_model->get_by_memid($mem_id,'mem_id,mem_userid,mem_nickname,mem_email,mem_phone');
+
+
+            if ( ! element('mem_id', $member)) {
+                $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+
+
+          
+
+            
+            
+            $updatedata = array(
+                
+                'mem_id' => $mem_id,
+                
+                'cos_datetime' => cdate('Y-m-d H:i:s'),
+                'cos_ip' => $this->input->ip_address(),
+                'cos_useragent' => $this->agent->agent_string(),
+                
+                
+                'cor_id' => $cor_id,
+                'brd_id' => $brd_id,
+                'cos_file_1' => $write_file_path.'orderstatus_'.$cor_id.'.html',
+            );
+
+            
+            $DB2->insert('cb_cmall_orderstatus', $updatedata);
+            $cor_id = $DB2->insert_id();
+           
+            if(empty($cor_id)){
+                $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+
             // chmod($write_file_path, 0644);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
                     
@@ -4510,5 +4921,4 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         
     }
-    
 }

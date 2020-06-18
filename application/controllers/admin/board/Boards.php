@@ -135,7 +135,7 @@ class Boards extends CB_Controller
 		/**
 		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
 		 */
-		$search_option = array('brd_key' => 'KEY', 'brd_name' => '제목', 'brd_mobile_name' => '모바일 제목');
+		$search_option = array( 'brd_name' => '제목', 'brd_mobile_name' => '모바일 제목','brd_key' => 'KEY');
 		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
 		$view['view']['search_option'] = search_option($search_option, $sfield);
 		$view['view']['listall_url'] = admin_url($this->pagedir);
