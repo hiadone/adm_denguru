@@ -4175,8 +4175,11 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $order = $this->Cmall_order_model->get_one('','',array('brd_id' => $brd_id,'cor_order_no' =>$cor_order_no));
         if (element('cor_id', $order)) {
-            $result = array('resultcode'=>1003,'message' => '이미 존재하는 cor_order_no 입니다.');
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+
+            $this->Cmall_order_model->delete(element('cor_id', $order));
+            $this->Cmall_order_detail_model->delete_where(array('cor_id' => element('cor_id', $order)));
+            // $result = array('resultcode'=>1003,'message' => '이미 존재하는 cor_order_no 입니다.');
+            // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         
@@ -4527,6 +4530,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
     public function order_html_write_file($brd_id,$mem_id=2)
     {   
 
+        
+                
+        
+        
         $this->load->helper('file');
         $this->output->set_content_type('application/json');
 
@@ -4574,20 +4581,40 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $pointer_url = $this->input->post('pointer_url',null,'');
         $cor_key='';
-        $pointer_url_ = parse_url($pointer_url);
+
+        if(element('brd_order_key',$board_crawl) ==='sixshop'){
+            
+            $pointer_url_ = parse_url($pointer_url);
+
+            
+
+            $src_array_= explode('/', $pointer_url_['path']);
+
+            $fruit = array_pop($src_array_);
+            $fruit1 = array_pop($src_array_);
+
+            if($pointer_url_['path'])                
+                $cor_key = '/'.$fruit.'/'.$fruit1;
+
+        } else {
+
+            $pointer_url_ = parse_url($pointer_url);
+
+            if($pointer_url_['query'])
+                parse_str($pointer_url_['query'] ,$query_);
 
 
 
-        if($pointer_url_['query'])
-            parse_str($pointer_url_['query'] ,$query_);
+            if($query_[element('brd_order_key',$board_crawl)])
+                $cor_key = $query_[element('brd_order_key',$board_crawl)];
+        }
 
+        if(empty($cor_key)){
+            require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
 
-
-        if($query_[element('brd_order_key',$board_crawl)])
-            $cor_key = $query_[element('brd_order_key',$board_crawl)];
-        
-
-
+            $html = new simple_html_dom();
+            $html->load($this->input->post('data'));
+        }
      
 
 
@@ -4644,6 +4671,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $where = array(
             'brd_id' => $brd_id,
             'cor_key' => $cor_key,
+            'mem_id' => $mem_id,
         );
 
         $DB2->where($where);
