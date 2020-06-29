@@ -4187,8 +4187,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $unique_id = $this->Unique_id_model->get_id($this->input->ip_address());
 
         $cor_goods_code = array();
+        $cod_count = array();
         $total_price_sum = (int) $this->input->post('total_price_sum',null,0);
         $cor_goods_code = $this->input->post('cor_goods_code',null,'');
+        $cod_count = $this->input->post('cod_count',null,'');
         $cor_content = $this->input->post('cor_content',null,'');
         $od_status = 'order'; //주문상태
         $cor_id = $unique_id;
@@ -4211,7 +4213,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['mem_realname'] = element('mem_nickname', $member,'');
         $insertdata['cor_total_money'] = $total_price_sum;        
         $insertdata['cor_key'] = $cor_key;
-        $insertdata['cor_order_no'] = $cor_key;
+        $insertdata['cor_order_no'] = $cor_order_no;
         $insertdata['brd_id'] = $brd_id;
         
         
@@ -4228,7 +4230,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                         'cit_id' => element('cit_id', $item,0),
                         'cde_id' => element('cit_id', $item,0),
                         'cod_download_days' => '',
-                        'cod_count' => 1,
+                        'cod_count' => element($key,$cod_count,1),
                         'cod_status' => $od_status,
                     );
                     $this->Cmall_order_detail_model->insert($insertdetail);
@@ -4248,7 +4250,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
     }
 
-    public function update_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '',$cor_key = '')
+    public function update_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '')
     {   
         $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
@@ -4263,10 +4265,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        if (empty($cor_key)) {
-            $result = array('resultcode'=>1008,'message' => 'cor_key 가 없습니다.');
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-        }
+        // if (empty($cor_key)) {
+        //     $result = array('resultcode'=>1008,'message' => 'cor_key 가 없습니다.');
+        //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        // }
 
         if (empty($cor_order_no)) {
             $result = array('resultcode'=>1002,'message' => 'cor_order_no 가 없습니다.');
@@ -4320,7 +4322,38 @@ $img_src_array = parse_url(urldecode($imageUrl));
             $updatedata['cor_order_history'] = $mod_history;
         }
 
+        $cor_goods_code = array();
+        $cod_count = array();
+        
+        $cor_goods_code = $this->input->post('cor_goods_code',null,'');
+        $cod_count = $this->input->post('cod_count',null,'');
+        $od_status = 'order'; //주문상태
+
         $res = $this->Cmall_order_model->update(element('cor_id', $order), $updatedata);
+
+        if ($res) {
+            if($cor_goods_code && is_array($cor_goods_code)){
+                $this->Cmall_order_detail_model->delete_where(array('cor_id' => element('cor_id', $order)));
+                foreach ($cor_goods_code as $key => $val) {
+                    $item = $this->Cmall_item_model
+                        ->get_one('', '',array('brd_id' => $brd_id,'cit_goods_code' => $val));
+
+                    
+                    $insertdetail = array(
+                        'cor_id' => element('cor_id', $order),
+                        'mem_id' => $mem_id,
+                        'brd_id' => $brd_id,
+                        'cit_id' => element('cit_id', $item,0),
+                        'cde_id' => element('cit_id', $item,0),
+                        'cod_download_days' => '',
+                        'cod_count' => element($key,$cod_count,1),
+                        'cod_status' => $od_status,
+                    );
+                    $this->Cmall_order_detail_model->insert($insertdetail);
+                    
+                }
+            }
+        }
 
         if(empty($res)){
             $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
@@ -4573,7 +4606,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             'brd_id' => $brd_id,
         );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','brd_id,brd_order_key',$crawlwhere);
+        $board_crawl = $this->Board_crawl_model->get_one('','brd_content,brd_content_detail,brd_id,brd_order_key',$crawlwhere);
         if ( ! element('brd_id', $board_crawl)) {
             show_404();
         }
@@ -4600,23 +4633,41 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             $pointer_url_ = parse_url($pointer_url);
 
-            if($pointer_url_['query'])
+            if(!empty($pointer_url_['query']))
                 parse_str($pointer_url_['query'] ,$query_);
 
 
 
-            if($query_[element('brd_order_key',$board_crawl)])
+            if(!empty($query_[element('brd_order_key',$board_crawl)]))
                 $cor_key = $query_[element('brd_order_key',$board_crawl)];
         }
 
-        if(empty($cor_key)){
+        // if($brd_id == '315'){
+        if(element('brd_order_key',$board_crawl) ==='parse'){            
             require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
 
+            $html_dom='';
             $html = new simple_html_dom();
-            $html->load($this->input->post('data'));
-        }
-     
+            $html->load($this->input->post('data',null,''));
 
+
+            if(element('brd_content_detail', $board_crawl)){
+                eval(element('brd_content_detail', $board_crawl));
+            }
+
+            
+
+            // $cor_key = '/'.$orderinfo['order_no'];
+        } 
+     
+        if(empty($cor_key)){
+            
+            
+
+            exit;
+
+            $cor_key = date('Ymdhi');
+        } 
 
         $upload_path = config_item('uploads_dir') . '/html_write/';
         if (is_dir($upload_path) === false) {
@@ -4661,7 +4712,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
 
         
-            $data      = $this->input->post('data');
+        $data = $this->input->post('data');
         
         $DB2 = $this->load->database('db2', TRUE);
         
@@ -4691,12 +4742,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
         }
 
-
+        
         $write_file_path =  $upload_path;
 
-        if (write_file($write_file_path.'order_'.$cor_key.'.html', $data))
+        
+        if (write_file($write_file_path.'order_'.str_replace('/','',$cor_key).'.html', $data))
         {   
-
 
 
 
@@ -4729,36 +4780,93 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 
                 'cor_key' => $cor_key,
                 'brd_id' => $brd_id,
-                'cor_file_1' => $write_file_path.'order_'.$cor_key.'.html',
+                'cor_file_1' => cdate('Y') . '/' . cdate('m') . '/' .$brd_id . '/'.'order_'.$cor_key.'.html',
             );
 
-            
+            // log_message('error', explode(',',$updatedata));
             $DB2->insert('cb_cmall_order', $updatedata);
             $cor_id = $DB2->insert_id();
-           
+            
             if(empty($cor_id)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                log_message('error', $result['message']);
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             // chmod($write_file_path, 0644);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-                    
-
+            
+            if(element('brd_order_key',$board_crawl) ==='parse'){            
+                if(empty($html_dom))
+                    log_message('error', 'order'.$cor_id.'cor_key 에러');
+            }
+            
             $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key);
-                    
+            log_message('error', $result['message']);
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
-                
+                log_message('error', $result['message']);
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
 
         
     }
     
+    public function get_order_html_file($cor_id)
+    {
+        $this->output->set_content_type('application/json');
+
+        
+        
+
+
+        if (empty($cor_id)) {
+            $result = array('resultcode'=>1001,'message' => 'cor_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+        
+        $DB2 = $this->load->database('db2', TRUE);
+        
+        $DB2->select('cb_cmall_order.mem_id,cb_cmall_order.brd_id,cb_cmall_order.cor_key,cb_cmall_order.cor_file_1');
+        $DB2->from('cb_cmall_order');
+        
+        $where = array(
+            'cor_id' => $cor_id,
+        );
+
+        $DB2->where($where);
+        // $this->db2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result_order = $qry->row_array();
+
+        $result_order['cor_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cor_file_1']);
+        
+        // $result_order['cor_file_1'] = FCPATH.$result_order['cor_file_1'];
+        
+        $crawlwhere = array(
+            'brd_id' => element('brd_id', $result_order),
+        );
+
+        $board_crawl = $this->Board_crawl_model->get_one('','brd_url',$crawlwhere);
+
+        $result_order['brd_url'] = element('brd_url', $board_crawl);
+
+        if($result_order){
+                    
+            exit(json_encode($result_order,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+                
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+    }
+
 
     public function orderstatus_html_write_file($brd_id,$mem_id=2,$cor_id=0)
     {   
@@ -4906,8 +5014,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
             }
 
 
-          
-
+            $order = $this->Cmall_order_model->get_one($cor_id,'cor_order_no');
+            
+            if ( ! element('cor_id', $order)) {
+                log_message('error', $cor_id. '은 없는 cor_id 입니다');
+                // $result = array('resultcode'=>1003,'message' => '없는 cor_order_no 입니다.');
+                // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
             
             
             $updatedata = array(
@@ -4918,17 +5031,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 'cos_ip' => $this->input->ip_address(),
                 'cos_useragent' => $this->agent->agent_string(),
                 
-                
+                'cos_order_no' => element('cor_order_no', $order,''),
                 'cor_id' => $cor_id,
                 'brd_id' => $brd_id,
-                'cos_file_1' => $write_file_path.'orderstatus_'.$cor_id.'.html',
+                'cos_file_1' => cdate('Y') . '/' . cdate('m') . '/' .$brd_id . '/'.'orderstatus_'.$cor_id.'.html',
             );
 
             
             $DB2->insert('cb_cmall_orderstatus', $updatedata);
-            $cor_id = $DB2->insert_id();
+            $cor_id_ = $DB2->insert_id();
            
-            if(empty($cor_id)){
+            if(empty($cor_id_)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
@@ -4936,7 +5049,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             // chmod($write_file_path, 0644);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
                     
-
+            $this->Cmall_order_model->update($cor_id,array('cor_status' =>1));
                     
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
@@ -4948,5 +5061,58 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
 
         
+    }
+
+
+    public function get_orderstatus_html_file($cos_id)
+    {
+        $this->output->set_content_type('application/json');
+
+        
+        
+
+
+        if (empty($cos_id)) {
+            $result = array('resultcode'=>1001,'message' => 'cos_id 가 없습니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
+        
+        $DB2 = $this->load->database('db2', TRUE);
+        
+        $DB2->select('cb_cmall_orderstatus.mem_id,cb_cmall_orderstatus.brd_id,cb_cmall_orderstatus.cor_id,cb_cmall_orderstatus.cos_file_1,cb_cmall_orderstatus.cos_order_no');
+        $DB2->from('cb_cmall_orderstatus');
+        
+        $where = array(
+            'cos_id' => $cos_id,
+        );
+
+        $DB2->where($where);
+        // $this->db2->where($where);
+        // $this->db2->limit($limit);
+        
+        $qry = $DB2->get();
+        $result_order = $qry->row_array();
+
+        
+        // $result_order['cos_file_1'] = FCPATH.$result_order['cos_file_1'];
+        $result_order['cos_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cos_file_1']);
+
+        $crawlwhere = array(
+            'brd_id' => element('brd_id', $result_order),
+        );
+
+        $board_crawl = $this->Board_crawl_model->get_one('','brd_url',$crawlwhere);
+
+        $result_order['brd_url'] = element('brd_url', $board_crawl);
+
+        if($result_order){
+                    
+            exit(json_encode($result_order,JSON_UNESCAPED_UNICODE));
+        }
+
+
+        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+                
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 }

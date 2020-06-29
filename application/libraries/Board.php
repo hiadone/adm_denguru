@@ -537,6 +537,7 @@ class Board extends CI_Controller
 		$image_height = element('image_height', $config);
 		$period_second = element('period_second', $config);
 		$cache_minute = element('cache_minute', $config);
+		$cmall_count = element('cmall_count', $config);
 
 		if ($limit <= 0) {
 			return false;
@@ -566,7 +567,8 @@ class Board extends CI_Controller
 					'brd_id' => $brd_id,
 				);
 
-		$view['view']['cmallitem_count'] = $this->CI->Cmall_item_model->count_by($itemwhere);;
+		// $view['view']['cmallitem_count'] = $this->CI->Cmall_item_model->count_by($itemwhere);;
+		$view['view']['cmallitem_count'] = $cmall_count;
 
 		if ($brd_key) {
 			if (is_array($brd_key)) {
@@ -998,5 +1000,11 @@ class Board extends CI_Controller
 		
 		return true;
 
+	}
+
+	public function get_cmall_count()
+	{	
+		$this->CI->load->model(array('Cmall_item_model'));
+		return $this->CI->Cmall_item_model->total_count_by();
 	}
 }

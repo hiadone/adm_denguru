@@ -1,5 +1,12 @@
 <?php
+$cmall_count = $this->board->get_cmall_count();
+$cmall =array();
 
+
+foreach ($cmall_count as $val) 
+{
+	$cmall[element('brd_id',$val)] = element('rownum',$val);
+}
 $k = 0;
 $is_open = false;
 if (element('board_list', $view)) {
@@ -14,6 +21,8 @@ if (element('board_list', $view)) {
 			'image_width' => '',
 			'image_height' => '',
 			'cache_minute' => 1,
+			'cmall_count' => element(element('brd_id', $board),$cmall),
+			
 		);
 		if ($k % 2 === 0) {
 			echo '<div class="row">';
