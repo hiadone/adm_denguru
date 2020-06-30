@@ -4614,7 +4614,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             show_404();
         }
 
-
+        $pointer_url = $this->input->post('pointer_url');
         
         $pointer_url_ = parse_url($pointer_url);
         $cor_key='';
@@ -4666,7 +4666,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
         } 
         $cor_pay_type = '';
          if(empty($cor_key) && strpos($pointer_url_['host'],'pay.naver.com') !==false){
-
+            require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
+            $html_dom='';
+            $html = new simple_html_dom();
+            $html->load($this->input->post('data',null,''));
             $html_dom = $html->find('#ct > div.ord_cont > div.ordf_sc > div.ordinf_tlb > table > tbody > tr.ord_num.btn_tr > td > div > strong',0)->plaintext;
 
             if($html_dom){
