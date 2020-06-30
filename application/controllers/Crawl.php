@@ -3573,6 +3573,98 @@ $img_src_array = parse_url(urldecode($imageUrl));
 'http://www.inherent.co.kr/',
 'http://pet-paradise.kr/index.html',
 );
+
+
+$aaa = array(
+    1,
+102,
+109,
+112,
+115,
+118,
+120,
+129,
+134,
+15,
+157,
+175,
+188,
+2,
+21,
+221,
+250,
+273,
+307,
+315,
+326,
+49,
+63,
+82,
+85,
+88,
+92,
+97,
+100,
+103,
+110,
+113,
+116,
+119,
+121,
+13,
+140,
+154,
+163,
+185,
+189,
+20,
+213,
+222,
+251,
+278,
+309,
+323,
+34,
+59,
+68,
+83,
+86,
+89,
+95,
+98,
+101,
+105,
+111,
+114,
+117,
+12,
+123,
+130,
+142,
+155,
+173,
+187,
+19,
+205,
+215,
+233,
+254,
+301,
+314,
+324,
+4,
+61,
+81,
+84,
+87,
+90,
+96
+    );
+
+foreach($aaa as $val){
+    echo $this->board->item_id('brd_name',$val)."<br>";
+}
+exit;
         $list_num = $result['total_rows'];
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
@@ -4563,10 +4655,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
     public function order_html_write_file($brd_id,$mem_id=2)
     {   
 
-        
-                
-        
-        
+ 
+
+
+
         $this->load->helper('file');
         $this->output->set_content_type('application/json');
 
@@ -4744,9 +4836,9 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         
         $write_file_path =  $upload_path;
-
+        $write_file_name =  'order_'.str_replace('=','',str_replace('?','',str_replace('/','',$cor_key))).'.html';
         
-        if (write_file($write_file_path.'order_'.str_replace('/','',$cor_key).'.html', $data))
+        if (write_file($write_file_path.$write_file_name, $data))
         {   
 
 
@@ -4780,7 +4872,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 
                 'cor_key' => $cor_key,
                 'brd_id' => $brd_id,
-                'cor_file_1' => cdate('Y') . '/' . cdate('m') . '/' .$brd_id . '/'.'order_'.$cor_key.'.html',
+                'cor_file_1' => cdate('Y') . '/' . cdate('m') . '/' .$brd_id . '/'.$write_file_name,
             );
 
             // log_message('error', explode(',',$updatedata));
