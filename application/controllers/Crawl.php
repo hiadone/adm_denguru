@@ -4127,7 +4127,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
-    public function insert_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '',$cor_key = '')
+    public function insert_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '',$cor_key = '',$cor_pay_type = '')
     {   
         $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
@@ -4205,7 +4205,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['mem_nickname'] = element('mem_nickname', $member,'');
         $insertdata['mem_email'] = element('mem_email', $member,'');
         $insertdata['mem_phone'] = element('mem_phone', $member,'');
-        $insertdata['cor_pay_type'] = $this->input->post('pay_type', null, '');
+        $insertdata['cor_pay_type'] = $cor_pay_type;
         $insertdata['cor_content'] = $cor_content;
         $insertdata['cor_ip'] = $this->input->ip_address();
         $insertdata['cor_useragent'] = $this->agent->agent_string();
@@ -4215,7 +4215,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['cor_datetime'] = date('Y-m-d H:i:s');
         $insertdata['mem_realname'] = element('mem_nickname', $member,'');
         $insertdata['cor_total_money'] = $total_price_sum;        
-        $insertdata['cor_key'] = $cor_key;
+        $insertdata['cor_key'] = stripslashes($cor_key);
         $insertdata['cor_order_no'] = $cor_order_no;
         $insertdata['brd_id'] = $brd_id;
         
@@ -4615,12 +4615,13 @@ $img_src_array = parse_url(urldecode($imageUrl));
         }
 
 
-        $pointer_url = $this->input->post('pointer_url',null,'');
+        
+        $pointer_url_ = parse_url($pointer_url);
         $cor_key='';
 
         if(element('brd_order_key',$board_crawl) ==='sixshop'){
             
-            $pointer_url_ = parse_url($pointer_url);
+            
 
             
 
@@ -4631,6 +4632,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             if($pointer_url_['path'])                
                 $cor_key = '/'.$fruit.'/'.$fruit1;
+
 
         } else {
 
@@ -4662,7 +4664,19 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
             // $cor_key = '/'.$orderinfo['order_no'];
         } 
-     
+        $cor_pay_type = '';
+         if(empty($cor_key) && strpos($pointer_url_['host'],'pay.naver.com') !==false){
+
+            $html_dom = $html->find('#ct > div.ord_cont > div.ordf_sc > div.ordinf_tlb > table > tbody > tr.ord_num.btn_tr > td > div > strong',0)->plaintext;
+
+            if($html_dom){
+                $cor_key = '/'.$html_dom;
+                
+            }
+
+            $cor_pay_type = 'naverpay';
+        }
+
         if(empty($cor_key)){
             
             
@@ -4780,7 +4794,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 'cor_ip' => $this->input->ip_address(),
                 'cor_useragent' => $this->agent->agent_string(),
                 
-                
+                'cor_pay_type' => $cor_pay_type,
                 'cor_key' => $cor_key,
                 'brd_id' => $brd_id,
                 'cor_file_1' => cdate('Y') . '/' . cdate('m') . '/' .$brd_id . '/'.$write_file_name,
@@ -4833,7 +4847,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('cb_cmall_order.mem_id,cb_cmall_order.brd_id,cb_cmall_order.cor_key,cb_cmall_order.cor_file_1');
+        $DB2->select('cb_cmall_order.mem_id,cb_cmall_order.brd_id,cb_cmall_order.cor_key,cb_cmall_order.cor_file_1,cb_cmall_order.cor_pay_type');
         $DB2->from('cb_cmall_order');
         
         $where = array(
@@ -5082,7 +5096,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('cb_cmall_orderstatus.mem_id,cb_cmall_orderstatus.brd_id,cb_cmall_orderstatus.cor_id,cb_cmall_orderstatus.cos_file_1,cb_cmall_orderstatus.cos_order_no');
+        $DB2->select('cb_cmall_orderstatus.mem_id,cb_cmall_orderstatus.brd_id,cb_cmall_ordesrtatus.cor_id,cb_cmall_orderstatus.cos_file_1,cb_cmall_orderstatus.cos_order_no');
         $DB2->from('cb_cmall_orderstatus');
         
         $where = array(
@@ -5100,12 +5114,20 @@ $img_src_array = parse_url(urldecode($imageUrl));
         // $result_order['cos_file_1'] = FCPATH.$result_order['cos_file_1'];
         $result_order['cos_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cos_file_1']);
 
+
+
         $crawlwhere = array(
             'brd_id' => element('brd_id', $result_order),
         );
 
         $board_crawl = $this->Board_crawl_model->get_one('','brd_url',$crawlwhere);
 
+
+        $this->load->model(array('Cmall_order_model'));
+
+        $order = $this->Cmall_order_model->get_one(element('cor_id', $result_order),'cor_pay_type');
+
+        $result_order['cor_pay_type'] = element('cor_pay_type', $order);
         $result_order['brd_url'] = element('brd_url', $board_crawl);
 
         if($result_order){
