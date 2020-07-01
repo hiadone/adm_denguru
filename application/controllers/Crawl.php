@@ -4215,7 +4215,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['cor_datetime'] = date('Y-m-d H:i:s');
         $insertdata['mem_realname'] = element('mem_nickname', $member,'');
         $insertdata['cor_total_money'] = $total_price_sum;        
-        $insertdata['cor_key'] = stripslashes($cor_key);
+        $insertdata['cor_key'] = urldecode($cor_key);
         $insertdata['cor_order_no'] = $cor_order_no;
         $insertdata['brd_id'] = $brd_id;
         
@@ -4821,7 +4821,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     log_message('error', 'order'.$cor_id.'cor_key 에러');
             }
             
-            $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key);
+            $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key,$cor_pay_type);
             log_message('error', $result['message']);
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
@@ -4875,6 +4875,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $board_crawl = $this->Board_crawl_model->get_one('','brd_url',$crawlwhere);
 
         $result_order['brd_url'] = element('brd_url', $board_crawl);
+
+        $result_order['cor_key'] = urlencode($result_order['cor_key']);
 
         if($result_order){
                     
