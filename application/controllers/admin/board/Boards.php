@@ -751,6 +751,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
+				'field' => 'brd_nomember_order_url',
+				'label' => '스토어 비회원 주문 조회 페이지',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'brd_register_url',
 				'label' => '스토어회원가입URL',
 				'rules' => 'trim',
@@ -875,13 +880,14 @@ class Boards extends CB_Controller
 				'brd_register_birthday' => $this->input->post('brd_register_birthday', null, ''),
 				'brd_register_quest' => $this->input->post('brd_register_quest', null, ''),
 				'brd_register_answer' => $this->input->post('brd_register_answer', null, ''),
-				
+
 
 
 				'brd_content' => $this->input->post('brd_content', null, ''),
 				'brd_content_detail' => $this->input->post('brd_content_detail', null, ''),
 				'brd_orderstatus_url' => $this->input->post('brd_orderstatus_url', null, ''),
 				'brd_phone' => $this->input->post('brd_phone', null, ''),
+				'brd_nomember_order_url' => $this->input->post('brd_nomember_order_url', null, ''),
 			);
 
 			

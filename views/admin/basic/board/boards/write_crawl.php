@@ -94,6 +94,12 @@
                         <input type="text" class="form-control " name="brd_phone" value="<?php echo set_value('brd_phone', element('brd_phone', element('data', $view))); ?>" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">스토어 비회원 주문 조회 페이지</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " name="brd_nomember_order_url" value="<?php echo set_value('brd_nomember_order_url', element('brd_nomember_order_url', element('data', $view))); ?>" />
+                    </div>
+                </div>
             </div>
 
             <div class="box-table-header">
