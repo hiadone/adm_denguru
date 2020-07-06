@@ -4916,7 +4916,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     log_message('error', 'order'.$cor_id.'cor_key 에러');
             }
             
-            $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key,$cor_pay_type);
+            // $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key,$cor_pay_type);
             log_message('error', $result['message']);
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
@@ -4945,7 +4945,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('cb_cmall_order.mem_id,cb_cmall_order.brd_id,cb_cmall_order.cor_key,cb_cmall_order.cor_file_1,cb_cmall_order.cor_pay_type');
+        $DB2->select('cb_cmall_order.cor_id,cb_cmall_order.mem_id,cb_cmall_order.brd_id,cb_cmall_order.cor_key,cb_cmall_order.cor_file_1,cb_cmall_order.cor_pay_type');
         $DB2->from('cb_cmall_order');
         
         $where = array(
@@ -4958,6 +4958,11 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         $qry = $DB2->get();
         $result_order = $qry->row_array();
+
+        if ( ! element('cor_id', $result_order)) {
+            $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
 
         $result_order['cor_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cor_file_1']);
         
@@ -5196,7 +5201,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('cb_cmall_orderstatus.mem_id,cb_cmall_orderstatus.brd_id,cb_cmall_ordesrtatus.cor_id,cb_cmall_orderstatus.cos_file_1,cb_cmall_orderstatus.cos_order_no');
+        $DB2->select('cb_cmall_orderstatus.cos_id,cb_cmall_orderstatus.mem_id,cb_cmall_orderstatus.brd_id,cb_cmall_orderstatus.cor_id,cb_cmall_orderstatus.cos_file_1,cb_cmall_orderstatus.cos_order_no');
         $DB2->from('cb_cmall_orderstatus');
         
         $where = array(
@@ -5210,6 +5215,11 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $qry = $DB2->get();
         $result_order = $qry->row_array();
 
+
+        if ( ! element('cos_id', $result_order)) {
+            $result = array('resultcode'=>1000,'message' => '없는 cos_id 입니다.');
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        }
         
         // $result_order['cos_file_1'] = FCPATH.$result_order['cos_file_1'];
         $result_order['cos_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cos_file_1']);
