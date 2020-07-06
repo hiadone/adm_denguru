@@ -755,6 +755,69 @@ class Boards extends CB_Controller
 				'label' => '스토어회원가입URL',
 				'rules' => 'trim',
 			),
+
+			array(
+				'field' => 'brd_register_id',
+				'label' => '회원 id 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_name',
+				'label' => '회원 이름 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_zipcode',
+				'label' => '회원 우편번호 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_addr1',
+				'label' => '회원 주소 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_addr2',
+				'label' => '회원 상세 주소 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_hidden',
+				'label' => '회원 hidden 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_phone',
+				'label' => '회원 전화번호 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_handphone',
+				'label' => '회원 핸드폰번호 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_email',
+				'label' => '회원 이메일 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_register_birthday',
+				'label' => '회원 생년월일 필드',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => '회원 질문 필드',
+				'label' => 'brd_register_quest',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => '회원 질문 확인 필드',
+				'label' => 'brd_register_answer',
+				'rules' => 'trim',
+			),
+
+
 			array(
 				'field' => 'brd_content',
 				'label' => '스토어 크롤링 로직',
@@ -799,6 +862,22 @@ class Boards extends CB_Controller
 				'brd_comment' => $this->input->post('brd_comment', null, ''),
 				'brd_order_url' => $this->input->post('brd_order_url', null, ''),
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),
+
+				'brd_register_id' => $this->input->post('brd_register_id', null, ''),
+				'brd_register_name' => $this->input->post('brd_register_name', null, ''),
+				'brd_register_zipcode' => $this->input->post('brd_register_zipcode', null, ''),
+				'brd_register_addr1' => $this->input->post('brd_register_addr1', null, ''),
+				'brd_register_addr2' => $this->input->post('brd_register_addr2', null, ''),
+				'brd_register_hidden' => $this->input->post('brd_register_hidden', null, ''),
+				'brd_register_phone' => $this->input->post('brd_register_phone', null, ''),
+				'brd_register_handphone' => $this->input->post('brd_register_handphone', null, ''),
+				'brd_register_email' => $this->input->post('brd_register_email', null, ''),
+				'brd_register_birthday' => $this->input->post('brd_register_birthday', null, ''),
+				'brd_register_quest' => $this->input->post('brd_register_quest', null, ''),
+				'brd_register_answer' => $this->input->post('brd_register_answer', null, ''),
+				
+
+
 				'brd_content' => $this->input->post('brd_content', null, ''),
 				'brd_content_detail' => $this->input->post('brd_content_detail', null, ''),
 				'brd_orderstatus_url' => $this->input->post('brd_orderstatus_url', null, ''),

@@ -107,82 +107,82 @@
                         <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
                     </div>
                 </div>
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">회원 id 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_id" value="<?php echo set_value('brd_register_id', element('brd_register_id', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 이름 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_name" value="<?php echo set_value('brd_register_name', element('brd_register_name', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 우편번호 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_zipcode" value="<?php echo set_value('brd_register_zipcode', element('brd_register_zipcode', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 주소 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_addr1" value="<?php echo set_value('brd_register_addr1', element('brd_register_addr1', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 상세 주소 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_addr2" value="<?php echo set_value('brd_register_addr2', element('brd_register_addr2', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 hidden 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
-                        <p class="help-block">우편번호를 절차 대로 잘 입력되엇다고 확인 하는 필드</p>
+                        <input type="text" class="form-control " name="brd_register_hidden" value="<?php echo set_value('brd_register_hidden', element('brd_register_hidden', element('data', $view))); ?>" />
+                        <p class="help-block">우편번호를 절차 대로 잘 입력되엇다고 확인 하는 필드명 없으면 무시 </p>
                     </div>
                 </div>
                <div class="form-group">
                     <label class="col-sm-2 control-label">회원 전화번호 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_phone" value="<?php echo set_value('brd_register_phone', element('brd_register_phone', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 핸드폰번호 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_handphone" value="<?php echo set_value('brd_register_handphone', element('brd_register_handphone', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 이메일 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_email" value="<?php echo set_value('brd_register_email', element('brd_register_email', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 생년월일 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
-                        <p class="help-block">YYYY-mm-dd 형태로 입력</p>
+                        <input type="text" class="form-control " name="brd_register_birthday" value="<?php echo set_value('brd_register_birthday', element('brd_register_birthday', element('data', $view))); ?>" />
+                        
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 질문 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_quest" value="<?php echo set_value('brd_register_quest', element('brd_register_quest', element('data', $view))); ?>" />
                         
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">회원 질문 확인 필드</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_register_url" value="<?php echo set_value('brd_register_url', element('brd_register_url', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_register_answer" value="<?php echo set_value('brd_register_answer', element('brd_register_answer', element('data', $view))); ?>" />
                         
                     </div>
-                </div> -->
+                </div>
             </div>
 
            
