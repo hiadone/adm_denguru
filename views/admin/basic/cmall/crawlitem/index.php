@@ -31,6 +31,9 @@
 							<th><a href="<?php echo element('crw_category1', element('sort', $view)); ?>">카테고리</a></th>
 							<th><a href="<?php echo element('crw_brand1', element('sort', $view)); ?>">브랜드</a></th>
 							<th>이미지</th>
+							<th>상세이미지</th>
+							<th>상세TEXT</th>
+							<th>브랜드2</th>
 							<th><a href="<?php echo element('crw_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('crw_price', element('sort', $view)); ?>">판매가격</a></th>
 							<!-- <th>Vision API label</th> -->
@@ -48,7 +51,11 @@
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
 						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-							<td><?php echo element('crw_goods_code', $result); ?></td>
+							<td><?php echo element('crw_goods_code', $result); ?>
+								<br>
+								<br>
+								<?php echo element('crw_id', $result); ?>
+							</td>
 							<td><?php echo element('brd_name', $result); ?></td>
 							<td >
 								<?php echo html_escape(rawurldecode(element('crw_category1', $result))); ?><br>
@@ -61,6 +68,8 @@
 								<?php echo html_escape(element('crw_brand3', $result)); ?><br>
 								<?php echo html_escape(element('crw_brand4', $result)); ?><br>
 								<?php echo html_escape(element('crw_brand5', $result)); ?>
+
+								
 							</td>
 							<td>
 								
@@ -70,7 +79,32 @@
 									</a>
 								<?php } ?>
 							</td>
-							<td><a href="<?php echo element('crw_post_url', $result); ?>" target="_blank"><?php echo html_escape(element('crw_name', $result)); ?></a></td>
+							<td>
+								
+								<?php if (element('cdt_file_1', $result)) {?>
+									<a href="<?php echo element('crw_post_url', $result); ?>" target="_blank">
+										<img src="<?php echo thumb_url('crawlitem', element('cdt_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+									</a>
+								<?php } ?>
+							</td>
+							<td>
+								<?php echo html_escape(element('cdt_context', $result)); ?><br>
+								
+							</td>
+							<td>
+								<?php echo html_escape(element('cdt_brand1', $result)); ?><br>
+								<?php echo html_escape(element('cdt_brand2', $result)); ?><br>
+								<?php echo html_escape(element('cdt_brand3', $result)); ?><br>
+								<?php echo html_escape(element('cdt_brand4', $result)); ?><br>
+								<?php echo html_escape(element('cdt_brand5', $result)); ?>
+							</td>
+							<td><a href="<?php echo element('crw_post_url', $result); ?>" target="_blank"><?php echo html_escape(element('crw_name', $result)); ?></a>
+								<br>
+								<br>
+	<?php echo element('crw_datetime', $result); ?>
+								<br>
+								<?php echo element('crw_updated_datetime', $result); ?>
+							</td>
 							<td><?php echo html_escape(element('crw_price', $result)); ?></td>
 							
 							<!-- <td>
