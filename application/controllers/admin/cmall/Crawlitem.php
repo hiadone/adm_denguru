@@ -166,8 +166,8 @@ class Crawlitem extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 
-
-                if(empty(element('crw_name', $val)) || empty(element('crw_price', $val)) || empty(element('crw_post_url', $val)) || empty(element('crw_goods_code', $val)) || (empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand2', $val)) && empty(element('crw_brand3', $val)) && empty(element('crw_brand4', $val)) &&empty(element('crw_brand5', $val)) && empty(element('cdt_brand1', $val)) && empty(element('cdt_brand2', $val)) ) || (empty(element('crw_category1', $val)) && empty(element('crw_category2', $val)) && empty(element('crw_category3', $val)) ))
+                
+                if(empty(element('crw_name', $val)) || (empty(element('crw_price', $val)) && empty(element('crw_price_sale', $val)) && empty(element('crw_is_soldout', $val))  ) || empty(element('crw_post_url', $val)) || (empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand2', $val)) && empty(element('crw_brand3', $val)) && empty(element('crw_brand4', $val)) && empty(element('crw_brand5', $val)) && empty(element('cdt_brand1', $val)) && empty(element('cdt_brand2', $val)) && empty(element('cdt_brand3', $val)) && empty(element('cdt_brand4', $val)) && empty(element('cdt_brand5', $val)) ) || (empty(element('crw_category1', $val)) && empty(element('crw_category2', $val)) && empty(element('crw_category3', $val)) ))
                     $result['list'][$key]['warning'] = 1 ; 
                 else 
                     $result['list'][$key]['warning'] = '' ; 
@@ -1356,7 +1356,7 @@ class Crawlitem extends CB_Controller
             //     $this->db2->or_where($skey, $sval);
             // }
             
-            $this->db2->group_start();
+            
                 $this->db2->or_where('crw_name', '');
                 $this->db2->or_where('crw_post_url', '');
                 $this->db2->or_where('crw_goods_code', '');
@@ -1373,15 +1373,37 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand3', '');
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
+
+                    $this->db2->where('cdt_brand1', '');
+                    $this->db2->where('cdt_brand2', '');
+                    $this->db2->where('cdt_brand3', '');
+                    $this->db2->where('cdt_brand4', '');
+                    $this->db2->where('cdt_brand5', '');
                     
                 $this->db2->group_end();
 
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_brand1', '');
+                    $this->db2->where('crw_brand2', '');
+                    $this->db2->where('crw_brand3', '');
+                    $this->db2->where('crw_brand4', '');
+                    $this->db2->where('crw_brand5', '');
+
+                    $this->db2->where('cdt_brand1 is null',null,false);
+                    $this->db2->where('cdt_brand2 is null',null,false);
+                    $this->db2->where('cdt_brand3 is null',null,false);
+                    $this->db2->where('cdt_brand4 is null',null,false);
+                    $this->db2->where('cdt_brand5 is null',null,false);
+                    
+                    
+                $this->db2->group_end();
+                
                 $this->db2->group_start('','or');
                     $this->db2->where('crw_category1', '');
                     $this->db2->where('crw_category2', '');
                     $this->db2->where('crw_category3', '');
                 $this->db2->group_end();
-            $this->db2->group_end();
+            
 
             
             
@@ -1476,7 +1498,7 @@ class Crawlitem extends CB_Controller
             //     $this->db2->or_where($skey, $sval);
             // }
             
-            $this->db2->group_start();
+            
                 $this->db2->or_where('crw_name', '');
                 $this->db2->or_where('crw_post_url', '');
                 $this->db2->or_where('crw_goods_code', '');
@@ -1503,11 +1525,27 @@ class Crawlitem extends CB_Controller
                 $this->db2->group_end();
 
                 $this->db2->group_start('','or');
+                    $this->db2->where('crw_brand1', '');
+                    $this->db2->where('crw_brand2', '');
+                    $this->db2->where('crw_brand3', '');
+                    $this->db2->where('crw_brand4', '');
+                    $this->db2->where('crw_brand5', '');
+
+                    $this->db2->where('cdt_brand1 is null',null,false);
+                    $this->db2->where('cdt_brand2 is null',null,false);
+                    $this->db2->where('cdt_brand3 is null',null,false);
+                    $this->db2->where('cdt_brand4 is null',null,false);
+                    $this->db2->where('cdt_brand5 is null',null,false);
+                    
+                    
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
                     $this->db2->where('crw_category1', '');
                     $this->db2->where('crw_category2', '');
                     $this->db2->where('crw_category3', '');
                 $this->db2->group_end();
-            $this->db2->group_end();
+            
 
             
             
@@ -1573,9 +1611,9 @@ class Crawlitem extends CB_Controller
     public function get_admin_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
     {   
 
-
+        
         $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
-        $result = $this->_get_list_common($select = '', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        $result = $this->_get_list_common($select ='', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
 }
