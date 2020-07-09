@@ -83,7 +83,7 @@
 								
 								<?php if (element('cdt_file_1', $result)) {?>
 									<a href="<?php echo element('crw_post_url', $result); ?>" target="_blank">
-										<img src="<?php echo thumb_url('crawlitemdetail', element('cdt_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+										<img src="<?php echo thumb_url('crawlitemdetail', element('cdt_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0" style="width:80px;height:100px;" />
 									</a>
 								<?php } ?>
 							</td>
