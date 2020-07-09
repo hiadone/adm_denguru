@@ -109,7 +109,7 @@ class Crawlitem extends CB_Controller
                     $brd_id_arr[] = element('brd_id',$value);
                 }
 
-                $this->where_in['brd_id'] =  $brd_id_arr;
+                $this->where_in['crawl_item.brd_id'] =  $brd_id_arr;
 
 
                 // $this->db2->group_end();
@@ -150,7 +150,7 @@ class Crawlitem extends CB_Controller
         } 
         $this->allow_search_field = array('crw_goods_code', 'crw_price','crw_name'); // 검색중 like 가 아닌 = 검색을 하는 필드
         $this->search_field_equal = array(); 
-        $this->allow_order_field = array('crawl_item.crw_id','brd_id','crw_goods_code', 'crw_price_sale', 'crw_name', 'crw_price'); // 정렬이 가능한 필드
+        $this->allow_order_field = array('crawl_item.crw_id','crawl_item.brd_id','crw_goods_code', 'crw_price_sale', 'crw_name', 'crw_price'); // 정렬이 가능한 필드
 
 
         $per_page = admin_listnum();
