@@ -82,7 +82,7 @@ class Crawlitem extends CB_Controller
         $param =& $this->querystring;
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
         $view['view']['sort'] = array(
-            'crw_id' => $param->sort('crw_id', 'asc'),
+            'crw_id' => $param->sort('crawl_item.crw_id', 'asc'),
             'crw_price_sale' => $param->sort('crw_price_sale', 'asc'),
             'crw_name' => $param->sort('crw_name', 'asc'),
             'crw_datetime' => $param->sort('crw_datetime', 'asc'),
@@ -92,7 +92,7 @@ class Crawlitem extends CB_Controller
             'crw_brand1' => $param->sort('crw_brand1', 'asc'),
 
         );
-        $findex = $this->input->get('findex') ? $this->input->get('findex') : 'crw_id';
+        $findex = $this->input->get('findex') ? $this->input->get('findex') : 'crawl_item.crw_id';
         $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
@@ -150,7 +150,7 @@ class Crawlitem extends CB_Controller
         } 
         $this->allow_search_field = array('crw_goods_code', 'crw_price','crw_name'); // 검색중 like 가 아닌 = 검색을 하는 필드
         $this->search_field_equal = array(); 
-        $this->allow_order_field = array('crw_id','brd_id','crw_goods_code', 'crw_price_sale', 'crw_name', 'crw_price'); // 정렬이 가능한 필드
+        $this->allow_order_field = array('crawl_item.crw_id','brd_id','crw_goods_code', 'crw_price_sale', 'crw_name', 'crw_price'); // 정렬이 가능한 필드
 
 
         $per_page = admin_listnum();
@@ -1271,7 +1271,7 @@ class Crawlitem extends CB_Controller
     public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
     {
      
-            $findex = 'crw_id';
+            $findex = 'crawl_item.crw_id';
      
 
         $forder = (strtoupper($forder) === 'ASC') ? 'ASC' : 'DESC';
@@ -1493,6 +1493,12 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand3', '');
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
+
+                    $this->db2->where('cdt_brand1', '');
+                    $this->db2->where('cdt_brand2', '');
+                    $this->db2->where('cdt_brand3', '');
+                    $this->db2->where('cdt_brand4', '');
+                    $this->db2->where('cdt_brand5', '');
                     
                 $this->db2->group_end();
 
@@ -1569,7 +1575,7 @@ class Crawlitem extends CB_Controller
 
 
         $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
-        $result = $this->_get_list_common($select = '', $join = '', $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        $result = $this->_get_list_common($select = '', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
 }
