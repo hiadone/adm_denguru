@@ -4058,7 +4058,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
         }
 
         $this->load->library('upload');
-        
+        $file = json_encode($_FILES);
+            $post = json_encode($_POST);
+            log_message('error', $file);
+            log_message('error', $post);
         for ($k = 1; $k <= 10; $k++) {
             if (isset($_FILES) && isset($_FILES['cdt_file_' . $k]) && isset($_FILES['cdt_file_' . $k]['name']) && $_FILES['cdt_file_' . $k]['name']) {
                 $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
@@ -5247,6 +5250,40 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
+                
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+    }
+
+    public function crawl_delete($brd_id)
+    {
+
+        
+        $this->output->set_content_type('application/json');
+
+        
+        
+
+
+       
+        
+        $DB2 = $this->load->database('db2', TRUE);       
+        
+        
+        $deletewhere = array(
+                'brd_id' => $brd_id,
+            );
+
+        $DB2->where($deletewhere);
+
+        $DB2->delete('cb_crawl_detail');
+
+        $DB2->where($deletewhere);
+
+        $DB2->delete('cb_crawl_item');
+            
+
+
+        $result = array('resultcode'=>1,'message' => '삭제 되어 습니다.');
                 
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }

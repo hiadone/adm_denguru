@@ -110,6 +110,8 @@ class Crawlitem extends CB_Controller
                 }
 
                 $this->where_in['brd_id'] =  $brd_id_arr;
+
+
                 // $this->db2->group_end();
             }
         } elseif($this->input->get('sfield') === 'crw_category'){
@@ -206,6 +208,7 @@ class Crawlitem extends CB_Controller
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);
+        $view['view']['warning_url'] = admin_url($this->pagedir.'?warning=1&'.$param->output());
         $view['view']['list_delete_url'] = admin_url($this->pagedir . '/listdelete/?' . $param->output());
         $view['view']['list_update_url'] = admin_url($this->pagedir . '/listupdate/?' . $param->output());
 
@@ -1465,13 +1468,43 @@ class Crawlitem extends CB_Controller
         }
 
         if($this->or_where){
-            $this->db2->group_start();
-                    
-            foreach ($this->or_where as $skey => $sval) {
-                $this->db2->or_where($skey, $sval);
-            }
+
             
+            // $this->db2->group_start();
+                    
+            // foreach ($this->or_where as $skey => $sval) {
+            //     $this->db2->or_where($skey, $sval);
+            // }
+            
+            $this->db2->group_start();
+                $this->db2->or_where('crw_name', '');
+                $this->db2->or_where('crw_post_url', '');
+                $this->db2->or_where('crw_goods_code', '');
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_price', 0);
+                    $this->db2->where('crw_price_sale', 0);
+                    $this->db2->where('crw_is_soldout', 0);
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_brand1', '');
+                    $this->db2->where('crw_brand2', '');
+                    $this->db2->where('crw_brand3', '');
+                    $this->db2->where('crw_brand4', '');
+                    $this->db2->where('crw_brand5', '');
+                    
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_category1', '');
+                    $this->db2->where('crw_category2', '');
+                    $this->db2->where('crw_category3', '');
+                $this->db2->group_end();
             $this->db2->group_end();
+
+            
+            
         }
         
         if ($search_where) {
@@ -1482,6 +1515,7 @@ class Crawlitem extends CB_Controller
             $this->db2->group_start();
                     
             foreach ($this->where_in as $skey => $sval) {
+                
                 $this->db2->where_in($skey, $sval);
             }
             
