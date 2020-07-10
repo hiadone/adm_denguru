@@ -1612,7 +1612,7 @@ class Crawlitem extends CB_Controller
     {   
 
         
-        $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
+        $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'inner');
         $result = $this->_get_list_common($select ='', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
