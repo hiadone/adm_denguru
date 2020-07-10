@@ -4296,7 +4296,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $od_status = 'order'; //주문상태
         $cor_id = $unique_id;
 
+        
+            $post = json_encode($_POST);
+        
+            log_message('error', $post);
 
+        
 
         $insertdata['cor_id'] = $cor_id;
         $insertdata['mem_id'] = $mem_id;
@@ -4781,10 +4786,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
         if(empty($cor_key)){
             
             
+            $result = array('resultcode'=>2,'message' => '오류 입니다 cor_key 없습니다..');
+                    log_message('error', $result['message']);
+            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            
 
-            exit;
-
-            $cor_key = date('Ymdhi');
+            // $cor_key = date('Ymdhi');
         } 
 
         $upload_path = config_item('uploads_dir') . '/html_write/';
@@ -5240,8 +5247,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         $order = $this->Cmall_order_model->get_one(element('cor_id', $result_order),'cor_pay_type');
 
-        $result_order['cor_pay_type'] = element('cor_pay_type', $order);
-        $result_order['brd_url'] = element('brd_url', $board_crawl);
+        $result_order['cor_pay_type'] = element('cor_pay_type', $order,'');
+        $result_order['brd_url'] = element('brd_url', $board_crawl,'');
 
         if($result_order){
                     
