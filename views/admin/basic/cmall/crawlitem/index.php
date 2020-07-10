@@ -86,7 +86,7 @@
 								
 								<?php if (element('cdt_file_1', $result)) {?>
 									
-										<img src="<?php echo thumb_url('crawlitemdetail', element('cdt_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0 view_full_image" style="width:80px;height:100px;" 
+										<img src="<?php echo thumb_url('crawlitemdetail', element('cdt_file_1', $result), 80); ?>" alt="<?php echo html_escape(element('crw_name', $result)); ?>" title="<?php echo html_escape(element('crw_name', $result)); ?>" class="thumbnail mg0 view_full_image" style="width:80px;height:100px;"  data-origin-image-url="<?php echo thumb_url('crawlitemdetail', element('cdt_file_1', $result)); ?>"
  
 										/>
 									
