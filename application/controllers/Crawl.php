@@ -4431,6 +4431,10 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $cor_goods_code = array();
         $cod_count = array();
         
+           $post = json_encode($_POST);
+        
+            log_message('error', $post);
+            
         $cor_goods_code = $this->input->post('cor_goods_code',null,'');
         $cod_count = $this->input->post('cod_count',null,'');
         $od_status = 'order'; //주문상태
