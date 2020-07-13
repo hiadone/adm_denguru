@@ -4304,7 +4304,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
         {
             $cod_count = array($cod_count);
         }
-        
+
         $cor_content = $this->input->post('cor_content',null,'');
         $od_status = 'order'; //주문상태
         $cor_id = $unique_id;
@@ -4429,7 +4429,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 $updatedata[$value] = $this->input->post($value);
         }
         
-        $updatedata['cor_status'] = 1;
+        $updatedata['cor_status'] = 0;
         $updatedata['cor_approve_datetime'] = date('Y-m-d H:i:s');
         $updatedata['status'] = 'deposit';
         
