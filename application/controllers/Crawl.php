@@ -4930,6 +4930,15 @@ $img_src_array = parse_url(urldecode($imageUrl));
                     log_message('error', 'order'.$cor_id.'cor_key 에러');
             }
             
+
+            $retval = 1;
+            
+            $cmd=FCPATH.'python/bin/start.order.sh '.$cor_id;
+            // echo $cmd;
+            @exec($cmd, $output, $retval);
+
+            
+
             // $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key,$cor_pay_type);
             log_message('error', $result['message']);
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -5181,6 +5190,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
+
+            $retval = 1;
+            
+            $cmd=FCPATH.'python/bin/start.orderstatus.sh '.$cor_id_;
+            // echo $cmd;
+            @exec($cmd, $output, $retval);
 
             // chmod($write_file_path, 0644);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
