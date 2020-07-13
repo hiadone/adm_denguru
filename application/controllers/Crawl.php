@@ -4294,10 +4294,17 @@ $img_src_array = parse_url(urldecode($imageUrl));
 
         if ( ! is_array($cor_goods_code))
         {
-            $cor_goods_code = array('cor_goods_code' => $cor_goods_code);
+            $cor_goods_code = array($cor_goods_code);
         }
 
+
         $cod_count = $this->input->post('cod_count',null,'');
+
+        if ( ! is_array($cod_count))
+        {
+            $cod_count = array($cod_count);
+        }
+        
         $cor_content = $this->input->post('cor_content',null,'');
         $od_status = 'order'; //주문상태
         $cor_id = $unique_id;
