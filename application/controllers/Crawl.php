@@ -4291,6 +4291,12 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $cod_count = array();
         $total_price_sum = (int) $this->input->post('total_price_sum',null,0);
         $cor_goods_code = $this->input->post('cor_goods_code',null,'');
+
+        if ( ! is_array($cor_goods_code))
+        {
+            $cor_goods_code = array('cor_goods_code' => $cor_goods_code);
+        }
+
         $cod_count = $this->input->post('cod_count',null,'');
         $cor_content = $this->input->post('cor_content',null,'');
         $od_status = 'order'; //주문상태
@@ -4322,6 +4328,8 @@ $img_src_array = parse_url(urldecode($imageUrl));
         $insertdata['cor_order_no'] = $cor_order_no;
         $insertdata['brd_id'] = $brd_id;
         
+        
+
         
         $res = $this->Cmall_order_model->insert($insertdata);
         if ($res) {
