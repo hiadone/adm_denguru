@@ -77,12 +77,12 @@ class Cmallbrand extends CB_Controller
                 array(
                     'field' => 'cbr_value_kr',
                     'label' => '한글 브랜드명',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_kr]',
+                    'rules' => 'trim|is_unique[cmall_brand.cbr_value_kr]',
                 ),
                 array(
                     'field' => 'cbr_value_en',
                     'label' => '영문 브랜드명 ',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_en]',
+                    'rules' => 'trim|is_unique[cmall_brand.cbr_value_en]',
                 ),
             );
         } elseif ($this->input->post('type') === 'modify') {
@@ -95,12 +95,12 @@ class Cmallbrand extends CB_Controller
                 array(
                     'field' => 'cbr_value_kr',
                     'label' => '한글 브랜드명',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_kr.cbr_id.' . $this->input->post('cbr_id') . ']',
+                    'rules' => 'trim|is_unique[cmall_brand.cbr_value_kr.cbr_id.' . $this->input->post('cbr_id') . ']',
                 ),
                 array(
                     'field' => 'cbr_value_en',
                     'label' => '영문 브랜드명 ',
-                    'rules' => 'trim|required|is_unique[cmall_brand.cbr_value_en.cbr_id.' . $this->input->post('cbr_id') . ']',
+                    'rules' => 'trim|is_unique[cmall_brand.cbr_value_en.cbr_id.' . $this->input->post('cbr_id') . ']',
                 ),
             );
             
