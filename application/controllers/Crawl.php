@@ -4787,7 +4787,7 @@ $img_src_array = parse_url(urldecode($imageUrl));
             // $cor_key = '/'.$orderinfo['order_no'];
         } 
         $cor_pay_type = '';
-         if(empty($cor_key) && strpos($pointer_url_['host'],'pay.naver.com') !==false){
+         if(strpos($pointer_url_['host'],'pay.naver.com') !==false){
             require_once FCPATH . 'plugin/simplehtmldom/simple_html_dom.php';
             $html_dom='';
             $html = new simple_html_dom();
