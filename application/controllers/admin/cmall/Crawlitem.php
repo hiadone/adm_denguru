@@ -1326,7 +1326,7 @@ class Crawlitem extends CB_Controller
         if ($select) {
             $this->db2->select($select);
         }
-        $this->db2->from('crawl_item');
+        $this->db2->from('crawl_item,crawl_detail');
         if ( ! empty($join['table']) && ! empty($join['on'])) {
             if (empty($join['type'])) {
                 $join['type'] = 'left';
@@ -1346,7 +1346,7 @@ class Crawlitem extends CB_Controller
         if ($where) {
             $this->db2->where($where);
         }
-        
+        $this->db2->where('cb_crawl_detail.crw_id = cb_crawl_item.crw_id',null,false);
         if($this->or_where){
 
             
@@ -1357,6 +1357,7 @@ class Crawlitem extends CB_Controller
             // }
             
             
+            $this->db2->group_start();
                 $this->db2->or_where('crw_name', '');
                 $this->db2->or_where('crw_post_url', '');
                 $this->db2->or_where('crw_goods_code', '');
@@ -1403,7 +1404,7 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_category2', '');
                     $this->db2->where('crw_category3', '');
                 $this->db2->group_end();
-            
+            $this->db2->group_end();
 
             
             
@@ -1469,7 +1470,7 @@ class Crawlitem extends CB_Controller
 
 
         $this->db2->select('count(*) as rownum');
-        $this->db2->from('crawl_item');
+        $this->db2->from('crawl_item,crawl_detail');
         if ( ! empty($join['table']) && ! empty($join['on'])) {
             if (empty($join['type'])) {
                 $join['type'] = 'left';
@@ -1488,7 +1489,7 @@ class Crawlitem extends CB_Controller
         if ($where) {
             $this->db2->where($where);
         }
-
+        $this->db2->where('cb_crawl_detail.crw_id = cb_crawl_item.crw_id',null,false);
         if($this->or_where){
 
             
@@ -1497,8 +1498,10 @@ class Crawlitem extends CB_Controller
             // foreach ($this->or_where as $skey => $sval) {
             //     $this->db2->or_where($skey, $sval);
             // }
+                
             
-            
+
+            $this->db2->group_start();                 
                 $this->db2->or_where('crw_name', '');
                 $this->db2->or_where('crw_post_url', '');
                 $this->db2->or_where('crw_goods_code', '');
@@ -1545,6 +1548,7 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_category2', '');
                     $this->db2->where('crw_category3', '');
                 $this->db2->group_end();
+            $this->db2->group_end();
             
 
             
@@ -1612,8 +1616,8 @@ class Crawlitem extends CB_Controller
     {   
 
         
-        $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'inner');
-        $result = $this->_get_list_common($select ='', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        // $join[] = array('table' => 'crawl_det1ail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
+        $result = $this->_get_list_common($select ='', $join ='', $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
 }
