@@ -1,4 +1,11 @@
 <div class="box">
+	<div class="box-header">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">크롤링 리스트</a></li>
+			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/aaaa'); ?>" onclick="return check_form_changed();">스토어별 리스트 비교</a></li>
+			
+		</ul>
+	</div>
 	<div class="box-table">
 		<?php
 		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
@@ -50,7 +57,13 @@
 					if (element('list', element('data', $view))) {
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
-						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
+					<?php 
+						if($this->input->get('warning')) {?>
+							<tr class="<?php echo element('warning', $result) ? 'warning':'hide'; ?> ">
+						<?php }else {?>
+							<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
+					 <?php }?>
+						
 							<td><?php echo element('crw_goods_code', $result); ?>
 								<br>
 								<br>
@@ -92,8 +105,8 @@
 									
 								<?php } ?>
 							</td>
-							<td>
-								<?php echo html_escape(element('cdt_context', $result)); ?><br>
+							<td style="width:200px;">
+								<?php echo element('cdt_content', $result); ?><br>
 								
 							</td>
 							<td>

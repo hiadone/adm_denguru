@@ -24,7 +24,7 @@ class Crawlitem extends CB_Controller
     protected $db2;
     protected $or_where =array();
     protected $or_like =array();
-    protected $where_in =array();
+    protected $where =array();
 
     protected $allow_search_field =array();
 
@@ -97,6 +97,14 @@ class Crawlitem extends CB_Controller
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
 
+         $per_page = admin_listnum();
+
+        if($this->input->get('warning')){
+            $per_page = 10000;    
+            
+            $this->where['crawl_item.brd_id']=0;
+        }
+
         if($this->input->get('sfield') === 'brd_id'){
 
             
@@ -109,12 +117,20 @@ class Crawlitem extends CB_Controller
                     $brd_id_arr[] = element('brd_id',$value);
                 }
 
-                $this->where_in['crawl_item.brd_id'] =  $brd_id_arr;
+                $this->where['crawl_item.brd_id'] =  $brd_id_arr[0];
 
 
                 // $this->db2->group_end();
             }
-        } elseif($this->input->get('sfield') === 'crw_category'){
+            // $this->where['crawl_item.brd_id'] =  $this->input->get('skeyword');
+
+        }elseif($this->input->get('sfield') === 'brd_id2'){
+
+            
+           
+           $this->where['crawl_item.brd_id'] =  $this->input->get('skeyword');
+
+        }  elseif($this->input->get('sfield') === 'crw_category'){
             
             $this->or_like['crw_category1'] = rawurlencode($this->input->get('skeyword'));
             $this->or_like['crw_category2'] = rawurlencode($this->input->get('skeyword'));
@@ -153,7 +169,8 @@ class Crawlitem extends CB_Controller
         $this->allow_order_field = array('crawl_item.crw_id','crawl_item.brd_id','crw_goods_code', 'crw_price_sale', 'crw_name', 'crw_price'); // 정렬이 가능한 필드
 
 
-        $per_page = admin_listnum();
+
+        
         $offset = ($page - 1) * $per_page;
 
         /**
@@ -163,16 +180,40 @@ class Crawlitem extends CB_Controller
         $result = $this->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
 
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
+        $warning = 0;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 
                 
-                if(empty(element('crw_name', $val)) || (empty(element('crw_price', $val)) && empty(element('crw_price_sale', $val)) && empty(element('crw_is_soldout', $val))  ) || empty(element('crw_post_url', $val)) || (empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand2', $val)) && empty(element('crw_brand3', $val)) && empty(element('crw_brand4', $val)) && empty(element('crw_brand5', $val)) && empty(element('cdt_brand1', $val)) && empty(element('cdt_brand2', $val)) && empty(element('cdt_brand3', $val)) && empty(element('cdt_brand4', $val)) && empty(element('cdt_brand5', $val)) ) || (empty(element('crw_category1', $val)) && empty(element('crw_category2', $val)) && empty(element('crw_category3', $val)) ))
+                // $this->db2->select($select);
+                
+                $this->db2->from('crawl_detail');
+                
+                $this->db2->where(array('crw_id' => element('crw_id', $val)));
+                
+                // if (is_numeric($limit) && is_numeric($offset)) {
+                //     $this->db->limit($limit, $offset);
+                // }
+                $aaa = $this->db2->get();
+                $result2 = $aaa->row_array();
+                
+                $result['list'][$key]['cdt_brand1'] = element('cdt_brand1', $result2);
+                $result['list'][$key]['cdt_brand2'] = element('cdt_brand2', $result2);
+                $result['list'][$key]['cdt_brand3'] = element('cdt_brand3', $result2);
+                $result['list'][$key]['cdt_brand4'] = element('cdt_brand4', $result2);
+                $result['list'][$key]['cdt_brand5'] = element('cdt_brand5', $result2);
+
+                $result['list'][$key]['cdt_file_1'] = element('cdt_file_1', $result2);
+                $result['list'][$key]['cdt_content'] = element('cdt_content', $result2);
+
+                if(empty(element('crw_name', $val)) || (empty(element('crw_price', $val)) && empty(element('crw_price_sale', $val)) && empty(element('crw_is_soldout', $val))  ) || empty(element('crw_post_url', $val)) || (empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand1', $val)) && empty(element('crw_brand2', $val)) && empty(element('crw_brand3', $val)) && empty(element('crw_brand4', $val)) && empty(element('crw_brand5', $val)) && empty($result['list'][$key]['cdt_brand1']) && empty($result['list'][$key]['cdt_brand2']) && empty($result['list'][$key]['cdt_brand3']) && empty($result['list'][$key]['cdt_brand4']) && empty($result['list'][$key]['cdt_brand5']) ) || (empty(element('crw_category1', $val)) && empty(element('crw_category2', $val)) && empty(element('crw_category3', $val)) ))
                     $result['list'][$key]['warning'] = 1 ; 
                 else 
                     $result['list'][$key]['warning'] = '' ; 
 
-
+                if($this->input->get('warning')){
+                    if($result['list'][$key]['warning']) $warning++;
+                }
                 
                 
                 $result['list'][$key]['brd_name'] = $this->board->item_id('brd_name',element('brd_id', $val));
@@ -183,7 +224,8 @@ class Crawlitem extends CB_Controller
                 $result['list'][$key]['num'] = $list_num--;
             }
         }
-
+        if($this->input->get('warning')) $result['total_rows'] = $warning;
+        
         $view['view']['data'] = $result;
 
         /**
@@ -1326,7 +1368,7 @@ class Crawlitem extends CB_Controller
         if ($select) {
             $this->db2->select($select);
         }
-        $this->db2->from('crawl_item,crawl_detail');
+        $this->db2->from('crawl_item');
         if ( ! empty($join['table']) && ! empty($join['on'])) {
             if (empty($join['type'])) {
                 $join['type'] = 'left';
@@ -1343,10 +1385,10 @@ class Crawlitem extends CB_Controller
             }
         }
 
-        if ($where) {
-            $this->db2->where($where);
+        if ($this->where) {
+            $this->db2->where($this->where);
         }
-        $this->db2->where('cb_crawl_detail.crw_id = cb_crawl_item.crw_id',null,false);
+        
         if($this->or_where){
 
             
@@ -1355,7 +1397,6 @@ class Crawlitem extends CB_Controller
             // foreach ($this->or_where as $skey => $sval) {
             //     $this->db2->or_where($skey, $sval);
             // }
-            
             
             $this->db2->group_start();
                 $this->db2->or_where('crw_name', '');
@@ -1375,11 +1416,11 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
 
-                    $this->db2->where('cdt_brand1', '');
-                    $this->db2->where('cdt_brand2', '');
-                    $this->db2->where('cdt_brand3', '');
-                    $this->db2->where('cdt_brand4', '');
-                    $this->db2->where('cdt_brand5', '');
+                    // $this->db2->where('cdt_brand1', '');
+                    // $this->db2->where('cdt_brand2', '');
+                    // $this->db2->where('cdt_brand3', '');
+                    // $this->db2->where('cdt_brand4', '');
+                    // $this->db2->where('cdt_brand5', '');
                     
                 $this->db2->group_end();
 
@@ -1390,11 +1431,11 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
 
-                    $this->db2->where('cdt_brand1 is null',null,false);
-                    $this->db2->where('cdt_brand2 is null',null,false);
-                    $this->db2->where('cdt_brand3 is null',null,false);
-                    $this->db2->where('cdt_brand4 is null',null,false);
-                    $this->db2->where('cdt_brand5 is null',null,false);
+                    // $this->db2->where('cdt_brand1 is null',null,false);
+                    // $this->db2->where('cdt_brand2 is null',null,false);
+                    // $this->db2->where('cdt_brand3 is null',null,false);
+                    // $this->db2->where('cdt_brand4 is null',null,false);
+                    // $this->db2->where('cdt_brand5 is null',null,false);
                     
                     
                 $this->db2->group_end();
@@ -1410,18 +1451,18 @@ class Crawlitem extends CB_Controller
             
         }
 
-        if($this->where_in){
+        // if($this->where_in){
             
-            $this->db2->group_start();
+        //     $this->db2->group_start();
                     
-            foreach ($this->where_in as $skey => $sval) {
-                $this->db2->where_in($skey, $sval);
-            }
+        //     foreach ($this->where_in as $skey => $sval) {
+        //         $this->db2->where_in($skey, $sval);
+        //     }
             
-            $this->db2->group_end();
+        //     $this->db2->group_end();
             
             
-        }
+        // }
 
         if($this->or_like){
 
@@ -1470,7 +1511,7 @@ class Crawlitem extends CB_Controller
 
 
         $this->db2->select('count(*) as rownum');
-        $this->db2->from('crawl_item,crawl_detail');
+        $this->db2->from('crawl_item');
         if ( ! empty($join['table']) && ! empty($join['on'])) {
             if (empty($join['type'])) {
                 $join['type'] = 'left';
@@ -1486,10 +1527,10 @@ class Crawlitem extends CB_Controller
                 }
             }
         }
-        if ($where) {
-            $this->db2->where($where);
+        if ($this->where) {
+            $this->db2->where($this->where);
         }
-        $this->db2->where('cb_crawl_detail.crw_id = cb_crawl_item.crw_id',null,false);
+
         if($this->or_where){
 
             
@@ -1498,10 +1539,8 @@ class Crawlitem extends CB_Controller
             // foreach ($this->or_where as $skey => $sval) {
             //     $this->db2->or_where($skey, $sval);
             // }
-                
             
-
-            $this->db2->group_start();                 
+            
                 $this->db2->or_where('crw_name', '');
                 $this->db2->or_where('crw_post_url', '');
                 $this->db2->or_where('crw_goods_code', '');
@@ -1519,11 +1558,11 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
 
-                    $this->db2->where('cdt_brand1', '');
-                    $this->db2->where('cdt_brand2', '');
-                    $this->db2->where('cdt_brand3', '');
-                    $this->db2->where('cdt_brand4', '');
-                    $this->db2->where('cdt_brand5', '');
+                    // $this->db2->where('cdt_brand1', '');
+                    // $this->db2->where('cdt_brand2', '');
+                    // $this->db2->where('cdt_brand3', '');
+                    // $this->db2->where('cdt_brand4', '');
+                    // $this->db2->where('cdt_brand5', '');
                     
                 $this->db2->group_end();
 
@@ -1534,11 +1573,11 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_brand4', '');
                     $this->db2->where('crw_brand5', '');
 
-                    $this->db2->where('cdt_brand1 is null',null,false);
-                    $this->db2->where('cdt_brand2 is null',null,false);
-                    $this->db2->where('cdt_brand3 is null',null,false);
-                    $this->db2->where('cdt_brand4 is null',null,false);
-                    $this->db2->where('cdt_brand5 is null',null,false);
+                    // $this->db2->where('cdt_brand1 is null',null,false);
+                    // $this->db2->where('cdt_brand2 is null',null,false);
+                    // $this->db2->where('cdt_brand3 is null',null,false);
+                    // $this->db2->where('cdt_brand4 is null',null,false);
+                    // $this->db2->where('cdt_brand5 is null',null,false);
                     
                     
                 $this->db2->group_end();
@@ -1548,7 +1587,6 @@ class Crawlitem extends CB_Controller
                     $this->db2->where('crw_category2', '');
                     $this->db2->where('crw_category3', '');
                 $this->db2->group_end();
-            $this->db2->group_end();
             
 
             
@@ -1558,19 +1596,19 @@ class Crawlitem extends CB_Controller
         if ($search_where) {
             $this->db2->where($search_where);
         }
-         if($this->where_in){
+        //  if($this->where_in){
             
-            $this->db2->group_start();
+        //     $this->db2->group_start();
                     
-            foreach ($this->where_in as $skey => $sval) {
+        //     foreach ($this->where_in as $skey => $sval) {
                 
-                $this->db2->where_in($skey, $sval);
-            }
+        //         $this->db2->where_in($skey, $sval);
+        //     }
             
-            $this->db2->group_end();
+        //     $this->db2->group_end();
             
             
-        }
+        // }
 
         if($this->or_like){
 
@@ -1616,8 +1654,110 @@ class Crawlitem extends CB_Controller
     {   
 
         
-        // $join[] = array('table' => 'crawl_det1ail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
-        $result = $this->_get_list_common($select ='', $join ='', $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        // $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
+        $result = $this->_get_list_common($select ='', $join='', $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
+
+    public function aaaa()
+    {
+        
+
+        $view = array();
+        $view['view'] = array();
+
+        
+
+        $this->load->model(array('Board_model'));
+        
+        
+       
+
+        if($this->input->get('sfield') === 'brd_id'){
+
+            
+            $this->db->like('brd_name',$this->input->get('skeyword'));
+            $res = $this->Board_model->get('','brd_id');
+            
+            if($res){
+                $brd_id_arr=array();
+                foreach ($res as $key => $value) {
+                    $brd_id_arr[] = element('brd_id',$value);
+                }
+
+                $this->where_in['crawl_item.brd_id'] =  $brd_id_arr;
+
+
+                // $this->db2->group_end();
+            }
+        } 
+
+        if($this->input->get('sfield') === 'brd_id2'){
+
+            
+            
+
+                $this->where_in['crawl_item.brd_id'] =  $this->input->get('skeyword');
+
+
+            // $this->db2->group_end();
+            
+        } 
+        /**
+         * 게시판 목록에 필요한 정보를 가져옵니다.
+         */
+        $this->db2->select('brd_id,count(*) as cnt');
+
+        $this->db2->group_by('brd_id');
+        $this->db2->order_by('brd_id');
+        $this->db2->from('crawl_item');
+        $aaa = $this->db2->get();
+        $result['list'] = $aaa->result_array();
+        
+        
+
+        $i=0;
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                
+                
+                // $this->db2->select($select);
+                
+                
+                
+                $this->db2->where(array('brd_id' => element('brd_id', $val)));
+                $result['list'][$key]['d_cnt'] = $this->db2->count_all_results('crawl_detail');
+               
+                // }
+               
+                
+
+
+
+                
+                
+                $result['list'][$key]['brd_name'] = $this->board->item_id('brd_name',element('brd_id', $val));
+
+                
+                $result['list'][$key]['num'] = $i++;
+
+                
+            }
+        }
+
+        $view['view']['data'] = $result;
+
+
+       
+
+        /**
+         * 어드민 레이아웃을 정의합니다
+         */
+        $layoutconfig = array('layout' => 'layout', 'skin' => 'aaaa');
+        $view['layout'] = $this->managelayout->admin($layoutconfig, $this->cbconfig->get_device_view_type());
+        $this->data = $view;
+        $this->layout = element('layout_skin_file', element('layout', $view));
+        $this->view = element('view_skin_file', element('layout', $view));
+    }
 }
+

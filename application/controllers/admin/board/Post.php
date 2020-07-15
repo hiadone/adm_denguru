@@ -103,7 +103,7 @@ class Post extends CB_Controller
 				}
 				$result['list'][$key]['category'] = '';
 				if (element('post_category', $val)) {
-					$result['list'][$key]['category'] = $this->CI->Board_group_category_model->get_category_info(1, element('post_category', $value));
+					$result['list'][$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
 					if(empty($result['list'][$key]['category']))
 					$result['list'][$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
 				}
