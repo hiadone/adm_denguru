@@ -57,12 +57,10 @@
 					if (element('list', element('data', $view))) {
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
-					<?php 
-						if($this->input->get('warning')) {?>
-							<tr class="<?php echo element('warning', $result) ? 'warning':'hide'; ?> ">
-						<?php }else {?>
+					
+						
 							<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-					 <?php }?>
+					 
 						
 							<td><?php echo element('crw_goods_code', $result); ?>
 								<br>
