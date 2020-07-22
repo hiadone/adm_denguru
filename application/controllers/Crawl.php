@@ -1130,7 +1130,7 @@ class Crawl extends CB_Controller
     }
 
 
-    public function vision_api_label($post_id=0,$brd_id = 0)
+    public function vision_api_label($post_id=0,$brd_id = 0,$cit_id = 0)
     {
 
 
@@ -1140,6 +1140,7 @@ class Crawl extends CB_Controller
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
+        $cit_id = (int) $cit_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
             show_404();
         }
@@ -1170,7 +1171,8 @@ class Crawl extends CB_Controller
         }
 
         
-        if(!empty($post_id)){
+
+        if(!empty($brd_id)){
             $postwhere = array(
                 'brd_id' => $brd_id,
             );
@@ -1178,9 +1180,13 @@ class Crawl extends CB_Controller
 
 
         if($post_id){
-            $postwhere = array(
-                'post_id' => $post_id,
-            );
+            $postwhere['post_id'] = $post_id;
+            
+        }
+
+
+        if($cit_id){
+            $postwhere['cit_id'] = $cit_id;
         }
 
         
@@ -4472,35 +4478,41 @@ class Crawl extends CB_Controller
                 'brd_id' => element('brd_id', $board),
             );
 
-            if ($mem_id) {
-                if (element('use_anonymous', $board)) {
-                    $updatedata['mem_id'] = (-1) * $mem_id;
-                    $updatedata['post_userid'] = '';
-                    $updatedata['post_username'] = '익명사용자';
-                    $updatedata['post_nickname'] = '익명사용자';
-                    $updatedata['post_email'] = '';
-                    $updatedata['post_homepage'] = '';
-                } else {
-                    $updatedata['mem_id'] = $mem_id;
-                    $updatedata['post_userid'] = $this->member->item('mem_userid');
-                    $updatedata['post_username'] = $this->member->item('mem_username');
-                    $updatedata['post_nickname'] = $this->member->item('mem_nickname');
-                    $updatedata['post_email'] = $this->member->item('mem_email');
-                    $updatedata['post_homepage'] = $this->member->item('mem_homepage');
-                }
-            }
+            // if ($mem_id) {
+            //     if (element('use_anonymous', $board)) {
+            //         $updatedata['mem_id'] = (-1) * $mem_id;
+            //         $updatedata['post_userid'] = '';
+            //         $updatedata['post_username'] = '익명사용자';
+            //         $updatedata['post_nickname'] = '익명사용자';
+            //         $updatedata['post_email'] = '';
+            //         $updatedata['post_homepage'] = '';
+            //     } else {
+            //         $updatedata['mem_id'] = $mem_id;
+            //         $updatedata['post_userid'] = $this->member->item('mem_userid');
+            //         $updatedata['post_username'] = $this->member->item('mem_username');
+            //         $updatedata['post_nickname'] = $this->member->item('mem_nickname');
+            //         $updatedata['post_email'] = $this->member->item('mem_email');
+            //         $updatedata['post_homepage'] = $this->member->item('mem_homepage');
+            //     }
+            // }
 
-            if ($this->member->is_member() === false && $this->input->post('post_password')) {
-                if ( ! function_exists('password_hash')) {
-                    $this->load->helper('password');
-                }
-                $updatedata['post_password'] = password_hash($this->input->post('post_password'), PASSWORD_BCRYPT);
-            }
+            $updatedata['mem_id'] = 1;
+            $updatedata['post_userid'] = 'admin';
+            $updatedata['post_username'] = '관리자';
+            $updatedata['post_nickname'] = '관리자';
+            $updatedata['post_email'] = 'admin@denguru.kr';
+            $updatedata['post_homepage'] = 0;
+            // if ($this->member->is_member() === false && $this->input->post('post_password')) {
+            //     if ( ! function_exists('password_hash')) {
+            //         $this->load->helper('password');
+            //     }
+            //     $updatedata['post_password'] = password_hash($this->input->post('post_password'), PASSWORD_BCRYPT);
+            // }
 
             
-            if (element('use_post_secret', $board) === '2') {
-                $updatedata['post_secret'] = 1;
-            }
+            // if (element('use_post_secret', $board) === '2') {
+            //     $updatedata['post_secret'] = 1;
+            // }
             
             
             if (element('use_category', $board)) {
