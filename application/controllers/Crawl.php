@@ -164,6 +164,7 @@ class Crawl extends CB_Controller
         
         $result = $this->get_admin_list('','',$brdwhere);
 
+
         if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val){ 
 
@@ -979,7 +980,7 @@ class Crawl extends CB_Controller
 
 
                 $_post_id='';
-                $cbr_id_ = array();
+                $cbr_id = array();
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
