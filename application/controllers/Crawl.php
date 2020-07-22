@@ -4540,7 +4540,7 @@ class Crawl extends CB_Controller
 
     public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
     {
-
+        $this->db2->reconnect(); 
      
             $findex = 'crawl_item.crw_id';
      
@@ -4639,6 +4639,7 @@ class Crawl extends CB_Controller
         if ($limit) {
             $this->db2->limit($limit, $offset);
         }
+        
         $qry = $this->db2->get();
         $result['list'] = $qry->result_array();
 
