@@ -3922,5 +3922,230 @@ class Postact extends CB_Controller
         // exit(json_encode($result));
     }
 
-   
+   	
+
+   	function attr_update()
+    {	
+    	$url = base_url('postact/attr');
+    	$data = array(
+    		'secret' => $this->cbconfig->item('recaptcha_secret'),
+    		'response' => $str,
+    	);
+
+    	$ch = curl_init();
+    	curl_setopt($ch, CURLOPT_URL, $url);
+    	curl_setopt($ch, CURLOPT_POST, sizeof($data));
+    	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    	$result = curl_exec($ch);
+    	curl_close($ch);
+
+    	$obj = json_decode($result);
+
+    	
+    }
+
+    public function attr()
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_cmallattr_attr';
+		$this->load->event($eventname);
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$primary_key = $this->Cmall_attr_model->primary_key;
+
+		/**
+		 * Validation 라이브러리를 가져옵니다
+		 */
+		$this->load->library('form_validation');
+
+		/**
+		 * 전송된 데이터의 유효성을 체크합니다
+		 */
+		if ($this->input->post('type') === 'add') {
+			$config = array(
+				array(
+					'field' => 'cat_parent',
+					'label' => '상위제품특성',
+					'rules' => 'trim',
+				),
+				array(
+					'field' => 'cat_value',
+					'label' => '제품특성명',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'cat_text',
+					'label' => '제품특성사전',
+					'rules' => 'trim',
+				),
+				// array(
+				// 	'field' => 'cat_order',
+				// 	'label' => '정렬순서',
+				// 	'rules' => 'trim|numeric|is_natural',
+				// ),
+			);
+		} else {
+			$config = array(
+				array(
+					'field' => 'cat_id',
+					'label' => '제품특성아이디',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'cat_value',
+					'label' => '제품특성명',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'cat_text',
+					'label' => '제품특성사전',
+					'rules' => 'trim',
+				),
+				// array(
+				// 	'field' => 'cat_order',
+				// 	'label' => '정렬순서',
+				// 	'rules' => 'trim|numeric|is_natural',
+				// ),
+			);
+		}
+		$this->form_validation->set_rules($config);
+
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($this->form_validation->run() === false) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+		} else {
+			/**
+			 * 유효성 검사를 통과한 경우입니다.
+			 * 즉 데이터의 insert 나 update 의 process 처리가 필요한 상황입니다
+			 */
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+
+			if ($this->input->post('type') === 'add') {
+
+				$cat_text_arr = array();
+				$cat_text_ = '';				
+				$cat_order = $this->input->post('cat_order') ? $this->input->post('cat_order') : 0;
+				$cat_text = $this->input->post('cat_text') ? $this->input->post('cat_text') : '';
+				$cat_text = str_replace("\n",",",$cat_text);
+
+				$cat_text_arr = explode(",",urldecode($cat_text));
+
+                
+
+                if(count($cat_text_arr)){
+                    
+                    if ($cat_text_arr && is_array($cat_text_arr)) {
+                        $text_array=array();
+                        foreach ($cat_text_arr as  $value) {
+                            $value = trim($value);
+                            if ($value) 
+                            	array_push($text_array,$value);
+                        }
+                    }
+                    if($text_array && is_array($text_array)) $cat_text_ = implode(",",$text_array);
+                }
+
+				$insertdata = array(
+					'cat_value' => $this->input->post('cat_value', null, ''),
+					'cat_parent' => $this->input->post('cat_parent', null, 0),
+					'cat_text' => $cat_text_,
+					'cat_order' => $cat_order,
+				);
+				$this->Cmall_attr_model->insert($insertdata);
+				$this->cache->delete('cmall-attr-all');
+				$this->cache->delete('cmall-attr-detail');
+
+				
+
+				$this->session->set_flashdata(
+                    'message',
+                    '정상적으로 저장되었습니다'
+                );
+                
+				// redirect(admin_url($this->pagedir.'/attr'), 'refresh');
+
+			}
+			if ($this->input->post('type') === 'modify') {
+
+				$cat_text_arr = array();
+				$cat_text_ = '';				
+				$cat_order = $this->input->post('cat_order') ? $this->input->post('cat_order') : 0;
+				$cat_text = $this->input->post('cat_text') ? $this->input->post('cat_text') : '';
+				$cat_text = str_replace("\n",",",$cat_text);
+
+				$cat_text_arr = explode(",",urldecode($cat_text));
+
+                
+
+                if(count($cat_text_arr)){
+                    
+                    if ($cat_text_arr && is_array($cat_text_arr)) {
+                        $text_array=array();
+                        foreach ($cat_text_arr as  $value) {
+                            $value = trim($value);
+                            if ($value) 
+                            	array_push($text_array,$value);
+                        }
+                    }
+                    if($text_array && is_array($text_array)) $cat_text_ = implode(",",$text_array);
+                }
+
+				$updatedata = array(
+					'cat_value' => $this->input->post('cat_value', null, ''),
+					'cat_text' => $cat_text_,
+					'cat_order' => $cat_order,
+				);
+				$this->Cmall_attr_model->update($this->input->post('cat_id'), $updatedata);
+				$this->cache->delete('cmall-attr-all');
+				$this->cache->delete('cmall-attr-detail');
+
+				
+
+				$this->session->set_flashdata(
+                    'message',
+                    '정상적으로 수정되었습니다'
+                );
+
+				// redirect(admin_url($this->pagedir.'/attr'), 'refresh');
+
+			}
+		}
+
+		// $getdata = $this->Cmall_attr_model->get_all_attr();
+
+		
+		// $view['view']['data'] = $getdata;
+
+		// /**
+		//  * primary key 정보를 저장합니다
+		//  */
+		// $view['view']['primary_key'] = $primary_key;
+
+		// // 이벤트가 존재하면 실행합니다
+		// $view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+		// /**
+		//  * 어드민 레이아웃을 정의합니다
+		//  */
+		// $layoutconfig = array('layout' => 'layout', 'skin' => 'attr');
+		// $view['layout'] = $this->managelayout->admin($layoutconfig, $this->cbconfig->get_device_view_type());
+		// $this->data = $view;
+		// $this->layout = element('layout_skin_file', element('layout', $view));
+		// $this->view = element('view_skin_file', element('layout', $view));
+	}
 }

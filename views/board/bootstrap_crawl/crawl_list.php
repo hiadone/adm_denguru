@@ -122,7 +122,7 @@
                     <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
                     <td ><?php echo element('num', $result); ?></td>
                     <td>
-                        <a href="<?php echo element('cit_post_url', $result); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank"><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', $view)); ?>px;height:<?php echo element('gallery_image_height', element('board', $view)); ?>px;" /></a>
+                        <a href="<?php echo element('cit_post_url', $result); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank"><img src="<?php echo element('origin_image_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', $view)); ?>px;height:<?php echo element('gallery_image_height', element('board', $view)); ?>px;" /></a>
                     </td>
                     <td class="px300">
                         <?php if (element('category', $result)) { ?><a href="<?php echo board_url(element('brd_key', element('board', element('crawl', $view)))); ?>?category_id=<?php echo html_escape(element('bca_key', element('category', $result))); ?>"><span class="label label-default"><?php echo html_escape(element('bca_value', element('category', $result))); ?></span></a><?php } ?>
@@ -190,9 +190,13 @@
                     <td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
                     <td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
                     <td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>
-                    <td><a href="<?php echo admin_url('cmall/cmallitem/write/' . element('cit_id', $result)); ?>" target="_blank" class="btn-sm btn-xs btn-default">수정</a></td>
+                    <td><a href="<?php echo admin_url('cmall/cmallitem/write/' . element('cit_id', $result)); ?>" target="_blank" class="btn-sm btn-xs btn-default">수정</a>
+                    <br>
+                    <br>
+                    <a href="<?php echo admin_url('cmall/crawlitem?sfield=brd_id2&skeyword=' . element('brd_id', $result).'&crw_goods_code='.element('cit_goods_code', $result)); ?>" target="_blank" class="btn-sm btn-xs btn-info">원본</a>
+                    </td>
                     
-                    
+                
                     
                 </tr>
             <?php

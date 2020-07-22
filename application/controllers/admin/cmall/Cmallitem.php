@@ -582,7 +582,7 @@ class Cmallitem extends CB_Controller
 						@fclose($f);
 						@chmod($file, 0644);
 					}
-					$upload_path .= cdate('Y') . '/';
+					$upload_path .= element('brd_id', $getdata) . '/';
 					if (is_dir($upload_path) === false) {
 						mkdir($upload_path, 0707);
 						$file = $upload_path . 'index.php';
@@ -591,7 +591,7 @@ class Cmallitem extends CB_Controller
 						@fclose($f);
 						@chmod($file, 0644);
 					}
-					$upload_path .= cdate('m') . '/';
+					$upload_path .= element('post_id', $getdata) . '/';
 					if (is_dir($upload_path) === false) {
 						mkdir($upload_path, 0707);
 						$file = $upload_path . 'index.php';
@@ -611,7 +611,7 @@ class Cmallitem extends CB_Controller
 
 					if ($this->upload->do_upload('cit_file_' . $k)) {
 						$img = $this->upload->data();
-						$cit_file[$k] = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+						$cit_file[$k] = element('brd_id', $getdata) . '/' . element('post_id', $getdata) . '/' . element('file_name', $img);
 
 						$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 					} else {
@@ -945,7 +945,8 @@ class Cmallitem extends CB_Controller
 
 					@unlink(config_item('uploads_dir') . '/cmallitem/' . $getdata['cit_file_' . $k]);
 					$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/cmallitem/' . $getdata['cit_file_' . $k]);
-				} elseif (isset($cit_file[$k]) && $cit_file[$k]) {
+				} 
+				if (isset($cit_file[$k]) && $cit_file[$k]) {
 					$updatedata['cit_file_' . $k] = $cit_file[$k];
 				}
 			}

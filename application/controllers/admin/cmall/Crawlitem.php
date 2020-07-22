@@ -150,7 +150,18 @@ class Crawlitem extends CB_Controller
             $this->or_like['crw_brand5'] = $this->input->get('skeyword');
 
             
+        } 
+
+        if($this->input->get('crw_goods_code')){
+
+            
+            
+            $this->where['crw_goods_code'] =  $this->input->get('crw_goods_code');
+
+            
         }
+
+        
         if(!empty($this->input->get('warning'))){
             $or_where = array(
                 'crw_name' => '',
@@ -1387,6 +1398,8 @@ class Crawlitem extends CB_Controller
         }
 
         if ($this->where) {
+
+
             $this->db2->where($this->where);
         }
         
@@ -1670,6 +1683,144 @@ class Crawlitem extends CB_Controller
         return $result;
     }
 
+    public function get_count($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
+    {   
+
+        
+        
+            $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'inner');
+        
+
+        $result = $this->_get_count_common($select ='', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        return $result;
+    }
+
+    public function _get_count_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
+    {
+
+        $this->db2->select('count(*) as rownum');
+        $this->db2->from('crawl_item');
+        if ( ! empty($join['table']) && ! empty($join['on'])) {
+            if (empty($join['type'])) {
+                $join['type'] = 'left';
+            }
+            $this->db2->join($join['table'], $join['on'], $join['type']);
+        } elseif (is_array($join)) {
+            foreach ($join as $jkey => $jval) {
+                if ( ! empty($jval['table']) && ! empty($jval['on'])) {
+                    if (empty($jval['type'])) {
+                        $jval['type'] = 'left';
+                    }
+                    $this->db2->join($jval['table'], $jval['on'], $jval['type']);
+                }
+            }
+        }
+        if ($this->where) {
+            $this->db2->where($this->where);
+        }
+
+        if($this->or_where){
+
+            
+            // $this->db2->group_start();
+                    
+            // foreach ($this->or_where as $skey => $sval) {
+            //     $this->db2->or_where($skey, $sval);
+            // }
+            
+            $this->db2->group_start();
+                $this->db2->or_where('crw_name', '');
+                $this->db2->or_where('crw_post_url', '');
+                $this->db2->or_where('crw_goods_code', '');
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_price', 0);
+                    $this->db2->where('crw_price_sale', 0);
+                    $this->db2->where('crw_is_soldout', 0);
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_brand1', '');
+                    $this->db2->where('crw_brand2', '');
+                    $this->db2->where('crw_brand3', '');
+                    $this->db2->where('crw_brand4', '');
+                    $this->db2->where('crw_brand5', '');
+
+                    
+                        $this->db2->where('cdt_brand1', '');
+                        $this->db2->where('cdt_brand2', '');
+                        $this->db2->where('cdt_brand3', '');
+                        $this->db2->where('cdt_brand4', '');
+                        $this->db2->where('cdt_brand5', '');
+                    
+                    
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_brand1', '');
+                    $this->db2->where('crw_brand2', '');
+                    $this->db2->where('crw_brand3', '');
+                    $this->db2->where('crw_brand4', '');
+                    $this->db2->where('crw_brand5', '');
+
+                    
+                        $this->db2->where('cdt_brand1 is null',null,false);
+                        $this->db2->where('cdt_brand2 is null',null,false);
+                        $this->db2->where('cdt_brand3 is null',null,false);
+                        $this->db2->where('cdt_brand4 is null',null,false);
+                        $this->db2->where('cdt_brand5 is null',null,false);
+                    
+                    
+                $this->db2->group_end();
+
+                $this->db2->group_start('','or');
+                    $this->db2->where('crw_category1', '');
+                    $this->db2->where('crw_category2', '');
+                    $this->db2->where('crw_category3', '');
+                $this->db2->group_end();
+            $this->db2->group_end();
+
+            
+            
+        }
+        
+        
+        //  if($this->where_in){
+            
+        //     $this->db2->group_start();
+                    
+        //     foreach ($this->where_in as $skey => $sval) {
+                
+        //         $this->db2->where_in($skey, $sval);
+        //     }
+            
+        //     $this->db2->group_end();
+            
+            
+        // }
+
+        if($this->or_like){
+
+            
+            $this->db2->group_start();
+                    
+            foreach ($this->or_like as $skey => $sval) {
+                $this->db2->or_like($skey, $sval);
+            }
+            
+            $this->db2->group_end();
+        }
+        
+        
+        
+        
+        $qry = $this->db2->get();
+        $rows = $qry->row_array();
+        $result['total_rows'] = $rows['rownum'];
+
+        return $result;
+    }
+
     public function aaaa()
     {
         
@@ -1735,9 +1886,17 @@ class Crawlitem extends CB_Controller
                 // $this->db2->select($select);
                 
                 
+                //     $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_file_1 !=' => '' ));
+                // $result['list'][$key]['a_cnt'] = $this->db2->count_all_results('crawl_detail');
+
+                // $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_content1 !=' => '' ));
+                // $result['list'][$key]['b_cnt'] = $this->db2->count_all_results('crawl_detail');
+
                 
                 $this->db2->where(array('brd_id' => element('brd_id', $val)));
                 $result['list'][$key]['d_cnt'] = $this->db2->count_all_results('crawl_detail');
+
+            
                
                 // }
                
@@ -1749,6 +1908,10 @@ class Crawlitem extends CB_Controller
                 
                 $result['list'][$key]['brd_name'] = $this->board->item_id('brd_name',element('brd_id', $val));
 
+                
+                // $result['list'][$key]['warning_count'] = $this->warning_count(element('brd_id', $val));
+
+                
                 
                 $result['list'][$key]['num'] = $i++;
 
@@ -1769,6 +1932,65 @@ class Crawlitem extends CB_Controller
         $this->data = $view;
         $this->layout = element('layout_skin_file', element('layout', $view));
         $this->view = element('view_skin_file', element('layout', $view));
+    }
+
+
+    public function warning_count($brd_id =0)
+    {
+
+        
+
+        $view = array();
+        $view['view'] = array();
+
+        
+
+        $this->load->model(array('Board_model'));
+        
+        /**
+         * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
+         */
+        
+
+        
+
+
+        
+            
+           
+           $this->where['crawl_item.brd_id'] =  $brd_id;
+
+        
+        
+            $or_where = array(
+                'crw_name' => '',
+                'crw_price' => 0,
+                'crw_post_url' => '',
+                'crw_goods_code' => '',                
+                'crw_category1' => '',
+            );
+            
+            $this->or_where  = $or_where;
+
+            
+        
+        
+
+
+
+        
+        
+
+        /**
+         * 게시판 목록에 필요한 정보를 가져옵니다.
+         */
+        
+        $result = $this->get_count();
+
+        return $result['total_rows'];
+        
+        
+        // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 }
 

@@ -283,6 +283,12 @@
 				<a href="<?php echo element('crawl_tag_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 태그 update</a>
 			</div>
 		<?php } ?>
+
+		<?php if (element('crawl_tag_overwrite', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_overwrite', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 태그 overwrite</a>
+			</div>
+		<?php } ?>
 	
 		<?php if (element('vision_api_label', element('list', $view))) { ?>
 			<div class="pull-right pr10">
