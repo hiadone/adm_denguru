@@ -169,7 +169,7 @@ class Crawl extends CB_Controller
 
                 $item = array();
                 $_post_id='';
-                $cbr_id_ = array();
+                $cbr_id = array();
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -223,7 +223,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => $cbr_id[0] ? $cbr_id[0] : 0,
+                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                         // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
@@ -335,7 +335,7 @@ class Crawl extends CB_Controller
                         'cit_goods_code' => element('crw_goods_code', $val),                        
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => 1,
-                        'cbr_id' => $cbr_id[0] ? $cbr_id[0] : 0,
+                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                         // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
@@ -1025,7 +1025,7 @@ class Crawl extends CB_Controller
                     'cit_goods_code' => element('crw_goods_code', $val),                        
                     'cit_is_soldout' => element('crw_is_soldout', $val),
                     'cit_status' => 1,
-                    'cbr_id' => $cbr_id[0] ? $cbr_id[0] : 0,
+                    'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
                     // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                     // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                     // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
