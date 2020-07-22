@@ -89,6 +89,12 @@ echo display_html_content(element('footercontent', element('group', $view)));
 			</div>
 		<?php } ?>
 
+		<?php if (element('crawl_tag_overwrite', element('group', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_tag_overwrite', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 태그 overWrite</a>
+			</div>
+		<?php } ?>
+
 
 		
 

@@ -109,10 +109,11 @@ class Group extends CB_Controller
 			)
 		);
 		if($is_admin && element('bgr_id', $group) !== "4" ){
-			$group['crawl_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/update');
-			$group['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/overwrite');
-			$group['crawl_category_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/category_update');
-			$group['crawl_tag_update'] = base_url('postact/crawling_item_update/'.element('bgr_id', $group).'/group/tag_update');
+			$group['crawl_update'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/update');
+			$group['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/overwrite');
+			$group['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/category_update');
+			$group['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/tag_update');
+			$group['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/tag_overwrite');
 		}
 		
 		$view['view']['group'] = $group;
