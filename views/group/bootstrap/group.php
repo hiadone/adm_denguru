@@ -4,12 +4,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 echo display_html_content(element('headercontent', element('group', $view)));
 
+$cmall_count =array();
 
+$cmall_total = 0;
+
+
+
+foreach (element('cmall_count', $view) as $key => $val) 
+{
+	$cmall_count[$key] = $val;
+
+	$cmall_total +=$val; 
+}
+
+
+$warning_count =array();
+
+$warning_total = 0;
+
+
+
+foreach (element('warning_count', $view) as $key => $val) 
+{
+	$warning_count[$key] = $val;
+
+	$warning_total +=$val; 
+}
 ?>
 <div class="board">
 	<h3><?php echo html_escape(element('bgr_name', element('group', $view))); ?>
-		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format(element('cmallitem_count',$view)); ?> 개</button>
-		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format(element('cmallitem_count',$view)); ?> 개</button>
+		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</button>
+		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</button>
 	</h3>
 </div>
 
@@ -27,6 +52,8 @@ if (element('board_list', $view)) {
 			'image_width' => '',
 			'image_height' => '',
 			'cache_minute' => 1,
+			'cmall_count' => element(element('brd_id', $board),$cmall_count),
+			'warning_count' => element(element('brd_id', $board),$warning_count),
 		);
 		if ($k % 2 === 0) {
 			echo '<div class="row">';

@@ -3,9 +3,8 @@
 	<!-- Default panel contents -->
 		<div class="panel-heading">
 			<?php echo html_escape(element('board_name', element('board', $view))); ?>
-			<button class="btn btn-info btn-xs">총 상품 <?php echo number_format(element('cmallitem_count',$view)); ?> 개</button>
-			<?php if (element(2,element('pln_status', $view)) || element(4,element('pln_status', $view))) { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php }elseif (element(3,element('pln_status', $view))) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php }elseif (element(5,element('pln_status', $view))) { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?>
-			<?php if (element(6,element('pln_status', $view))) { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }elseif (element(7,element('pln_status', $view))) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
+			<button class="btn btn-info btn-xs">총 상품 <?php echo number_format(element('cmall_count',$view)); ?> 개</button>
+			<button class="btn btn-warning btn-xs">총 상품 <?php echo number_format(element('warning_count',$view)); ?> 개</button>
 			
 			<div class="view-all pull-right">
 				<a href="<?php echo board_url(element('brd_key', element('board', $view))); ?>" title="<?php echo html_escape(element('board_name', element('board', $view))); ?>">더보기 <i class="fa fa-angle-right"></i></a>

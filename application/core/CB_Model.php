@@ -393,13 +393,18 @@ class CB_Model extends CI_Model
 	}
 
 
-	public function count_by($where = '', $like = '')
+	public function count_by($where = '', $like = '',$or_where = '')
 	{
 		if ($where) {
 			$this->db->where($where);
 		}
 		if ($like) {
 			$this->db->like($like);
+		}
+		if ($or_where) {
+			$this->db->group_start();
+			$this->db->or_where($or_where);
+			$this->db->group_end();
 		}
 		return $this->db->count_all_results($this->_table);
 	}

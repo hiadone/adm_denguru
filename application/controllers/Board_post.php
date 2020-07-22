@@ -1187,6 +1187,7 @@ class Board_post extends CB_Controller
 				'cit_price' => 0,
 				'cit_post_url' => '',
 				'cit_goods_code' => '',
+				'cit_file_1' => '',
 				'cbr_id' => 0,
 			);
 			
@@ -1222,7 +1223,7 @@ class Board_post extends CB_Controller
 				else
 					$result['list'][$key]['display_brand'] = '-';
 
-				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)) || empty(element('cit_file_1', $val)))
 					$result['list'][$key]['warning'] = 1 ; 
 				else 
 					$result['list'][$key]['warning'] = '' ; 
@@ -1708,23 +1709,37 @@ class Board_post extends CB_Controller
 					}
 				}
 
-				for($s = 1;$s <8;$s++){
-					$linkwhere = array(
-							'post_id' => element('post_id', $val),
-							'pln_status' => $s,
-						);
+				// for($s = 1;$s <8;$s++){
+				// 	$linkwhere = array(
+				// 			'post_id' => element('post_id', $val),
+				// 			'pln_status' => $s,
+				// 		);
 
-					$result['list'][$key]['pln_status'][$s] = $this->Post_link_model
-						->count_by($linkwhere);
-				}
+				// 	$result['list'][$key]['pln_status'][$s] = $this->Post_link_model
+				// 		->count_by($linkwhere);
+				// }
 
-				$result['list'][$key]['cmallitem_count'] = '';
+				
+
+
+				$result['list'][$key]['cmall_count'] = '';
+				$result['list'][$key]['warning_count'] = '';
 
 				$itemwhere = array(
 							'post_id' => element('post_id', $val),
 						);
 
-				$result['list'][$key]['cmallitem_count'] = $this->Cmall_item_model->count_by($itemwhere);
+				$or_where = array(
+						'cit_name' => '',
+						'cit_price' => 0,
+						'cit_post_url' => '',
+						'cit_goods_code' => '',
+						'cit_file_1' => '',
+						'cbr_id' => 0,
+				);
+
+				$result['list'][$key]['warning_count'] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
+				$result['list'][$key]['cmall_count'] = $this->Cmall_item_model->count_by($itemwhere);
 				
 			}
 		}

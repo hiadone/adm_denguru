@@ -204,10 +204,24 @@ class Cmall_item_model extends CB_Model
 		return $result;
 	}
 
-	public function total_count_by($where = '', $like = '')
+	public function total_count_by($where = '', $like = '',$or_where = '')
 	{
 		
 		$this->db->select('brd_id,count(*) as rownum');
+
+		if ($where) {
+
+			$this->db->where($where);
+		}
+		if ($like) {
+			$this->db->like($like);
+		}
+		if ($or_where) {
+			$this->db->group_start();
+			$this->db->or_where($or_where);
+			$this->db->group_end();
+		}
+
 		$this->db->group_by('brd_id');
 		$this->db->from($this->_table);
 		$qry = $this->db->get();

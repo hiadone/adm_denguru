@@ -217,10 +217,10 @@
 						<?php if (element('is_new', $result)) { ?><span class="label label-warning">New</span><?php } ?>
 						<?php if (element('ppo_id', $result)) { ?><i class="fa fa-bar-chart"></i><?php } ?>
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
-						<?php if (element(2,element('pln_status', $result)) || element(4,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 중...</button><?php } elseif (element(3,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 error</button><?php } elseif (element(5,element('pln_status', $result))) { ?><button class="btn btn-danger btn-xs">크롤링 업데이트 error</button><?php } ?>
-						<?php if (element(6,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 중...</button><?php }  elseif (element(7,element('pln_status', $result))) { ?><button class="btn btn-warning btn-xs">태킹 error</button><?php } ?>
+						<?php if (element('warning_count', $result)) { ?>
+						<button class="btn btn-warning btn-xs">warning  <?php echo element('warning_count', $result); ?> 개</button><?php } ?>
 					</td>
-					<td><?php echo element('cmallitem_count', $result); ?> 개</td>
+					<td><?php echo element('cmall_count', $result); ?> 개</td>
 					<td><?php echo element('display_name', $result); ?></td>
 					<td><?php echo element('display_datetime', $result); ?></td>
 					<td><?php echo number_format(element('post_hit', $result)); ?></td>

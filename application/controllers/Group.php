@@ -78,7 +78,20 @@ class Group extends CB_Controller
 							'brd_id' => element('brd_id', $val),
 						);
 
-				$view['view']['cmallitem_count'] += $this->Cmall_item_model->count_by($itemwhere);;
+				$or_where = array(
+						'cit_name' => '',
+						'cit_price' => 0,
+						'cit_post_url' => '',
+						'cit_goods_code' => '',
+						'cit_file_1' => '',
+						'cbr_id' => 0,
+				);
+					
+				
+
+				$view['view']['warning_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
+
+				$view['view']['cmall_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere);
 			}
 		}
 
