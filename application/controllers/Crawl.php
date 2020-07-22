@@ -977,9 +977,10 @@ class Crawl extends CB_Controller
         
         $result = $this->get_admin_list('','',$brdwhere);
 
+
         if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val){ 
-
+ 
 
                 $_post_id='';
                 $cbr_id = array();
@@ -4534,13 +4535,13 @@ class Crawl extends CB_Controller
         $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
         
 
-        $result = $this->_get_list_common($select ='', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        $result = $this->_get_list_common($select ='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
 
     public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
     {
-        
+
      
             $findex = 'crawl_item.crw_id';
      
@@ -4639,7 +4640,7 @@ class Crawl extends CB_Controller
         if ($limit) {
             $this->db2->limit($limit, $offset);
         }
-        
+
         $qry = $this->db2->get();
         $result['list'] = $qry->result_array();
 
