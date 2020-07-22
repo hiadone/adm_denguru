@@ -37,6 +37,7 @@ class Crawl extends CB_Controller
     protected $translate = null;
 
     protected $tag_word = array();
+    protected $_select = '';
 
     protected $db2;
 
@@ -161,7 +162,7 @@ class Crawl extends CB_Controller
         
         
 
-        
+        $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
         $result = $this->get_admin_list('','',$brdwhere);
 
 
@@ -974,10 +975,10 @@ class Crawl extends CB_Controller
         
         
 
-        
+        $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
         $result = $this->get_admin_list('','',$brdwhere);
 
-
+        
         if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val){ 
  
@@ -1206,7 +1207,7 @@ class Crawl extends CB_Controller
                 );
                 
                 
-
+                $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_file_1,cb_crawl_detail.cdt_content' ;
                 
                 $result = $this->get_admin_list('','',$brdwhere);
                 
@@ -4534,8 +4535,8 @@ class Crawl extends CB_Controller
         
         $join[] = array('table' => 'crawl_detail', 'on' => 'crawl_detail.crw_id = crawl_item.crw_id', 'type' => 'left');
         
-
-        $result = $this->_get_list_common($select ='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        $select = $this->_select;
+        $result = $this->_get_list_common($select, $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
         return $result;
     }
 
