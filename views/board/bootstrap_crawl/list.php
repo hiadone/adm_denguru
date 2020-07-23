@@ -324,3 +324,12 @@ $('#fboardlist').highlight([<?php echo element('highlight_keyword', element('lis
 //]]>
 </script>
 <?php } ?>
+
+
+<script>
+
+$('.btn-warning').click(function(){	
+	if ( ! confirm('정말 실행 하겠습니까?')) 
+		{ event.preventDefault() ;return false; }
+});
+	</script>

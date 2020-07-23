@@ -1138,6 +1138,10 @@ exit;
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
 
+        $is_admin = $this->member->is_admin();
+
+        if(empty($is_admin)) exit;
+
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
         $cit_id = (int) $cit_id;
@@ -1319,6 +1323,10 @@ exit;
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
+
+        $is_admin = $this->member->is_admin();
+
+        if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
@@ -1523,6 +1531,10 @@ exit;
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
 
+        $is_admin = $this->member->is_admin();
+
+        if(empty($is_admin)) exit;
+
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
@@ -1697,6 +1709,10 @@ exit;
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
 
+        $is_admin = $this->member->is_admin();
+
+        if(empty($is_admin)) exit;
+        
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {

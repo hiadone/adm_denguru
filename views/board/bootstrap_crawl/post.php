@@ -427,3 +427,12 @@ if (element('highlight_keyword', $view)) {
 	//]]>
 	</script>
 <?php } ?>
+
+
+<script>
+
+$('.btn-warning').click(function(){	
+	if ( ! confirm('정말 실행 하겠습니까?')) 
+		{ event.preventDefault() ;return false; }
+});
+	</script>

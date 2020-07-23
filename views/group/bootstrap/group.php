@@ -110,3 +110,13 @@ echo display_html_content(element('footercontent', element('group', $view)));
 				<a href="<?php echo element('crawl_overwrite', element('group', $view)); ?>" class="btn btn-danger btn-sm">group 크롤링 overWrite</a>
 			</div>
 		<?php } ?>
+
+
+
+<script>
+
+$('.btn-warning').click(function(){	
+	if ( ! confirm('정말 실행 하겠습니까?')) 
+		{ event.preventDefault() ;return false; }
+});
+	</script>
