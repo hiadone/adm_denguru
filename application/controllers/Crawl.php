@@ -887,7 +887,7 @@ class Crawl extends CB_Controller
 
     public function crawling_overwrite($post_id=0,$brd_id =0)
     {
-
+exit;
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
