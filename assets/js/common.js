@@ -1018,4 +1018,36 @@ if (typeof(COMMON_JS) === 'undefined') {
 	    	}
 	    });
 	});
+
+
+	function multi_crawling_item_update( crawl_mode, crawl_type,msg) {
+		var href;
+		if (  crawl_mode == '' || crawl_type == '') {
+			return false;
+		}
+		if ( msg) {
+			if ( ! confirm(msg)) { return false; }
+		}
+		href = cb_url + '/postact/multi_crawling_item_update/' + crawl_mode + '/' + crawl_type;
+		var $that = $(this);
+		$.ajax({
+			url : href,
+			type : 'post',
+			data : $('#fboardlist').serialize() + '&csrf_test_name=' + cb_csrf_hash,
+			dataType : 'json',
+			success : function(data) {
+				if (data.error) {
+					alert(data.error);
+					return false;
+				} else if (data.success) {
+					alert(data.success);
+					if (data.url) {
+						document.location.href=data.url;
+					} else {
+						document.location.reload();
+					}
+				}
+			}
+		});
+	}
 }

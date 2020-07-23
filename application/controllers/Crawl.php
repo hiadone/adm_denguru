@@ -2274,7 +2274,7 @@ class Crawl extends CB_Controller
 
             case 'item':
                 $where = array(
-                            'brd_id' => $crawl_key,
+                            'cit_id' => $crawl_key,
                         );
                 break;
 
@@ -2287,7 +2287,7 @@ class Crawl extends CB_Controller
         
 
 
-        if( $crawl_mode === 'post' || $crawl_mode === 'item'){
+        if( $crawl_mode === 'post'){
             
             $where['post_del <>'] = 2;
             
@@ -2319,6 +2319,32 @@ class Crawl extends CB_Controller
                         $this->crawling_category_update(element('post_id', $post),element('brd_id', $post));
                     }
                 
+        }elseif($crawl_mode === 'item'){
+            $select = 'cit_id,post_id, brd_id';
+            $cmall = $this->Cmall_item_model->get_one('', $select,$where);        
+
+                    if($crawl_type==='update'){
+                        $this->crawling_update(element('post_id', $cmall),element('brd_id', $cmall));
+                    } 
+
+                    if($crawl_type==='overwrite'){
+                        $this->crawling_overwrite(element('post_id', $cmall),element('brd_id', $cmall));
+                    }
+                    if($crawl_type==='tag_update'){
+                        
+                        $this->crawling_tag_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                    }
+                    if($crawl_type==='tag_overwrite'){
+                        
+                        $this->crawling_tag_overwrite(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                    }
+                    if($crawl_type==='vision_api_label'){
+                        
+                        $this->vision_api_label(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                    }
+                    if($crawl_type==='category_update'){
+                        $this->crawling_category_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                    }
         } else {
 
             $board_id = $this->Board_model->get_board_list($where);
@@ -4555,7 +4581,7 @@ class Crawl extends CB_Controller
     public function _get_list_common($select = '', $join = '', $limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
     {
 
-     
+        $this->db2 = $this->load->database('db2', TRUE);
             $findex = 'crawl_item.crw_id';
      
 

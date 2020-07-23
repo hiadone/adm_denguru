@@ -3915,7 +3915,8 @@ class Postact extends CB_Controller
 
     	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_item_update/'.$crawl_key.'/'.$crawl_mode.'/'.$crawl_type).' --connect-timeout 6000 > /tmp/crawl_crawling_item_update_'.$_SERVER['HTTP_HOST'].'.log';
     	echo $cmd;
-    	@exec($cmd, $output, $retval);
+    	exit;
+    	// @exec($cmd, $output, $retval);
 
     	$result = array('success' => '실행되었습니다');
     	alert('실행되었습니다');
@@ -4147,5 +4148,67 @@ class Postact extends CB_Controller
 		// $this->data = $view;
 		// $this->layout = element('layout_skin_file', element('layout', $view));
 		// $this->view = element('view_skin_file', element('layout', $view));
+	}
+
+		
+
+    	
+
+	public function multi_crawling_item_update($crawl_mode,$crawl_type)
+	{
+
+		if( empty($crawl_mode) && empty($crawl_type)){    		
+            $result = array('success' => '실패');
+            alert('crawl_mode crawl_type  값이 없습니다.');
+        	// exit(json_encode($result));
+    	}
+
+		$result = array();
+		$this->output->set_content_type('application/json');
+
+		
+		$this->load->model(array('Cmall_item_model'));
+
+		$cit_ids = $this->input->post('chk_post_id');
+		
+		
+		if (empty($cit_ids)) {
+			$result = array('error' => '선택된 게시물이 없습니다.');
+			exit(json_encode($result));
+		}
+
+		foreach ($cit_ids as $cit_id) {
+			$cit_id = (int) $cit_id;
+			if (empty($cit_id) OR $cit_id < 1) {
+				$result = array('error' => '잘못된 접근입니다');
+				exit(json_encode($result));
+			}
+			
+			$select = 'cit_id,post_id, brd_id';
+			$cmall = $this->Cmall_item_model->get_one($cit_id, $select);
+
+			if ( ! element('cit_id', $cmall)) {
+				$result = array('error' => '존재하지 않는 게시물입니다');
+				exit(json_encode($result));
+			}
+
+	    	$retval = 1;
+	    	$cmd='';
+
+	    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_item_update/'.$cit_id.'/'.$crawl_mode.'/'.$crawl_type).' --connect-timeout 86000 > /tmp/crawl_crawling_item_update_'.$_SERVER['HTTP_HOST'].'.log';
+    	
+	    	// echo $cmd;
+	    	@exec($cmd, $output, $retval);
+
+			    	
+			    	
+			        
+		}
+
+		
+
+		$result = array('success' => '실행되었습니다');
+		exit(json_encode($result));
+
 	}
 }
