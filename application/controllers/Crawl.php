@@ -1248,7 +1248,7 @@ exit;
                 }
 
 
-                $label_tag['cit_text'] = element('cdt_content',element(0,element('list',$result))) ? implode("\n",element('cdt_content',element(0,element('list',$result)))) : '';
+                $label_tag['cit_text'] = element('cdt_content',element(0,element('list',$result))) ? element('cdt_content',element(0,element('list',$result))) : '';
                 $label_tag['cit_name'] = element('crw_name',element(0,element('list',$result))) ? element('crw_name',element(0,element('list',$result))) : element('crw_name',element(0,element('list',$result)));
 
                 $tag_ = $this->getnaturallanguage($label_tag);
