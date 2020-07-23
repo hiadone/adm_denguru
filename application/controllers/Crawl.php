@@ -113,8 +113,8 @@ class Crawl extends CB_Controller
             'brd_id' => $brd_id,
         );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
@@ -199,7 +199,7 @@ class Crawl extends CB_Controller
                 }
 
 
-                $_post_id = $this->write(element('brd_id', $board_crawl),$val);
+                $_post_id = $this->write(element('brd_id', $board),$val);
 
                 for($a=1 ; $a <6;$a++ ){
                     if(element('crw_brand'.$a,$val))
@@ -225,7 +225,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
+                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -338,7 +338,7 @@ class Crawl extends CB_Controller
                         'cit_goods_code' => element('crw_goods_code', $val),                        
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => 1,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
+                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -925,8 +925,8 @@ exit;
             'brd_id' => $brd_id,
         );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
@@ -1003,7 +1003,7 @@ exit;
                 }
 
 
-                $_post_id = $this->write(element('brd_id', $board_crawl),$val);
+                $_post_id = $this->write(element('brd_id', $board),$val);
 
                 for($a=1 ; $a <6;$a++ ){
                     if(element('crw_brand'.$a,$val))
@@ -1030,7 +1030,7 @@ exit;
                     'cit_goods_code' => element('crw_goods_code', $val),                        
                     'cit_is_soldout' => element('crw_is_soldout', $val),
                     'cit_status' => 1,
-                    'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
+                    'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
                     'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                     // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                     // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -1169,8 +1169,8 @@ exit;
             'brd_id' => $brd_id,
         );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
@@ -1333,12 +1333,12 @@ exit;
             show_404();
         }
 
-        $crawlwhere = array(
-            'brd_id' => $brd_id,
-        );
+        // $crawlwhere = array(
+        //     'brd_id' => $brd_id,
+        // );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
@@ -1547,12 +1547,12 @@ exit;
 
         
 
-        $crawlwhere = array(
-            'brd_id' => $brd_id,
-        );
+        // $crawlwhere = array(
+        //     'brd_id' => $brd_id,
+        // );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
@@ -1725,12 +1725,12 @@ exit;
 
         
 
-        $crawlwhere = array(
-            'brd_id' => $brd_id,
-        );
+        // $crawlwhere = array(
+        //     'brd_id' => $brd_id,
+        // );
 
-        $board_crawl = $this->Board_crawl_model->get_one('','',$crawlwhere);
-        if ( ! element('brd_id', $board_crawl)) {
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
             show_404();
         }
 
