@@ -1203,7 +1203,6 @@ exit;
         $crawl = $this->Cmall_item_model
             ->get('', '', $postwhere, '', '', 'pln_id', 'ASC');
 
-        
         foreach ($crawl as $c_key => $c_value) {
 
             $label_text = array();
@@ -1221,7 +1220,7 @@ exit;
                 
                 $result = $this->get_admin_list('','',$brdwhere);
                 
-
+        
 
                 if(element('cit_file_1',$c_value) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1',$c_value)) < 5020868) {
                     $label_text[] = $this->detect_label(element('cit_id', $c_value),config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1',$c_value),$c_value['cit_name']);
@@ -1293,7 +1292,7 @@ exit;
                         }
                     }
                 }
-                break;
+                
         }
 
            
@@ -1712,7 +1711,7 @@ exit;
         $is_admin = $this->member->is_admin();
 
         if(empty($is_admin)) exit;
-        
+
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
