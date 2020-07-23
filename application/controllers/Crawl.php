@@ -56,7 +56,7 @@ class Crawl extends CB_Controller
         $this->load->library(array('querystring','aws_s3','form_validation'));
 
         $this->imageAnnotator = new ImageAnnotatorClient([
-            'credentials' => 'denguru3-71f74-firebase-adminsdk-mm99m-66017c38dd.json'
+            'credentials' => 'glowing-harmony-278705-73ffa79d6108.json'
         ]);
 
 
@@ -68,8 +68,8 @@ class Crawl extends CB_Controller
         $projectId = 'denguru3-71f74';
         
         $this->naturallanguage = new LanguageClient([
-            'projectId' => $projectId,
-            'keyFilePath' => 'denguru3-71f74-firebase-adminsdk-mm99m-66017c38dd.json'
+            // 'projectId' => $projectId,
+            'keyFilePath' => 'glowing-harmony-278705-73ffa79d6108.json'
         ]);
 
         $this->db2 = $this->load->database('db2', TRUE);
