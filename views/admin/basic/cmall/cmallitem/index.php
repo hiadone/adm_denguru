@@ -78,7 +78,13 @@
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>
-							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
+							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a>
+							<br>
+							<br>
+							<a href="<?php echo admin_url('cmall/crawlitem?sfield=brd_id2&skeyword=' . element('brd_id', $result).'&crw_goods_code='.element('cit_goods_code', $result)); ?>" target="_blank" class="btn-sm btn-xs btn-info">원본</a>
+							
+
+							</td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>
 					<?php
