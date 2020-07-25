@@ -268,7 +268,7 @@ class Crawl extends CB_Controller
                         $oldimg_src_array= explode('/', element('cit_file_1',$item));
                         $oldimageName = end($oldimg_src_array);    
 
-                        if($oldimageName !== $imageName){
+                        if($oldimageName !== $imageName || $_post_id !== element('post_id',$item)){
                             $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
 
                             // echo $filetype;
@@ -887,7 +887,7 @@ class Crawl extends CB_Controller
 
     public function crawling_overwrite($post_id=0,$brd_id =0)
     {
-exit;
+
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -1782,94 +1782,101 @@ print_r($cate);
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
+                
                 $post = $this->Post_model->get_one(element('post_id',$val));
+                
+                $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
+                
+
+                // $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
+                // if(empty($post['category'])) 
+                // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                $translate_text = array();
+                foreach($cateinfo as $value){
+
+                    if((int) $value['cca_parent'] < 1)
+                        $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
+                    else 
+                        continue;
+
+                    $all_category=array();
             
-                $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
-                if(empty($post['category'])) 
-                $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+            // $all_category = $this->Cmall_category_model->get_all_category();
+            
 
+            
+            
+           
 
-                if(empty($post['category']['bca_parent']))
-                    $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_key']));
-                else 
-                    $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_parent'])); 
+           
+                    $crawlwhere = array(
+                        'cit_id' => element('cit_id', $val),
+                    );
 
-
-                $all_category=array();
-        
-        
-        // $all_category = $this->Cmall_category_model->get_all_category();
-        
-
-        
-        
-       
-
-       
-                $crawlwhere = array(
-                    'cit_id' => element('cit_id', $val),
-                );
-
-        
-                $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-                if ($tag && is_array($tag)) {
-                    $tag_array=array();
-                    foreach ($tag as $tvalue) {
-                        if (element('val_tag', $tvalue)) {
-                            array_push($tag_array,trim(element('val_tag', $tvalue)));
-                        }
-                    }
-                    
-
-                    $translate_text = array();
-
-                    
-                    foreach($this->tag_word as $word){
-                        foreach ($tag_array as $tval) {
-                            $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
-                            
-                            if(count($arr_str) > 1){
-                                if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                    if(!in_array(element('tgw_value',$word),$translate_text))
-                                        array_push($translate_text,element('tgw_value',$word));       
-                                }     
-                            } else {
-                                if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                    if(!in_array(element('tgw_value',$word),$translate_text))
-                                        array_push($translate_text,element('tgw_value',$word));       
-                                }     
+            
+                    $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+                    if ($tag && is_array($tag)) {
+                        $tag_array=array();
+                        foreach ($tag as $tvalue) {
+                            if (element('val_tag', $tvalue)) {
+                                array_push($tag_array,trim(element('val_tag', $tvalue)));
                             }
-                            
-                            
                         }
                         
-                        
-                    }
-
-                    if(count($translate_text)){
-                        
 
                         
-                        $deletewhere = array(
-                            'cit_id' => element('cit_id',$val),
-                        );
-                        $this->Crawl_tag_model->delete_where($deletewhere);            
-                        if ($translate_text && is_array($translate_text)) {
-                            foreach ($translate_text as  $text) {
-                                // $value = trim($value);
-                                if ($text) {
-                                    $tagdata = array(
-                                        'post_id' => element('post_id', $val),
-                                        'cit_id' => element('cit_id', $val),
-                                        'brd_id' => element('brd_id', $val),
-                                        'cta_tag' => $text,
-                                    );
-                                    $this->Crawl_tag_model->insert($tagdata);
+                        
+                        
+                        foreach($this->tag_word as $word){
+                            foreach ($tag_array as $tval) {
+                                $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                
+                                if(count($arr_str) > 1){
+                                    if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
+                                    }     
+                                } else {
+                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
+                                    }     
                                 }
+                                
+                                
                             }
-                        }                  
-                    } 
+                            
+                            
+                        }
+                    }
+                    
                 }
+                
+                
+                if(count($translate_text)){
+                    
+
+                    
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                    );
+                    $this->Crawl_tag_model->delete_where($deletewhere);            
+                    if ($translate_text && is_array($translate_text)) {
+                        foreach ($translate_text as  $text) {
+                            // $value = trim($value);
+                            if ($text) {
+                                $tagdata = array(
+                                    'post_id' => element('post_id', $val),
+                                    'cit_id' => element('cit_id', $val),
+                                    'brd_id' => element('brd_id', $val),
+                                    'cta_tag' => $text,
+                                );
+                                $this->Crawl_tag_model->insert($tagdata);
+                            }
+                        }
+                    }                  
+                } 
+                
      
             
 
@@ -2347,6 +2354,8 @@ print_r($cate);
                     }
                 
         }elseif($crawl_mode === 'item'){
+
+
             $select = 'cit_id,post_id, brd_id';
             $cmall = $this->Cmall_item_model->get_one('', $select,$where);        
 
@@ -4998,5 +5007,56 @@ print_r($cate);
         //     $this->Post_model->update($key, array('post_category' => $a['key']));   
         // }
         
+    }
+
+
+    public function multi_crawling_item_update($crawl_mode,$crawl_type)
+    {
+
+        if( empty($crawl_mode) && empty($crawl_type)){          
+            $result = array('success' => '실패');
+            alert('crawl_mode crawl_type  값이 없습니다.');
+            // exit(json_encode($result));
+        }
+
+        $result = array();
+        $this->output->set_content_type('application/json');
+
+        
+        $this->load->model(array('Cmall_item_model'));
+
+        $cit_ids = $this->input->post('chk_post_id');
+        
+        
+        if (empty($cit_ids)) {
+            $result = array('error' => '선택된 게시물이 없습니다.');
+            exit(json_encode($result));
+        }
+
+        foreach ($cit_ids as $cit_id) {
+            $cit_id = (int) $cit_id;
+            if (empty($cit_id) OR $cit_id < 1) {
+                $result = array('error' => '잘못된 접근입니다');
+                exit(json_encode($result));
+            }
+            
+            $select = 'cit_id,post_id, brd_id';
+            $cmall = $this->Cmall_item_model->get_one($cit_id, $select);
+
+            if ( ! element('cit_id', $cmall)) {
+                $result = array('error' => '존재하지 않는 게시물입니다');
+                exit(json_encode($result));
+            }
+
+          
+            $this->crawling_item_update($cit_id,$crawl_mode,$crawl_type);
+                    
+        }
+
+        
+
+        $result = array('success' => '실행되었습니다');
+        exit(json_encode($result));
+
     }
 }

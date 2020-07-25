@@ -1028,7 +1028,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 		if ( msg) {
 			if ( ! confirm(msg)) { return false; }
 		}
-		href = cb_url + '/postact/multi_crawling_item_update/' + crawl_mode + '/' + crawl_type;
+		href = cb_url + '/crawl/multi_crawling_item_update/' + crawl_mode + '/' + crawl_type;
 		var $that = $(this);
 		$.ajax({
 			url : href,
