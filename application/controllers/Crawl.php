@@ -217,7 +217,7 @@ class Crawl extends CB_Controller
 
                     $updatedata = array(
                         
-                        // 'post_id' => $_post_id,
+                        'post_id' => $_post_id,
                         'cit_name' => element('crw_name',$val),
                         'cit_summary' => element('crawl_sub_title',$val,'') ,
                         'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
