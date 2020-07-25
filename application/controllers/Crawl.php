@@ -1205,6 +1205,11 @@ exit;
 
         foreach ($crawl as $c_key => $c_value) {
 
+            $where = array(
+                'cit_id' => element('cit_id', $c_value),
+            );
+            if (empty($cit_id) && $this->Vision_api_label_model->count_by($where)) continue;        
+
             $label_text = array();
             $label = array();
             $label_tag = array();
@@ -1264,6 +1269,8 @@ exit;
                     }
 
                 }
+
+
 
                 if($tag_){
                     foreach($tag_ as $val){
@@ -1431,57 +1438,57 @@ exit;
 
                 
 
-                $deletewhere = array(
-                    'cit_id' => element('cit_id',$val),
-                );
+                // $deletewhere = array(
+                //     'cit_id' => element('cit_id',$val),
+                // );
 
-                $this->Cmall_category_rel_model->delete_where($deletewhere);   
+                // $this->Cmall_category_rel_model->delete_where($deletewhere);   
 
-                foreach($all_category as $a_cvalue){
+                // foreach($all_category as $a_cvalue){
                     
-                    foreach($a_cvalue as $a_cvalue_){
+                //     foreach($a_cvalue as $a_cvalue_){
                         
                         
-                        if(empty(element('cca_text',$a_cvalue_))) continue; 
+                //         if(empty(element('cca_text',$a_cvalue_))) continue; 
 
-                        if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),$crawl_tag_text)){
-                            $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
+                //         if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),$crawl_tag_text)){
+                //             $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
 
-                            if(element('cca_parent',$a_cvalue_)){
-                                $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
-                                $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
-                            }
+                //             if(element('cca_parent',$a_cvalue_)){
+                //                 $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
+                //                 $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
+                //             }
 
                             
-                        }
+                //         }
                                             
-                    }
+                //     }
                     
                     
-                }
-                if($cmall_category){                                      
-                    $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);    
+                // }
+                // if($cmall_category){                                      
+                //     $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);    
 
-                }
+                // }
                 
                 
 
                 
                 
-                foreach($all_category as $a_cvalue2){
-                    foreach($a_cvalue2 as $a_cvalue2_){
-                        if($this->category_check(element('cca_value',$a_cvalue2_),$c_category)){
-                            $cmall_category[element('cca_id',$a_cvalue2_)] = element('cca_id',$a_cvalue2_);
-                            if(element('cca_parent',$a_cvalue2_)){
-                                $cmall_category[element('cca_parent',$a_cvalue2_)] = element('cca_parent',$a_cvalue2_);
-                                $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)));
-                            }
-                        }
-                    }
-                }
+                // foreach($all_category as $a_cvalue2){
+                //     foreach($a_cvalue2 as $a_cvalue2_){
+                //         if($this->category_check(element('cca_value',$a_cvalue2_),$c_category)){
+                //             $cmall_category[element('cca_id',$a_cvalue2_)] = element('cca_id',$a_cvalue2_);
+                //             if(element('cca_parent',$a_cvalue2_)){
+                //                 $cmall_category[element('cca_parent',$a_cvalue2_)] = element('cca_parent',$a_cvalue2_);
+                //                 $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)));
+                //             }
+                //         }
+                //     }
+                // }
 
-                if($cmall_category)
-                    $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);
+                // if($cmall_category)
+                //     $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);
 
 
                 $deletewhere = array(
@@ -1593,11 +1600,15 @@ exit;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
-                $post = $this->Post_model->get_one(element('post_id',$val));
+
+                $cate = $this->Cmall_category_model->get_category(element('cit_id',$val)); 
+print_r($cate);
+                exit;
+                // $post = $this->Post_model->get_one(element('post_id',$val));
             
-                $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
-                if(empty($post['category'])) 
-                $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                // $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
+                // if(empty($post['category'])) 
+                // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
 
                 if(empty($post['category']['bca_parent']))
                     $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_key']));
@@ -2105,7 +2116,8 @@ exit;
                  $naturalentity_[$entity] = $entity;
             }
         }
-        
+
+
         if($row_tag){
             $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag));
 
@@ -2389,6 +2401,9 @@ exit;
                     if($crawl_type==='category_update'){
                         $this->crawling_category_update(0,element('brd_id', $val));
                     }
+                    if($crawl_type==='category_update2'){
+                        $this->crawling_category_update2(0,element('brd_id', $val));
+                    }
                 }
             }
         }
@@ -2412,7 +2427,14 @@ exit;
     {   
         $cca_text_arr = explode(',',$cca_text);
 
+
         foreach($cca_text_arr as $c_value){
+
+            
+            if ( ! is_array($crawl_tag_text))
+            {
+                $crawl_tag_text = array($crawl_tag_text);
+            }
 
             foreach($crawl_tag_text as $t_value){
 
@@ -2422,6 +2444,33 @@ exit;
                 
                 if(strtolower($c_value) === strtolower($t_value))
                     return true;
+            }
+        }
+        
+
+    }
+
+    function crawl_tag_to_category2($cca_text,$crawl_tag_text)
+    {   
+        $cca_text_arr = explode(',',$cca_text);
+
+
+        foreach($cca_text_arr as $c_value){
+
+            if(empty($c_value)) continue;
+            if ( ! is_array($crawl_tag_text))
+            {
+                $crawl_tag_text = array($crawl_tag_text);
+            }
+
+            foreach($crawl_tag_text as $t_value){
+
+                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+                
+                if(strpos($t_value,$c_value) !==false)
+                     return true;
+                // if(strtolower($c_value) === strtolower($t_value))
+                    // return true;
             }
         }
         
@@ -4703,5 +4752,251 @@ exit;
 
         return $result;
     
+    }
+
+
+    public function crawling_category_update2($post_id=0,$brd_id = 0)
+    {
+
+
+
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_crawl_index';
+        $this->load->event($eventname);
+
+        $is_admin = $this->member->is_admin();
+
+        if(empty($is_admin)) exit;
+
+        $post_id = (int) $post_id;
+        $brd_id = (int) $brd_id;
+        if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
+            show_404();
+        }
+
+        // $crawlwhere = array(
+        //     'brd_id' => $brd_id,
+        // );
+
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
+            show_404();
+        }
+
+        
+        if($post_id){
+            $postwhere = array(
+                'post_id' => $post_id,
+            );
+            
+
+
+
+           
+
+
+           
+        } 
+
+        if(empty($post_id)){
+            if($brd_id){
+                $postwhere = array(
+                    'brd_id' => $brd_id,
+                );
+                
+
+
+
+             
+
+
+                
+
+            } 
+        }
+
+        $result['list'] = $this->Cmall_item_model
+            ->get('', '', $postwhere);
+
+        $post_category=array();
+
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val){ 
+                
+
+                $c_category=array();
+                $category='';
+                $all_category=array();
+                $all_attr=array();
+
+                $post = $this->Post_model->get_one(element('post_id',$val));
+
+                // $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                
+                // if($category)
+                //     $c_category[] = $category['bca_value'];
+                // if(element('bca_parent', $category)){
+                //     $category = $this->Board_group_category_model->get_category_info(1, element('bca_parent', $category));    
+                //     $c_category[] = $category['bca_value'];
+                // }
+                
+                
+                
+                
+
+                $all_category = $this->Cmall_category_model->get_all_category();
+                
+
+                
+
+                $cmall_category=array();
+                
+                $updatedata = array();
+                foreach($all_category as $a_cvalue){
+                    
+                    foreach($a_cvalue as $a_cvalue_){
+                        
+                        
+                        $a_cvalue_['cca_text'] = ','.element('cca_value',$a_cvalue_);
+
+                         if(element('cca_text',$a_cvalue_)){
+
+                            if($this->crawl_tag_to_category2(element('cca_text',$a_cvalue_),element('cit_name',$val))){
+                                $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
+
+                                
+                                
+
+
+                             
+
+                                if(element('cca_parent',$a_cvalue_)){
+
+                                    $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
+                                    $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
+
+                                    
+                                    
+                                }
+
+                                
+                            }
+                         } 
+
+                         if(count($cmall_category) < 1){
+
+                             
+                            
+                            if(element('cca_text',$a_cvalue_)){
+                                if($this->crawl_tag_to_category2(element('cca_text',$a_cvalue_),element('post_title',$post))){
+                                    $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
+
+                                    
+                                    
+
+
+                                 
+
+                                    if(element('cca_parent',$a_cvalue_)){
+
+                                        $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
+                                        $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
+
+                                        
+                                        
+                                    }
+
+                                    
+                                }
+                            } 
+                        }
+                         // else {
+
+                        //     if($this->crawl_tag_to_category2(element('cca_value',$a_cvalue_),element('post_title',$post))){
+                        //         $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
+
+                                
+
+                        //         if(element('cca_parent',$a_cvalue_)){
+                        //             $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
+                        //             $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
+
+                                    
+                        //         }
+
+                                
+                        //     }
+                        // }
+                                            
+                    }
+                    
+                    
+                }
+
+                // print_r2($cmall_category);
+
+               
+                // if(empty(element('cca_text',$a_cvalue_))) continue; 
+
+
+                if($cmall_category){                                      
+                    
+                    
+                    // $updatedata['post_category'] = $post_category;
+                    // $this->Post_model->update(element('post_id',$post), $updatedata);
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                    );
+
+                    $this->Cmall_category_rel_model->delete_where($deletewhere);   
+
+                    $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);    
+
+                }
+
+                
+                
+               // $post_category[element('post_id',$post)][] = $cmall_category; 
+               
+            }
+
+        }
+
+        
+        // $pp = array();
+        // foreach($post_category as $key =>$val){
+        //     foreach($val as  $val_){
+        //         foreach($val_ as  $val__){
+        //             if($val__ < 14){
+        //                 if(isset($pp[$key][$val__]))
+        //                     $pp[$key][$val__]+=1;  
+        //                 else 
+        //                     $pp[$key][$val__]=1;  
+        //             }
+
+
+        //         }
+        //     }
+        // }
+        
+        
+        // foreach($pp as $key => $val){
+        //     $a =array();
+        //     $a['cnt'] = 0;
+        //     $a['key'] = 0;
+        //     foreach($val as $key_ => $val_){
+        //         if($a['cnt'] < $val_) {
+        //             $a['cnt']= $val_;
+        //             $a['key']= $key_;
+        //         }
+
+        //     }
+
+            
+        //     if(isset($a['key']))
+        //     $this->Post_model->update($key, array('post_category' => $a['key']));   
+        // }
+        
     }
 }

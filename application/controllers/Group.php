@@ -18,7 +18,7 @@ class Group extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Board','Cmall_item');
+	protected $models = array('Board','Cmall_item','Post','Cmall_category');
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -92,6 +92,10 @@ class Group extends CB_Controller
 				$view['view']['warning_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
 
 				$view['view']['cmall_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere);
+
+				
+				$view['view']['notcategory_count'][element('brd_id', $val)] = $this->Cmall_category_model->get_postcategory(0,element('brd_id', $val));
+				
 			}
 		}
 
@@ -114,6 +118,8 @@ class Group extends CB_Controller
 			$group['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/category_update');
 			$group['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/tag_update');
 			$group['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/tag_overwrite');
+
+			$group['crawl_category_update2'] = base_url('crawl/crawling_item_update/'.element('bgr_id', $group).'/group/category_update2');
 		}
 		
 		$view['view']['group'] = $group;

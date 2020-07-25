@@ -3,6 +3,7 @@
 		<ul class="nav nav-tabs">
 			<li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">카테고리 관리</a></li>
 			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/attr'); ?>" onclick="return check_form_changed();">제품특성 관리</a></li>
+			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/breed'); ?>" onclick="return check_form_changed();">견종 관리</a></li>
 			
 		</ul>
 	</div>
@@ -34,7 +35,7 @@
 								' . html_escape(element('cca_value', $result)) . ' (' . html_escape(element('cca_order', $result)) . ')
 								<button class="btn btn-primary btn-xs" onClick="cat_modify(\'' . element('cca_id', $result) . '\')"><span class="glyphicon glyphicon-edit"></span></button>';
 						if ( ! element(element('cca_id', $result), $data)) {
-							$return .= '					<button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/delete/' . element('cca_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
+							$return .= '					<button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/delete/' . element('cca_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button> <button>'.html_escape(element('cca_text', $result)).'</button>';
 						}
 						$return .= '	</div><div class="form-inline mod-cca-id-' . element('cca_id', $result) . '" style="display:none;">';
 						$return .= form_open(current_full_url(), $attributes);

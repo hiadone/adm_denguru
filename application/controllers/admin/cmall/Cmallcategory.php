@@ -24,7 +24,7 @@ class Cmallcategory extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_category','Cmall_attr');
+	protected $models = array('Cmall_category','Cmall_attr','Cmall_breed');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -533,6 +533,248 @@ class Cmallcategory extends CB_Controller
 		);
 		$param =& $this->querystring;
 		$redirecturl = admin_url($this->pagedir . '/attr?' . $param->output());
+
+		redirect($redirecturl);
+	}
+
+
+	public function breed()
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_breed';
+		$this->load->event($eventname);
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$primary_key = $this->Cmall_breed_model->primary_key;
+
+		/**
+		 * Validation 라이브러리를 가져옵니다
+		 */
+		$this->load->library('form_validation');
+
+		/**
+		 * 전송된 데이터의 유효성을 체크합니다
+		 */
+		if ($this->input->post('type') === 'add') {
+			$config = array(
+				array(
+					'field' => 'ced_parent',
+					'label' => '상위견종',
+					'rules' => 'trim',
+				),
+				array(
+					'field' => 'ced_value',
+					'label' => '견종명',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'ced_text',
+					'label' => '견종사전',
+					'rules' => 'trim',
+				),
+				// array(
+				// 	'field' => 'ced_order',
+				// 	'label' => '정렬순서',
+				// 	'rules' => 'trim|numeric|is_natural',
+				// ),
+			);
+		} else {
+			$config = array(
+				array(
+					'field' => 'ced_id',
+					'label' => '견종아이디',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'ced_value',
+					'label' => '견종명',
+					'rules' => 'trim|required',
+				),
+				array(
+					'field' => 'ced_text',
+					'label' => '견종사전',
+					'rules' => 'trim',
+				),
+				// array(
+				// 	'field' => 'ced_order',
+				// 	'label' => '정렬순서',
+				// 	'rules' => 'trim|numeric|is_natural',
+				// ),
+			);
+		}
+		$this->form_validation->set_rules($config);
+
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($this->form_validation->run() === false) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+		} else {
+			/**
+			 * 유효성 검사를 통과한 경우입니다.
+			 * 즉 데이터의 insert 나 update 의 process 처리가 필요한 상황입니다
+			 */
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+
+			if ($this->input->post('type') === 'add') {
+
+				$ced_text_arr = array();
+				$ced_text_ = '';				
+				$ced_order = $this->input->post('ced_order') ? $this->input->post('ced_order') : 0;
+				$ced_text = $this->input->post('ced_text') ? $this->input->post('ced_text') : '';
+				$ced_text = str_replace("\n",",",$ced_text);
+
+				$ced_text_arr = explode(",",urldecode($ced_text));
+
+                
+
+                if(count($ced_text_arr)){
+                    
+                    if ($ced_text_arr && is_array($ced_text_arr)) {
+                        $text_array=array();
+                        foreach ($ced_text_arr as  $value) {
+                            $value = trim($value);
+                            if ($value) 
+                            	array_push($text_array,$value);
+                        }
+                    }
+                    if($text_array && is_array($text_array)) $ced_text_ = implode(",",$text_array);
+                }
+
+				$insertdata = array(
+					'ced_value' => $this->input->post('ced_value', null, ''),
+					'ced_parent' => $this->input->post('ced_parent', null, 0),
+					'ced_text' => $ced_text_,
+					'ced_order' => $ced_order,
+				);
+				$this->Cmall_breed_model->insert($insertdata);
+				$this->cache->delete('cmall-breed-all');
+				$this->cache->delete('cmall-breed-detail');
+
+				
+
+				$this->session->set_flashdata(
+                    'message',
+                    '정상적으로 저장되었습니다'
+                );
+                
+				redirect(admin_url($this->pagedir.'/breed'), 'refresh');
+
+			}
+			if ($this->input->post('type') === 'modify') {
+
+				$ced_text_arr = array();
+				$ced_text_ = '';				
+				$ced_order = $this->input->post('ced_order') ? $this->input->post('ced_order') : 0;
+				$ced_text = $this->input->post('ced_text') ? $this->input->post('ced_text') : '';
+				$ced_text = str_replace("\n",",",$ced_text);
+
+				$ced_text_arr = explode(",",urldecode($ced_text));
+
+                
+
+                if(count($ced_text_arr)){
+                    
+                    if ($ced_text_arr && is_array($ced_text_arr)) {
+                        $text_array=array();
+                        foreach ($ced_text_arr as  $value) {
+                            $value = trim($value);
+                            if ($value) 
+                            	array_push($text_array,$value);
+                        }
+                    }
+                    if($text_array && is_array($text_array)) $ced_text_ = implode(",",$text_array);
+                }
+
+				$updatedata = array(
+					'ced_value' => $this->input->post('ced_value', null, ''),
+					'ced_text' => $ced_text_,
+					'ced_order' => $ced_order,
+				);
+				$this->Cmall_breed_model->update($this->input->post('ced_id'), $updatedata);
+				$this->cache->delete('cmall-breed-all');
+				$this->cache->delete('cmall-breed-detail');
+
+				
+
+				$this->session->set_flashdata(
+                    'message',
+                    '정상적으로 수정되었습니다'
+                );
+
+				redirect(admin_url($this->pagedir.'/breed'), 'refresh');
+
+			}
+		}
+
+		$getdata = $this->Cmall_breed_model->get_all_breed();
+
+		
+		$view['view']['data'] = $getdata;
+
+		/**
+		 * primary key 정보를 저장합니다
+		 */
+		$view['view']['primary_key'] = $primary_key;
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+		/**
+		 * 어드민 레이아웃을 정의합니다
+		 */
+		$layoutconfig = array('layout' => 'layout', 'skin' => 'breed');
+		$view['layout'] = $this->managelayout->admin($layoutconfig, $this->cbconfig->get_device_view_type());
+		$this->data = $view;
+		$this->layout = element('layout_skin_file', element('layout', $view));
+		$this->view = element('view_skin_file', element('layout', $view));
+	}
+
+	public function breed_delete($ced_id = 0)
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_cmallbreed_delete';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		/**
+		 * 프라이머리키에 숫자형이 입력되지 않으면 에러처리합니다
+		 */
+		$ced_id = (int) $ced_id;
+		if (empty($ced_id) OR $ced_id < 1) {
+			show_404();
+		}
+
+		$this->Cmall_breed_model->delete($ced_id);
+		$this->cache->delete('cmall-breed-all');
+		$this->cache->delete('cmall-breed-detail');
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 삭제가 끝난 후 목록페이지로 이동합니다
+		 */
+		$this->session->set_flashdata(
+			'message',
+			'정상적으로 삭제되었습니다'
+		);
+		$param =& $this->querystring;
+		$redirecturl = admin_url($this->pagedir . '/breed?' . $param->output());
 
 		redirect($redirecturl);
 	}

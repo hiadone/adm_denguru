@@ -539,6 +539,7 @@ class Board extends CI_Controller
 		$cache_minute = element('cache_minute', $config);
 		$cmall_count = element('cmall_count', $config);
 		$warning_count = element('warning_count', $config);
+		$notcategory_count = element('notcategory_count', $config);
 
 		if ($limit <= 0) {
 			return false;
@@ -567,6 +568,9 @@ class Board extends CI_Controller
 
 		$view['view']['warning_count'] = '';
 		$view['view']['warning_count'] = $warning_count;
+
+		$view['view']['notcategory_count'] = '';
+		$view['view']['notcategory_count'] = $notcategory_count;
 		
 
 		// $view['view']['cmallitem_count'] = $this->CI->Cmall_item_model->count_by($itemwhere);;

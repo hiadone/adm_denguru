@@ -110,16 +110,21 @@
 
 	<?php
 	if (element('use_category', element('board', element('list', $view))) && element('cat_display_style', element('board', element('list', $view))) === 'tab') {
+
 		$category = element('category', element('board', element('list', $view)));
 		$category_cnt = element('category_cnt', element('board', element('list', $view)));
+
+		
+
 	?>
 		<ul class="nav nav-tabs clearfix">
 			<li role="presentation" <?php if ( ! $this->input->get('category_id')) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=">전체 (<?php echo number_format(element('total', $category_cnt)); ?>)</a></li>
 			<?php
 			if (element(0, $category)) {
 				foreach (element(0, $category) as $ckey => $cval) {
+
 			?>
-				<li role="presentation" <?php if ($this->input->get('category_id') === element('bca_key', $cval)) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=<?php echo element('bca_key', $cval); ?>"><?php echo html_escape(element('bca_value', $cval)); ?> (<?php echo number_format(element(element('bca_key', $cval), $category_cnt)); ?>)</a></li>
+				<li role="presentation" <?php if ($this->input->get('category_id') === element('cca_id', $cval)) { ?>class="active" <?php } ?>><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?findex=<?php echo html_escape($this->input->get('findex')); ?>&category_id=<?php echo element('cca_id', $cval); ?>"><?php echo html_escape(element('cca_value', $cval)); ?> (<?php echo number_format(element(element('cca_id', $cval), $category_cnt)); ?>)</a></li>
 			<?php
 				}
 			}
@@ -187,12 +192,23 @@
 			}
 			if (element('list', element('data', element('list', $view)))) {
 				foreach (element('list', element('data', element('list', $view))) as $result) {
+
 			?>
 				<tr>
 					<?php if (element('is_admin', $view)) { ?><th scope="row"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('post_id', $result); ?>" /></th><?php } ?>
 					<td><?php echo element('num', $result); ?></td>
 					<td>
-						<?php if (element('category', $result)) { ?><a href="<?php echo board_url(element('brd_key', element('board', element('list', $view)))); ?>?category_id=<?php echo html_escape(element('bca_key', element('category', $result))); ?>"><span class="label label-default"><?php echo html_escape(element('bca_value', element('category', $result))); ?></span></a><?php } ?>
+						<?php 
+						if (element('category', $result)) { 
+							foreach(element('category', $result) as $va){
+								if(element('cca_value',$va) =='no category')
+									echo '<span class="label label-warning">'.html_escape(element('cca_value',$va)).'('.element('cnt',$va).')</span> ';
+								else
+									echo '<span class="label label-default">'.html_escape(element('cca_value',$va)).'('.element('cnt',$va).')</span> ';
+							}
+						}
+						?>
+							
 						<?php if (element('post_reply', $result)) { ?><span class="label label-primary" style="margin-left:<?php echo strlen(element('post_reply', $result)) * 10; ?>px">Re</span><?php } ?>
 						<a href="<?php echo element('post_url', $result); ?>" style="
 							<?php
@@ -274,7 +290,7 @@
 
 		<?php if (element('crawl_category_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 및 제품특성 update</a>
+				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 상품 카테고리 및 제품특성 update</a>
 			</div>
 		<?php } ?>
 
@@ -295,7 +311,11 @@
 				<a href="<?php echo element('vision_api_label', element('list', $view)); ?>" class="btn btn-warning btn-sm">vision_api_label update</a>
 			</div>
 		<?php } ?>	
-		
+		<?php if (element('crawl_category_update2', element('list', $view))) { ?>
+			<div class="pull-right pr10">
+				<a href="<?php echo element('crawl_category_update2', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 </a>
+			</div>
+		<?php } ?>
 
 		<?php if (element('crawl_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">

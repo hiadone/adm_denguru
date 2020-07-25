@@ -4,7 +4,8 @@
 		<div class="panel-heading">
 			<?php echo html_escape(element('board_name', element('board', $view))); ?>
 			<button class="btn btn-info btn-xs">총 상품 <?php echo number_format(element('cmall_count',$view)); ?> 개</button>
-			<button class="btn btn-warning btn-xs">총 상품 <?php echo number_format(element('warning_count',$view)); ?> 개</button>
+			<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format(element('warning_count',$view)); ?> 개</button>
+			<button class="btn btn-warning btn-xs">카테고리 없는 상품 <?php echo number_format(element('cmall_count',$view) -element('notcategory_count',$view)); ?> 개</button>
 			
 			<div class="view-all pull-right">
 				<a href="<?php echo board_url(element('brd_key', element('board', $view))); ?>" title="<?php echo html_escape(element('board_name', element('board', $view))); ?>">더보기 <i class="fa fa-angle-right"></i></a>

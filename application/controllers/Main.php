@@ -20,7 +20,7 @@ class Main extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Board','Cmall_item');
+	protected $models = array('Board','Cmall_item','Post','Cmall_category');
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -81,6 +81,18 @@ class Main extends CB_Controller
 		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','',$or_where);
 
 		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by();
+
+
+
+		
+
+
+		// if(!empty($view['view']['cmall_count'] - $a_t))
+		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_postcategory();
+		
+
+
+		// $view['view']['notcategory_count'] = $this->Post_model->total_count_by(array('post_category' => 0));
 
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);

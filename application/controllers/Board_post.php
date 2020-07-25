@@ -1473,36 +1473,43 @@ class Board_post extends CB_Controller
 		}
 
 		if (element('use_category', $board)) {
-			$this->load->model(array('Board_category_model','Board_group_category_model'));
+			$this->load->model(array('Cmall_category_model'));			
 			
-			$board['category'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
-			if(empty($board['category']))
-			$board['category'] = $this->Board_group_category_model->get_all_category(1);
+			$board['category'] = $this->Cmall_category_model->get_all_category();
 			
-
-			$this->db->select('count(cb_cmall_item.cit_id) as cnt,post_category');
+			
+			$this->db->select('count(cb_cmall_item.cit_id) as cnt,cmall_category.cca_id');
 			$this->db->from('post');
 			$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
+			$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
+			$this->db->join('cmall_category', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'left');
 			$this->db->where(array('post.brd_id' => element('brd_id', $board)));
-			$this->db->group_by('post_category');
+
+			$this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
+
+			
+			$this->db->group_by('cmall_category.cca_id');
 			$qry = $this->db->get();
 			$result = $qry->result_array();
+			
+			
 			
 			foreach($result as $value){
 				
 				 
-				if(empty($board['category_cnt'][element(0,explode('.',element('post_category',$value)))]))
-					$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] = element('cnt',$value);
-				else 
-					$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] += element('cnt',$value);
-				if(empty($board['category_cnt']['total']))
-					$board['category_cnt']['total'] = element('cnt',$value);
-				else 
-					$board['category_cnt']['total'] += element('cnt',$value);
+				if(empty($board['category_cnt'][element('cca_id',$value)]))
+					$board['category_cnt'][element('cca_id',$value)] = element('cnt',$value);
+				// else 
+				// 	$board['category_cnt'][element(0,explode('.',element('post_category',$value)))] += element('cnt',$value);
+				
+				
+			
 			}
 
-
+			$board['category_cnt']['total'] = $this->Cmall_item_model->count_by(array('brd_id' => element('brd_id', $board))); 
 			
+
+				
 		}
 
 		
@@ -1576,7 +1583,8 @@ class Board_post extends CB_Controller
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
 		$where = array(
-			'brd_id' => $this->board->item_key('brd_id', $brd_key),
+			'post.brd_id' => $this->board->item_key('brd_id', $brd_key),
+
 		);
 		$where['post_del <>'] = 2;
 		if (element('except_notice', $board)
@@ -1596,8 +1604,9 @@ class Board_post extends CB_Controller
 			$category_id = '';
 		}
 		$result = $this->Post_model
-			->get_post_list($per_page, $offset, $where, $category_id, $findex, $sfield, $skeyword);
+			->get_cmall_list($per_page, $offset, $where, $category_id, $findex, $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
+
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
 				$result['list'][$key]['post_url'] = post_url(element('brd_key', $board), element('post_id', $val));
@@ -1639,15 +1648,7 @@ class Board_post extends CB_Controller
 					$list_date_style,
 					$list_date_style_manual
 				);
-				$result['list'][$key]['category'] = '';
-				if (element('use_category', $board) && element('post_category', $val)) {
-					
-					$result['list'][$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
-					if(empty($result['list'][$key]['category']))
-					$result['list'][$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
-					
-					
-				}
+
 				$result['list'][$key]['ppo_id'] = '';
 				if (element('use_poll', $board) OR element('use_mobile_poll', $board)) {
 					$poll_where = array('post_id' => element('post_id', $val));
@@ -1741,6 +1742,35 @@ class Board_post extends CB_Controller
 				$result['list'][$key]['warning_count'] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
 				$result['list'][$key]['cmall_count'] = $this->Cmall_item_model->count_by($itemwhere);
 				
+
+				// if (element('use_category', $board) && element('post_category', $val)) {
+				if (element('use_category', $board) ) {
+					$result['list'][$key]['category'] = array();
+					$aaa =array();
+					$aaa = $this->Cmall_category_model->get_postcategory(element('post_id', $val));
+
+					
+					$a = 0;
+					$a_t=0;
+					foreach($aaa as $aval){
+						
+						// if(element('cca_parent',$aval) === '0'){
+							$result['list'][$key]['category'][$a]['cnt'] = element('cnt',$aval);
+							$result['list'][$key]['category'][$a]['cca_value'] = element('cca_value',$aval);
+							$a_t += element('cnt',$aval);
+							$a++;
+						// }
+
+					}
+					if(($result['list'][$key]['cmall_count'] - $a_t) > 0){
+						$result['list'][$key]['category'][$a]['cnt'] = $result['list'][$key]['cmall_count'] - $a_t;
+						$result['list'][$key]['category'][$a]['cca_value'] ='no category';
+					}elseif(($result['list'][$key]['cmall_count'] - $a_t) < 0){
+						$result['list'][$key]['category'][$a]['cnt'] = abs($result['list'][$key]['cmall_count'] - $a_t);
+						$result['list'][$key]['category'][$a]['cca_value'] ='over category ';
+					}
+					
+				}
 			}
 		}
 
@@ -1926,6 +1956,7 @@ class Board_post extends CB_Controller
 				$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
 				$return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
 				$return['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/vision_api_label');
+				$return['crawl_category_update2'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update2');
 			// } else {
 				// $return['crawl_update'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/update');
 				// $return['crawl_overwrite'] = base_url('postact/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');

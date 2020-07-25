@@ -3928,19 +3928,31 @@ class Postact extends CB_Controller
    	function attr_update()
     {	
     	$url = base_url('postact/attr');
-    	$data = array(
-    		'secret' => $this->cbconfig->item('recaptcha_secret'),
-    		'response' => $str,
+    	$aaa = array(
+    		'크기',
+'연령별',
+'색상',
+'소재',
+'재료',
+'사용계절',
+'특징',
     	);
+    	foreach($aaa as $val){
+	    	$data = array(
+	    		'type' => 'add',
+	    		'cat_value' => $val,
+	    	);
 
-    	$ch = curl_init();
-    	curl_setopt($ch, CURLOPT_URL, $url);
-    	curl_setopt($ch, CURLOPT_POST, sizeof($data));
-    	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    	$result = curl_exec($ch);
-    	curl_close($ch);
+	    	$ch = curl_init();
+	    	curl_setopt($ch, CURLOPT_URL, $url);
+	    	curl_setopt($ch, CURLOPT_POST, sizeof($data));
+	    	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    	$result = curl_exec($ch);
 
+	    	echo $result;
+	    	curl_close($ch);
+    	}
     	$obj = json_decode($result);
 
     	

@@ -25,11 +25,23 @@ foreach (element('warning_count', $view) as $val)
 
 	$warning_total +=element('rownum',$val); 
 }
+
+
+$notcategory_count =array();
+
+$notcategory_total = 0;
+foreach (element('notcategory_count', $view) as $val) 
+{
+	$notcategory_count[element('brd_id',$val)] = element('cnt',$val);
+
+	$notcategory_total +=element('cnt',$val); 
+}
 ?>
 <div class="board">
 	<h3>
 		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</button>
 		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</button>
+		<button class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total -$notcategory_total); ?> 개</button>
 	</h3>
 </div>
 <?php
@@ -49,6 +61,7 @@ if (element('board_list', $view)) {
 			'cache_minute' => 1,
 			'cmall_count' => element(element('brd_id', $board),$cmall_count),
 			'warning_count' => element(element('brd_id', $board),$warning_count),
+			'notcategory_count' => element(element('brd_id', $board),$notcategory_count),
 			
 		);
 		if ($k % 2 === 0) {

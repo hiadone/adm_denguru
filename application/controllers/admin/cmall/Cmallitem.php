@@ -91,6 +91,7 @@ class Cmallitem extends CB_Controller
 				'cit_price' => 0,
 				'cit_post_url' => '',
 				'cit_goods_code' => '',
+				'cit_file_1' => '',
 				'cbr_id' => 0,
 			);
 			
