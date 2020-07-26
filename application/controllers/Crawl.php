@@ -319,7 +319,7 @@ class Crawl extends CB_Controller
                                 
                             if($upload){
                                 $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$imageName;
-                                $this->Cmall_item_model->update($cit_id, $updatedata);
+                                $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
                             }
                         }
                         
