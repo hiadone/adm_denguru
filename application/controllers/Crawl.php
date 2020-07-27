@@ -2137,8 +2137,10 @@ print_r($cate);
         $row_tag_ = array();
         if($row_tag){
             foreach($row_tag as $val){
-
-                $row_tag_[] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $val);
+                $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                preg_match_all($pattern, $val, $match);
+                $row_tag_[] = implode('', $match[0]);
+                
                 
             }
             $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag_));
