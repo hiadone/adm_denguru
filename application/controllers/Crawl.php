@@ -55,9 +55,9 @@ class Crawl extends CB_Controller
          */
         $this->load->library(array('querystring','aws_s3','form_validation'));
 
-        // $this->imageAnnotator = new ImageAnnotatorClient([
-        //     'credentials' => 'glowing-harmony-278705-73ffa79d6108.json'
-        // ]);
+        $this->imageAnnotator = new ImageAnnotatorClient([
+            'credentials' => 'glowing-harmony-278705-73ffa79d6108.json'
+        ]);
 
 
         # Instantiates a client
@@ -65,12 +65,12 @@ class Crawl extends CB_Controller
         //     'key' => config_item('translate_key')
         // ]);
 
-        // $projectId = 'denguru3-71f74';
+        $projectId = 'denguru3-71f74';
         
-        // $this->naturallanguage = new LanguageClient([
-        //     // 'projectId' => $projectId,
-        //     'keyFilePath' => 'glowing-harmony-278705-73ffa79d6108.json'
-        // ]);
+        $this->naturallanguage = new LanguageClient([
+            // 'projectId' => $projectId,
+            'keyFilePath' => 'glowing-harmony-278705-73ffa79d6108.json'
+        ]);
 
         $this->db2 = $this->load->database('db2', TRUE);
     }
@@ -1255,6 +1255,7 @@ class Crawl extends CB_Controller
 
                 $label_tag['cit_text'] = element('cdt_content',element(0,element('list',$result))) ? element('cdt_content',element(0,element('list',$result))) : '';
                 $label_tag['cit_name'] = element('crw_name',element(0,element('list',$result))) ? element('crw_name',element(0,element('list',$result))) : element('crw_name',element(0,element('list',$result)));
+
                 echo element('cit_id', $c_value)."<br>\n";
                 $tag_ = $this->getnaturallanguage($label_tag);
 
@@ -1923,9 +1924,6 @@ print_r($cate);
 
         // return;
         
-        $this->imageAnnotator = new ImageAnnotatorClient([
-            'credentials' => 'glowing-harmony-278705-73ffa79d6108.json'
-        ]);
 
         if (empty($cit_id) OR $cit_id < 1) {
             show_404();
@@ -1991,10 +1989,6 @@ print_r($cate);
         // return;
         
         // $mecab = new \MeCab\Tagger(array('-d', '/usr/local/lib/mecab/dic/mecab-ko-dic'));
-
-        $this->imageAnnotator = new ImageAnnotatorClient([
-            'credentials' => 'glowing-harmony-278705-73ffa79d6108.json'
-        ]);
 
         if (empty($cit_id) OR $cit_id < 1) {
             show_404();
@@ -2116,10 +2110,7 @@ print_r($cate);
 
         // return;
         
-        $this->naturallanguage = new LanguageClient([
-            // 'projectId' => $projectId,
-            'keyFilePath' => 'glowing-harmony-278705-73ffa79d6108.json'
-        ]);
+
         
         $translate_text=array();
             
@@ -2134,10 +2125,11 @@ print_r($cate);
             }
         }
 
+
         $row_tag_ = array();
         if($row_tag){
             foreach($row_tag as $val){
-                $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                $pattern = "/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/";
                 preg_match_all($pattern, $val, $match);
                 $row_tag_[] = implode('', $match[0]);
                 
