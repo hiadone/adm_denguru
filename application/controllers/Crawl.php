@@ -2134,9 +2134,14 @@ print_r($cate);
             }
         }
 
-
+        $row_tag_ = array();
         if($row_tag){
-            $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag));
+            foreach($row_tag as $val){
+
+                $row_tag_[] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $val);
+                
+            }
+            $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag_));
 
             
         }
