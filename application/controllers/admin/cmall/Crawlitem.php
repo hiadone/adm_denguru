@@ -1876,6 +1876,110 @@ class Crawlitem extends CB_Controller
         $aaa = $this->db2->get();
         $result['list'] = $aaa->result_array();
         
+        $this->db2->select('brd_id,count(*) as cnt');
+
+        $this->db2->group_by('brd_id');
+        $this->db2->order_by('brd_id');
+        $this->db2->from('crawl_detail');
+        $aaa = $this->db2->get();
+        $result['list2'] = $aaa->result_array();
+        $result_2 = array();
+
+        if (element('list2', $result)) {
+            foreach (element('list2', $result) as $key => $val) {
+                $result_2[element('brd_id',$val)] = element('cnt',$val);
+            }
+        }
+
+        $this->db->select('brd_id,count(DISTINCT cit_id) as cnt');
+
+        $this->db->group_by('brd_id');
+        $this->db->order_by('brd_id');
+        $this->db->from('vision_api_label');
+        $aaa = $this->db->get();
+        $result['list3'] = $aaa->result_array();
+        $result_3 = array();
+
+        if (element('list3', $result)) {
+            foreach (element('list3', $result) as $key => $val) {
+                $result_3[element('brd_id',$val)] = element('cnt',$val);
+            }
+        }
+
+
+        // $this->db2->select('crawl_item.brd_id,count(*) as cnt');
+
+
+
+
+
+        // $this->db2->group_by('crawl_item.brd_id');
+        // $this->db2->order_by('crawl_item.brd_id');
+        // $this->db2->from('crawl_item');        
+        // $this->db2->join('crawl_detail', 'crawl_item.crw_id = crawl_detail.crw_id', 'left');
+
+        // $this->db2->group_start();
+        //     $this->db2->or_where('crw_name', '');
+        //     $this->db2->or_where('crw_post_url', '');
+        //     $this->db2->or_where('crw_goods_code', '');
+
+        //     $this->db2->group_start('','or');
+        //         $this->db2->where('crw_price', 0);
+        //         $this->db2->where('crw_price_sale', 0);
+        //         $this->db2->where('crw_is_soldout', 0);
+        //     $this->db2->group_end();
+
+        //     $this->db2->group_start('','or');
+        //         $this->db2->where('crw_brand1', '');
+        //         $this->db2->where('crw_brand2', '');
+        //         $this->db2->where('crw_brand3', '');
+        //         $this->db2->where('crw_brand4', '');
+        //         $this->db2->where('crw_brand5', '');
+
+        //         if($this->input->get('warning')){
+        //             $this->db2->where('cdt_brand1', '');
+        //             $this->db2->where('cdt_brand2', '');
+        //             $this->db2->where('cdt_brand3', '');
+        //             $this->db2->where('cdt_brand4', '');
+        //             $this->db2->where('cdt_brand5', '');
+        //         }
+                
+        //     $this->db2->group_end();
+
+        //     $this->db2->group_start('','or');
+        //         $this->db2->where('crw_brand1', '');
+        //         $this->db2->where('crw_brand2', '');
+        //         $this->db2->where('crw_brand3', '');
+        //         $this->db2->where('crw_brand4', '');
+        //         $this->db2->where('crw_brand5', '');
+
+        //         if($this->input->get('warning')){
+        //             $this->db2->where('cdt_brand1 is null',null,false);
+        //             $this->db2->where('cdt_brand2 is null',null,false);
+        //             $this->db2->where('cdt_brand3 is null',null,false);
+        //             $this->db2->where('cdt_brand4 is null',null,false);
+        //             $this->db2->where('cdt_brand5 is null',null,false);
+        //         }
+                
+        //     $this->db2->group_end();
+
+        //     $this->db2->group_start('','or');
+        //         $this->db2->where('crw_category1', '');
+        //         $this->db2->where('crw_category2', '');
+        //         $this->db2->where('crw_category3', '');
+        //     $this->db2->group_end();
+        // $this->db2->group_end();
+
+        // $aaa = $this->db2->get();
+        // $result['list4'] = $aaa->result_array();
+        // $result_4 = array();
+
+        // if (element('list4', $result)) {
+        //     foreach (element('list4', $result) as $key => $val) {
+        //         $result_4[element('brd_id',$val)] = element('cnt',$val);
+        //     }
+        // }
+
         
 
         $i=0;
@@ -1890,11 +1994,19 @@ class Crawlitem extends CB_Controller
                 // $result['list'][$key]['a_cnt'] = $this->db2->count_all_results('crawl_detail');
 
                 // $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_content1 !=' => '' ));
-                // $result['list'][$key]['b_cnt'] = $this->db2->count_all_results('crawl_detail');
+                $result['list'][$key]['d_cnt'] = element(element('brd_id',$val),$result_2);
+
+                $result['list'][$key]['v_cnt'] = element(element('brd_id',$val),$result_3);
+
+
+
 
                 
-                $this->db2->where(array('brd_id' => element('brd_id', $val)));
-                $result['list'][$key]['d_cnt'] = $this->db2->count_all_results('crawl_detail');
+                
+
+                         
+
+                
 
             
                

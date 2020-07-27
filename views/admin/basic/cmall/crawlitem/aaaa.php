@@ -19,6 +19,7 @@
                             <th>상품 상세 숫자</th>
                             <!-- <th>상품 이미지 숫자</th>
                             <th>상품 텍스트 숫자</th> -->
+                            <th>vision count</th>
                             <th>비교 </th>
                             <th>warning_count</th>
                             <th>action</th>
@@ -31,12 +32,13 @@
                     if (element('list', element('data', $view))) {
                         foreach (element('list', element('data', $view)) as $result) {
                     ?>
-                        <tr class="<?php echo (element('cnt', $result) - element('d_cnt', $result)) ? 'warning':''; ?> ">
+                        <tr class="<?php echo (element('cnt', $result) - element('d_cnt', $result) || element('cnt', $result) - element('v_cnt', $result)) ? 'warning':''; ?> ">
                             <td><?php echo element('num', $result); ?></td>
                             <td><?php echo element('brd_id', $result); ?></td>
                             <td><a href="<?php echo admin_url($this->pagedir.'?sfield=brd_id2&skeyword='.element('brd_id', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
                             <td><?php echo element('cnt', $result); ?></td>
                             <td><?php echo element('d_cnt', $result); ?></td>                          
+                            <td><?php echo element('v_cnt', $result); ?></td>                          
                             <!-- <td><?php echo element('a_cnt', $result); ?></td>                          
                             <td><?php echo element('b_cnt', $result); ?></td>                           -->
                             
