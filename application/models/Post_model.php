@@ -326,11 +326,11 @@ class Post_model extends CB_Model
 			}
 		}
 
-		$this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point,cmall_item.cit_id');
+		$this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point');
 		$this->db->from($this->_table);
 		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
-		$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
-		$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
+
+		
 		// $this->db->join('cmall_category', 'cmall_category.cca_id = cmall_category_rel.cca_id and cmall_category.cca_parent = 0', 'left');
 
 		if ($where) {
@@ -340,6 +340,10 @@ class Post_model extends CB_Model
 			$this->db->where($search_where);
 		}
 		if ($category_id) {
+
+			$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
+			$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
+
 			if (strpos($category_id, '.')) {
 				$this->db->like('cmall_category_rel.cca_id', $category_id . '', 'after');
 			} else {
@@ -377,8 +381,8 @@ class Post_model extends CB_Model
 		$this->db->select('count(DISTINCT cb_post.post_id) as rownum');
 		$this->db->from($this->_table);
 		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
-		$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
-		$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
+		// $this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
+		// $this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
 		// $this->db->join('cmall_category', 'cmall_category.cca_id = cmall_category_rel.cca_id and cmall_category.cca_parent = 0', 'left');
 		if ($where) {
 			$this->db->where($where);
@@ -387,6 +391,10 @@ class Post_model extends CB_Model
 			$this->db->where($search_where);
 		}
 		if ($category_id) {
+
+			$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
+			$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
+			
 			if (strpos($category_id, '.')) {
 				$this->db->like('cmall_category_rel.cca_id', $category_id . '', 'after');
 			} else {
