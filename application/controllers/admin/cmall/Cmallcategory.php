@@ -120,7 +120,7 @@ class Cmallcategory extends CB_Controller
 		}
 		$this->form_validation->set_rules($config);
 
-
+		
 		/**
 		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
 		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다

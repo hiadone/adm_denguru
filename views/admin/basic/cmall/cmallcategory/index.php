@@ -10,8 +10,8 @@
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
-		echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
-		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
+		// echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
+		// echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
 		?>
 		<ul class="list-group">
 			<?php
@@ -35,8 +35,10 @@
 								' . html_escape(element('cca_value', $result)) . ' (' . html_escape(element('cca_order', $result)) . ')
 								<button class="btn btn-primary btn-xs" onClick="cat_modify(\'' . element('cca_id', $result) . '\')"><span class="glyphicon glyphicon-edit"></span></button>';
 						if ( ! element(element('cca_id', $result), $data)) {
-							$return .= '					<button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/delete/' . element('cca_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button> <button>'.html_escape(element('cca_text', $result)).'</button>';
+							$return .= '					<button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/delete/' . element('cca_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
 						}
+
+						$return .= '<button>'.html_escape(element('cca_text', $result)).'</button>';
 						$return .= '	</div><div class="form-inline mod-cca-id-' . element('cca_id', $result) . '" style="display:none;">';
 						$return .= form_open(current_full_url(), $attributes);
 						$return .= '<input type="hidden" name="cca_id"	value="' . element('cca_id', $result) . '" />
@@ -45,7 +47,7 @@
 																카테고리명 <input type="text" class="form-control" name="cca_value" value="' . html_escape(element('cca_value', $result)) . '" />
 																사전 <textarea  class="form-control" style="width:300px;" name="cca_text" rows="1" >' . html_escape(element('cca_text', $result)) . '</textarea>
 																정렬순서 <input type="number" class="form-control" name="cca_order" value="' . html_escape(element('cca_order', $result)) . '"/>
-																<button class="btn btn-primary btn-xs" type="submit" >저장</button>
+																<button class="btn btn-primary btn-xs categorysubmit" type="button" >저장</button>
 																<a href="javascript:;" class="btn btn-default btn-xs" onClick="cat_cancel(\'' . element('cca_id', $result) . '\')">취소</a>
 															</div>';
 						$return .= form_close();
@@ -113,6 +115,28 @@ $(function() {
 			cca_order: {required :true, numeric:true},
 		}
 	});
+});
+
+$('.categorysubmit').click(function(){
+	
+
+	var formData = $(this.form).serialize();
+	var cca_id = this.form.cca_id.value;
+	$.ajax({
+	           cache : false,
+	           url : "<?php echo current_full_url() ?>", // 요기에
+	           type : 'POST', 
+	           data : formData, 
+	           success : function(data) {
+	           	
+	           	document.location.reload();
+	               // var jsonObj = JSON.parse(data);
+	           }, // success 
+	   
+	           error : function(xhr, status) {
+	               // alert(xhr + " : " + status);
+	           }
+	       }); // $.ajax *
 });
 
 function cat_modify(cca_id) {
