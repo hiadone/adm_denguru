@@ -2468,7 +2468,7 @@ print_r($cate);
 
     }
 
-    function crawl_tag_to_category2($cca_text,$crawl_tag_text)
+    function crawl_tag_to_category2($cca_text,$crawl_tag_text,$flag = false)
     {   
         $cca_text_arr = explode(',',$cca_text);
 
@@ -2483,16 +2483,28 @@ print_r($cate);
 
             foreach($crawl_tag_text as $t_value){
 
-                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+                if($flag){
+
+                    $arr_str_kr = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+
+                    if(count($arr_str_kr) > 2){
+                        if(strpos(strtolower(cut_str($c_value, count(preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($c_value))!== false)
+                            return true;
+                    } else [
+                        if(strpos($t_value,$c_value) !==false)
+                         return true;
+                    ]
+                } else [
+                    if(strpos($t_value,$c_value) !==false)
+                         return true;
+                ]
+                // $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
                 
-                if(strpos($t_value,$c_value) !==false)
-                     return true;
+                
                 // if(strtolower($c_value) === strtolower($t_value))
                     // return true;
             }
         }
-        
-
     }
 
     function crawl_tag_to_attr($cat_text,$crawl_tag_text)
