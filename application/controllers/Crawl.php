@@ -2490,14 +2490,16 @@ print_r($cate);
                     if(count($arr_str_kr) > 2){
                         if(strpos(strtolower(cut_str($c_value, count(preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($c_value))!== false)
                             return true;
-                    } else [
+                    } else {
                         if(strpos($t_value,$c_value) !==false)
                          return true;
-                    ]
-                } else [
+                    }
+                    
+                } else {
                     if(strpos($t_value,$c_value) !==false)
                          return true;
-                ]
+                }
+                
                 // $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
                 
                 
