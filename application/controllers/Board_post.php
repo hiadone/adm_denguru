@@ -556,7 +556,7 @@ class Board_post extends CB_Controller
 		} else {
 			$is_blind = (element('blame_blind_count', $board) > 0 && element('post_blame', $post) >= element('blame_blind_count', $board)) ? true : false;
 			if ($is_blind === true) {
-				$view['view']['post']['content'] .= '<div class="alert alert-danger">신고가 접수된 게시글입니다. 본인과 관리자만 확인이 가능합니다</div>';
+				$view['view']['post']['content'] .= '<div class="alert alert-danger">블라인드 게시글입니다. </div>';
 			}
 
 			if ($is_blind === false OR $is_admin !== false
@@ -1629,7 +1629,7 @@ class Board_post extends CB_Controller
 				}
 				$is_blind = (element('blame_blind_count', $board) > 0 && element('post_blame', $val) >= element('blame_blind_count', $board)) ? true : false;
 				if ($is_blind) {
-					$result['list'][$key]['title'] = '신고가 접수된 게시글입니다.';
+					$result['list'][$key]['title'] .= '<button class="btn btn-primary btn-xs">disable</button>';
 				}
 
 				if (element('mem_id', $val) >= 0) {
@@ -1766,8 +1766,8 @@ class Board_post extends CB_Controller
 						$result['list'][$key]['category'][$a]['cnt'] = $result['list'][$key]['cmall_count'] - $a_t;
 						$result['list'][$key]['category'][$a]['cca_value'] ='no category';
 					}elseif(($result['list'][$key]['cmall_count'] - $a_t) < 0){
-						$result['list'][$key]['category'][$a]['cnt'] = abs($result['list'][$key]['cmall_count'] - $a_t);
-						$result['list'][$key]['category'][$a]['cca_value'] ='over category ';
+						// $result['list'][$key]['category'][$a]['cnt'] = abs($result['list'][$key]['cmall_count'] - $a_t);
+						// $result['list'][$key]['category'][$a]['cca_value'] ='over category ';
 					}
 					
 				}

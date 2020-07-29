@@ -985,7 +985,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Board_category_model','Board_group_category_model'));
+		$this->load->model(array('Board_category_model','Board_group_category_model','Cmall_category_model','Cmall_category_rel_model','Cmall_item_model'));
 
 		$post_id_list = '';
 		if ($this->input->post('chk_post_id')) {
@@ -1032,10 +1032,9 @@ class Helptool extends CB_Controller
 			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
 
 			
-			$view['view']['data'] = $this->Board_category_model->get_all_category(element('brd_id', $board));
-			if(empty($view['view']['data']))
-			$view['view']['data'] = $this->Board_group_category_model->get_all_category(1);
 			
+			
+			$view['view']['data']['all_category'] = $this->Cmall_category_model->get_all_category();
 
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
@@ -1060,10 +1059,10 @@ class Helptool extends CB_Controller
 			$this->view = element('view_skin_file', element('layout', $view));
 
 		} else {
-
+			
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
-
+			$cmall_category = $this->input->post('cmall_category', null, '');
 			if ($post_id_list) {
 				$arr = explode(',', $post_id_list);
 				if ($arr) {
@@ -1073,18 +1072,45 @@ class Helptool extends CB_Controller
 						if (empty($post_id)) {
 							continue;
 						}
-						$post = $this->Post_model->get_one($post_id);
-						$board = $this->board->item_all(element('brd_id', $post));
-						$chk_post_category = $this->input->post('chk_post_category', null, '');
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
 
-						$postupdate = array(
-							'post_category' => $chk_post_category,
-						);
-						$this->Post_model->update($post_id, $postupdate);
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id', $postwhere, '', '');
+
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+						    $this->Cmall_category_rel_model->save_category(element('cit_id', $c_value), $cmall_category);
+						}
+						
+
+						
+
+						// $post = $this->Post_model->get_one($post_id);
+						// $board = $this->board->item_all(element('brd_id', $post));
+
+
+						// $chk_post_category = $this->input->post('chk_post_category', null, '');
+
+						// $postupdate = array(
+						// 	'post_category' => $chk_post_category,
+						// );
+						// $this->Post_model->update($post_id, $postupdate);
 					}
 				}
 			}
-			alert_close('카테고리가 변경되었습니다');
+			alert_refresh_close('카테고리가 변경되었습니다');
 		}
 	}
 

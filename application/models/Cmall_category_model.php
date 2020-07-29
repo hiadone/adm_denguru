@@ -104,9 +104,10 @@ class Cmall_category_model extends CB_Model
 			$this->db->where(array('cmall_item.brd_id' => $brd_id));
 
 		// $this->db->where(array('cmall_category.cca_parent' => 0));
-		$this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
+		// $this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
 		
 		$this->db->order_by('cca_order', 'asc');
+		// $this->db->order_by('cmall_category.cca_id', 'desc');
 
 		if (!empty($post_id)) 
 			$this->db->group_by('cmall_category_rel.cca_id');

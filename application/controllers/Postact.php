@@ -3604,7 +3604,7 @@ class Postact extends CB_Controller
 				$result = array('error' => '잘못된 접근입니다');
 				exit(json_encode($result));
 			}
-
+			
 			$select = 'cit_id,post_id, brd_id,  cit_status';
 			$cmall = $this->Cmall_item_model->get_one($cit_id, $select);
 
