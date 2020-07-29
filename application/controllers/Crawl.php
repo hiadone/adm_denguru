@@ -2500,7 +2500,7 @@ print_r($cate);
                     // echo $t_value."//".$c_value;
                     // echo "<br>";
 
-                    if(strpos($t_value,$c_value) !==false)
+                    if(strpos(strtolower($t_value),strtolower($c_value)) !==false)
                          return true;
                 }
                 
