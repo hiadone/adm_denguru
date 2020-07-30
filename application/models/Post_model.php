@@ -41,7 +41,7 @@ class Post_model extends CB_Model
 
 		$sop = (strtoupper($sop) === 'AND') ? 'AND' : 'OR';
 		if (empty($sfield)) {
-			$sfield = array('post_title', 'post_content');
+			$sfield = array('post_title', 'post_content','brd_name');
 		}
 
 		$search_where = array();
@@ -626,7 +626,7 @@ class Post_model extends CB_Model
 		$this->db->where( array('brd_search' => 1));
 		$board_id = (int) $board_id;
 		if ($board_id)	{
-			$this->db->where( array('b.brd_id' => $board_id));
+			$this->db->where( array('board.brd_id' => $board_id));
 		}
 
 		$this->db->order_by($orderby);
@@ -672,10 +672,11 @@ class Post_model extends CB_Model
 		$result['total_rows'] = 0;
 		if ($cnt) {
 			foreach ($cnt as $key => $value) {
-				if (element('brd_id', $value)) {
+				if (element('brd_id', $value)) {					
 					$result['board_rows'][$value['brd_id']] = element('cnt', $value);
 				}
 			}
+			
 			if ($board_id) {
 				$result['total_rows'] = $result['board_rows'][$board_id];
 			} else {

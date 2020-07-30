@@ -22,7 +22,7 @@
 		<div class="col-sm-2">
 			<div class="form-group">
 				<select class="form-control per100" name="sfield">
-					<option value="post_both" <?php echo $this->input->get('sfield') === 'post_both' ? 'selected="selected"' : ''; ?>>제목+내용</option>
+					<option value="post_both" <?php echo $this->input->get('sfield') === 'post_both' ? 'selected="selected"' : ''; ?>>스토어명 + 제목</option>
 					<option value="post_title" <?php echo $this->input->get('sfield') === 'post_title' ? 'selected="selected"' : ''; ?>>제목</option>
 					<option value="post_content" <?php echo $this->input->get('sfield') === 'post_content' ? 'selected="selected"' : ''; ?>>내용</option>
 					<option value="post_userid" <?php echo $this->input->get('sfield') === 'post_userid' ? 'selected="selected"' : ''; ?>>회원아이디</option>
@@ -53,12 +53,14 @@
 <ul class="nav nav-tabs mt20">
 <?php
 if (element('board_rows', $view)) {
+	
 ?>
 	<li role="presentation" <?php echo ( ! $this->input->get('board_id')) ? 'class="active"' : ''; ?>><a href="<?php echo element('tab_url', $view); ?>">전체게시판 (<?php echo number_format( array_sum(element('board_rows', $view))); ?>)</a></li>
 	<?php
 	foreach (element('board_rows', $view) as $key => $value) {
 	?>
-		<li role="presentation" <?php echo ($this->input->get('board_id') === $key) ? 'class="active"' : ''; ?>><a href="<?php echo element('tab_url', $view) . '&amp;board_id=' . $key; ?>"><?php echo html_escape(element('brd_name', element($key, element('boardlist', $view)))); ?> (<?php echo $value; ?>)</a></li>
+
+		<li role="presentation" <?php echo ($this->input->get('board_id') === $key) ? 'class="active"' : ''; ?>><a href="<?php echo element('tab_url', $view) . '&amp;board_id=' . $key; ?>" style="float: left;"><?php echo html_escape(element('brd_name', element($key, element('boardlist', $view)))); ?> (<?php echo $value; ?>)</a><a href="<?php echo board_url($this->board->item_id('brd_key',$this->input->get('board_id'))); ?>" target="_blank" title="<?php echo html_escape(html_escape(element('brd_name', element($key, element('boardlist', $view))))); ?>" style="float: left;"><span class="label label-default label-xs" >새창</span></a></li>
 <?php
 	}
 }

@@ -300,6 +300,7 @@ class Crawl_model extends CB_Model
         if ($cnt) {
             foreach ($cnt as $key => $value) {
                 if (element('brd_id', $value)) {
+                    
                     $result['board_rows'][$value['brd_id']] = element('cnt', $value);
                 }
             }

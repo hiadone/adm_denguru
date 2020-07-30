@@ -75,7 +75,7 @@ class Tagwordadm extends CB_Controller
             }
             
             foreach ($word_array as $wkey => $wvalue) {
-                $getdata[$wkey] = implode("\n",$wvalue);
+                $getdata[] = implode("\n",$wvalue);
             }
             
         }
@@ -175,7 +175,7 @@ class Tagwordadm extends CB_Controller
 
                 if(count($tgw_word_text)){
                     $deletewhere = array(
-                        'tgw_category' => $t,
+                        'tgw_category' => ($t+5),
                     );
                     $this->Tag_word_model->delete_where($deletewhere);            
                     if ($tgw_word_text && is_array($tgw_word_text)) {
@@ -187,7 +187,7 @@ class Tagwordadm extends CB_Controller
                                 $tagdata = array(
                                     'tgw_id' => $i,
                                     'tgw_value' => $value,
-                                    'tgw_category' => $t,
+                                    'tgw_category' => ($t+5),
                                     
                                 );
                                 $this->Tag_word_model->insert($tagdata);

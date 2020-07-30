@@ -104,7 +104,7 @@ class Board_model extends CB_Model
 		return $option;
 	}
 
-	public function get_crawl_list($where)
+	public function get_crawl_list($where=array())
 	{
 		$this->db->select('*');
 		$this->db->from($this->_table);

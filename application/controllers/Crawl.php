@@ -1530,7 +1530,7 @@ class Crawl extends CB_Controller
 
     }
 
-    public function crawling_tag_update($post_id=0,$brd_id = 0)
+    public function crawling_tag_update($post_id=0,$brd_id = 0,$cit_id = 0)
     {
 
 
@@ -1544,6 +1544,7 @@ class Crawl extends CB_Controller
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
+        $cit_id = (int) $cit_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
             show_404();
         }
@@ -1598,12 +1599,24 @@ class Crawl extends CB_Controller
             } 
         }
 
+        if($cit_id){
+            $postwhere['cit_id'] = $cit_id;
+            $result['list'] = $this->Cmall_item_model
+                ->get('', '', $postwhere);
+        }
+
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
 
                 $cate = $this->Cmall_category_model->get_category(element('cit_id',$val)); 
-print_r($cate);
+
+                print_r2($cate);
+
+                $cate = $this->Cmall_category_model->get_category_info(element('cit_id',$val)); 
+
+                print_r2($cate);
+                
                 exit;
                 // $post = $this->Post_model->get_one(element('post_id',$val));
             
@@ -1648,19 +1661,33 @@ print_r($cate);
                     
                     foreach($this->tag_word as $word){
                         foreach ($tag_array as $tval) {
-                            $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                            // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                             
-                            if(count($arr_str) > 2){
-                                if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                    if(!in_array(element('tgw_value',$word),$translate_text))
-                                        array_push($translate_text,element('tgw_value',$word));       
-                                }     
-                            } else {
-                                if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                    if(!in_array(element('tgw_value',$word),$translate_text))
-                                        array_push($translate_text,element('tgw_value',$word));       
-                                }     
-                            }
+                            // if(count($arr_str) > 2){
+                            //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                            //         if(!in_array(element('tgw_value',$word),$translate_text))
+                            //             array_push($translate_text,element('tgw_value',$word));       
+                            //     }     
+                            // } else {
+                            //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                            //         if(!in_array(element('tgw_value',$word),$translate_text))
+                            //             array_push($translate_text,element('tgw_value',$word));       
+                            //     }     
+                            // }
+
+
+                            $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                if(count($arr_str) > 1){
+                                    if(strpos(strtolower(str_replace(" ","",element('tgw_value',$word))),strtolower(str_replace(" ","",$tval))) !== false ){
+                                        if(!in_array(strtolower(str_replace(" ","",$tval)),$translate_text))
+                                            array_push($translate_text,strtolower(str_replace(" ","",$tval)));       
+                                    }     
+                                } else {
+                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                        if(!in_array(strtolower(str_replace(" ","",$tval)),$translate_text))
+                                            array_push($translate_text,strtolower(str_replace(" ","",$tval)));       
+                                    }     
+                                }
                             
                             
                         }
@@ -1668,6 +1695,15 @@ print_r($cate);
                         
                     }
 
+                    // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
+
+                    // foreach($cateinfo as $cval){
+                        
+                    //     if(!in_array(element('cca_value'$cval),$translate_text))
+                    //         array_push($translate_text,element('cca_value'$cval));
+                        
+                    // }
+                    
                     if(count($translate_text)){
                         
 
@@ -1713,7 +1749,7 @@ print_r($cate);
     }
 
 
-    public function crawling_tag_overwrite($post_id=0,$brd_id = 0)
+    public function crawling_tag_overwrite($post_id=0,$brd_id = 0,$cit_id = 0)
     {
 
         // 이벤트 라이브러리를 로딩합니다
@@ -1726,6 +1762,7 @@ print_r($cate);
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
+        $cit_id = (int) $cit_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
             show_404();
         }
@@ -1780,6 +1817,12 @@ print_r($cate);
             } 
         }
 
+        if($cit_id){
+            $postwhere['cit_id'] = $cit_id;
+            $result['list'] = $this->Cmall_item_model
+                ->get('', '', $postwhere);
+        }
+
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
@@ -1788,6 +1831,7 @@ print_r($cate);
                 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
+
 
                 // $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
                 // if(empty($post['category'])) 
@@ -1824,23 +1868,34 @@ print_r($cate);
                             }
                         }
                         
-
-                        
+                        array_push($tag_array,trim(element('cit_name', $val)));
                         
                         
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
-                                $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                 
-                                if(count($arr_str) > 1){
+                                // if(count($arr_str) > 2){
+                                //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //     }     
+                                // } else {
+                                //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //     }     
+                                // }
+                                $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                if(count($arr_str) > 2){
                                     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                        if(!in_array(element('tgw_value',$word),$translate_text))
-                                            array_push($translate_text,element('tgw_value',$word));       
+                                        if(!in_array(strtolower($tval),$translate_text))
+                                            array_push($translate_text,strtolower($tval));       
                                     }     
                                 } else {
                                     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                        if(!in_array(element('tgw_value',$word),$translate_text))
-                                            array_push($translate_text,element('tgw_value',$word));       
+                                        if(!in_array(strtolower($tval),$translate_text))
+                                            array_push($translate_text,strtolower($tval));
                                     }     
                                 }
                                 
@@ -1853,7 +1908,14 @@ print_r($cate);
                     
                 }
                 
-                
+                // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
+
+                // foreach($cateinfo as $cval){
+
+                //     if(!in_array(element('cca_value'$cval),$translate_text))
+                //         array_push($translate_text,element('cca_value'$cval));
+                    
+                // }
                 if(count($translate_text)){
                     
 
@@ -3197,8 +3259,8 @@ print_r($cate);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
         }
 
-	
-	exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+  
+  exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
     public function insert_itemdetail($brd_id , $crw_id)
@@ -5102,17 +5164,84 @@ print_r($cate);
         $this->output->set_content_type('application/json');
         
         if (empty($type)) {
-            show_404();
+            // show_404();
         }
 
-        $this->load->model(array('Cmall_item_model'));
+        $this->load->model(array('Board_crawl_model','Board_model'));
 
         
 
+        $where = array(
+            'board_crawl.brd_id' => 22,
+        );
+        $result = $this->Board_model->get_crawl_list($where);
+
+        foreach($result['list'] as $val){
+            $brd_register_url = parse_url(trim(element('brd_register_url',$val)));            
+
+            $updatedata = array(
+            'brd_order_url'=> element('brd_order_url',$val),            
+            
+            'brd_orderstatus_url'=> element('brd_orderstatus_url',$val),
+            'brd_order_key'=> element('brd_order_key',$val),
+            'brd_url_key'=> element('brd_url_key',$val),
+                    );
+            $b = parse_url(trim(element('brd_url',$val)));            
+            // echo element('brd_url',$val);
+        }
+
+         
+        $result2 = $this->Board_model->get_crawl_list();
+        $i=0;
+        foreach($result2['list'] as $val){
+            $b2 = parse_url(trim(element('brd_url',$val)));
+
+            if(strpos($b2['host'],'naver') != false) continue;
+            if(!element('brd_order_url',$val) && !element('brd_orderstatus_url',$val) && !element('brd_order_key',$val) && !element('brd_url_key',$val) ){
+                $b['host'] = $this->getBaseDomain($b['host']);
+                $b2['host'] = $this->getBaseDomain($b2['host']);
+                
+                $updatedata2 = array(
+                'brd_order_url'=> element('brd_order_url',$val) ? element('brd_order_url',$val) : str_replace($b['host'],$b2['host'],element('brd_order_url',$updatedata)),
+                'brd_orderstatus_url'=> element('brd_orderstatus_url',$val) ? element('brd_orderstatus_url',$val) : str_replace($b['host'],$b2['host'],element('brd_orderstatus_url',$updatedata)),
+                'brd_order_key'=> element('brd_order_key',$val) ? element('brd_order_key',$val) : str_replace($b['host'],$b2['host'],element('brd_order_key',$updatedata)),
+                'brd_url_key'=> element('brd_url_key',$val) ? element('brd_url_key',$val) : str_replace($b['host'],$b2['host'],element('brd_url_key',$updatedata)),                
+
+                        );
+                $i++;
+                // print_r2($updatedata2);
+                // $this->Board_crawl_model->update(element('bdc_id',$val), $updatedata2);
+            }
+              
+        }
         
 
         $result = array('success' => '실행되었습니다');
         exit(json_encode($result));
+            
 
     }   
+
+    
+
+       
+
+        
+        function getBaseDomain($dom) {
+        
+            $matches = array();
+        
+            preg_match('/[^\.]+\.([^\.]{4}|[^\.]{3}|(co|or|pe|ne|re|go|hs|ms|es|kg|sc|ac)\.[^\.]{2}|[^\.]{2})$/i', $dom, $matches);
+        
+            return $matches[0];
+        
+        }
+
+
+    
+
+
+
+    
 }
+

@@ -22,22 +22,22 @@
 					
 					<div class="col-sm-3">
 						<label class="">패션 태그사전</label>
-						<textarea class="form-control" name="tgw_value_1" id="tgw_value_1" rows="15"><?php echo element('tgw_value_1', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_1" id="tgw_value_1" rows="15"><?php echo element('0', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">푸드 태그사전</label>
-						<textarea class="form-control" name="tgw_value_2" id="tgw_value_2" rows="15"><?php echo element('tgw_value_2', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_2" id="tgw_value_2" rows="15"><?php echo element('1', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">산책외출 태그사전</label>
-						<textarea class="form-control" name="tgw_value_3" id="tgw_value_3" rows="15"><?php echo element('tgw_value_3', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_3" id="tgw_value_3" rows="15"><?php echo element('2', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">이동 태그사전</label>
-						<textarea class="form-control" name="tgw_value_4" id="tgw_value_4" rows="15"><?php echo element('tgw_value_4', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_4" id="tgw_value_4" rows="15"><?php echo element('3', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 				</div>
@@ -85,22 +85,22 @@
 
 					<div class="col-sm-3">
 						<label class="">홈리빙 태그사전</label>
-						<textarea class="form-control" name="tgw_value_5" id="tgw_value_5" rows="15"><?php echo element('tgw_value_5', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_5" id="tgw_value_5" rows="15"><?php echo element('4', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">놀이 장난감 태그사전</label>
-						<textarea class="form-control" name="tgw_value_6" id="tgw_value_6" rows="15"><?php echo element('tgw_value_6', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_6" id="tgw_value_6" rows="15"><?php echo element('5', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">미용·목욕 태그사전</label>
-						<textarea class="form-control" name="tgw_value_7" id="tgw_value_7" rows="15"><?php echo element('tgw_value_7', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_7" id="tgw_value_7" rows="15"><?php echo element('6', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					<div class="col-sm-3">
 						<label class="">기타</label>
-						<textarea class="form-control" name="tgw_value_8" id="tgw_value_8" rows="15"><?php echo element('tgw_value_8', element('data', $view)); ?></textarea>
+						<textarea class="form-control" name="tgw_value_8" id="tgw_value_8" rows="15"><?php echo element('7', element('data', $view)); ?></textarea>
 						<div class="help-block">태그 입력(엔터 또는 콤마로 구분하여 입력)</div>
 					</div>
 					
