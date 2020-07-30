@@ -949,7 +949,9 @@ if (typeof(COMMON_JS) === 'undefined') {
         if ( action_id == '') {
             return false;
         }
-        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi
+        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_<>@\#$&\\\=\(\'\"]/gi
+
+        
 
         
         var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : input_key;
