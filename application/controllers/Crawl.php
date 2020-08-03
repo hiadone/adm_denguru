@@ -1609,28 +1609,24 @@ class Crawl extends CB_Controller
             foreach (element('list', $result) as $key => $val){ 
 
 
-                $cate = $this->Cmall_category_model->get_category(element('cit_id',$val)); 
-
-                print_r2($cate);
-
-                $cate = $this->Cmall_category_model->get_category_info(element('cit_id',$val)); 
-
-                print_r2($cate);
+                $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
-                exit;
-                // $post = $this->Post_model->get_one(element('post_id',$val));
-            
+
+
                 // $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
                 // if(empty($post['category'])) 
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                $translate_text = array();
+                foreach($cateinfo as $value){
 
-                if(empty($post['category']['bca_parent']))
-                    $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_key']));
-                else 
-                    $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' =>$post['category']['bca_parent'])); 
+                    if((int) $value['cca_parent'] < 1)
+                        $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
+                    else 
+                        continue;
 
+                    
 
-                $all_category=array();
+                    $all_category=array();
         
         
         // $all_category = $this->Cmall_category_model->get_all_category();
@@ -1657,6 +1653,17 @@ class Crawl extends CB_Controller
                     
 
                     $translate_text = array();
+
+                    $this->tag_word[]['tgw_value'] = element('cit_name', $val);
+                    $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
+
+                    foreach($cateinfo as $cval){
+                        foreach(explode("/",element('cca_value',$cval)) as $eval){
+                            if(empty($eval)) continue;
+                            $this->tag_word[]['tgw_value'] =  $eval;
+                        }
+                        
+                    }
 
                     
                     foreach($this->tag_word as $word){
@@ -1688,13 +1695,13 @@ class Crawl extends CB_Controller
                                             array_push($translate_text,strtolower(str_replace(" ","",$tval)));       
                                     }     
                                 }
-                            
+                            }
                             
                         }
                         
                         
                     }
-
+                }
                     // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
 
                     // foreach($cateinfo as $cval){
@@ -1741,7 +1748,7 @@ class Crawl extends CB_Controller
                 
 
                 
-            }
+            
         }   
 
 
@@ -1868,9 +1875,18 @@ class Crawl extends CB_Controller
                             }
                         }
                         
-                        array_push($tag_array,trim(element('cit_name', $val)));
                         
+                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);
                         
+
+                        foreach($cateinfo as $cval){
+                            foreach(explode("/",element('cca_value',$cval)) as $eval){
+                                if(empty($eval)) continue;
+                                $this->tag_word[]['tgw_value'] =  $eval;
+                            }
+                            
+                        }
+
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
                                 // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
@@ -1908,14 +1924,7 @@ class Crawl extends CB_Controller
                     
                 }
                 
-                // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
-
-                // foreach($cateinfo as $cval){
-
-                //     if(!in_array(element('cca_value'$cval),$translate_text))
-                //         array_push($translate_text,element('cca_value'$cval));
-                    
-                // }
+                
                 if(count($translate_text)){
                     
 
@@ -2196,7 +2205,7 @@ class Crawl extends CB_Controller
                 // preg_match_all($pattern, $val, $match);
 
                 $val = preg_replace("/[ #\&\-%=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $val);
-                
+
                 $row_tag_[] = $val;
                 
                 
@@ -4637,8 +4646,8 @@ class Crawl extends CB_Controller
             if(element('crw_category2', $post_arr))
                 $post_title[] = element('crw_category2', $post_arr) ;
 
-            // if(element('crw_category3', $post_arr))
-            //     $post_title[] = element('crw_category3', $post_arr) ;
+            if(element('crw_category3', $post_arr))
+                $post_title[] = element('crw_category3', $post_arr) ;
 
             
             $post_title = implode("-",$post_title) ;

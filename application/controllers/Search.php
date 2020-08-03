@@ -59,7 +59,7 @@ class Search extends CB_Controller
 		$param =& $this->querystring;
 		$page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
 		$findex = 'post_num, post_reply';
-		$sfield = $sfield2 = $this->input->get('sfield', null, '');
+		$sfield = $sfield2 = $this->input->get('sfield', null, 'post_both');
 		$sop = $this->input->get('sop', null, '');
 		if ($sfield === 'post_both') {
 			$sfield = array('post_title',  'brd_name');

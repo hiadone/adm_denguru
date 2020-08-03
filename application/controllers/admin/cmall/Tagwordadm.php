@@ -169,7 +169,7 @@ class Tagwordadm extends CB_Controller
                 
                 $tgw_word_text = str_replace("\n",",",${'tgw_value_'.$t});
 
-                $tgw_word_text = preg_replace("/[ #\&\-%=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $tgw_word_text);
+                $tgw_word_text = preg_replace("/[ #\&\-%=\/\\\:;\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $tgw_word_text);
 
                 $tgw_word_text = explode(",",$tgw_word_text);
 
