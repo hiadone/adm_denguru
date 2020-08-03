@@ -308,9 +308,9 @@ class Crawl extends CB_Controller
                                 $upload_path.$imageName
                             );
                             
-                            @unlink($upload_path.$oldimageName);
+                            @unlink($upload_path_);
 
-                            $deleted = $this->aws_s3->delete_file($upload_path.$oldimageName);
+                            $deleted = $this->aws_s3->delete_file($upload_path_);
 
                             $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$imageName,$filetype);       
 
