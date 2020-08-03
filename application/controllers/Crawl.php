@@ -267,8 +267,15 @@ class Crawl extends CB_Controller
 
                         $oldimg_src_array= explode('/', element('cit_file_1',$item));
                         $oldimageName = end($oldimg_src_array);    
+                        $file_exists = true;
 
-                        if($oldimageName !== $imageName || $_post_id !== element('post_id',$item)){
+                        if (!file_exists(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item))) {
+                            
+                            $file_exists = false;
+                            
+                        }
+
+                        if($oldimageName !== $imageName || $_post_id !== element('post_id',$item) || !$file_exists){
                             $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
 
                             // echo $filetype;
@@ -308,9 +315,9 @@ class Crawl extends CB_Controller
                                 $upload_path.$imageName
                             );
                             
-                            @unlink($upload_path_);
+                            @unlink(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item));
 
-                            $deleted = $this->aws_s3->delete_file($upload_path_);
+                            $deleted = $this->aws_s3->delete_file(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item));
 
                             $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$imageName,$filetype);       
 
