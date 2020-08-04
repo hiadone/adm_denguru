@@ -307,7 +307,7 @@ class Crawl extends CB_Controller
 
                             if(!$file_exists){
 
-                                $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$item);
+                                $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
 
                                 copy(
                                     $upload_path_,
