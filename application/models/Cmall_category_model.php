@@ -90,9 +90,9 @@ class Cmall_category_model extends CB_Model
 
 		
 		if (!empty($post_id)) 
-			$this->db->select('count(*) as cnt,cca_value');
+			$this->db->select('count(*) as cnt,cca_value,cca_parent');
 		else
-			$this->db->select('count(DISTINCT cb_cmall_item.cit_id) as cnt,brd_id');
+			$this->db->select('count(DISTINCT cb_cmall_item.cit_id) as cnt,brd_id,cca_parent');
 			
 
 		$this->db->join('cmall_category_rel', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'inner');
