@@ -280,22 +280,22 @@ class Crawl extends CB_Controller
                             if($_post_id !== element('post_id',$item)){
 
                                 $upload_path_ =config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item);
-
+                                $filetype = mime_content_type($upload_path_);
                                 copy(
                                     $upload_path_,
                                     $upload_path.$citimageName
                                 );
                                 
-                                @unlink($upload_path_);
+                                
 
-                                $deleted = $this->aws_s3->delete_file($upload_path_);
-
-                                $filetype = mime_content_type($upload_path_);
+                                
 
                                 if(empty($filetype)) $filetype = mime_content_type($upload_path.$citimageName);
 
                                 $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$citimageName,$filetype);       
+                                @unlink($upload_path_);
 
+                                $deleted = $this->aws_s3->delete_file($upload_path_);
 
                                 
                                     
