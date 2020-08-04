@@ -119,40 +119,7 @@ class Crawl extends CB_Controller
         }
 
         
-        if($post_id){
-            // $postwhere = array(
-            //     'post_id' => $post_id,
-            // );
-            
-
-
-
-            // $crawl = $this->Cmall_item_model
-            //     ->get('', '', $postwhere, '', '', 'pln_id', 'ASC');
-
-
-            // foreach ($crawl as $c_key => $c_value) {
-            //     $this->board->delete_cmall(element('cit_id',$c_value));
-            // }
-        } 
-
-        if($brd_id){
-            // $brdwhere = array(
-            //     'brd_id' => $brd_id,
-            // );
-            
-
-
-
-            // $post = $this->Post_model
-            //     ->get('', '', $brdwhere);
-
-
-            // foreach ($post as $c_key => $c_value) {
-            //     $this->board->delete_post(element('post_id',$c_value));
-            // }
-
-        } 
+        
 
         
 
@@ -165,285 +132,392 @@ class Crawl extends CB_Controller
         $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
         $result = $this->get_admin_list('','',$brdwhere);
 
+        $in_cit_id = array();
+        // if (element('list', $result)) {
+        //         foreach (element('list', $result) as $key => $val){ 
 
-        if (element('list', $result)) {
-                foreach (element('list', $result) as $key => $val){ 
-
-                $item = array();
-                $_post_id='';
-                $cbr_id = array();
+        //         $item = array();
+        //         $_post_id='';
+        //         $cbr_id = array();
                 
-                $where = array(
-                    'brd_id' => element('brd_id', $val),
-                    'cit_goods_code' => element('crw_goods_code', $val),
+        //         $where = array(
+        //             'brd_id' => element('brd_id', $val),
+        //             'cit_goods_code' => element('crw_goods_code', $val),
 
-                );
+        //         );
 
                 
                 
-                $item = $this->Cmall_item_model->get_one('','',$where);
+        //         $item = $this->Cmall_item_model->get_one('','',$where);
 
-                if($post_id && element('cit_id',$item)) {
-                    if(element('post_id',$item) != $post_id)  continue;
-                }
-
-                // if($this->Cmall_item_model->count_by($where)) {
-                //     echo element('brd_id', $val).'스토어의 '.element('crw_goods_code', $val). '코드 존재<br>';
-                //     continue;
-
-                // }
-
-                if(empty(element('crw_goods_code', $val))) {
-                    echo element('brd_id', $val).'스토어의 '.element('crw_id', $val). '상품 코드 없다<br>';
-                    continue;
-                }
+        //         if($post_id && element('cit_id',$item)) {
+        //             if(element('post_id',$item) != $post_id)  continue;
+        //         }
 
 
-                $_post_id = $this->write(element('brd_id', $board),$val);
+        //         // if($this->Cmall_item_model->count_by($where)) {
+        //         //     echo element('brd_id', $val).'스토어의 '.element('crw_goods_code', $val). '코드 존재<br>';
+        //         //     continue;
 
-                for($a=1 ; $a <6;$a++ ){
-                    if(element('crw_brand'.$a,$val))
-                        if($this->cmall_brand(element('crw_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('crw_brand'.$a,$val));
-                }
+        //         // }
 
-                for($a=1 ; $a <6;$a++ ){
-                    if(element('cdt_brand'.$a,$val))
-                        if($this->cmall_brand(element('cdt_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('cdt_brand'.$a,$val));
-                }
+        //         if(empty(element('crw_goods_code', $val))) {
+        //             echo element('brd_id', $val).'스토어의 '.element('crw_id', $val). '상품 코드 없다<br>';
+        //             continue;
+        //         }
 
-                if(element('cit_id',$item)){
 
-                    $updatedata = array(
+        //         $_post_id = $this->write(element('brd_id', $board),$val);
+
+        //         for($a=1 ; $a <6;$a++ ){
+        //             if(element('crw_brand'.$a,$val))
+        //                 if($this->cmall_brand(element('crw_brand'.$a,$val)))
+        //                     $cbr_id[] = $this->cmall_brand(element('crw_brand'.$a,$val));
+        //         }
+
+        //         for($a=1 ; $a <6;$a++ ){
+        //             if(element('cdt_brand'.$a,$val))
+        //                 if($this->cmall_brand(element('cdt_brand'.$a,$val)))
+        //                     $cbr_id[] = $this->cmall_brand(element('cdt_brand'.$a,$val));
+        //         }
+
+        //         if(element('cit_id',$item)){
+
+        //             $updatedata = array(
                         
-                        'post_id' => $_post_id,
-                        'cit_name' => element('crw_name',$val),
-                        'cit_summary' => element('crawl_sub_title',$val,'') ,
-                        'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
-                        'cit_updated_datetime' => cdate('Y-m-d H:i:s'),                    
-                        'cit_post_url' => element('crw_post_url',$val,''),
-                        'cit_is_soldout' => element('crw_is_soldout', $val),
-                        'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
-                        'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
-                        // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                        // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                        // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                        // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+        //                 'post_id' => $_post_id,
+        //                 'cit_name' => element('crw_name',$val),
+        //                 'cit_summary' => element('crawl_sub_title',$val,'') ,
+        //                 'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
+        //                 'cit_updated_datetime' => cdate('Y-m-d H:i:s'),                    
+        //                 'cit_post_url' => element('crw_post_url',$val,''),
+        //                 'cit_is_soldout' => element('crw_is_soldout', $val),
+        //                 'cit_status' => element('is_del', $val) ? 0 : 1 ,
+        //                 'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
+        //                 'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
+        //                 // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+        //                 // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+        //                 // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
+        //                 // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                         
-                    );
+        //             );
 
 
                     
 
                     
-                    // $updatedata['cit_key'] = 'c_'.element('cit_id',$item);
+        //             // $updatedata['cit_key'] = 'c_'.element('cit_id',$item);
                             
-                    $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
+        //             $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
 
 
 
-                    # 이미지 URL 추출
-                    // $imageUrl = $this->http_path_to_url($this->valid_url($board_crawl,$crawl_info[$ikey]['img_src']),element('pln_url', $value));
-
-                    
-
-
-
-                    
-                    # 이미지 파일명 추출
+        //             # 이미지 URL 추출
+        //             // $imageUrl = $this->http_path_to_url($this->valid_url($board_crawl,$crawl_info[$ikey]['img_src']),element('pln_url', $value));
 
                     
 
+
+
+                    
+        //             # 이미지 파일명 추출
+
+                    
+
                     
                     
                     
-                    # 이미지 파일이 맞는 경우
-                    if (element('crw_file_1',$val)) {
+        //             # 이미지 파일이 맞는 경우
+        //             if (element('crw_file_1',$val)) {
                         
-                        $img_src_array= explode('/', element('crw_file_1',$val));
-                        $imageName = end($img_src_array);    
+        //                 $crwimg_src_array= explode('/', element('crw_file_1',$val));
+        //                 $crwimageName = end($crwimg_src_array);    
 
-                        $oldimg_src_array= explode('/', element('cit_file_1',$item));
-                        $oldimageName = end($oldimg_src_array);    
-                        $file_exists = true;
+        //                 $citimg_src_array= explode('/', element('cit_file_1',$item));
+        //                 $citimageName = end($citimg_src_array);    
+        //                 $file_exists = true;
 
-                        if (!file_exists(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item))) {
+        //                 if (!file_exists(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item))) {
                             
-                            $file_exists = false;
+        //                     $file_exists = false;
                             
-                        }
+        //                 }
 
-                        if($oldimageName !== $imageName || $_post_id !== element('post_id',$item) || !$file_exists){
-                            $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
-
-                            // echo $filetype;
-                            $this->load->library('upload');
-                            $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
-                            $upload_path = config_item('uploads_dir') . '/cmallitem/';
-                            if (is_dir($upload_path) === false) {
-                                mkdir($upload_path, 0707);
-                                $file = $upload_path . 'index.php';
-                                $f = @fopen($file, 'w');
-                                @fwrite($f, '');
-                                @fclose($f);
-                                @chmod($file, 0644);
-                            }
-                            $upload_path .= element('brd_id', $val) . '/';
-                            if (is_dir($upload_path) === false) {
-                                mkdir($upload_path, 0707);
-                                $file = $upload_path . 'index.php';
-                                $f = @fopen($file, 'w');
-                                @fwrite($f, '');
-                                @fclose($f);
-                                @chmod($file, 0644);
-                            }
-                            $upload_path .= $_post_id . '/';
-                            if (is_dir($upload_path) === false) {
-                                mkdir($upload_path, 0707);
-                                $file = $upload_path . 'index.php';
-                                $f = @fopen($file, 'w');
-                                @fwrite($f, '');
-                                @fclose($f);
-                                @chmod($file, 0644);
-                            }
-
+        //                 if($citimageName !== $crwimageName || $_post_id !== element('post_id',$item) || !$file_exists){
                             
-                            copy(
-                                $upload_path_,
-                                $upload_path.$imageName
-                            );
+
+        //                     // echo $filetype;
+        //                     $this->load->library('upload');
                             
-                            @unlink(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item));
+        //                     $upload_path = config_item('uploads_dir') . '/cmallitem/';
+        //                     if (is_dir($upload_path) === false) {
+        //                         mkdir($upload_path, 0707);
+        //                         $file = $upload_path . 'index.php';
+        //                         $f = @fopen($file, 'w');
+        //                         @fwrite($f, '');
+        //                         @fclose($f);
+        //                         @chmod($file, 0644);
+        //                     }
+        //                     $upload_path .= element('brd_id', $val) . '/';
+        //                     if (is_dir($upload_path) === false) {
+        //                         mkdir($upload_path, 0707);
+        //                         $file = $upload_path . 'index.php';
+        //                         $f = @fopen($file, 'w');
+        //                         @fwrite($f, '');
+        //                         @fclose($f);
+        //                         @chmod($file, 0644);
+        //                     }
+        //                     $upload_path .= $_post_id . '/';
+        //                     if (is_dir($upload_path) === false) {
+        //                         mkdir($upload_path, 0707);
+        //                         $file = $upload_path . 'index.php';
+        //                         $f = @fopen($file, 'w');
+        //                         @fwrite($f, '');
+        //                         @fclose($f);
+        //                         @chmod($file, 0644);
+        //                     }
 
-                            $deleted = $this->aws_s3->delete_file(config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item));
+        //                     if($_post_id !== element('post_id',$item)){
 
-                            $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$imageName,$filetype);       
+        //                         $upload_path_ =config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item);
 
-
-                            
+        //                         copy(
+        //                             $upload_path_,
+        //                             $upload_path.$citimageName
+        //                         );
                                 
-                            if($upload){
-                                $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$imageName;
-                                $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
-                            }
-                        }
-                        
-                    } 
-                } else {
+        //                         @unlink($upload_path_);
 
-                    $updatedata = array(
+        //                         $deleted = $this->aws_s3->delete_file($upload_path_);
+
+        //                         $filetype = mime_content_type($upload_path_);
+
+        //                         if(empty($filetype)) $filetype = mime_content_type($upload_path.$citimageName);
+
+        //                         $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$citimageName,$filetype);       
+
+
+                                
+                                    
+        //                         if($upload){
+        //                             $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$citimageName;
+        //                             $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
+        //                         }
+        //                     }
+
+        //                     if(!$file_exists){
+
+        //                         $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$item);
+
+        //                         copy(
+        //                             $upload_path_,
+        //                             $upload_path.$citimageName
+        //                         );
+                                
+        //                         // @unlink($upload_path_);
+
+        //                         // $deleted = $this->aws_s3->delete_file($upload_path_);
+
+        //                         $filetype = mime_content_type($upload_path_);
+
+        //                         // if(empty($filetype)) $filetype = mime_content_type($upload_path.$citimageName);
+
+        //                         $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$crwimageName,$filetype);       
+
+
+                                
+                                    
+        //                         if($upload){
+        //                             $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$crwimageName;
+        //                             $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
+        //                         }
+        //                     }
+        //                 }
                         
-                        'post_id' => $_post_id,
-                        'cit_name' => element('crw_name',$val),
-                        'cit_summary' => element('crawl_sub_title',$val,'') ,
-                        'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
-                        'cit_datetime' => cdate('Y-m-d H:i:s'),                    
-                        'cit_post_url' => element('crw_post_url',$val,''),
-                        'brd_id' => element('brd_id', $val),                    
-                        'cit_goods_code' => element('crw_goods_code', $val),                        
-                        'cit_is_soldout' => element('crw_is_soldout', $val),
-                        'cit_status' => 1,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
-                        'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
-                        // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
-                        // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
-                        // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
-                        // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+        //             } 
+        //         } else {
+
+        //             $updatedata = array(
                         
-                    );
+        //                 'post_id' => $_post_id,
+        //                 'cit_name' => element('crw_name',$val),
+        //                 'cit_summary' => element('crawl_sub_title',$val,'') ,
+        //                 'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
+        //                 'cit_datetime' => cdate('Y-m-d H:i:s'),                    
+        //                 'cit_post_url' => element('crw_post_url',$val,''),
+        //                 'brd_id' => element('brd_id', $val),                    
+        //                 'cit_goods_code' => element('crw_goods_code', $val),                        
+        //                 'cit_is_soldout' => element('crw_is_soldout', $val),
+        //                 'cit_status' => 1,
+        //                 'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
+        //                 'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
+        //                 // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
+        //                 // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
+        //                 // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
+        //                 // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
+                        
+        //             );
 
 
                     
 
-                    $cit_id = $this->Cmall_item_model->insert($updatedata);
-                    $updatedata = array();
-                    $updatedata['cit_key'] = 'c_'.$cit_id;
+        //             $cit_id = $this->Cmall_item_model->insert($updatedata);
+        //             $updatedata = array();
+        //             $updatedata['cit_key'] = 'c_'.$cit_id;
                             
-                    $this->Cmall_item_model->update($cit_id, $updatedata);
+        //             $this->Cmall_item_model->update($cit_id, $updatedata);
 
 
 
-                    # 이미지 URL 추출
-                    // $imageUrl = $this->http_path_to_url($this->valid_url($board_crawl,$crawl_info[$ikey]['img_src']),element('pln_url', $value));
-
-                    
-
-
-
-                    
-                    # 이미지 파일명 추출
+        //             # 이미지 URL 추출
+        //             // $imageUrl = $this->http_path_to_url($this->valid_url($board_crawl,$crawl_info[$ikey]['img_src']),element('pln_url', $value));
 
                     
 
+
+
+                    
+        //             # 이미지 파일명 추출
+
+                    
+
                     
                     
                     
-                    # 이미지 파일이 맞는 경우
-                    if (element('crw_file_1',$val)) {
+        //             # 이미지 파일이 맞는 경우
+        //             if (element('crw_file_1',$val)) {
                         
-                        $img_src_array= explode('/', element('crw_file_1',$val));
-                        $imageName = end($img_src_array);    
-                        $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
+        //                 $img_src_array= explode('/', element('crw_file_1',$val));
+        //                 $imageName = end($img_src_array);    
+        //                 $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
 
-                        // echo $filetype;
-                        $this->load->library('upload');
-                        $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
-                        $upload_path = config_item('uploads_dir') . '/cmallitem/';
-                        if (is_dir($upload_path) === false) {
-                            mkdir($upload_path, 0707);
-                            $file = $upload_path . 'index.php';
-                            $f = @fopen($file, 'w');
-                            @fwrite($f, '');
-                            @fclose($f);
-                            @chmod($file, 0644);
-                        }
-                        $upload_path .= element('brd_id', $val) . '/';
-                        if (is_dir($upload_path) === false) {
-                            mkdir($upload_path, 0707);
-                            $file = $upload_path . 'index.php';
-                            $f = @fopen($file, 'w');
-                            @fwrite($f, '');
-                            @fclose($f);
-                            @chmod($file, 0644);
-                        }
-                        $upload_path .= $_post_id . '/';
-                        if (is_dir($upload_path) === false) {
-                            mkdir($upload_path, 0707);
-                            $file = $upload_path . 'index.php';
-                            $f = @fopen($file, 'w');
-                            @fwrite($f, '');
-                            @fclose($f);
-                            @chmod($file, 0644);
-                        }
-
-                        
+        //                 // echo $filetype;
+        //                 $this->load->library('upload');
+        //                 $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
+        //                 $upload_path = config_item('uploads_dir') . '/cmallitem/';
+        //                 if (is_dir($upload_path) === false) {
+        //                     mkdir($upload_path, 0707);
+        //                     $file = $upload_path . 'index.php';
+        //                     $f = @fopen($file, 'w');
+        //                     @fwrite($f, '');
+        //                     @fclose($f);
+        //                     @chmod($file, 0644);
+        //                 }
+        //                 $upload_path .= element('brd_id', $val) . '/';
+        //                 if (is_dir($upload_path) === false) {
+        //                     mkdir($upload_path, 0707);
+        //                     $file = $upload_path . 'index.php';
+        //                     $f = @fopen($file, 'w');
+        //                     @fwrite($f, '');
+        //                     @fclose($f);
+        //                     @chmod($file, 0644);
+        //                 }
+        //                 $upload_path .= $_post_id . '/';
+        //                 if (is_dir($upload_path) === false) {
+        //                     mkdir($upload_path, 0707);
+        //                     $file = $upload_path . 'index.php';
+        //                     $f = @fopen($file, 'w');
+        //                     @fwrite($f, '');
+        //                     @fclose($f);
+        //                     @chmod($file, 0644);
+        //                 }
 
                         
-                        copy(
-                            $upload_path_,
-                            $upload_path.$imageName
-                        );
-                        $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$imageName,$filetype);       
+
+                        
+        //                 copy(
+        //                     $upload_path_,
+        //                     $upload_path.$imageName
+        //                 );
+        //                 $upload = $this->aws_s3->upload_file($upload_path_,'',$upload_path.$imageName,$filetype);       
 
 
                         
                             
-                        if($upload){
-                            $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$imageName;
-                            $this->Cmall_item_model->update($cit_id, $updatedata);
-                        }
+        //                 if($upload){
+        //                     $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$imageName;
+        //                     $this->Cmall_item_model->update($cit_id, $updatedata);
+        //                 }
                             
                         
-                    } 
+        //             } 
+        //         }
+                
+        //     }
+            
+        // }
+
+        if($post_id){
+            echo "a";
+            $postwhere = array(
+                'post_id' => $post_id,
+            );
+
+            $cmall_item = $this->Cmall_item_model
+                ->get('', '', $postwhere);
+
+
+            foreach ($cmall_item as $c_key => $c_value) {
+                // $this->board->delete_cmall(element('cit_id',$c_value));
+                // 
+                // 
+                $flag = true;
+                if (element('list', $result)) {
+                    foreach (element('list', $result) as $key => $val){ 
+
+                        if(element('brd_id', $val) === element('brd_id',$c_value) && element('crw_goods_code', $val) === element('cit_goods_code',$c_value)){
+                            $flag = false;
+                            break;
+                        }
+                        
+                    }
+
+                }
+
+                if($flag){
+                    echo element('cit_id',$c_value);
+                    echo "<br>";
+                    // $this->board->delete_cmall(element('cit_id',$c_value));
                 }
                 
             }
-            
-        }
+        } elseif($brd_id){
 
-        
+            $brdwhere = array(
+                'brd_id' => $brd_id,
+            );
+            
+
+
+
+            $cmall_item = $this->Cmall_item_model
+                ->get('', '', $brdwhere);
+
+            
+            foreach ($cmall_item as $c_key => $c_value) {                
+                $flag = true;     
+                if (element('list', $result)) {
+                    foreach (element('list', $result) as $key => $val){ 
+
+                        if(element('brd_id', $val) === element('brd_id',$c_value) && element('crw_goods_code', $val) === element('cit_goods_code',$c_value)){
+                            $flag = false;
+                            break;
+                        }
+
+                        
+                        
+                    }
+
+                }
+
+                if($flag){
+                    echo element('cit_id',$c_value);
+                    echo "<br>";
+                    // $this->board->delete_cmall(element('cit_id',$c_value));
+                }
+            }
+
+        } 
         
     }
 

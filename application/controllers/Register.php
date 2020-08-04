@@ -1767,4 +1767,41 @@ class Register extends CB_Controller
 
 		return true;
 	}
+
+	public function zip_code()
+	{	
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_register_index';
+		$this->load->event($eventname);
+
+		$view = array();
+		$view['view'] = array();
+		
+		$page_title = $this->cbconfig->item('site_meta_title_register');
+		$meta_description = $this->cbconfig->item('site_meta_description_register');
+		$meta_keywords = $this->cbconfig->item('site_meta_keywords_register');
+		$meta_author = $this->cbconfig->item('site_meta_author_register');
+		$page_name = $this->cbconfig->item('site_page_name_register');
+
+		$layoutconfig = array(
+			'path' => 'register',
+			'layout' => 'layout_popup',
+			'skin' => 'zip_code',
+			'layout_dir' => $this->cbconfig->item('layout_register'),
+			'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_register'),
+			'use_sidebar' => $this->cbconfig->item('sidebar_register'),
+			'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_register'),
+			'skin_dir' => $this->cbconfig->item('skin_register'),
+			'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_register'),
+			'page_title' => $page_title,
+			'meta_description' => $meta_description,
+			'meta_keywords' => $meta_keywords,
+			'meta_author' => $meta_author,
+			'page_name' => $page_name,
+		);
+		$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+		$this->data = $view;
+		$this->layout = element('layout_skin_file', element('layout', $view));
+		$this->view = element('view_skin_file', element('layout', $view));
+	}
 }
