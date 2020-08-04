@@ -1757,8 +1757,10 @@ class Board_post extends CB_Controller
 						// if(element('cca_parent',$aval) === '0'){
 							$result['list'][$key]['category'][$a]['cnt'] = element('cnt',$aval);
 							$result['list'][$key]['category'][$a]['cca_value'] = element('cca_value',$aval);
-							$a_t += element('cnt',$aval);
-							$a++;
+							if(element('cca_parent',$aval) ==0){
+								$a_t += element('cnt',$aval);
+							}
+								$a++;
 						// }
 
 					}
