@@ -1306,7 +1306,7 @@ class Crawl extends CB_Controller
                 
                 $result = $this->get_admin_list('','',$brdwhere);
                 
-        
+                echo element('cit_id', $c_value)."<br>\n";
 
                 if(element('cit_file_1',$c_value) && filesize(config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1',$c_value)) < 5020868) {
                     $label_text[] = $this->detect_label(element('cit_id', $c_value),config_item('uploads_dir') . '/cmallitem/' . element('cit_file_1',$c_value),$c_value['cit_name']);
@@ -1337,7 +1337,7 @@ class Crawl extends CB_Controller
                 $label_tag['cit_text'] = element('cdt_content',element(0,element('list',$result))) ? element('cdt_content',element(0,element('list',$result))) : '';
                 $label_tag['cit_name'] = element('crw_name',element(0,element('list',$result))) ? element('crw_name',element(0,element('list',$result))) : element('crw_name',element(0,element('list',$result)));
 
-                echo element('cit_id', $c_value)."<br>\n";
+                
                 $tag_ = $this->getnaturallanguage($label_tag);
 
 
