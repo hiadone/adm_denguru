@@ -76,7 +76,7 @@
 //<![CDATA[
 function itemSearch(f) {
 	var skeyword = f.skeyword.value.replace(/(^\s*)|(\s*$)/g,'');
-	if (skeyword.length < 2) {
+	if (skeyword.length < 1) {
 		alert('2글자 이상으로 검색해 주세요');
 		f.skeyword.focus();
 		return false;

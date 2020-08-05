@@ -34,18 +34,42 @@ class Smslib extends CI_Controller
 
 
 	public function get_icode_info($id, $pw)
-	{
-		$result = get_sock('http://www.icodekorea.com/res/userinfo.php?userid=' . $id . '&userpw=' . $pw);
-		$res = explode(';', $result);
-		$userinfo = array(
-			'code' => $res[0], // 결과코드
-			'coin' => $res[1], // 고객 잔액 (충전제만 해당)
-			'gpay' => $res[2], // 고객의 건수 별 차감액 표시 (충전제만 해당)
-			'payment' => $res[3] // 요금제 표시, A:충전제, C:정액제
-		);
+    {   
 
-		return $userinfo;
-	}
+        $sms_url = "https://apis.aligo.in/remain/"; // 전송요청 URL
+        $sms['user_id'] = $id; // SMS 아이디
+        $sms['key'] = $pw;//인증키
+        /******************** 인증정보 ********************/
+
+        $host_info = explode("/", $sms_url);
+        $port = $host_info[0] == 'https:' ? 443 : 80;
+
+        $oCurl = curl_init();
+        curl_setopt($oCurl, CURLOPT_PORT, $port);
+        curl_setopt($oCurl, CURLOPT_URL, $sms_url);
+        curl_setopt($oCurl, CURLOPT_POST, 1);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($oCurl, CURLOPT_POSTFIELDS, $sms);
+        curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        // CURL 접속이 안되는 경우 CURL 옵션안내를 참조 하셔서 옵션을 출력하여 확인해 주세요.
+        // http://phpdoc.me/manual/kr/function.curl-setopt.php
+        $ret = curl_exec($oCurl);
+        curl_close($oCurl);
+        
+        $res = json_decode($ret); // 결과배열
+
+
+        
+        $userinfo = array(
+            'code' => $res->result_code, // 결과코드
+            'coin' => $res->SMS_CNT, // 고객 잔액 (충전제만 해당)
+            // 'gpay' => $res[2], // 고객의 건수 별 차감액 표시 (충전제만 해당)
+            // 'payment' => $res[3] // 요금제 표시, A:충전제, C:정액제
+        );
+
+        return $userinfo;
+    }
 
 
 	public function send($receiver = '', $sender = '', $content = '', $date = '', $memo = '')
