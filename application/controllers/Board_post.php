@@ -1112,7 +1112,7 @@ class Board_post extends CB_Controller
 		$offset = ($page - 1) * $per_page;
 
 		$this->Cmall_item_model->allow_search_field = array('cit_id', 'cit_name'); // 검색이 가능한 필드
-		$this->Cmall_item_model->search_field_equal = array('cit_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Cmall_item_model->search_field_equal = array('cit_id','cit_name'); // 검색중 like 가 아닌 = 검색을 하는 필드
 		$this->Cmall_item_model->allow_order_field = array('cit_order,cit_id'); // 정렬이 가능한 필드
 
 		// 이벤트가 존재하면 실행합니다
