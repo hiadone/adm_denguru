@@ -24,7 +24,7 @@ class Cmallcategory extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_category','Cmall_attr','Cmall_breed');
+	protected $models = array('Cmall_category','Cmall_attr','Cmall_kind');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -538,11 +538,11 @@ class Cmallcategory extends CB_Controller
 	}
 
 
-	public function breed()
+	public function kind()
 	{
 
 		// 이벤트 라이브러리를 로딩합니다
-		$eventname = 'event_admin_cmall_breed';
+		$eventname = 'event_admin_cmall_kind';
 		$this->load->event($eventname);
 
 		$view = array();
@@ -551,7 +551,7 @@ class Cmallcategory extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$primary_key = $this->Cmall_breed_model->primary_key;
+		$primary_key = $this->Cmall_kind_model->primary_key;
 
 		/**
 		 * Validation 라이브러리를 가져옵니다
@@ -564,22 +564,22 @@ class Cmallcategory extends CB_Controller
 		if ($this->input->post('type') === 'add') {
 			$config = array(
 				array(
-                    'field' => 'ced_value_kr',
+                    'field' => 'ckd_value_kr',
                     'label' => '한글 견종명',
-                    'rules' => 'trim|required|is_unique[cmall_breed.ced_value_kr]',
+                    'rules' => 'trim|required|is_unique[cmall_kind.ckd_value_kr]',
                 ),
                 array(
-                    'field' => 'ced_value_en',
+                    'field' => 'ckd_value_en',
                     'label' => '영문 견종명 ',
-                    'rules' => 'trim|required|is_unique[cmall_breed.ced_value_en]',
+                    'rules' => 'trim|required|is_unique[cmall_kind.ckd_value_en]',
                 ),
 				array(
-					'field' => 'ced_text',
+					'field' => 'ckd_text',
 					'label' => '견종사전',
 					'rules' => 'trim',
 				),
 				array(
-					'field' => 'ced_size',
+					'field' => 'ckd_size',
 					'label' => '견종크기',
 					'rules' => 'trim|required',
 				),
@@ -587,27 +587,27 @@ class Cmallcategory extends CB_Controller
 		} else {
 			$config = array(
 				array(
-					'field' => 'ced_id',
+					'field' => 'ckd_id',
 					'label' => '견종아이디',
 					'rules' => 'trim|required',
 				),
 				array(
-                    'field' => 'ced_value_kr',
+                    'field' => 'ckd_value_kr',
                     'label' => '한글 브랜드명',
-                    'rules' => 'trim|is_unique[cmall_breed.ced_value_kr.ced_id.' . $this->input->post('ced_id') . ']',
+                    'rules' => 'trim|is_unique[cmall_kind.ckd_value_kr.ckd_id.' . $this->input->post('ckd_id') . ']',
                 ),
                 array(
-                    'field' => 'ced_value_en',
+                    'field' => 'ckd_value_en',
                     'label' => '영문 브랜드명 ',
-                    'rules' => 'trim|is_unique[cmall_breed.ced_value_en.ced_id.' . $this->input->post('ced_id') . ']',
+                    'rules' => 'trim|is_unique[cmall_kind.ckd_value_en.ckd_id.' . $this->input->post('ckd_id') . ']',
                 ),
 				array(
-					'field' => 'ced_text',
+					'field' => 'ckd_text',
 					'label' => '견종사전',
 					'rules' => 'trim',
 				),
 				array(
-					'field' => 'ced_size',
+					'field' => 'ckd_size',
 					'label' => '견종크기',
 					'rules' => 'trim|required',
 				),
@@ -636,42 +636,42 @@ class Cmallcategory extends CB_Controller
 
 			if ($this->input->post('type') === 'add') {
 
-				$ced_text_arr = array();
-				$ced_text_ = '';				
-				$ced_size = $this->input->post('ced_size') ? $this->input->post('ced_size') : '';
+				$ckd_text_arr = array();
+				$ckd_text_ = '';				
+				$ckd_size = $this->input->post('ckd_size') ? $this->input->post('ckd_size') : '';
 
-				if($ced_size === "소형견") $ced_size = 4;
-				elseif($ced_size === "중형견") $ced_size = 5;
-				elseif($ced_size === "대형견") $ced_size = 6;
-				$ced_text = $this->input->post('ced_text') ? $this->input->post('ced_text') : '';
-				$ced_text = str_replace("\n",",",$ced_text);
+				if($ckd_size === "소형견") $ckd_size = 4;
+				elseif($ckd_size === "중형견") $ckd_size = 5;
+				elseif($ckd_size === "대형견") $ckd_size = 6;
+				$ckd_text = $this->input->post('ckd_text') ? $this->input->post('ckd_text') : '';
+				$ckd_text = str_replace("\n",",",$ckd_text);
 
-				$ced_text_arr = explode(",",urldecode($ced_text));
+				$ckd_text_arr = explode(",",urldecode($ckd_text));
 
                 
 
-                if(count($ced_text_arr)){
+                if(count($ckd_text_arr)){
                     
-                    if ($ced_text_arr && is_array($ced_text_arr)) {
+                    if ($ckd_text_arr && is_array($ckd_text_arr)) {
                         $text_array=array();
-                        foreach ($ced_text_arr as  $value) {
+                        foreach ($ckd_text_arr as  $value) {
                             $value = trim($value);
                             if ($value) 
                             	array_push($text_array,$value);
                         }
                     }
-                    if($text_array && is_array($text_array)) $ced_text_ = implode(",",$text_array);
+                    if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
                 }
 
 				$insertdata = array(
-					'ced_value_kr' => $this->input->post('ced_value_kr', null, ''),
-                    'ced_value_en' => $this->input->post('ced_value_en', null, ''),
-					'ced_text' => $ced_text_,
-					'ced_size' => $ced_size,
+					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
+                    'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),
+					'ckd_text' => $ckd_text_,
+					'ckd_size' => $ckd_size,
 				);
-				$this->Cmall_breed_model->insert($insertdata);
-				$this->cache->delete('cmall-breed-all');
-				$this->cache->delete('cmall-breed-detail');
+				$this->Cmall_kind_model->insert($insertdata);
+				$this->cache->delete('cmall-kind-all');
+				$this->cache->delete('cmall-kind-detail');
 
 				
 
@@ -680,48 +680,48 @@ class Cmallcategory extends CB_Controller
                     '정상적으로 저장되었습니다'
                 );
                 
-				redirect(admin_url($this->pagedir.'/breed'), 'refresh');
+				redirect(admin_url($this->pagedir.'/kind'), 'refresh');
 
 			}
 			if ($this->input->post('type') === 'modify') {
 
-				$ced_text_arr = array();
-				$ced_text_ = '';				
-				$ced_size = $this->input->post('ced_size') ? $this->input->post('ced_size') : '';
+				$ckd_text_arr = array();
+				$ckd_text_ = '';				
+				$ckd_size = $this->input->post('ckd_size') ? $this->input->post('ckd_size') : '';
 
-				if($ced_size === "소형견") $ced_size = 4;
-				elseif($ced_size === "중형견") $ced_size = 5;
-				elseif($ced_size === "대형견") $ced_size = 6;
+				if($ckd_size === "소형견") $ckd_size = 4;
+				elseif($ckd_size === "중형견") $ckd_size = 5;
+				elseif($ckd_size === "대형견") $ckd_size = 6;
 
-				$ced_text = $this->input->post('ced_text') ? $this->input->post('ced_text') : '';
-				$ced_text = str_replace("\n",",",$ced_text);
+				$ckd_text = $this->input->post('ckd_text') ? $this->input->post('ckd_text') : '';
+				$ckd_text = str_replace("\n",",",$ckd_text);
 
-				$ced_text_arr = explode(",",urldecode($ced_text));
+				$ckd_text_arr = explode(",",urldecode($ckd_text));
 
                 
 
-                if(count($ced_text_arr)){
+                if(count($ckd_text_arr)){
                     
-                    if ($ced_text_arr && is_array($ced_text_arr)) {
+                    if ($ckd_text_arr && is_array($ckd_text_arr)) {
                         $text_array=array();
-                        foreach ($ced_text_arr as  $value) {
+                        foreach ($ckd_text_arr as  $value) {
                             $value = trim($value);
                             if ($value) 
                             	array_push($text_array,$value);
                         }
                     }
-                    if($text_array && is_array($text_array)) $ced_text_ = implode(",",$text_array);
+                    if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
                 }
 
 				$updatedata = array(
-					'ced_value_kr' => $this->input->post('ced_value_kr', null, ''),
-                    'ced_value_en' => $this->input->post('ced_value_en', null, ''),
-					'ced_text' => $ced_text_,
-					'ced_size' => $ced_size,
+					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
+                    'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),
+					'ckd_text' => $ckd_text_,
+					'ckd_size' => $ckd_size,
 				);
-				$this->Cmall_breed_model->update($this->input->post('ced_id'), $updatedata);
-				$this->cache->delete('cmall-breed-all');
-				$this->cache->delete('cmall-breed-detail');
+				$this->Cmall_kind_model->update($this->input->post('ckd_id'), $updatedata);
+				$this->cache->delete('cmall-kind-all');
+				$this->cache->delete('cmall-kind-detail');
 
 				
 
@@ -730,12 +730,12 @@ class Cmallcategory extends CB_Controller
                     '정상적으로 수정되었습니다'
                 );
 
-				redirect(admin_url($this->pagedir.'/breed'), 'refresh');
+				redirect(admin_url($this->pagedir.'/kind'), 'refresh');
 
 			}
 		}
 
-		$getdata = $this->Cmall_breed_model->get_all_breed();
+		$getdata = $this->Cmall_kind_model->get_all_kind();
 
 
 		$view['view']['data'] = $getdata;
@@ -751,17 +751,17 @@ class Cmallcategory extends CB_Controller
 		/**
 		 * 어드민 레이아웃을 정의합니다
 		 */
-		$layoutconfig = array('layout' => 'layout', 'skin' => 'breed');
+		$layoutconfig = array('layout' => 'layout', 'skin' => 'kind');
 		$view['layout'] = $this->managelayout->admin($layoutconfig, $this->cbconfig->get_device_view_type());
 		$this->data = $view;
 		$this->layout = element('layout_skin_file', element('layout', $view));
 		$this->view = element('view_skin_file', element('layout', $view));
 	}
 
-	public function breed_delete($ced_id = 0)
+	public function kind_delete($ckd_id = 0)
 	{
 		// 이벤트 라이브러리를 로딩합니다
-		$eventname = 'event_admin_cmall_cmallbreed_delete';
+		$eventname = 'event_admin_cmall_cmallkind_delete';
 		$this->load->event($eventname);
 
 		// 이벤트가 존재하면 실행합니다
@@ -770,14 +770,14 @@ class Cmallcategory extends CB_Controller
 		/**
 		 * 프라이머리키에 숫자형이 입력되지 않으면 에러처리합니다
 		 */
-		$ced_id = (int) $ced_id;
-		if (empty($ced_id) OR $ced_id < 1) {
+		$ckd_id = (int) $ckd_id;
+		if (empty($ckd_id) OR $ckd_id < 1) {
 			show_404();
 		}
 
-		$this->Cmall_breed_model->delete($ced_id);
-		$this->cache->delete('cmall-breed-all');
-		$this->cache->delete('cmall-breed-detail');
+		$this->Cmall_kind_model->delete($ckd_id);
+		$this->cache->delete('cmall-kind-all');
+		$this->cache->delete('cmall-kind-detail');
 
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
@@ -790,7 +790,7 @@ class Cmallcategory extends CB_Controller
 			'정상적으로 삭제되었습니다'
 		);
 		$param =& $this->querystring;
-		$redirecturl = admin_url($this->pagedir . '/breed?' . $param->output());
+		$redirecturl = admin_url($this->pagedir . '/kind?' . $param->output());
 
 		redirect($redirecturl);
 	}
