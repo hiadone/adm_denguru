@@ -3307,18 +3307,32 @@ class Crawl extends CB_Controller
                     $updatedata['crw_brand' . $k] = $this->input->post('crw_brand' . $k);
                 }
             }
-
+            
+            $c=1;
+            $d=0;
             for ($k = 1; $k <= 3; $k++) {
-                // if (!empty($this->input->post('crw_category' . $k))) {
+                if (!empty($this->input->post('crw_category' . $k))) {
+                    $c++;
+                }
 
-                    $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
-                    $str = $this->input->post('crw_category' . $k);
-                    
-                    preg_match_all($pattern, $str, $match);
-                    $updatedata['crw_category' . $k] = implode('', $match[0]);
+                if (!empty($crawl_item['crw_category' . $k])) {
+                    $d++;
+                }
+            }
 
-                    
-                // }
+            if($c > $d){
+                for ($k = 1; $k <= 3; $k++) {
+                    // if (!empty($this->input->post('crw_category' . $k))) {
+
+                        $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                        $str = $this->input->post('crw_category' . $k);
+                        
+                        preg_match_all($pattern, $str, $match);
+                        $updatedata['crw_category' . $k] = implode('', $match[0]);
+
+                        
+                    // }
+                }
             }
 
             $array = array(
