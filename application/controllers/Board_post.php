@@ -1400,7 +1400,7 @@ class Board_post extends CB_Controller
 		$order_by_field = element('order_by_field', $board)
 			? element('order_by_field', $board)
 			: 'post_num, post_reply';
-		$order_by_field = 'post_title';
+		
 		$findex = $this->input->get('findex', null, $order_by_field);
 		$sfield = $sfieldchk = $this->input->get('sfield', null, '');
 		if ($sfield === 'post_both') {
