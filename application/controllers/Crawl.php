@@ -3306,7 +3306,10 @@ class Crawl extends CB_Controller
                     $d++;
                 }
             }
-            if($c < $d) return;
+            if($c < $d) {
+                $result = array('resultcode'=>9000,'message' => '카테고리가 기존 데이터보다 적습니다.');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
 
             $updatedata = array(
                 'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
