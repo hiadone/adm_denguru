@@ -3295,7 +3295,18 @@ class Crawl extends CB_Controller
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
-            
+            $c=0;
+            $d=0;
+            for ($k = 1; $k <= 3; $k++) {
+                if (!empty($this->input->post('crw_category' . $k))) {
+                    $c++;
+                }
+
+                if (!empty($crawl_item['crw_category' . $k])) {
+                    $d++;
+                }
+            }
+            if($c < $d) continue;
 
             $updatedata = array(
                 'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
@@ -3308,19 +3319,9 @@ class Crawl extends CB_Controller
                 }
             }
             
-            $c=1;
-            $d=0;
-            for ($k = 1; $k <= 3; $k++) {
-                if (!empty($this->input->post('crw_category' . $k))) {
-                    $c++;
-                }
+            
 
-                if (!empty($crawl_item['crw_category' . $k])) {
-                    $d++;
-                }
-            }
-
-            if($c > $d){
+            
                 for ($k = 1; $k <= 3; $k++) {
                     // if (!empty($this->input->post('crw_category' . $k))) {
 
@@ -3333,7 +3334,7 @@ class Crawl extends CB_Controller
                         
                     // }
                 }
-            }
+           
 
             $array = array(
                 'crw_name', 'crw_price', 'crw_post_url', 'crw_goods_code',
