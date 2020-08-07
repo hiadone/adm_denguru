@@ -206,22 +206,22 @@ class Managelayout extends CI_Controller
 		if ($CI->input->is_ajax_request() === false) {
 
 			// 현재 접속자
-			$CI->load->model('Currentvisitor_model');
-			$currentpage = $page_name ? $page_name : $page_title;
-			$currentpage = $currentpage ? $currentpage : $CI->cbconfig->item('site_title');
-			$agent_referrer = $CI->agent->referrer() ? $CI->agent->referrer() : '';
-			$agent_string = $CI->agent->agent_string() ? $CI->agent->agent_string() : '';
-			$CI->Currentvisitor_model->add_visitor($CI->input->ip_address(), $mem_id,
-			$CI->member->item('mem_nickname'), cdate('Y-m-d H:i:s'), $currentpage, current_full_url(), $agent_referrer, $agent_string);
-			if ($CI->cbconfig->item('open_currentvisitor') OR $CI->member->is_admin() === 'super') {
+			// $CI->load->model('Currentvisitor_model');
+			// $currentpage = $page_name ? $page_name : $page_title;
+			// $currentpage = $currentpage ? $currentpage : $CI->cbconfig->item('site_title');
+			// $agent_referrer = $CI->agent->referrer() ? $CI->agent->referrer() : '';
+			// $agent_string = $CI->agent->agent_string() ? $CI->agent->agent_string() : '';
+			// $CI->Currentvisitor_model->add_visitor($CI->input->ip_address(), $mem_id,
+			// $CI->member->item('mem_nickname'), cdate('Y-m-d H:i:s'), $currentpage, current_full_url(), $agent_referrer, $agent_string);
+			// if ($CI->cbconfig->item('open_currentvisitor') OR $CI->member->is_admin() === 'super') {
 
-				$minute = (int) $CI->cbconfig->item('currentvisitor_minute');
-				if ($minute < 1) {
-					$minute = 10;
-				}
-				$curdatetime = cdate('Y-m-d H:i:s', ctimestamp() - $minute * 60);
-				$data['current_visitor_num'] = $CI->Currentvisitor_model->get_current_count($curdatetime);
-			}
+			// 	$minute = (int) $CI->cbconfig->item('currentvisitor_minute');
+			// 	if ($minute < 1) {
+			// 		$minute = 10;
+			// 	}
+			// 	$curdatetime = cdate('Y-m-d H:i:s', ctimestamp() - $minute * 60);
+			// 	$data['current_visitor_num'] = $CI->Currentvisitor_model->get_current_count($curdatetime);
+			// }
 
 			// 알림
 			$data['notification_num'] = 0;

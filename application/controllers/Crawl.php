@@ -3257,11 +3257,14 @@ class Crawl extends CB_Controller
 
             for ($k = 1; $k <= 3; $k++) {
                 if (!empty($this->input->post('crw_category' . $k))) {
-                    $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                    // $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
                     $str = $this->input->post('crw_category' . $k);
                     
-                    preg_match_all($pattern, $str, $match);
-                    $updatedata['crw_category' . $k] = implode('', $match[0]);
+                    // preg_match_all($pattern, $str, $match);
+
+                    $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
+                    
+                    // $updatedata['crw_category' . $k] = implode('', $match[0]);
                     
                 }
             }
@@ -3328,11 +3331,11 @@ class Crawl extends CB_Controller
                 for ($k = 1; $k <= 3; $k++) {
                     // if (!empty($this->input->post('crw_category' . $k))) {
 
-                        $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+                        // $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
                         $str = $this->input->post('crw_category' . $k);
                         
-                        preg_match_all($pattern, $str, $match);
-                        $updatedata['crw_category' . $k] = implode('', $match[0]);
+                        // preg_match_all($pattern, $str, $match);
+                        $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
 
                         
                     // }

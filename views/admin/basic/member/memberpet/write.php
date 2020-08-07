@@ -116,7 +116,7 @@
 					<?php
 					if (element('pet_photo', element('data', $view))) {
 					?>
-						<img src="<?php echo member_photo_url(element('pet_photo', element('data', $view)),0,0); ?>" alt="회원 사진" title="회원 사진" />
+						<img src="<?php echo cdn_url('member_photo',element('pet_photo', element('data', $view))); ?>" alt="회원 사진" title="회원 사진" />
 						<label for="pet_photo_del">
 							<input type="checkbox" name="pet_photo_del" id="pet_photo_del" value="1" <?php echo set_checkbox('pet_photo_del', '1'); ?> /> 삭제
 						</label>
