@@ -3306,7 +3306,7 @@ class Crawl extends CB_Controller
                     $d++;
                 }
             }
-            if($c < $d) continue;
+            if($c < $d) return;
 
             $updatedata = array(
                 'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
