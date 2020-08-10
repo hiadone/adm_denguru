@@ -3025,8 +3025,7 @@ class Crawl extends CB_Controller
             }
         }
         
-        print_r2($data['list']);
-exit;
+        
         // foreach ($storelist as $skey => $sval) {
 
         //     $flag=true;
