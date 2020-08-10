@@ -3017,15 +3017,16 @@ class Crawl extends CB_Controller
                     
                     $data['list'][$key]['brd_id'] = element('brd_id',$val);
                     $data['list'][$key]['brd_name'] = element('brd_name',$val);
-                    $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
-                    $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
+                    // $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
+                    // $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
                 // }
                 
                 
             }
         }
         
-
+        print_r2($data['list']);
+exit;
         // foreach ($storelist as $skey => $sval) {
 
         //     $flag=true;
@@ -3150,7 +3151,7 @@ class Crawl extends CB_Controller
             preg_match_all($pattern, $str, $match);
             $crw_category1 = implode('', $match[0]);
             
-
+            $crw_category1 = preg_replace("/[ #\&\-%=\/\\\:;\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
 
 
 
@@ -3263,7 +3264,7 @@ class Crawl extends CB_Controller
                     // preg_match_all($pattern, $str, $match);
 
                     $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
-                    
+                    $updatedata['crw_category' . $k] = preg_replace("/[ #\&\-%=\/\\\:;\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
                     // $updatedata['crw_category' . $k] = implode('', $match[0]);
                     
                 }
@@ -3337,7 +3338,7 @@ class Crawl extends CB_Controller
                         // preg_match_all($pattern, $str, $match);
                         $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
 
-                        
+                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\-%=\/\\\:;\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
                     // }
                 }
            
