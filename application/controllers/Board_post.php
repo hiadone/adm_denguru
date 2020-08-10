@@ -1404,7 +1404,7 @@ class Board_post extends CB_Controller
 		$findex = $this->input->get('findex', null, $order_by_field);
 		$sfield = $sfieldchk = $this->input->get('sfield', null, '');
 		if ($sfield === 'post_both') {
-			$sfield = array('post_title', 'post_content');
+			$sfield = array('post_title', 'cit_name');
 		}
 		$skeyword = $this->input->get('skeyword', null, '');
 		if ($this->cbconfig->get_device_view_type() === 'mobile') {
@@ -1416,7 +1416,7 @@ class Board_post extends CB_Controller
 		}
 		$offset = ($page - 1) * $per_page;
 
-		$this->Post_model->allow_search_field = array('post_id', 'post_title', 'post_content', 'post_both', 'post_category', 'post_userid', 'post_nickname'); // 검색이 가능한 필드
+		$this->Post_model->allow_search_field = array('post_id', 'post_title', 'post_content', 'post_both', 'post_category', 'post_userid', 'post_nickname','cit_name'); // 검색이 가능한 필드
 		$this->Post_model->search_field_equal = array('post_id', 'post_userid', 'post_nickname'); // 검색중 like 가 아닌 = 검색을 하는 필드
 
 		// 이벤트가 존재하면 실행합니다
@@ -1520,65 +1520,65 @@ class Board_post extends CB_Controller
 		}
 
 
-		$noticeresult = $this->Post_model
-			->get_notice_list(element('brd_id', $board), $except_all_notice, $sfield, $skeyword);
-		if ($noticeresult) {
-			foreach ($noticeresult as $key => $val) {
+		// $noticeresult = $this->Post_model
+		// 	->get_notice_list(element('brd_id', $board), $except_all_notice, $sfield, $skeyword);
+		// if ($noticeresult) {
+		// 	foreach ($noticeresult as $key => $val) {
 
-				$notice_brd_key = $this->board->item_id('brd_key', element('brd_id', $val));
-				$noticeresult[$key]['post_url'] = post_url($notice_brd_key, element('post_id', $val));
+		// 		$notice_brd_key = $this->board->item_id('brd_key', element('brd_id', $val));
+		// 		$noticeresult[$key]['post_url'] = post_url($notice_brd_key, element('post_id', $val));
 
-				$noticeresult[$key]['meta'] = $meta
-					= $this->Post_meta_model->get_all_meta(element('post_id', $val));
+		// 		$noticeresult[$key]['meta'] = $meta
+		// 			= $this->Post_meta_model->get_all_meta(element('post_id', $val));
 
 
-				if ($this->cbconfig->get_device_view_type() === 'mobile') {
-					$noticeresult[$key]['title'] = element('mobile_subject_length', $board)
-						? cut_str(element('post_title', $val), element('mobile_subject_length', $board))
-						: element('post_title', $val);
-				} else {
-					$noticeresult[$key]['title'] = element('subject_length', $board)
-						? cut_str(element('post_title', $val), element('subject_length', $board))
-						: element('post_title', $val);
-				}
-				if (element('post_del', $val)) {
-					$noticeresult[$key]['title'] = '게시물이 삭제 되었습니다';
-				}
+		// 		if ($this->cbconfig->get_device_view_type() === 'mobile') {
+		// 			$noticeresult[$key]['title'] = element('mobile_subject_length', $board)
+		// 				? cut_str(element('post_title', $val), element('mobile_subject_length', $board))
+		// 				: element('post_title', $val);
+		// 		} else {
+		// 			$noticeresult[$key]['title'] = element('subject_length', $board)
+		// 				? cut_str(element('post_title', $val), element('subject_length', $board))
+		// 				: element('post_title', $val);
+		// 		}
+		// 		if (element('post_del', $val)) {
+		// 			$noticeresult[$key]['title'] = '게시물이 삭제 되었습니다';
+		// 		}
 
-				if (element('mem_id', $val) >= 0) {
-					$noticeresult[$key]['display_name'] = display_username(
-						element('post_userid', $val),
-						element('post_nickname', $val),
-						($use_sideview_icon ? element('mem_icon', $val) : ''),
-						($use_sideview ? 'Y' : 'N')
-					);
-				} else {
-					$noticeresult[$key]['display_name'] = '익명사용자';
-				}
-				$noticeresult[$key]['display_datetime'] = display_datetime(element('post_datetime', $val), $list_date_style, $list_date_style_manual);
-				$noticeresult[$key]['category'] = '';
-				if (element('use_category', $board) && element('post_category', $val)) {
+		// 		if (element('mem_id', $val) >= 0) {
+		// 			$noticeresult[$key]['display_name'] = display_username(
+		// 				element('post_userid', $val),
+		// 				element('post_nickname', $val),
+		// 				($use_sideview_icon ? element('mem_icon', $val) : ''),
+		// 				($use_sideview ? 'Y' : 'N')
+		// 			);
+		// 		} else {
+		// 			$noticeresult[$key]['display_name'] = '익명사용자';
+		// 		}
+		// 		$noticeresult[$key]['display_datetime'] = display_datetime(element('post_datetime', $val), $list_date_style, $list_date_style_manual);
+		// 		$noticeresult[$key]['category'] = '';
+		// 		if (element('use_category', $board) && element('post_category', $val)) {
 					
 					
-					$noticeresult[$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
-					if(empty($noticeresult[$key]['category']))
-					$noticeresult[$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
+		// 			$noticeresult[$key]['category'] = $this->Board_category_model->get_category_info(element('brd_id', $val), element('post_category', $val));
+		// 			if(empty($noticeresult[$key]['category']))
+		// 			$noticeresult[$key]['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $val));
 					
 
 						
-				}
-				if ($param->output()) {
-					$noticeresult[$key]['post_url'] .= '?' . $param->output();
-				}
-				$noticeresult[$key]['title_color'] = $use_subject_style
-					? element('post_title_color', $meta) : '';
-				$noticeresult[$key]['title_font'] = $use_subject_style
-					? element('post_title_font', $meta) : '';
-				$noticeresult[$key]['title_bold'] = $use_subject_style
-					? element('post_title_bold', $meta) : '';
-				$noticeresult[$key]['is_mobile'] = (element('post_device', $val) === 'mobile') ? true : false;
-			}
-		}
+		// 		}
+		// 		if ($param->output()) {
+		// 			$noticeresult[$key]['post_url'] .= '?' . $param->output();
+		// 		}
+		// 		$noticeresult[$key]['title_color'] = $use_subject_style
+		// 			? element('post_title_color', $meta) : '';
+		// 		$noticeresult[$key]['title_font'] = $use_subject_style
+		// 			? element('post_title_font', $meta) : '';
+		// 		$noticeresult[$key]['title_bold'] = $use_subject_style
+		// 			? element('post_title_bold', $meta) : '';
+		// 		$noticeresult[$key]['is_mobile'] = (element('post_device', $val) === 'mobile') ? true : false;
+		// 	}
+		// }
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
@@ -1741,6 +1741,11 @@ class Board_post extends CB_Controller
 
 				$result['list'][$key]['warning_count'] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
 				$result['list'][$key]['cmall_count'] = $this->Cmall_item_model->count_by($itemwhere);
+
+
+				$result['list'][$key]['disable'] = $result['list'][$key]['cnt'];
+				
+				
 				
 
 				// if (element('use_category', $board) && element('post_category', $val)) {
@@ -1777,7 +1782,7 @@ class Board_post extends CB_Controller
 		}
 
 		$return['data'] = $result;
-		$return['notice_list'] = $noticeresult;
+		// $return['notice_list'] = $noticeresult;
 		if (empty($from_view)) {
 			$board['headercontent'] = ($this->cbconfig->get_device_view_type() === 'mobile')
 				? element('mobile_header_content', $board)

@@ -278,7 +278,7 @@ class Post_model extends CB_Model
 		$orderby = 'post_title';
 		$sop = (strtoupper($sop) === 'AND') ? 'AND' : 'OR';
 		if (empty($sfield)) {
-			$sfield = array('post_title', 'post_content');
+			$sfield = array('post_title', 'cit_name');
 		}
 
 		$search_where = array();
@@ -291,7 +291,8 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						$swordarray = explode(' ', $skeyword);
+						// $swordarray = explode(' ', $skeyword);
+						$swordarray[] = $skeyword;
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -311,7 +312,8 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					$swordarray = explode(' ', $skeyword);
+					// $swordarray = explode(' ', $skeyword);
+					$swordarray[] = $skeyword;
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;
@@ -326,7 +328,7 @@ class Post_model extends CB_Model
 			}
 		}
 
-		$this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point');
+		$this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point,sum(IF(cb_cmall_item.cit_status > 0, 0, 1)) as cnt');
 		$this->db->from($this->_table);
 		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
 		$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');

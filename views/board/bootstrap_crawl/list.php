@@ -235,6 +235,8 @@
 						<?php if (element('post_comment_count', $result)) { ?><span class="label label-warning">+<?php echo element('post_comment_count', $result); ?></span><?php } ?>
 						<?php if (element('warning_count', $result)) { ?>
 						<button class="btn btn-warning btn-xs">warning  <?php echo element('warning_count', $result); ?> 개</button><?php } ?>
+						<?php if (element('disable', $result)) { ?>
+						<button class="btn btn-primary btn-xs">disable  <?php echo element('disable', $result); ?> 개</button><?php } ?>
 					</td>
 					<td><?php echo element('cmall_count', $result); ?> 개</td>
 					<td><?php echo element('display_name', $result); ?></td>
