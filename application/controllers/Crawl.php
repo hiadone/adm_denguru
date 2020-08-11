@@ -3017,8 +3017,8 @@ class Crawl extends CB_Controller
                     
                     $data['list'][$key]['brd_id'] = element('brd_id',$val);
                     $data['list'][$key]['brd_name'] = element('brd_name',$val);
-                    // $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
-                    // $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
+                    $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
+                    $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
                 // }
                 
                 
