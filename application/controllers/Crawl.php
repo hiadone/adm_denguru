@@ -351,6 +351,7 @@ class Crawl extends CB_Controller
                         'cit_status' => 1,
                         'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
+                        'cit_type3' => 1,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                         // 'cit_type3' => element('cit_type3', $ivalue) ? 1 : 0,
@@ -517,6 +518,9 @@ class Crawl extends CB_Controller
                 }
             }
 
+            $this->load->model('Board_model');  
+            
+            $this->Board_model->update($brd_id,array('cit_updated_datetime' => cdate('Y-m-d H:i:s')));
         } 
         
     }
@@ -3162,6 +3166,15 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '94'){
+                if(strpos($crw_category1,'KNITTING') !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
             $DB2 = $this->load->database('db2', TRUE);
             
             $DB2->where(array('brd_id' => $brd_id ,'crw_goods_code' => $this->input->post('crw_goods_code')));
@@ -3351,9 +3364,18 @@ class Crawl extends CB_Controller
                     // }
                 }
            
+           
 
             if($brd_id == '22'){
                 if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '94'){
+                if(strpos($updatedata['crw_category1'],'KNITTING') !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
