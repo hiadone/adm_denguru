@@ -178,22 +178,22 @@ class Search extends CB_Controller
 		$view['view']['grouplist'] = $grouplist;
 
 
-		if ( ! $this->session->userdata('skeyword_' . urlencode($skeyword))) {
-			$sfieldarray = array('post_title', 'post_content', 'post_both');
-			if (in_array($sfield2, $sfieldarray)) {
-				$searchinsert = array(
-					'sek_keyword' => $skeyword,
-					'sek_datetime' => cdate('Y-m-d H:i:s'),
-					'sek_ip' => $this->input->ip_address(),
-					'mem_id' => $mem_id,
-				);
-				$this->Search_keyword_model->insert($searchinsert);
-				$this->session->set_userdata(
-					'skeyword_' . urlencode($skeyword),
-					1
-				);
-			}
-		}
+		// if ( ! $this->session->userdata('skeyword_' . urlencode($skeyword))) {
+		// 	$sfieldarray = array('post_title', 'post_content', 'post_both');
+		// 	if (in_array($sfield2, $sfieldarray)) {
+		// 		$searchinsert = array(
+		// 			'sek_keyword' => $skeyword,
+		// 			'sek_datetime' => cdate('Y-m-d H:i:s'),
+		// 			'sek_ip' => $this->input->ip_address(),
+		// 			'mem_id' => $mem_id,
+		// 		);
+		// 		$this->Search_keyword_model->insert($searchinsert);
+		// 		$this->session->set_userdata(
+		// 			'skeyword_' . urlencode($skeyword),
+		// 			1
+		// 		);
+		// 	}
+		// }
 		$highlight_keyword = '';
 		if ($skeyword) {
 			$key_explode = explode(' ', $skeyword);

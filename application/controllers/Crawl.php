@@ -2281,16 +2281,17 @@ class Crawl extends CB_Controller
         $row_tag_ = array();
         if($row_tag){
             foreach($row_tag as $val){
-                // $pattern = "/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/";
+                $pattern = "/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/";
 
-                // preg_match_all($pattern, $val, $match);
-
-                $val = preg_replace("/[ #\&\-%=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $val);
+                preg_match_all($pattern, $val, $match); 
+                $val = implode('', $match[0]);
+                // $val = preg_replace("/[ #\&\-%=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $val);
 
                 $row_tag_[] = $val;
                 
                 
             }
+
             $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag_));
 
             
