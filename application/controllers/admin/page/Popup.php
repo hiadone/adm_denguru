@@ -101,6 +101,9 @@ class Popup extends CB_Controller
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
+				if (element('pop_image', $val)) {
+					$result['list'][$key]['cdn_url'] = cdn_url('popup', element('pop_image', $val));
+				}
 				if (empty($val['pop_start_date']) OR $val['pop_start_date'] === '0000-00-00') {
 					$result['list'][$key]['pop_start_date'] = '미지정';
 				}
@@ -263,15 +266,71 @@ class Popup extends CB_Controller
 
 		$this->form_validation->set_rules($config);
 
+		$form_validation = $this->form_validation->run();
+		$file_error = '';
+		$updatephoto = '';
 
+		if ($form_validation) {
+			$this->load->library('upload');
+			$this->load->library('aws_s3');
+			if (isset($_FILES) && isset($_FILES['pop_image']) && isset($_FILES['pop_image']['name']) && $_FILES['pop_image']['name']) {
+				$upload_path = config_item('uploads_dir') . '/popup/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
+				$upload_path .= cdate('Y') . '/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
+				$upload_path .= cdate('m') . '/';
+				if (is_dir($upload_path) === false) {
+					mkdir($upload_path, 0707);
+					$file = $upload_path . 'index.php';
+					$f = @fopen($file, 'w');
+					@fwrite($f, '');
+					@fclose($f);
+					@chmod($file, 0644);
+				}
+
+				$uploadconfig = array();
+				$uploadconfig['upload_path'] = $upload_path;
+				$uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+				$uploadconfig['max_size'] = '2000';
+				$uploadconfig['max_width'] = '1000';
+				$uploadconfig['max_height'] = '1000';
+				$uploadconfig['encrypt_name'] = true;
+
+				$this->upload->initialize($uploadconfig);
+
+				if ($this->upload->do_upload('pop_image')) {
+					$img = $this->upload->data();
+					$updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+
+					$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+				} else {
+					$file_error = $this->upload->display_errors();
+				}
+			}
+		}
 		/**
 		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
 		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
 		 */
-		if ($this->form_validation->run() === false) {
+		if ($form_validation === false OR $file_error !== '') {
 
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+			$view['view']['message'] = $file_error;
 
 			if ($pid) {
 				if (empty($getdata['pop_start_date']) OR $getdata['pop_start_date'] === '0000-00-00') {
@@ -338,6 +397,18 @@ class Popup extends CB_Controller
 				'pop_content_html_type' => $content_type,
 			);
 
+			if ($this->input->post('pop_image_del')) {
+				$updatedata['pop_image'] = '';
+			} elseif ($updatephoto) {
+				$updatedata['pop_image'] = $updatephoto;
+			}
+			if (element('pop_image', $getdata) && ($this->input->post('pop_image_del') OR $updatephoto)) {
+				// 기존 파일 삭제
+				@unlink(config_item('uploads_dir') . '/popup/' . element('pop_image', $getdata));
+
+				$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/popup/' . element('pop_image', $getdata));
+			}
+
 			/**
 			 * 게시물을 수정하는 경우입니다
 			 */
@@ -394,7 +465,20 @@ class Popup extends CB_Controller
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			foreach ($this->input->post('chk') as $val) {
 				if ($val) {
-					$this->{$this->modelname}->delete($val);
+					$getdata = $this->{$this->modelname}->get_one($val);
+					$this->cache->delete('popup/popup-' . element('pop_title', $getdata) . '-random-' . cdate('Y-m-d'));
+					$this->cache->delete('popup/popup-' . element('pop_title', $getdata) . '-order-' . cdate('Y-m-d'));
+					
+					if($this->{$this->modelname}->delete($val)){
+						if (element('pop_image', $getdata)) {
+							// 기존 파일 삭제
+							@unlink(config_item('uploads_dir') . '/popup/' . element('pop_image', $getdata));
+
+							$deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/popup/' . element('pop_image', $getdata));
+						}
+					}
+
+					
 				}
 			}
 		}

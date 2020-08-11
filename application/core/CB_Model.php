@@ -427,4 +427,17 @@ class CB_Model extends CI_Model
 
 		return $result;
 	}
+
+	public function group_where_in($field_key,$where = array())
+	{
+		if (empty($field_key)) {
+			return false;
+		}
+
+		if ($where && is_array($where)) {
+			$this->db->group_start();			
+			$this->db->where_in($field_key, $where);
+			$this->db->group_end();
+		}
+	}
 }

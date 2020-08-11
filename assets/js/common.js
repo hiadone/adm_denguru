@@ -1052,4 +1052,12 @@ if (typeof(COMMON_JS) === 'undefined') {
 			}
 		});
 	}
+
+
+	function event_in_cmall_item(eve_id) {
+		var f = document.fboardlist;
+		var sub_win = window.open(cb_url + '/helptool/event_in_cmall_item/'+eve_id, 'event_in_cmall_item', 'left=100, top=50, width=1440, height=700, scrollbars=1');
+
+		
+	}
 }

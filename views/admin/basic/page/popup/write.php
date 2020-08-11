@@ -7,6 +7,23 @@
 		?>
 			<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
 			<div class="form-group">
+				<label class="col-sm-2 control-label">이미지 업로드</label>
+				<div class="col-sm-10">
+					<?php
+					if (element('pop_image', element('data', $view))) {
+					?>
+						<img src="<?php echo banner_image_url(element('pop_image', element('data', $view)), '', 150); ?>" alt="배너 이미지" title="배너 이미지" />
+						<label for="pop_image_del">
+							<input type="checkbox" name="pop_image_del" id="pop_image_del" value="1" <?php echo set_checkbox('pop_image_del', '1'); ?> /> 삭제
+						</label>
+					<?php
+					}
+					?>
+					<input type="file" name="pop_image" id="pop_image" />
+					<p class="help-block">gif, jpg, png 파일 업로드가 가능합니다</p>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">제목</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="pop_title" value="<?php echo set_value('pop_title', element('pop_title', element('data', $view))); ?>" />
