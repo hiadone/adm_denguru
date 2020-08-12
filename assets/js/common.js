@@ -1060,4 +1060,11 @@ if (typeof(COMMON_JS) === 'undefined') {
 
 		
 	}
+
+	function theme_in_store(the_id) {
+		var f = document.fboardlist;
+		var sub_win = window.open(cb_url + '/helptool/theme_in_store/'+the_id, 'theme_in_store', 'left=100, top=50, width=600, height=700, scrollbars=1');
+
+		
+	}
 }
