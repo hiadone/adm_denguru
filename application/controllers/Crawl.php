@@ -317,7 +317,7 @@ class Crawl extends CB_Controller
 
                             if(!$file_exists){
 
-                                $upload_path_ =config_item('crawl_uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
+                                $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
 
                                 copy(
                                     $upload_path_,
@@ -400,11 +400,11 @@ class Crawl extends CB_Controller
                         
                         $img_src_array= explode('/', element('crw_file_1',$val));
                         $imageName = end($img_src_array);    
-                        $filetype = mime_content_type(config_item('crawl_uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
+                        $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
 
                         // echo $filetype;
                         $this->load->library('upload');
-                        $upload_path_ =config_item('crawl_uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
+                        $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
                         $upload_path = config_item('uploads_dir') . '/cmallitem/';
                         if (is_dir($upload_path) === false) {
                             mkdir($upload_path, 0707);
@@ -1165,11 +1165,11 @@ class Crawl extends CB_Controller
                     
                     $img_src_array= explode('/', element('crw_file_1',$val));
                     $imageName = end($img_src_array);    
-                    $filetype = mime_content_type(config_item('crawl_uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
+                    $filetype = mime_content_type(config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val));
 
                     // echo $filetype;
                     $this->load->library('upload');
-                    $upload_path_ =config_item('crawl_uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
+                    $upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
                     $upload_path = config_item('uploads_dir') . '/cmallitem/';
                     if (is_dir($upload_path) === false) {
                         mkdir($upload_path, 0707);
@@ -1328,23 +1328,23 @@ class Crawl extends CB_Controller
                 } 
 
 
-                if(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) < 5020868) {
-                    $label_text[] = $this->detect_label(element('cit_id', $c_value),config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result))),$c_value['cit_name']);
+                if(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) < 5020868) {
+                    $label_text[] = $this->detect_label(element('cit_id', $c_value),config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result))),$c_value['cit_name']);
                     
-                } elseif(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) > 5020868) {
+                } elseif(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) > 5020868) {
 
 
-                    $label_text[] = $this->detect_label(element('cit_id', $c_value),thumb_url('crawlitemdetail',config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))),$c_value['cit_name']);
+                    $label_text[] = $this->detect_label(element('cit_id', $c_value),thumb_url('crawlitemdetail',config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))),$c_value['cit_name']);
                 }
 
                 
-                if(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) < 5020868) {
-                    $label_tag[] = $this->detect_tag(element('cit_id', $c_value),config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result))),$c_value['cit_name']);
+                if(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) < 5020868) {
+                    $label_tag[] = $this->detect_tag(element('cit_id', $c_value),config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result))),$c_value['cit_name']);
                     
-                } elseif(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) > 5020868) {
+                } elseif(element('cdt_file_1',element(0,element('list',$result))) && filesize(config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))) > 5020868) {
 
 
-                    $label_tag[] = $this->detect_tag(element('cit_id', $c_value),thumb_url('crawlitemdetail',config_item('crawl_uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))),$c_value['cit_name']);
+                    $label_tag[] = $this->detect_tag(element('cit_id', $c_value),thumb_url('crawlitemdetail',config_item('uploads_dir') . '/crawlitemdetail/' . element('cdt_file_1',element(0,element('list',$result)))),$c_value['cit_name']);
                 }
 
 
@@ -3201,7 +3201,7 @@ class Crawl extends CB_Controller
             
             for ($k = 1; $k <= 10; $k++) {
                 if (isset($_FILES) && isset($_FILES['crw_file_' . $k]) && isset($_FILES['crw_file_' . $k]['name']) && $_FILES['crw_file_' . $k]['name']) {
-                    $upload_path = config_item('crawl_uploads_dir') . '/crawlitem/';
+                    $upload_path = config_item('uploads_dir') . '/crawlitem/';
                     if (is_dir($upload_path) === false) {
                         mkdir($upload_path, 0707);
                         $file = $upload_path . 'index.php';
@@ -3478,7 +3478,7 @@ class Crawl extends CB_Controller
             log_message('error', $post);
         for ($k = 1; $k <= 10; $k++) {
             if (isset($_FILES) && isset($_FILES['cdt_file_' . $k]) && isset($_FILES['cdt_file_' . $k]['name']) && $_FILES['cdt_file_' . $k]['name']) {
-                $upload_path = config_item('crawl_uploads_dir') . '/crawlitemdetail/';
+                $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
                 if (is_dir($upload_path) === false) {
                     mkdir($upload_path, 0707);
                     $file = $upload_path . 'index.php';
