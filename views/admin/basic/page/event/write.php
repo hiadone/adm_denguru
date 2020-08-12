@@ -1,6 +1,8 @@
 <div class="box">
     <div class="box-table">
         <?php
+        echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
+        echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
         echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
         $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
         echo form_open_multipart(current_full_url(), $attributes);
@@ -155,7 +157,7 @@
         </form> -->
         <div class="box-table">
             <?php
-            echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
+            
             $attributes = array('class' => 'form-inline', 'name' => 'flist', 'id' => 'flist');
             echo form_open(current_full_url(), $attributes);
             ?>
@@ -249,8 +251,7 @@
                     </table>
                 </div>
                 <div class="box-info">
-                    <?php echo element('paging', $view); ?>
-                    <div class="pull-left ml20"><?php echo admin_listnum_selectbox();?></div>
+                    
                     <?php echo $buttons; ?>
                 </div>
             <?php echo form_close(); ?>

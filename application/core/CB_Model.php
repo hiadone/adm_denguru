@@ -43,6 +43,8 @@ class CB_Model extends CI_Model
 
 	public $or_where = array();
 
+	public $where_in = array();
+
 	/* --------------------------------------------------------------
 	 * GENERIC METHODS
 	 * ------------------------------------------------------------ */
@@ -223,8 +225,8 @@ class CB_Model extends CI_Model
 			$this->db->group_end();
 		}
 
-		if ($where_in) {
-			$this->db->where_in(key($where_in),$where_in[key($where_in)]);
+		if ($this->where_in) {
+			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
 		}
 		if ($search_where) {
 			$this->db->where($search_where);
@@ -296,6 +298,9 @@ class CB_Model extends CI_Model
 		}
 		if ($like) {
 			$this->db->like($like);
+		}
+		if ($this->where_in) {
+			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
 		}
 		if ($search_like) {
 			foreach ($search_like as $item) {
@@ -438,6 +443,19 @@ class CB_Model extends CI_Model
 			$this->db->group_start();			
 			$this->db->where_in($field_key, $where);
 			$this->db->group_end();
+		}
+	}
+
+	public function set_where_in($field_key,$where = array())
+	{
+		if (empty($field_key)) {
+			return false;
+		}
+
+		if ($where && is_array($where)) {
+			
+			$this->where_in = array($field_key => $where);
+			
 		}
 	}
 }

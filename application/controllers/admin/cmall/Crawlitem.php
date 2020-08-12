@@ -643,7 +643,7 @@ class Crawlitem extends CB_Controller
             $this->load->library('aws_s3');
             for ($k = 1; $k <= 10; $k++) {
                 if (isset($_FILES) && isset($_FILES['crw_file_' . $k]) && isset($_FILES['crw_file_' . $k]['name']) && $_FILES['crw_file_' . $k]['name']) {
-                    $upload_path = config_item('uploads_dir') . '/crawlitem/';
+                    $upload_path = config_item('crawl_uploads_dir') . '/crawlitem/';
                     if (is_dir($upload_path) === false) {
                         mkdir($upload_path, 0707);
                         $file = $upload_path . 'index.php';
@@ -700,7 +700,7 @@ class Crawlitem extends CB_Controller
             $this->load->library('upload');
             if (isset($_FILES) && isset($_FILES['cde_file']) && isset($_FILES['cde_file']['name']) && is_array($_FILES['cde_file']['name'])) {
                 $filecount = count($_FILES['cde_file']['name']);
-                $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
+                $upload_path = config_item('crawl_uploads_dir') . '/crawlitemdetail/';
                 if (is_dir($upload_path) === false) {
                     mkdir($upload_path, 0707);
                     $file = $upload_path . 'index.php';
@@ -765,7 +765,7 @@ class Crawlitem extends CB_Controller
             }
             if (isset($_FILES) && isset($_FILES['cde_file_update']) && isset($_FILES['cde_file_update']['name']) && is_array($_FILES['cde_file_update']['name']) && $file_error === '') {
                 $filecount = count($_FILES['cde_file_update']['name']);
-                $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
+                $upload_path = config_item('crawl_uploads_dir') . '/crawlitemdetail/';
                 if (is_dir($upload_path) === false) {
                     mkdir($upload_path, 0707);
                     $file = $upload_path . 'index.php';
@@ -1013,7 +1013,7 @@ class Crawlitem extends CB_Controller
                 if ($this->input->post('crw_file_' . $k . '_del')) {
                     $updatedata['crw_file_' . $k] = '';
 
-                    @unlink(config_item('uploads_dir') . '/crawlitem/' . $getdata['crw_file_' . $k]);
+                    @unlink(config_item('crawl_uploads_dir') . '/crawlitem/' . $getdata['crw_file_' . $k]);
                     $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/crawlitem/' . $getdata['crw_file_' . $k]);
                 } elseif (isset($crw_file[$k]) && $crw_file[$k]) {
                     $updatedata['crw_file_' . $k] = $crw_file[$k];
@@ -1297,7 +1297,7 @@ class Crawlitem extends CB_Controller
                         for ($i=1; $i <= 10; $i++)
                         {   
                             if($getdata['crw_file_'.$i]){
-                                @unlink(config_item('uploads_dir') . '/crawlitem/' . $getdata['crw_file_'.$i]); 
+                                @unlink(config_item('crawl_uploads_dir') . '/crawlitem/' . $getdata['crw_file_'.$i]); 
                                 $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/crawlitem/' . $getdata['crw_file_'.$i]);
                             }
                         }

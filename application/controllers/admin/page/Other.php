@@ -103,7 +103,7 @@ class Other extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 if (element('oth_image', $val)) {
-                    $result['list'][$key]['thumb_url'] = thumb_url('other', element('oth_image', $val), '80');
+                    $result['list'][$key]['thumb_url'] = cdn_url('other', element('oth_image', $val));
                 }
                 if (empty($val['oth_start_date']) OR $val['oth_start_date'] === '0000-00-00') {
                     $result['list'][$key]['oth_start_date'] = '미지정';
@@ -321,6 +321,63 @@ class Other extends CB_Controller
                 $view['view']['data'] = $getdata;
             }
 
+            $this->load->model(array('Board_model','Other_model'));
+
+            /**
+             * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
+             */
+            $param =& $this->querystring;
+            
+            
+            $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Board_model->primary_key;
+            $forder = $this->input->get('forder', null, 'desc');
+            $sfield = $this->input->get('sfield', null, 'brd_name');
+            $skeyword = $this->input->get('skeyword', null, '');
+
+            
+            
+            
+            $other_rel = $where_in =array();
+            $other_rel = $this->Other_model->get_other_rel($pid);
+
+            foreach($other_rel as $othval)
+                array_push($where_in,element('brd_id',$othval));
+
+
+            $this->Board_model->group_where_in('brd_id',$where_in);
+            /**
+             * 게시판 목록에 필요한 정보를 가져옵니다.
+             */
+            $this->Board_model->allow_search_field = array('brd_name'); // 검색이 가능한 필드
+            // $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+            
+            if(empty($where_in))
+                $cresult = array();
+            else 
+                $cresult = $this->Board_model->get_list('','', '', '', $findex, $forder, $sfield, $skeyword);
+
+            
+
+            $list_num = element('total_rows', $cresult) ? element('total_rows', $cresult) : 0;
+            if (element('list', $cresult)) {
+                foreach (element('list', $cresult) as $key => $val) {
+                    // $cresult['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
+                    
+                    // $cresult['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+                    
+                    
+
+                
+
+
+            
+                    
+
+                    $cresult['list'][$key]['num'] = $list_num--;
+                }
+            }
+
+            $view['view']['cdata'] = $cresult;
             /**
              * primary key 정보를 저장합니다
              */
@@ -468,6 +525,47 @@ class Other extends CB_Controller
         );
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
+        redirect($redirecturl);
+    }
+
+    public function other_in_listdelete($oth_id)
+    {
+        
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_admin_cmall_cmallitem_listupdate';
+        $this->load->event($eventname);
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('before', $eventname);
+
+        if (empty($oth_id)) {
+            show_404();
+        }
+        /**
+         * 체크한 게시물의 업데이트를 실행합니다
+         */
+        
+        $this->load->model(array('Other_rel_model'));
+
+        if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+            
+            $this->Other_rel_model->delete_other($oth_id, $this->input->post('chk'));    
+            
+        }
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('after', $eventname);
+
+        /**
+         * 업데이트가 끝난 후 목록페이지로 이동합니다
+         */
+        $this->session->set_flashdata(
+            'message',
+            '정상적으로 삭제 되었습니다'
+        );
+        $param =& $this->querystring;
+        $redirecturl = admin_url($this->pagedir.'/write/' . $oth_id. '?' . $param->output());
+
         redirect($redirecturl);
     }
 }

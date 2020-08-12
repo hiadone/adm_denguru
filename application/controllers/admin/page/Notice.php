@@ -196,17 +196,17 @@ class Notice extends CB_Controller
         $config = array(
             array(
                 'field' => 'noti_title',
-                'label' => '팝업명',
+                'label' => '공지명',
                 'rules' => 'trim|required',
             ),
             array(
                 'field' => 'noti_start_date',
-                'label' => '팝업시작일',
+                'label' => '공지시작일',
                 'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             array(
                 'field' => 'noti_end_date',
-                'label' => '팝업종료일',
+                'label' => '공지종료일',
                 'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             // array(
@@ -251,7 +251,7 @@ class Notice extends CB_Controller
             // ),
             array(
                 'field' => 'noti_activated',
-                'label' => '팝업활성화',
+                'label' => '공지활성화',
                 'rules' => 'trim|required|numeric',
             ),
             array(
@@ -261,23 +261,81 @@ class Notice extends CB_Controller
             ),
             array(
                 'field' => 'noti_content',
-                'label' => '팝업내용',
+                'label' => '공지내용',
                 'rules' => 'trim|required',
             ),
         );
 
         $this->form_validation->set_rules($config);
+        $form_validation = $this->form_validation->run();
+        $file_error = '';
+        $updatefile = '';
+        $pfi_originname = '';
+        
+        $is_image=0;
 
+      
+        if ($form_validation) {
+            $this->load->library('upload');
+            // $this->load->library('aws_s3');
+            if (isset($_FILES) && isset($_FILES['noti_file']) && isset($_FILES['noti_file']['name']) && $_FILES['noti_file']['name']) {
+                $upload_path = config_item('uploads_dir') . '/notice/';
+                
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('Y') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('m') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
 
+                $uploadconfig = array();
+                $uploadconfig['upload_path'] = $upload_path;
+                $uploadconfig['allowed_types'] = '*';
+                $uploadconfig['encrypt_name'] = true;
+
+                $this->upload->initialize($uploadconfig);
+
+                if ($this->upload->do_upload('noti_file')) {
+                    $file = $this->upload->data();
+                    $updatefile = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $file);
+                    $is_image = element('is_image', $file);
+                    $pfi_originname = element('orig_name', $file);
+                    // $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+                } else {
+                    $file_error = $this->upload->display_errors();
+                }
+            }
+        }
+        
         /**
          * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
          * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
          */
-        if ($this->form_validation->run() === false) {
+        if ($form_validation === false OR $file_error !== '') {
 
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
-
+            $view['view']['message'] = $file_error;
             if ($pid) {
                 if (empty($getdata['noti_start_date']) OR $getdata['noti_start_date'] === '0000-00-00') {
                     $getdata['noti_start_date'] = '';
@@ -345,6 +403,22 @@ class Notice extends CB_Controller
                 'noti_order' => $noti_order,
             );
             
+            if ($this->input->post('noti_file_del')) {
+                $updatedata['noti_file'] = '';
+            } elseif ($updatefile) {
+                $updatedata['noti_file'] = $updatefile;
+                $updatedata['is_image'] = $is_image;
+                $updatedata['pfi_originname'] = $pfi_originname;
+
+                
+            }
+            if (element('noti_file', $getdata) && ($this->input->post('noti_file_del') OR $updatephoto)) {
+                // 기존 파일 삭제
+                @unlink(config_item('uploads_dir') . '/notice/' . element('noti_file', $getdata));
+
+                // $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/notice/' . element('noti_file', $getdata));
+            }
+
             /**
              * 게시물을 수정하는 경우입니다
              */
@@ -401,7 +475,17 @@ class Notice extends CB_Controller
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
-                    $this->{$this->modelname}->delete($val);
+                    $getdata = $this->{$this->modelname}->get_one($val);
+                    
+                    if($this->{$this->modelname}->delete($val)){
+                        if (element('noti_file', $getdata)) {
+                            // 기존 파일 삭제
+                            @unlink(config_item('uploads_dir') . '/notice/' . element('noti_file', $getdata));
+
+                            
+                        }
+                    }
+
                 }
             }
         }

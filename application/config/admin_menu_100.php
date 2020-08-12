@@ -24,6 +24,6 @@ $config['admin_page_menu']['page'] =
 			'bannerclick'			=> array('배너클릭로그', ''),
 			'notice'                          => array('공지관리', ''),
 			'event'                          => array('이벤트관리', ''),
-			'other'					=> array('기타관리', ''),
+			'theme'					=> array('테마관리', ''),
 		),
 	);

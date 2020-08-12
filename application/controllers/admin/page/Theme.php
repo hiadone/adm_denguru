@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Event class
+ * Theme class
  *
  * Copyright (c) CIBoard <www.ciboard.co.kr>
  *
@@ -10,31 +10,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 /**
- * 관리자>페이지설정>이벤트관리 controller 입니다.
+ * 관리자>페이지설정>팝업관리 controller 입니다.
  */
-class Event extends CB_Controller
+class Theme extends CB_Controller
 {
 
     /**
      * 관리자 페이지 상의 현재 디렉토리입니다
      * 페이지 이동시 필요한 정보입니다
      */
-    public $pagedir = 'page/event';
+    public $pagedir = 'page/theme';
 
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Event','Event_rel','Cmall_item','Cmall_category');
+    protected $models = array('Theme');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
      */
-    protected $modelname = 'Event_model';
+    protected $modelname = 'Theme_model';
 
     /**
      * 헬퍼를 로딩합니다
      */
-    protected $helpers = array('form', 'array', 'dhtml_editor');
+    protected $helpers = array('form', 'array');
 
     function __construct()
     {
@@ -52,7 +52,7 @@ class Event extends CB_Controller
     public function index()
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_event_index';
+        $eventname = 'event_admin_page_theme_index';
         $this->load->event($eventname);
 
         $view = array();
@@ -67,11 +67,12 @@ class Event extends CB_Controller
         $param =& $this->querystring;
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
         $view['view']['sort'] = array(
-            'eve_title' => $param->sort('eve_title', 'asc'),
-            'eve_device' => $param->sort('eve_device', 'asc'),
-            'eve_start_date' => $param->sort('eve_start_date', 'asc'),
-            'eve_end_date' => $param->sort('eve_end_date', 'asc'),
-            'eve_activated' => $param->sort('eve_activated', 'asc'),
+            'the_id' => $param->sort('the_id', 'asc'),
+            'the_title' => $param->sort('the_title', 'asc'),
+            'the_url' => $param->sort('the_url', 'asc'),
+            'the_hit' => $param->sort('the_hit', 'asc'),
+            'the_order' => $param->sort('the_order', 'asc'),
+            'the_activated' => $param->sort('the_activated', 'asc'),
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
         $forder = $this->input->get('forder', null, 'desc');
@@ -84,16 +85,16 @@ class Event extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{$this->modelname}->allow_search_field = array('eve_id', 'eve_title', 'eve_content'); // 검색이 가능한 필드
-        $this->{$this->modelname}->search_field_equal = array('eve_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{$this->modelname}->allow_order_field = array('eve_title', 'eve_device', 'eve_start_date', 'eve_end_date', 'eve_activated'); // 정렬이 가능한 필드
+        $this->{$this->modelname}->allow_search_field = array('the_id', 'the_title', 'the_url'); // 검색이 가능한 필드
+        $this->{$this->modelname}->search_field_equal = array('the_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+        $this->{$this->modelname}->allow_order_field = array('the_id', 'the_start_date', 'the_end_date', 'the_title', 'the_url', 'the_hit', 'the_order', 'the_activated'); // 정렬이 가능한 필드
 
         $where = array();
-        if ($this->input->get('eve_activated') === 'Y') {
-            $where['eve_activated'] = '1';
+        if ($this->input->get('the_activated') === 'Y') {
+            $where['the_activated'] = '1';
         }
-        if ($this->input->get('eve_activated') === 'N') {
-            $where['eve_activated'] = '0';
+        if ($this->input->get('the_activated') === 'N') {
+            $where['the_activated'] = '0';
         }
 
         $result = $this->{$this->modelname}
@@ -101,14 +102,14 @@ class Event extends CB_Controller
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
-                if (element('eve_image', $val)) {
-                    $result['list'][$key]['thumb_url'] = thumb_url('event', element('eve_image', $val), '80');
+                if (element('the_image', $val)) {
+                    $result['list'][$key]['thumb_url'] = cdn_url('theme', element('the_image', $val));
                 }
-                if (empty($val['eve_start_date']) OR $val['eve_start_date'] === '0000-00-00') {
-                    $result['list'][$key]['eve_start_date'] = '미지정';
+                if (empty($val['the_start_date']) OR $val['the_start_date'] === '0000-00-00') {
+                    $result['list'][$key]['the_start_date'] = '미지정';
                 }
-                if (empty($val['eve_end_date']) OR $val['eve_end_date'] === '0000-00-00') {
-                    $result['list'][$key]['eve_end_date'] = '미지정';
+                if (empty($val['the_end_date']) OR $val['the_end_date'] === '0000-00-00') {
+                    $result['list'][$key]['the_end_date'] = '미지정';
                 }
                 $result['list'][$key]['num'] = $list_num--;
             }
@@ -134,7 +135,7 @@ class Event extends CB_Controller
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
-        $search_option = array('eve_title' => '제목', 'eve_content' => '내용');
+        $search_option = array('the_title' => '이미지 설명', 'the_url' => '이미지 URL');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);
@@ -160,7 +161,7 @@ class Event extends CB_Controller
     public function write($pid = 0)
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_event_write';
+        $eventname = 'event_admin_page_theme_write';
         $this->load->event($eventname);
 
         $view = array();
@@ -180,6 +181,7 @@ class Event extends CB_Controller
         }
         $primary_key = $this->{$this->modelname}->primary_key;
 
+
         /**
          * 수정 페이지일 경우 기존 데이터를 가져옵니다
          */
@@ -187,6 +189,8 @@ class Event extends CB_Controller
         if ($pid) {
             $getdata = $this->{$this->modelname}->get_one($pid);
         }
+
+        
 
         /**
          * Validation 라이브러리를 가져옵니다
@@ -198,76 +202,47 @@ class Event extends CB_Controller
          */
         $config = array(
             array(
-                'field' => 'eve_title',
-                'label' => '이벤트명',
+                'field' => 'the_start_date',
+                'label' => '배너시작일',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
+            ),
+            array(
+                'field' => 'the_end_date',
+                'label' => '배너종료일',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
+            ),
+            array(
+                'field' => 'the_title',
+                'label' => '제목',
                 'rules' => 'trim|required',
             ),
             array(
-                'field' => 'eve_start_date',
-                'label' => '이벤트시작일',
-                'rules' => 'trim|alpha_dash|exact_length[10]',
-            ),
-            array(
-                'field' => 'eve_end_date',
-                'label' => '이벤트종료일',
-                'rules' => 'trim|alpha_dash|exact_length[10]',
+                'field' => 'the_url',
+                'label' => 'URL',
+                'rules' => 'trim',
             ),
             // array(
-            //     'field' => 'eve_is_center',
-            //     'label' => '이벤트정렬',
-            //     'rules' => 'trim|required|numeric',
+            //     'field' => 'the_width',
+            //     'label' => '이미지 가로값',
+            //     'rules' => 'trim|required|numeric|is_natural',
             // ),
             // array(
-            //     'field' => 'eve_left',
-            //     'label' => '좌측위치',
-            //     'rules' => 'trim|numeric',
-            // ),
-            // array(
-            //     'field' => 'eve_top',
-            //     'label' => '상단위치',
-            //     'rules' => 'trim|required|numeric',
-            // ),
-            // array(
-            //     'field' => 'eve_width',
-            //     'label' => '이벤트가로길이',
-            //     'rules' => 'trim|required|numeric',
-            // ),
-            // array(
-            //     'field' => 'eve_height',
-            //     'label' => '이벤트세로길이',
-            //     'rules' => 'trim|required|numeric',
-            // ),
-            // array(
-            //     'field' => 'eve_device',
-            //     'label' => '이벤트표시기기',
-            //     'rules' => 'trim|required',
-            // ),
-            // array(
-            //     'field' => 'eve_page',
-            //     'label' => '이벤트이뜨는페이지',
-            //     'rules' => 'trim|required|numeric',
-            // ),
-            // array(
-            //     'field' => 'eve_disable_hours',
-            //     'label' => '시간',
-            //     'rules' => 'trim|required|numeric',
+            //     'field' => 'the_height',
+            //     'label' => '이미지 세로값',
+            //     'rules' => 'trim|required|numeric|is_natural',
             // ),
             array(
-                'field' => 'eve_activated',
-                'label' => '이벤트활성화',
-                'rules' => 'trim|required|numeric',
-            ),
-            array(
-                'field' => 'eve_order',
+                'field' => 'the_order',
                 'label' => '정렬순서',
-                'rules' => 'trim|required|numeric|is_natural',
+                'rules' => 'trim|numeric|is_natural',
             ),
             array(
-                'field' => 'eve_content',
-                'label' => '이벤트내용',
-                'rules' => 'trim|required',
+                'field' => 'the_activated',
+                'label' => '배너활성화',
+                'rules' => 'trim',
             ),
         );
+
 
         $this->form_validation->set_rules($config);
         $form_validation = $this->form_validation->run();
@@ -277,9 +252,8 @@ class Event extends CB_Controller
         if ($form_validation) {
             $this->load->library('upload');
             $this->load->library('aws_s3');
-            if (isset($_FILES) && isset($_FILES['eve_image']) && isset($_FILES['eve_image']['name']) && $_FILES['eve_image']['name']) {
-                
-                $upload_path = config_item('uploads_dir') . '/event/';
+            if (isset($_FILES) && isset($_FILES['the_image']) && isset($_FILES['the_image']['name']) && $_FILES['the_image']['name']) {
+                $upload_path = config_item('uploads_dir') . '/theme/';
                 if (is_dir($upload_path) === false) {
                     mkdir($upload_path, 0707);
                     $file = $upload_path . 'index.php';
@@ -310,23 +284,24 @@ class Event extends CB_Controller
                 $uploadconfig = array();
                 $uploadconfig['upload_path'] = $upload_path;
                 $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
-                $uploadconfig['max_size'] = '10000';
+                $uploadconfig['max_size'] = '2000';
                 $uploadconfig['max_width'] = '1000';
-                $uploadconfig['max_height'] = '10000';
+                $uploadconfig['max_height'] = '1000';
                 $uploadconfig['encrypt_name'] = true;
 
                 $this->upload->initialize($uploadconfig);
 
-                if ($this->upload->do_upload('eve_image')) {
+                if ($this->upload->do_upload('the_image')) {
                     $img = $this->upload->data();
                     $updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
 
-                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
+                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
                 } else {
                     $file_error = $this->upload->display_errors();
                 }
             }
         }
+
 
         /**
          * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
@@ -336,79 +311,77 @@ class Event extends CB_Controller
 
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
-            $view['view']['message'] = $file_error; 
+            $view['view']['message'] = $file_error;
 
             if ($pid) {
-                if (empty($getdata['eve_start_date']) OR $getdata['eve_start_date'] === '0000-00-00') {
-                    $getdata['eve_start_date'] = '';
+                
+                if (empty($getdata['the_start_date']) OR $getdata['the_start_date'] === '0000-00-00') {
+                    $getdata['the_start_date'] = '';
                 }
-                if (empty($getdata['eve_end_date']) OR $getdata['eve_end_date'] === '0000-00-00') {
-                    $getdata['eve_end_date'] = '';
+                if (empty($getdata['the_end_date']) OR $getdata['the_end_date'] === '0000-00-00') {
+                    $getdata['the_end_date'] = '';
                 }
                 $view['view']['data'] = $getdata;
             }
 
+
+            $this->load->model(array('Board_model','Theme_model'));
+
+            /**
+             * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
+             */
             $param =& $this->querystring;
-            $findex = $this->input->get('findex') ? $this->input->get('findex') : 'cit_id';
+            
+            
+            $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Board_model->primary_key;
             $forder = $this->input->get('forder', null, 'desc');
-            $sfield = $this->input->get('sfield', null, '');
+            $sfield = $this->input->get('sfield', null, 'brd_name');
             $skeyword = $this->input->get('skeyword', null, '');
 
-            $event_rel = $where_in = array();
-            $event_rel = $this->Event_model->get_event($pid);
-            if($event_rel)
-            foreach($event_rel as $eveval)
-                array_push($where_in,element('cit_id',$eveval));
+            
+            
+            
+            $theme_rel = $where_in =array();
+            $theme_rel = $this->Theme_model->get_theme_rel($pid);
+            if($theme_rel)
+            foreach($theme_rel as $othval)
+                array_push($where_in,element('brd_id',$othval));
 
-            $this->Cmall_item_model->set_where_in('cit_id',$where_in);
-            $this->Cmall_item_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
-            $this->Cmall_item_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-            $this->Cmall_item_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+
+            $this->Board_model->set_where_in('brd_id',$where_in);
+            /**
+             * 게시판 목록에 필요한 정보를 가져옵니다.
+             */
+            $this->Board_model->allow_search_field = array('brd_name'); // 검색이 가능한 필드
+            // $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+            
             if(empty($where_in))
                 $cresult = array();
             else 
-                $cresult = $this->Cmall_item_model->get_admin_list('','', '', '', $findex, $forder, $sfield, $skeyword);
+                $cresult = $this->Board_model->get_list('','', '', '', $findex, $forder, $sfield, $skeyword);
+
+            
 
             $list_num = element('total_rows', $cresult) ? element('total_rows', $cresult) : 0;
             if (element('list', $cresult)) {
-            foreach (element('list', $cresult) as $key => $val) {
-                // $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
-                $cresult['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
-                // $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
-                
-                
-                $cmall_wishlist_where = array(
-                    'cit_id' => element('cit_id', $val),
+                foreach (element('list', $cresult) as $key => $val) {
+                    // $cresult['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
                     
-                );
-                
+                    // $cresult['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+                    
+                    
 
                 
 
-                if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
-                    $cresult['list'][$key]['warning'] = 1 ; 
-                else 
-                    $cresult['list'][$key]['warning'] = '' ; 
 
+            
+                    
 
-                $cresult['list'][$key]['display_tag'] = '';
-                $crawlwhere = array(
-                    'cit_id' => element('cit_id', $val),
-                );
-                
-
-                $cresult['list'][$key]['display_label'] = '';
-                $crawlwhere = array(
-                    'cit_id' => element('cit_id', $val),
-                );
-                
-
-                $cresult['list'][$key]['num'] = $list_num--;
+                    $cresult['list'][$key]['num'] = $list_num--;
                 }
             }
 
             $view['view']['cdata'] = $cresult;
-
             /**
              * primary key 정보를 저장합니다
              */
@@ -417,7 +390,7 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 
-            $view['view']['list_delete_url'] = admin_url($this->pagedir.'/event_in_listdelete/'.$pid.'?' . $param->output());
+            $view['view']['list_delete_url'] = admin_url($this->pagedir.'/theme_in_listdelete/'.$pid.'?' . $param->output());
 
             /**
              * 어드민 레이아웃을 정의합니다
@@ -437,54 +410,45 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-            $eve_start_date = $this->input->post('eve_start_date') ? $this->input->post('eve_start_date') : null;
-            $eve_end_date = $this->input->post('eve_end_date') ? $this->input->post('eve_end_date') : null;
-            $eve_is_center = $this->input->post('eve_is_center') ? $this->input->post('eve_is_center') : 0;
-            $eve_left = $this->input->post('eve_left') ? $this->input->post('eve_left') : 0;
-            $eve_top = $this->input->post('eve_top') ? $this->input->post('eve_top') : 0;
-            $eve_width = $this->input->post('eve_width') ? $this->input->post('eve_width') : 0;
-            $eve_height = $this->input->post('eve_height') ? $this->input->post('eve_height') : 0;
-            $content_type = $this->cbconfig->item('use_document_dhtml') ? 1 : 0;
-            $eve_page = $this->input->post('eve_page') ? $this->input->post('eve_page') : 0;
-            $eve_disable_hours = $this->input->post('eve_disable_hours') ? $this->input->post('eve_disable_hours') : 0;
-            $eve_activated = $this->input->post('eve_activated') ? $this->input->post('eve_activated') : 0;
-            $eve_order = $this->input->post('eve_order') ? $this->input->post('eve_order') : 0;
+            $content_type = $this->cbconfig->item('use_popup_dhtml') ? 1 : 0;
+
+            $the_start_date = $this->input->post('the_start_date');
+            if ( ! $the_start_date) $the_start_date = null;
+            $the_end_date = $this->input->post('the_end_date');
+            if ( ! $the_end_date) $the_end_date = null;
+            $the_width = $this->input->post('the_width') ? $this->input->post('the_width') : 0;
+            $the_height = $this->input->post('the_height') ? $this->input->post('the_height') : 0;
+            $the_order = $this->input->post('the_order') ? $this->input->post('the_order') : 0;
+            $the_activated = $this->input->post('the_activated') ? 1 : 0;
 
             $updatedata = array(
-                'eve_title' => $this->input->post('eve_title', null, ''),
-                'eve_start_date' => $eve_start_date,
-                'eve_end_date' => $eve_end_date,
-                'eve_is_center' => $eve_is_center,
-                'eve_left' => $eve_left,
-                'eve_top' => $eve_top,
-                'eve_width' => $eve_width,
-                'eve_height' => $eve_height,
-                'eve_device' => $this->input->post('eve_device', null, ''),
-                'eve_page' => $eve_page,
-                'eve_disable_hours' => $eve_disable_hours,
-                'eve_activated' => $eve_activated,
-                'eve_content' => $this->input->post('eve_content', null, ''),
-                'eve_content_html_type' => $content_type,
-                'eve_order' => $eve_order,
+                'the_start_date' => $the_start_date,
+                'the_end_date' => $the_end_date,
+                'the_title' => $this->input->post('the_title', null, ''),
+                'the_url' => $this->input->post('the_url', null, ''),
+                'the_width' => $the_width,
+                'the_height' => $the_height,
+                'the_order' => $the_order,
+                'the_activated' => $the_activated,
             );
-
-            if ($this->input->post('eve_image_del')) {
-                $updatedata['eve_image'] = '';
+            if ($this->input->post('the_image_del')) {
+                $updatedata['the_image'] = '';
             } elseif ($updatephoto) {
-                $updatedata['eve_image'] = $updatephoto;
+                $updatedata['the_image'] = $updatephoto;
             }
-            if (element('eve_image', $getdata) && ($this->input->post('eve_image_del') OR $updatephoto)) {
+            if (element('the_image', $getdata) && ($this->input->post('the_image_del') OR $updatephoto)) {
                 // 기존 파일 삭제
-                @unlink(config_item('uploads_dir') . '/event/' . element('eve_image', $getdata));
+                @unlink(config_item('uploads_dir') . '/theme/' . element('the_image', $getdata));
 
-                $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/event/' . element('eve_image', $getdata));
+                $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/theme/' . element('the_image', $getdata));
             }
-
 
             /**
              * 게시물을 수정하는 경우입니다
              */
             if ($this->input->post($primary_key)) {
+                $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-random-' . cdate('Y-m-d'));
+                $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-order-' . cdate('Y-m-d'));
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -494,8 +458,7 @@ class Event extends CB_Controller
                 /**
                  * 게시물을 새로 입력하는 경우입니다
                  */
-                $updatedata['eve_datetime'] = cdate('Y-m-d H:i:s');
-                $updatedata['eve_ip'] = $this->input->ip_address();
+                $updatedata['the_datetime'] = cdate('Y-m-d H:i:s');                
                 $updatedata['mem_id'] = $this->member->item('mem_id');
                 $this->{$this->modelname}->insert($updatedata);
                 $this->session->set_flashdata(
@@ -503,8 +466,6 @@ class Event extends CB_Controller
                     '정상적으로 입력되었습니다'
                 );
             }
-            //오늘 생성된 이벤트 캐시를 삭제합니다.
-            $this->cache->delete('event/event-info-' . cdate('Y-m-d'));
 
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
@@ -519,13 +480,16 @@ class Event extends CB_Controller
         }
     }
 
+    
+
+
     /**
      * 목록 페이지에서 선택삭제를 하는 경우 실행되는 메소드입니다
      */
     public function listdelete()
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_event_listdelete';
+        $eventname = 'event_admin_page_theme_listdelete';
         $this->load->event($eventname);
 
         // 이벤트가 존재하면 실행합니다
@@ -538,20 +502,22 @@ class Event extends CB_Controller
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
                     $getdata = $this->{$this->modelname}->get_one($val);
+                    $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-random-' . cdate('Y-m-d'));
+                    $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-order-' . cdate('Y-m-d'));
+                    
                     if($this->{$this->modelname}->delete($val)){
-                        if (element('ban_image', $getdata)) {
+                        if (element('the_image', $getdata)) {
                             // 기존 파일 삭제
-                            @unlink(config_item('uploads_dir') . '/event/' . element('eve_image', $getdata));
+                            @unlink(config_item('uploads_dir') . '/theme/' . element('the_image', $getdata));
 
-                            $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/event/' . element('eve_image', $getdata));
+                            $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/theme/' . element('the_image', $getdata));
                         }
                     }
+
+                    
                 }
             }
         }
-
-        //오늘 생성된 이벤트 캐시를 삭제합니다.
-        $this->cache->delete('event/event-info-' . cdate('Y-m-d'));
 
         // 이벤트가 존재하면 실행합니다
         Events::trigger('after', $eventname);
@@ -565,11 +531,10 @@ class Event extends CB_Controller
         );
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
-
         redirect($redirecturl);
     }
 
-    public function event_in_listdelete($eve_id)
+    public function theme_in_listdelete($the_id)
     {
         
         // 이벤트 라이브러리를 로딩합니다
@@ -579,18 +544,18 @@ class Event extends CB_Controller
         // 이벤트가 존재하면 실행합니다
         Events::trigger('before', $eventname);
 
-        if (empty($eve_id)) {
+        if (empty($the_id)) {
             show_404();
         }
         /**
          * 체크한 게시물의 업데이트를 실행합니다
          */
         
-        $this->load->model(array('Event_rel_model'));
+        $this->load->model(array('Theme_rel_model'));
 
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
             
-            $this->Event_rel_model->delete_event($eve_id, $this->input->post('chk'));    
+            $this->Theme_rel_model->delete_theme($the_id, $this->input->post('chk'));    
             
         }
 
@@ -605,7 +570,7 @@ class Event extends CB_Controller
             '정상적으로 삭제 되었습니다'
         );
         $param =& $this->querystring;
-        $redirecturl = admin_url($this->pagedir.'/write/' . $eve_id. '?' . $param->output());
+        $redirecturl = admin_url($this->pagedir.'/write/' . $the_id. '?' . $param->output());
 
         redirect($redirecturl);
     }

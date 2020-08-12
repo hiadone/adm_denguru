@@ -1,11 +1,29 @@
 <div class="box">
     <div class="box-table">
         <?php
+        echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
         echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
         $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
-        echo form_open(current_full_url(), $attributes);
+        echo form_open_multipart(current_full_url(), $attributes);
         ?>
             <input type="hidden" name="<?php echo element('primary_key', $view); ?>"    value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
+            <div class="form-group">
+                <label class="col-sm-2 control-label">file 업로드</label>
+                <div class="col-sm-10">
+                    <?php
+                    if (element('noti_file', element('data', $view))) {
+                    ?>
+                        <img src="<?php echo thumb_url('notice',element('noti_file', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+                        <label for="noti_file_del">
+                            <input type="checkbox" name="noti_file_del" id="noti_file_del" value="1" <?php echo set_checkbox('noti_file_del', '1'); ?> /> 삭제
+                        </label>
+                    <?php
+                    }
+                    ?>
+                    <input type="file" name="noti_file" id="noti_file" />
+                    
+                </div>
+            </div>
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">제목</label>

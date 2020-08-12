@@ -1928,7 +1928,7 @@ class Helptool extends CB_Controller
 				// $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
 				// $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
-				
+				if($event_rel)
 				foreach($event_rel as $eveval){
 
 					if(element('cit_id',$val) === 	element('cit_id',$eveval)){
@@ -2103,6 +2103,220 @@ class Helptool extends CB_Controller
 		);
 		$param =& $this->querystring;
 		$redirecturl = site_url('helptool/event_in_cmall_item/' . $eve_id. '?' . $param->output());
+
+		redirect($redirecturl);
+	}
+
+
+	public function theme_in_store($the_id = 0)
+	{
+
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'theme_admin_cmall_cmallitem_index';
+		$this->load->event($eventname);
+
+		if (empty($the_id)) {
+			show_404();
+		}
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Board_model','Theme_model'));
+
+		/**
+		 * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
+		 */
+		$param =& $this->querystring;
+		$page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
+		
+		$findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Board_model->primary_key;
+		$forder = $this->input->get('forder', null, 'desc');
+		$sfield = $this->input->get('sfield', null, 'brd_name');
+		$skeyword = $this->input->get('skeyword', null, '');
+
+		
+		
+		$per_page = admin_listnum();
+		$offset = ($page - 1) * $per_page;
+		$theme_rel = array();
+		$theme_rel = $this->Theme_model->get_theme_rel($the_id);
+
+
+		$where = array(
+            'brd_blind' => 0,
+        );
+		/**
+		 * 게시판 목록에 필요한 정보를 가져옵니다.
+		 */
+		$this->Board_model->allow_search_field = array('brd_name'); // 검색이 가능한 필드
+		// $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		
+		$result = $this->Board_model
+			->get_list('','', $where, '', $findex, $forder, $sfield, $skeyword);
+
+		$list_num = $result['total_rows'];
+		if (element('list', $result)) {
+			foreach (element('list', $result) as $key => $val) {
+				// $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
+				
+				// $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+				if($theme_rel)
+				foreach($theme_rel as $othval){
+
+					if(element('brd_id',$val) === 	element('brd_id',$othval)){
+						$result['list'][$key]['checked'] =  1;
+
+						break;
+					}
+				}
+
+			
+
+
+		
+				
+
+				$result['list'][$key]['num'] = $list_num--;
+			}
+		}
+
+		$view['view']['data'] = $result;
+
+		/**
+		 * primary key 정보를 저장합니다
+		 */
+		$view['view']['primary_key'] = $this->Board_model->primary_key;
+
+		/**
+		 * 페이지네이션을 생성합니다
+		 */
+		
+		// $config['base_url'] = site_url('helptool/theme_in_store/' . $the_id) . '?' . $param->replace('page');
+		// $config['total_rows'] = $result['total_rows'];
+		// $config['per_page'] = $per_page;
+		// $this->pagination->initialize($config);
+		// $view['view']['paging'] = $this->pagination->create_links();
+		// $view['view']['page'] = $page;
+
+
+
+		/**
+		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
+		 */
+		$search_option = array( 'brd_name' => '스토어명');
+		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
+		$view['view']['search_option'] = search_option($search_option, $sfield);
+		$view['view']['listall_url'] = site_url('helptool/theme_in_store/' . $the_id);
+		$view['view']['list_update_url'] = site_url('helptool/theme_in_listupdate/'.$the_id.'?' . $param->output());
+		$view['view']['list_delete_url'] = site_url('helptool/theme_in_listdelete/'.$the_id.'?' . $param->output());
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+		/**
+		 * 어드민 레이아웃을 정의합니다
+		 */
+		
+		$layoutconfig = array(
+			'path' => 'helptool',
+			'layout' => 'layout_popup',
+			'skin' => 'theme_in_store',
+			'layout_dir' => $this->cbconfig->item('layout_helptool'),
+			'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+			'skin_dir' => $this->cbconfig->item('skin_helptool'),
+			'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+			
+		);
+
+		
+		$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+		$this->data = $view;
+		$this->layout = element('layout_skin_file', element('layout', $view));
+		$this->view = element('view_skin_file', element('layout', $view));
+		
+	}
+
+	public function theme_in_listupdate($the_id)
+	{
+		
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'theme_admin_cmall_cmallitem_listupdate';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		if (empty($the_id)) {
+			show_404();
+		}
+		/**
+		 * 체크한 게시물의 업데이트를 실행합니다
+		 */
+		
+		$this->load->model(array('Theme_rel_model'));
+
+		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+			
+			$this->Theme_rel_model->save_theme($the_id, $this->input->post('chk'));    
+			
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 업데이트가 끝난 후 목록페이지로 이동합니다
+		 */
+		$this->session->set_flashdata(
+			'message',
+			'정상적으로 추가 되었습니다'
+		);
+		$param =& $this->querystring;
+		$redirecturl = site_url('helptool/theme_in_store/' . $the_id. '?' . $param->output());
+
+		redirect($redirecturl);
+	}
+
+	public function theme_in_listdelete($the_id)
+	{
+		
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'theme_admin_cmall_cmallitem_listupdate';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		if (empty($the_id)) {
+			show_404();
+		}
+		/**
+		 * 체크한 게시물의 업데이트를 실행합니다
+		 */
+		
+		$this->load->model(array('Theme_rel_model'));
+
+		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+			
+			$this->Theme_rel_model->delete_theme($the_id, $this->input->post('chk'));    
+			
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 업데이트가 끝난 후 목록페이지로 이동합니다
+		 */
+		$this->session->set_flashdata(
+			'message',
+			'정상적으로 삭제 되었습니다'
+		);
+		$param =& $this->querystring;
+		$redirecturl = site_url('helptool/theme_in_store/' . $the_id. '?' . $param->output());
 
 		redirect($redirecturl);
 	}

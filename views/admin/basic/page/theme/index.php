@@ -19,9 +19,9 @@
 				ob_end_flush();
 				?>
 				<div class="btn-group btn-group-sm pull-right" role="group">
-					<a href="?" class="btn btn-sm <?php echo ($this->input->get('oth_activated') !== 'Y' && $this->input->get('oth_activated') !== 'N') ? 'btn-success' : 'btn-default'; ?>">전체</a>
-					<a href="?oth_activated=Y" class="btn btn-sm <?php echo ($this->input->get('oth_activated') === 'Y') ? 'btn-success' : 'btn-default'; ?>">활성</a>
-					<a href="?oth_activated=N" class="btn btn-sm <?php echo ($this->input->get('oth_activated') === 'N') ? 'btn-success' : 'btn-default'; ?>">비활성</a>
+					<a href="?" class="btn btn-sm <?php echo ($this->input->get('the_activated') !== 'Y' && $this->input->get('the_activated') !== 'N') ? 'btn-success' : 'btn-default'; ?>">전체</a>
+					<a href="?the_activated=Y" class="btn btn-sm <?php echo ($this->input->get('the_activated') === 'Y') ? 'btn-success' : 'btn-default'; ?>">활성</a>
+					<a href="?the_activated=N" class="btn btn-sm <?php echo ($this->input->get('the_activated') === 'N') ? 'btn-success' : 'btn-default'; ?>">비활성</a>
 				</div>
 			</div>
 			<div class="row">전체 : <?php echo element('total_rows', element('data', $view), 0); ?>건</div>
@@ -29,16 +29,16 @@
 				<table class="table table-hover table-striped table-bordered">
 					<thead>
 						<tr>
-							<th><a href="<?php echo element('oth_id', element('sort', $view)); ?>">번호</a></th>
+							<th><a href="<?php echo element('the_id', element('sort', $view)); ?>">번호</a></th>
 							<th>이미지</th>
-							<th><a href="<?php echo element('oth_title', element('sort', $view)); ?>">제목</a></th>
-							<th><a href="<?php echo element('oth_url', element('sort', $view)); ?>">URL</a></th>
+							<th><a href="<?php echo element('the_title', element('sort', $view)); ?>">제목</a></th>
+							<th><a href="<?php echo element('the_url', element('sort', $view)); ?>">URL</a></th>
 							
-							<th><a href="<?php echo element('oth_start_date', element('sort', $view)); ?>">시작일시</a></th>
-							<th><a href="<?php echo element('oth_end_date', element('sort', $view)); ?>">종료일시</a></th>
-							<th><a href="<?php echo element('oth_hit', element('sort', $view)); ?>">클릭수</a></th>
-							<th><a href="<?php echo element('oth_order', element('sort', $view)); ?>">정렬순서</a></th>
-							<th><a href="<?php echo element('oth_activated', element('sort', $view)); ?>">활성여부</a></th>
+							<th><a href="<?php echo element('the_start_date', element('sort', $view)); ?>">시작일시</a></th>
+							<th><a href="<?php echo element('the_end_date', element('sort', $view)); ?>">종료일시</a></th>
+							<th><a href="<?php echo element('the_hit', element('sort', $view)); ?>">클릭수</a></th>
+							<th><a href="<?php echo element('the_order', element('sort', $view)); ?>">정렬순서</a></th>
+							<th><a href="<?php echo element('the_activated', element('sort', $view)); ?>">활성여부</a></th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
@@ -50,16 +50,16 @@
 					?>
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
-							<td><?php if (element('thumb_url', $result)) {?><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('oth_title', $result)); ?>" title="<?php echo html_escape(element('oth_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
-							<td><?php echo html_escape(element('oth_title', $result)); ?></td>
+							<td><?php if (element('thumb_url', $result)) {?><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('the_title', $result)); ?>" title="<?php echo html_escape(element('the_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
+							<td><?php echo html_escape(element('the_title', $result)); ?></td>
 							
-							<td><?php if (element('oth_url', $result)) { ?><a href="<?php echo goto_url(element('oth_url', $result)); ?>" target="_blank"><?php echo html_escape(element('oth_url', $result)); ?></a> <?php } ?></td>
-							<td class="text-center"><?php echo html_escape(element('oth_width', $result)); ?> / <?php echo html_escape(element('oth_height', $result)); ?></td>
-							<td><?php echo element('oth_start_date', $result); ?></td>
-							<td><?php echo element('oth_end_date', $result); ?></td>
-							<td class="text-center"><?php echo number_format((int) element('oth_hit', $result)); ?></td>
-							<td class="text-center"><?php echo number_format((int) element('oth_order', $result)); ?></td>
-							<td><?php echo element('oth_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
+							<td><?php if (element('the_url', $result)) { ?><a href="<?php echo goto_url(element('the_url', $result)); ?>" target="_blank"><?php echo html_escape(element('the_url', $result)); ?></a> <?php } ?></td>
+							
+							<td><?php echo element('the_start_date', $result); ?></td>
+							<td><?php echo element('the_end_date', $result); ?></td>
+							<td class="text-center"><?php echo number_format((int) element('the_hit', $result)); ?></td>
+							<td class="text-center"><?php echo number_format((int) element('the_order', $result)); ?></td>
+							<td><?php echo element('the_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>
