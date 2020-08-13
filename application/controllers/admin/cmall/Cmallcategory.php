@@ -737,6 +737,7 @@ class Cmallcategory extends CB_Controller
 
 		$getdata = $this->Cmall_kind_model->get_all_kind();
 
+		
 
 		$view['view']['data'] = $getdata;
 

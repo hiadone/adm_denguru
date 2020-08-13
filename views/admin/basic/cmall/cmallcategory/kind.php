@@ -26,6 +26,7 @@
                 foreach ($data as $result) {
                     $ckd_size='';
 
+                    
                     if(element('ckd_size', $result) === "4") $ckd_size = "소형견";
                     elseif(element('ckd_size', $result) === "5") $ckd_size = "중형견";
                     elseif(element('ckd_size', $result) === "6") $ckd_size =  "대형견";
