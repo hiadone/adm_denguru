@@ -3168,7 +3168,27 @@ class Crawl extends CB_Controller
             
             $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
 
-            if($brd_id == '22'){
+            $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+
+            $str='';
+            $str = $this->input->post('crw_category2');
+            
+            preg_match_all($pattern, $str, $match);
+            $crw_category2 = implode('', $match[0]);
+            
+            $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
+
+
+            
+            if(strpos($crw_category1,'고양이') !==false){
+                $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            }
+
+            
+
+
+            if($brd_id == '82'){
                 if(strpos($crw_category1,'브랜드') !==false || strpos($crw_category1,'공부하는') !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -3177,12 +3197,103 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '94'){
-                if(strpos($crw_category1,'KNITTING') !==false){
+                if(strpos(strtolower($crw_category1),strtolower('KNITTING')) !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
             }
+
+            if($brd_id == '115'){
+                if(strpos(strtolower($crw_category1),strtolower('EVENT-EVENT')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '140'){
+                if(strpos($crw_category1,'도매결제') !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '144'){
+                if(strpos(strtolower($crw_category1),strtolower('BEAUTY')) !==false || strpos(strtolower($crw_category1),strtolower('KICHEN')) !==false || strpos(strtolower($crw_category1),strtolower('Food')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '158'){
+                if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '165'){
+                if(strpos(strtolower($crw_category1),strtolower('브랜드')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '168'){
+                if(strpos(strtolower($crw_category2),strtolower('color')) !==false || strpos(strtolower($crw_category2),strtolower('Hashtag')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '258'){
+                if(strpos(strtolower($crw_category2),strtolower('브랜드별')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
+            if($brd_id == '190'){
+                if(strpos(strtolower($crw_category1),strtolower('반려동물')) !==true ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '261'){
+                if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '228'){
+                if(strpos(strtolower($crw_category2),strtolower('all')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '316'){
+                if(strpos(strtolower($crw_category1),strtolower('클래스')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
 
 
             $DB2 = $this->load->database('db2', TRUE);
@@ -3375,8 +3486,13 @@ class Crawl extends CB_Controller
                 }
            
            
+            if(strpos($updatedata['crw_category1'],'고양이') !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
 
-            if($brd_id == '22'){
+
+            if($brd_id == '82'){
                 if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
@@ -3385,12 +3501,104 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '94'){
-                if(strpos($updatedata['crw_category1'],'KNITTING') !==false){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('KNITTING')) !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
             }
+
+            if($brd_id == '115'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('EVENT-EVENT')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '140'){
+                if(strpos($updatedata['crw_category1'],'도매결제') !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '144'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('BEAUTY')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('KICHEN')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('Food')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '158'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '165'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('브랜드')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '168'){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('color')) !==false || strpos(strtolower($updatedata['crw_category2']),strtolower('Hashtag')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '258'){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('브랜드별')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '190'){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('반려동물')) !==true ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '261'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '228'){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('all')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '316'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('클래스')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
+            
+            
 
             $array = array(
                 'crw_name', 'crw_price', 'crw_post_url', 'crw_goods_code',
