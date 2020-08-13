@@ -102,7 +102,7 @@ class Popup extends CB_Controller
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
 				if (element('pop_image', $val)) {
-					$result['list'][$key]['cdn_url'] = cdn_url('popup', element('pop_image', $val));
+					$result['list'][$key]['thumb_url'] = thumb_url('popup', element('pop_image', $val),80);
 				}
 				if (empty($val['pop_start_date']) OR $val['pop_start_date'] === '0000-00-00') {
 					$result['list'][$key]['pop_start_date'] = '미지정';

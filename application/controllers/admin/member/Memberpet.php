@@ -101,8 +101,8 @@ class Memberpet extends CB_Controller
                 
                 
                 if (element('pet_photo', $val)) {
-                    // $result['list'][$key]['thumb_url'] = thumb_url('member_photo', element('pet_photo', $val), '80');
-                    $result['list'][$key]['thumb_url'] = cdn_url('member_photo', element('pet_photo', $val));
+                    $result['list'][$key]['thumb_url'] = thumb_url('member_photo', element('pet_photo', $val), '80');
+                    // $result['list'][$key]['thumb_url'] = cdn_url('member_photo', element('pet_photo', $val));
                     
                 }
 

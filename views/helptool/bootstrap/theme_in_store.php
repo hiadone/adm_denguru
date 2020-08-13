@@ -61,7 +61,7 @@
                                 <td>
                                     <?php if (element('brd_image', $result)) {?>
                                        
-                                            <img src="<?php echo cdn_url('board', element('brd_image', $result)); ?>" alt="<?php echo html_escape(element('brd_name', $result)); ?>" title="<?php echo html_escape(element('brd_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+                                            <img src="<?php echo thumb_url('board', element('brd_image', $result)); ?>" alt="<?php echo html_escape(element('brd_name', $result)); ?>" title="<?php echo html_escape(element('brd_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
                                         
                                     <?php } ?>
                                 </td>

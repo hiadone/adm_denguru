@@ -103,7 +103,7 @@ class Other extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 if (element('oth_image', $val)) {
-                    $result['list'][$key]['thumb_url'] = cdn_url('other', element('oth_image', $val));
+                    $result['list'][$key]['thumb_url'] = thumb_url('other', element('oth_image', $val),80);
                 }
                 if (empty($val['oth_start_date']) OR $val['oth_start_date'] === '0000-00-00') {
                     $result['list'][$key]['oth_start_date'] = '미지정';

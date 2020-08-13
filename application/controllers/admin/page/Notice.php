@@ -277,7 +277,7 @@ class Notice extends CB_Controller
       
         if ($form_validation) {
             $this->load->library('upload');
-            // $this->load->library('aws_s3');
+            $this->load->library('aws_s3');
             if (isset($_FILES) && isset($_FILES['noti_file']) && isset($_FILES['noti_file']['name']) && $_FILES['noti_file']['name']) {
                 $upload_path = config_item('uploads_dir') . '/notice/';
                 
@@ -320,7 +320,7 @@ class Notice extends CB_Controller
                     $updatefile = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $file);
                     $is_image = element('is_image', $file);
                     $pfi_originname = element('orig_name', $file);
-                    // $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
                 } else {
                     $file_error = $this->upload->display_errors();
                 }
@@ -416,7 +416,7 @@ class Notice extends CB_Controller
                 // 기존 파일 삭제
                 @unlink(config_item('uploads_dir') . '/notice/' . element('noti_file', $getdata));
 
-                // $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/notice/' . element('noti_file', $getdata));
+                $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/notice/' . element('noti_file', $getdata));
             }
 
             /**

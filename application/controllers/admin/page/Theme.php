@@ -103,7 +103,7 @@ class Theme extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 if (element('the_image', $val)) {
-                    $result['list'][$key]['thumb_url'] = cdn_url('theme', element('the_image', $val));
+                    $result['list'][$key]['thumb_url'] = thumb_url('theme', element('the_image', $val),80);
                 }
                 if (empty($val['the_start_date']) OR $val['the_start_date'] === '0000-00-00') {
                     $result['list'][$key]['the_start_date'] = '미지정';

@@ -59,7 +59,7 @@
 							<td>
 								<?php if (element('cit_file_1', $result)) {?>
 									<a href="<?php echo element('cit_post_url', $result); ?>" target="_blank">
-										<img src="<?php echo cdn_url('cmallitem', element('cit_file_1', $result)); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+										<img src="<?php echo thumb_url('cmallitem', element('cit_file_1', $result)); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
 									</a>
 								<?php } ?>
 							</td>

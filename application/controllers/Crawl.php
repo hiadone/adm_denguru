@@ -4032,7 +4032,7 @@ class Crawl extends CB_Controller
         $this->output->set_content_type('application/json');
 
 
-        $upload_path = config_item('crawl_uploads_dir') . '/html_write/';
+        $upload_path = config_item('uploads_dir') . '/html_write/';
         if (is_dir($upload_path) === false) {
             mkdir($upload_path, 0707);
             $file = $upload_path . 'index.php';
@@ -4227,7 +4227,7 @@ class Crawl extends CB_Controller
             // $cor_key = date('Ymdhi');
         } 
 
-        $upload_path = config_item('crawl_uploads_dir') . '/html_write/';
+        $upload_path = config_item('uploads_dir') . '/html_write/';
         if (is_dir($upload_path) === false) {
             mkdir($upload_path, 0707);
             $file = $upload_path . 'index.php';
@@ -4296,7 +4296,7 @@ class Crawl extends CB_Controller
                 $DB2->where($where);
                 $del_result = $DB2->delete('cb_cmall_order');
 
-                @unlink(config_item('crawl_uploads_dir') . '/html_write/'.$value_order['cor_file_1']);
+                @unlink(config_item('uploads_dir') . '/html_write/'.$value_order['cor_file_1']);
             }
         }
 
@@ -4416,7 +4416,7 @@ class Crawl extends CB_Controller
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
-        $result_order['cor_file_1'] = site_url(config_item('crawl_uploads_dir') . '/html_write/'.$result_order['cor_file_1']);
+        $result_order['cor_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cor_file_1']);
         
         // $result_order['cor_file_1'] = FCPATH.$result_order['cor_file_1'];
         
@@ -4493,7 +4493,7 @@ class Crawl extends CB_Controller
      
 
 
-        $upload_path = config_item('crawl_uploads_dir') . '/html_write/';
+        $upload_path = config_item('uploads_dir') . '/html_write/';
         if (is_dir($upload_path) === false) {
             mkdir($upload_path, 0707);
             $file = $upload_path . 'index.php';
@@ -4561,7 +4561,7 @@ class Crawl extends CB_Controller
                 $DB2->where($where);
                 $del_result = $DB2->delete('cb_cmall_orderstatus');
 
-                @unlink(config_item('crawl_uploads_dir') . '/html_write/'.$value_order['cos_file_1']);
+                @unlink(config_item('uploads_dir') . '/html_write/'.$value_order['cos_file_1']);
             }
         }
 
@@ -4680,7 +4680,7 @@ class Crawl extends CB_Controller
         }
         
         // $result_order['cos_file_1'] = FCPATH.$result_order['cos_file_1'];
-        $result_order['cos_file_1'] = site_url(config_item('crawl_uploads_dir') . '/html_write/'.$result_order['cos_file_1']);
+        $result_order['cos_file_1'] = site_url(config_item('uploads_dir') . '/html_write/'.$result_order['cos_file_1']);
 
 
 

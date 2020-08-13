@@ -14,7 +14,7 @@
 					<?php
 					if (element('the_image', element('data', $view))) {
 					?>
-						<img src="<?php echo cdn_url('theme',element('the_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+						<img src="<?php echo thumb_url('theme',element('the_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 						<label for="the_image_del">
 							<input type="checkbox" name="the_image_del" id="the_image_del" value="1" <?php echo set_checkbox('the_image_del', '1'); ?> /> 삭제
 						</label>
@@ -130,7 +130,7 @@
                                 <td>
                                     <?php if (element('brd_image', $result)) {?>
                                        
-                                            <img src="<?php echo cdn_url('board', element('brd_image', $result)); ?>" alt="<?php echo html_escape(element('brd_name', $result)); ?>" title="<?php echo html_escape(element('brd_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
+                                            <img src="<?php echo thumb_url('board', element('brd_image', $result)); ?>" alt="<?php echo html_escape(element('brd_name', $result)); ?>" title="<?php echo html_escape(element('brd_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" />
                                         
                                     <?php } ?>
                                 </td>
