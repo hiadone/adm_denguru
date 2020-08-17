@@ -80,7 +80,166 @@ class Crawl extends CB_Controller
      * 전체 메인 페이지입니다
      */
     
-   
+    public function brand_update($post_id = 0,$brd_id = 0)
+    {
+
+
+
+
+        
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_crawl_index';
+        $this->load->event($eventname);
+
+        $post_id = (int) $post_id;
+        $brd_id = (int) $brd_id;
+        if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
+            show_404();
+        }
+
+        if(!empty($post_id)){
+            $post = $this->Post_model->get_one($post_id);
+            if ( ! element('post_id', $post)) {
+                show_404();
+            }
+        }
+
+        
+        
+        
+
+        
+        
+        $crawlwhere = array(
+            'brd_id' => $brd_id,
+        );
+
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
+            show_404();
+        }
+
+        
+        
+
+        
+
+        $brdwhere = array(
+                'crawl_item.brd_id' => $brd_id,
+                
+        );
+
+        if(!empty($post_id)) $brdwhere['crawl_item.post_id'] = $post_id ;
+        // $this->_select='cb_crawl_item.*' ;
+
+        // $this->_db2table = 'cb_crawl_item';
+        // $result = $this->get_admin_list('','',$brdwhere);
+
+        // $this->_select='cb_crawl_detail.crw_id,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
+
+        // $this->_db2table = 'cb_crawl_detail';
+        // $result1 = $this->get_admin_list('','',$brdwhere);
+        // $result2 = array();
+        // if (element('list', $result1)) {
+        //     foreach (element('list', $result1) as $key => $val){ 
+                
+        //             $result2['list'][element('crw_id',$val)] = $val;
+        //     }
+        // }
+
+        // if (element('list', $result)) {
+        //     foreach (element('list', $result) as $key => $val){ 
+                
+
+        //         $result['list'][$key] = array_merge($val,element(element('crw_id',$val),element('list',$result2),array()));
+        //     }
+        // }
+
+        $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
+        $result = $this->get_admin_list('','',$brdwhere);
+
+        
+        if (element('list', $result)) {
+                foreach (element('list', $result) as $key => $val){ 
+
+                $item = array();
+                $_post_id='';
+                $cbr_id = '';
+                
+                $where = array(
+                    'brd_id' => element('brd_id', $val),
+                    'cit_goods_code' => element('crw_goods_code', $val),
+
+                );
+
+                
+                
+                $item = $this->Cmall_item_model->get_one('','',$where);
+
+                if($post_id && element('cit_id',$item)) {
+                    if(element('post_id',$item) != $post_id)  continue;
+                }
+
+                if(!element('cit_id',$item)) {
+                      continue;
+                }
+
+                // if($this->Cmall_item_model->count_by($where)) {
+                //     echo element('brd_id', $val).'스토어의 '.element('crw_goods_code', $val). '코드 존재<br>';
+                //     continue;
+
+                // }
+                echo element('cit_id',$item)."\n";
+                if(empty(element('crw_goods_code', $val))) {
+                    echo element('brd_id', $val).'스토어의 '.element('crw_id', $val). '상품 코드 없다<br>';
+                    continue;
+                }
+
+                $cbr_id='';
+                for($a=1 ; $a <6;$a++ ){
+                    if(!empty($cbr_id)) break;
+                    if(element('crw_brand'.$a,$val))                        
+                        $cbr_id = $this->cmall_brand(element('crw_brand'.$a,$val));
+                }
+
+                for($a=1 ; $a <6;$a++ ){
+                    if(!empty($cbr_id)) break;
+                    if(element('cdt_brand'.$a,$val))                        
+                        $cbr_id = $this->cmall_brand(element('cdt_brand'.$a,$val));
+                }
+
+
+
+
+                if(empty($cbr_id)) $cbr_id = $this->cmall_brand(element('crw_name',$val),1);
+
+                
+
+                    $updatedata = array(
+                        
+                     
+                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
+                    
+                    );
+
+                    // print_r2($updatedata);
+                    
+
+                    
+                    // $updatedata['cit_key'] = 'c_'.element('cit_id',$item);
+                            
+                    $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
+
+
+
+                } 
+        }
+
+        
+        
+        
+    }
+
     public function crawling_update($post_id = 0,$brd_id = 0)
     {
 
@@ -138,7 +297,7 @@ class Crawl extends CB_Controller
 
                 $item = array();
                 $_post_id='';
-                $cbr_id = array();
+                $cbr_id = '';
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -169,17 +328,35 @@ class Crawl extends CB_Controller
 
                 $_post_id = $this->write(element('brd_id', $board),$val);
 
+                // for($a=1 ; $a <6;$a++ ){
+                //     if(element('crw_brand'.$a,$val))
+                //         if($this->cmall_brand(element('crw_brand'.$a,$val)))
+                //             $cbr_id[] = $this->cmall_brand(element('crw_brand'.$a,$val));
+                // }
+
+                // for($a=1 ; $a <6;$a++ ){
+                //     if(element('cdt_brand'.$a,$val))
+                //         if($this->cmall_brand(element('cdt_brand'.$a,$val)))
+                //             $cbr_id[] = $this->cmall_brand(element('cdt_brand'.$a,$val));
+                // }
+
+
                 for($a=1 ; $a <6;$a++ ){
-                    if(element('crw_brand'.$a,$val))
-                        if($this->cmall_brand(element('crw_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('crw_brand'.$a,$val));
+                    if(!empty($cbr_id)) break;
+                    if(element('crw_brand'.$a,$val))                        
+                        $cbr_id = $this->cmall_brand(element('crw_brand'.$a,$val));
                 }
 
                 for($a=1 ; $a <6;$a++ ){
-                    if(element('cdt_brand'.$a,$val))
-                        if($this->cmall_brand(element('cdt_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('cdt_brand'.$a,$val));
+                    if(!empty($cbr_id)) break;
+                    if(element('cdt_brand'.$a,$val))                        
+                        $cbr_id = $this->cmall_brand(element('cdt_brand'.$a,$val));
                 }
+
+
+
+
+                if(empty($cbr_id)) $cbr_id = $this->cmall_brand(element('crw_name',$val),1);
 
                 if(element('cit_id',$item)){
                     $is_new = false;
@@ -187,7 +364,7 @@ class Crawl extends CB_Controller
                     ? element('mobile_new_icon_hour', $board)
                     : element('new_icon_hour', $board);
 
-                    if ($new_icon_hour && ( ctimestamp() - strtotime(element('cit_datetime', $val)) <= $new_icon_hour * 3600)) {
+                    if ($new_icon_hour && ( ctimestamp() - strtotime(element('cit_datetime', $item)) <= $new_icon_hour * 3600)) {
                     $is_new = true;
 
                     
@@ -203,7 +380,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
+                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -359,7 +536,7 @@ class Crawl extends CB_Controller
                         'cit_goods_code' => element('crw_goods_code', $val),                        
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => 1,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
+                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         'cit_type3' => 1,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
@@ -1079,7 +1256,7 @@ class Crawl extends CB_Controller
  
 
                 $_post_id='';
-                $cbr_id = array();
+                $cbr_id = '';
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -1101,20 +1278,23 @@ class Crawl extends CB_Controller
                 $_post_id = $this->write(element('brd_id', $board),$val);
 
                 for($a=1 ; $a <6;$a++ ){
+                    if(!empty($cbr_id)) break;
                     if(element('crw_brand'.$a,$val))
                         if($this->cmall_brand(element('crw_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('crw_brand'.$a,$val));
+                            $cbr_id = $this->cmall_brand(element('crw_brand'.$a,$val));
                 }
 
                 for($a=1 ; $a <6;$a++ ){
+                    if(!empty($cbr_id)) break;
                     if(element('cdt_brand'.$a,$val))
                         if($this->cmall_brand(element('cdt_brand'.$a,$val)))
-                            $cbr_id[] = $this->cmall_brand(element('cdt_brand'.$a,$val));
+                            $cbr_id = $this->cmall_brand();
                 }
 
+                if(empty($cbr_id)) $cbr_id = $this->cmall_brand(element('crw_name',$val));
 
                 $updatedata = array(
-                    
+
                     'post_id' => $_post_id,
                     'cit_name' => element('crw_name',$val),
                     'cit_summary' => element('crawl_sub_title',$val,'') ,
@@ -1125,7 +1305,7 @@ class Crawl extends CB_Controller
                     'cit_goods_code' => element('crw_goods_code', $val),                        
                     'cit_is_soldout' => element('crw_is_soldout', $val),
                     'cit_status' => 1,
-                    'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : element('brd_brand', $board),
+                    'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
                     'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                     // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                     // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -2593,12 +2773,19 @@ class Crawl extends CB_Controller
                     if($crawl_type==='category_update2'){
                         $this->crawling_category_update2(0,element('brd_id', $val));
                     }
+
+                    if($crawl_type==='brand_update'){
+
+
+                        $this->brand_update(0,element('brd_id', $val));
+                    }
                 }
             }
         }
 
             
     }
+ 
 
     function category_check($value,$array)
     {   
@@ -2704,18 +2891,165 @@ class Crawl extends CB_Controller
 
     }
 
-    function cmall_brand($brand_word)
+    function cmall_brand($brand_word,$flag = 0)
     {   
         
-
+       
         $arr_str = preg_split("//u", $brand_word, -1, PREG_SPLIT_NO_EMPTY);
                 
-        
+        $str_2 = array(
+            '우프',
+            '베럴즈',
+            '바잇미',
+            '나우',
+            '나우',
+            '갓샵',
+            '게더',
+            '고',
+            '고프',
+            '꼬뜨',
+            '뉴로',
+            '더독',
+            '도노',
+            '라루',
+            '롬',
+            '미피',
+            '부들',
+            '비킷',
+            '엔본',
+            '엔펫',
+            '올치',
+            '왈',
+            '왕짱',
+            '워피',
+            '위팸',
+            '이유',
+            '졸리',
+            '지독',
+            '지캣',
+            '질',
+            '코코',
+            '포펫',
+            '풉백',
+            '휘게',
+            '힐러',
+            '도고',
+            '도기',
+            '바비',
+            '올펫',
+            '지구',
+            '콩',
+            '로라',
+            '분독',
+            '인벳',
+            '피랩',
+            '더펫',
+            '위위',
+            '펫존',
+            '헌터',
+            '빌라',
+            '스파',
+            '벨라',
+            '벳츠',
+            '순수',
+            '오션',
+            '에바',
+            '에띠',
+            '탑컷',
+            '탑독',
+            '비유',
+            '와우',
+            '엠씨',
+            '인',
+            '폴카',
+            '파우',
+            '내추럴펫',
+            '굿독',
+            );
+        $str_2_en = array(
+            'wooof',
+'BETTERS',
+'bite me',
+'woof',
+'NOA',
+'noa',
+'godshop',
+'gather',
+'GO',
+'GOPE',
+'COTE',
+'nulo',
+'THE DOG',
+'DONO',
+'LAROO',
+'ROAM',
+'miffy',
+'booodl',
+'BIKIT',
+'N-BONE',
+'NPET',
+'OLCHI',
+'WAHL',
+'wangzzang',
+'WOOFI',
+'WE FAM',
+'EYOU',
+'JOLLY',
+'ZEEDOG',
+'ZEECAT',
+'ZEAL',
+'COCO',
+'FOR PET',
+'POOPBAG',
+'HYGGE',
+'HEALER',
+'DOGO',
+'DOGGY',
+'BOBBY',
+'allpet',
+'Zigoopets',
+'Kong',
+'AGAO PET',
+'H2O4K9',
+'4pets',
+'SSFW',
+'LORA',
+'BOONDOG',
+'CLOUD7',
+'INVET',
+'PLAB',
+'THE PET',
+'WEWE',
+'PET ZONE',
+'HUNTER',
+'vila',
+'SPA',
+'Bella',
+"VET's",
+'pure',
+'OCEAN',
+'EVA',
+'TOPCUT',
+'topdog',
+'BEYOO',
+'WAW',
+'PB',
+'MC',
+'IN',
+'NWC',
+'FAD',
+'HS',
+'POLKA',
+'PAW',
+'NATURAL PET',
 
+        );
         // $brand_word = strtolower(str_replace(" ","",$brand_word));
-        $result = $this->Cmall_brand_model->get();
+        $result_kr = $this->Cmall_brand_model->get('','','','','','length(cbr_value_kr)','desc');
+
+        
         if($brand_word){
-            foreach($result as $value){
+            foreach($result_kr as $value){
                 
 
                 // if(element('cbr_value_en',$value) && strpos($brand_word,str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
@@ -2733,38 +3067,90 @@ class Crawl extends CB_Controller
                     
                     
                     
-
-                    $cbr_value_en = preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY);
-                
-                    if(count($cbr_value_en) > 3){
-                        if(element('cbr_value_en',$value) && strpos(strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower(element('cbr_value_en',$value)))!== false)
-                            return element('cbr_id',$value);
-                        if(element('cbr_value_en',$value) && strpos(strtolower(cut_str(element('cbr_value_en',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($brand_word)) !== false )
-                            return element('cbr_id',$value);
-                    } else {
-                        if(element('cbr_value_en',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_en',$value)))
-                            return element('cbr_id',$value);
-                        if(element('cbr_value_en',$value) && strtolower(cut_str(element('cbr_value_en',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
-                            return element('cbr_id',$value);
-                    }
+                if($flag){                    
+                    
                     $arr_str_kr = preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY);
 
 
                     
+                    $s2flag=true;
+                        foreach($str_2 as $s2val){
+                            if(strtolower($s2val) === strtolower(element('cbr_value_kr',$value))){
+                                $s2flag = false;
+                                break;
+                            }
 
+                        }
+                    
+
+                    if($s2flag){
+                        
+                        if(element('cbr_value_kr',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_kr',$value))))!== false)
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(element('cbr_value_kr',$value)),strtolower($brand_word))!== false)
+                        //     return element('cbr_id',$value);
+
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower(element('cbr_value_kr',$value)))!== false)
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($brand_word))!== false)
+                        //     return element('cbr_id',$value);
+                    } else {
+
+                        
+
+                        // if(element('cbr_value_kr',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_kr',$value)))
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
+
+                        if(element('cbr_value_kr',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_kr',$value))))
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
+                    }
+                } else {                    
+                    
+                    $arr_str_kr = preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY);
+
+
+                    
+                    $s2flag=true;
+                        foreach($str_2 as $s2val){
+                            if(strtolower($s2val) === strtolower(element('cbr_value_kr',$value))){
+                                $s2flag = false;
+                                break;
+                            }
+
+                        }
                     
 
                     if(count($arr_str_kr) > 2){
-                        if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower(element('cbr_value_kr',$value)))!== false)
+                        
+                        if(element('cbr_value_kr',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_kr',$value))))!== false)
                             return element('cbr_id',$value);
-                        if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($brand_word))!== false)
-                            return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(element('cbr_value_kr',$value)),strtolower($brand_word))!== false)
+                        //     return element('cbr_id',$value);
+
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower(element('cbr_value_kr',$value)))!== false)
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strpos(strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($brand_word))!== false)
+                        //     return element('cbr_id',$value);
                     } else {
-                        if(element('cbr_value_kr',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_kr',$value)))
+
+                        
+
+                        // if(element('cbr_value_kr',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_kr',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_kr',$value)))
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
+
+                        if(element('cbr_value_kr',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_kr',$value))))
                             return element('cbr_id',$value);
-                        if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
-                            return element('cbr_id',$value);
+                        // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
                     }
+                }
+                    
                     
                 // } else {
                 //     if(element('cbr_value_en',$value) && strtolower($brand_word) === strtolower(element('cbr_value_en',$value)))
@@ -2774,10 +3160,112 @@ class Crawl extends CB_Controller
                     
                 // }
             }
-        }
-
-         
         
+
+         }
+
+         $result_en = $this->Cmall_brand_model->get('','','','','','length(cbr_value_en)','desc');
+        if($brand_word){
+            foreach($result_en as $value){
+                
+
+                // if(element('cbr_value_en',$value) && strpos($brand_word,str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
+                //     return element('cbr_id',$value);
+                // if(element('cbr_value_kr',$value) && strpos($brand_word,str_replace(" ","",element('cbr_value_kr',$value)))!== false)
+                //     return element('cbr_id',$value);
+                // if(element('cbr_value_kr',$value) && strpos(str_replace(" ","",element('cbr_value_kr',$value)),$brand_word)!== false)
+                //     return element('cbr_id',$value);
+                // if(element('cbr_value_en',$value) && strpos(str_replace(" ","",strtolower(element('cbr_value_en',$value))),$brand_word) !== false )
+                //     return element('cbr_id',$value);
+
+
+                // if(count($arr_str) > 1){
+
+                    
+                    
+                    
+                if($flag){
+                    $cbr_value_en = preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY);
+                    
+                    $s2flag=true;
+                        foreach($str_2_en as $s2val){
+                            if(strtolower($s2val) === strtolower(element('cbr_value_en',$value))){
+                                $s2flag = false;
+                                break;
+                            }
+
+                        }
+
+                    
+
+                    // if(count($cbr_value_en) > 3){
+                    if($s2flag){                        
+                        if(element('cbr_value_en',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strpos(strtolower(element('cbr_value_en',$value)),strtolower($brand_word)) !== false )
+                        //     return element('cbr_id',$value);
+                        
+                    } else {
+                        
+                        if(element('cbr_value_en',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_en',$value))))
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
+                        // return element('cbr_id',$value);
+                        
+                        
+                        // if(element('cbr_value_en',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_en',$value)))
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strtolower(cut_str(element('cbr_value_en',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
+                        
+                    }
+                    
+                    
+                } else {
+                    $cbr_value_en = preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY);
+                    
+                 
+
+                    
+
+                    if(count($cbr_value_en) > 3){
+                    
+                        if(element('cbr_value_en',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strpos(strtolower(element('cbr_value_en',$value)),strtolower($brand_word)) !== false )
+                        //     return element('cbr_id',$value);
+                        
+                    } else {
+                        
+                        if(element('cbr_value_en',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_en',$value))))
+                            return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
+                        // return element('cbr_id',$value);
+                        
+                        
+                        // if(element('cbr_value_en',$value) && strtolower(cut_str($brand_word, count(preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower(element('cbr_value_en',$value)))
+                        //     return element('cbr_id',$value);
+                        // if(element('cbr_value_en',$value) && strtolower(cut_str(element('cbr_value_en',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
+                        //     return element('cbr_id',$value);
+                        
+                    }
+                    
+                    
+                }
+                    
+                    
+                // } else {
+                //     if(element('cbr_value_en',$value) && strtolower($brand_word) === strtolower(element('cbr_value_en',$value)))
+                //         return element('cbr_id',$value);
+                //     if(element('cbr_value_kr',$value) && strtolower($brand_word) === strtolower(element('cbr_value_kr',$value)))
+                //         return element('cbr_id',$value);
+                    
+                // }
+            }
+        
+
+         }
+        return false;
     }
 
     public function get_extension($filename)
@@ -2795,6 +3283,235 @@ class Crawl extends CB_Controller
 
     public function get_storelist()
     {
+
+
+        //                     $storelist = array('1',
+        // '100',
+        // '101',
+        // '102',
+        // '103',
+        // '105',
+        // '109',
+        // '11',
+        // '110',
+        // '111',
+        // '112',
+        // '113',
+        // '114',
+        // '115',
+        // '116',
+        // '117',
+        // '118',
+        // '119',
+        // '12',
+        // '120',
+        // '121',
+        // '123',
+        // '124',
+        // '125',
+        // '127',
+        // '128',
+        // '129',
+        // '13',
+        // '130',
+        // '131',
+        // '132',
+        // '134',
+        // '135',
+        // '136',
+        // '137',
+        // '138',
+        // '139',
+        // '14',
+        // '140',
+        // '142',
+        // '143',
+        // '146',
+        // '147',
+        // '148',
+        // '149',
+        // '15',
+        // '150',
+        // '151',
+        // '153',
+        // '154',
+        // '155',
+        // '156',
+        // '157',
+        // '159',
+        // '16',
+        // '160',
+        // '163',
+        // '164',
+        // '167',
+        // '168',
+        // '17',
+        // '171',
+        // '172',
+        // '173',
+        // '175',
+        // '176',
+        // '177',
+        // '178',
+        // '179',
+        // '180',
+        // '181',
+        // '182',
+        // '185',
+        // '186',
+        // '187',
+        // '188',
+        // '189',
+        // '19',
+        // '191',
+        // '196',
+        // '197',
+        // '198',
+        // '199',
+        // '2',
+        // '20',
+        // '200',
+        // '201',
+        // '202',
+        // '203',
+        // '205',
+        // '207',
+        // '208',
+        // '21',
+        // '210',
+        // '212',
+        // '213',
+        // '214',
+        // '215',
+        // '217',
+        // '219',
+        // '22',
+        // '220',
+        // '221',
+        // '222',
+        // '226',
+        // '227',
+        // '228',
+        // '232',
+        // '233',
+        // '235',
+        // '237',
+        // '239',
+        // '24',
+        // '241',
+        // '242',
+        // '249',
+        // '25',
+        // '250',
+        // '251',
+        // '252',
+        // '254',
+        // '26',
+        // '261',
+        // '262',
+        // '27',
+        // '273',
+        // '275',
+        // '278',
+        // '28',
+        // '29',
+        // '30',
+        // '301',
+        // '304',
+        // '305',
+        // '306',
+        // '307',
+        // '309',
+        // '31',
+        // '310',
+        // '311',
+        // '313',
+        // '314',
+        // '315',
+        // '316',
+        // '32',
+        // '322',
+        // '323',
+        // '324',
+        // '326',
+        // '33',
+        // '337',
+        // '338',
+        // '34',
+        // '35',
+        // '36',
+        // '37',
+        // '38',
+        // '39',
+        // '4',
+        // '40',
+        // '41',
+        // '43',
+        // '44',
+        // '45',
+        // '46',
+        // '47',
+        // '48',
+        // '49',
+        // '50',
+        // '51',
+        // '52',
+        // '54',
+        // '57',
+        // '59',
+        // '60',
+        // '61',
+        // '63',
+        // '65',
+        // '67',
+        // '68',
+        // '69',
+        // '71',
+        // '72',
+        // '75',
+        // '76',
+        // '77',
+        // '79',
+        // '81',
+        // '82',
+        // '83',
+        // '84',
+        // '85',
+        // '86',
+        // '87',
+        // '88',
+        // '89',
+        // '90',
+        // '92',
+        // '93',
+        // '95',
+        // '96',
+        // '97',
+        // '98',);
+
+
+
+        //         $list_num = $result['total_rows'];
+
+        //         if (element('list', $result)) {
+        //             foreach (element('list', $result) as $key => $val) {
+                            
+        //                     if(strpos(element('brd_url',$val),'smartstore') !==false) continue;
+        //                     if(in_array(element('brd_id',$val),$storelist)) continue;
+                            
+        //                     $data['list'][$key]['brd_id'] = element('brd_id',$val);
+        //                     $data['list'][$key]['brd_name'] = element('brd_name',$val);
+        //                     $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
+        //                     $data['list'][$key]['brd_comment'] = element('brd_comment',$val);                  
+        //                 // }
+                        
+                        
+        //             }
+        //         }
+                
+        //         print_r2($data['list']);
+        // exit;
+
         $this->output->set_content_type('application/json');
         $this->load->model(array('Board_model'));
 
@@ -2803,203 +3520,7 @@ class Crawl extends CB_Controller
         );
         $result = $this->Board_model->get_crawl_list($where);
         $data = array();
-                    $storelist = array(
-'https://smartstore.naver.com/heedong',
-'https://smartstore.naver.com/petworldstore',
-'https://smartstore.naver.com/marcostore',
-'https://smartstore.naver.com/thesoy',
-'https://smartstore.naver.com/0002shop',
-'https://smartstore.naver.com/my_fluffy',
-'https://smartstore.naver.com/wandookongmom',
-'https://smartstore.naver.com/petsoban',
-'https://smartstore.naver.com/rayvonne',
-'https://smartstore.naver.com/dajunghanmarket',
-'https://smartstore.naver.com/pop_and_puppy',
-'https://smartstore.naver.com/barbichon',
-'https://smartstore.naver.com/triplebees',
-'https://smartstore.naver.com/groomingdale',
-'https://smartstore.naver.com/bandalpet',
-'https://smartstore.naver.com/chocopet',
-'https://smartstore.naver.com/mungsday_party',
-'https://smartstore.naver.com/dd2planet',
-'https://smartstore.naver.com/i_love_to_eat',
-'https://smartstore.naver.com/market-ben',
-'https://smartstore.naver.com/lilalovesit',
-'https://smartstore.naver.com/matroospetshop',
-'https://smartstore.naver.com/smilepet',
-'https://smartstore.naver.com/peakrise',
-'https://smartstore.naver.com/maykit',
-'https://smartstore.naver.com/jbwoody',
-'https://smartstore.naver.com/cherrypet',
-'https://smartstore.naver.com/chunilcarpet/products/2769620857',
-'https://smartstore.naver.com/hyponic/category/fe53dade98044ff2b8f73b298baddddb?cp=1',
-'https://smartstore.naver.com/collie',
-'https://smartstore.naver.com/wellcare_pet',
-'https://smartstore.naver.com/uglobal',
-'https://smartstore.naver.com/oguogu_',
-'https://smartstore.naver.com/habit_',
-'https://smartstore.naver.com/ruruandmimi',
-'https://smartstore.naver.com/breezytail',
-'https://smartstore.naver.com/benebone',
-'https://smartstore.naver.com/robedog',
-'https://smartstore.naver.com/deilive/category/50000155?cp=1',
-'https://smartstore.naver.com/gucci0209',
-'https://smartstore.naver.com/greydog',
-'https://smartstore.naver.com/byglam/category/f4b6025ef5714a8d822ecadb8a231f82?cp=1',
-'https://smartstore.naver.com/carrepetian',
-'https://smartstore.naver.com/colettemungmung',
-'https://smartstore.naver.com/marafiki_official',
-'https://smartstore.naver.com/lattefood',
-'https://smartstore.naver.com/momsmind123',
-'https://smartstore.naver.com/alldayorganic',
-'https://smartstore.naver.com/mabelles',
-'https://smartstore.naver.com/starpets',
-'https://smartstore.naver.com/cozyrosyday',
-'https://smartstore.naver.com/riruri_jmom',
-'https://smartstore.naver.com/moodonpet',
-'https://smartstore.naver.com/ribbongbong',
-'https://smartstore.naver.com/petpang',
-'https://smartstore.naver.com/mymarie',
-'https://smartstore.naver.com/dellalola',
-'https://smartstore.naver.com/munglab',
-'https://smartstore.naver.com/mong_n_cheek',
-'https://smartstore.naver.com/mongtailor',
-'https://smartstore.naver.com/ruhena',
-'https://smartstore.naver.com/looloofit',
-'https://smartstore.naver.com/krono',
-'https://smartstore.naver.com/timbiriche',
-'https://smartstore.naver.com/woolly',
-'https://smartstore.naver.com/pepemall',
-'https://smartstore.naver.com/awesomepuppy',
-'https://smartstore.naver.com/littledeus',
-'https://smartstore.naver.com/kuma1231',
-'https://smartstore.naver.com/littlepaw',
-'https://smartstore.naver.com/dancingdogginuts',
-'https://smartstore.naver.com/zamboakr',
-'https://smartstore.naver.com/myvef',
-'https://smartstore.naver.com/gansikmeokdog',
-'https://smartstore.naver.com/dogcat2',
-'https://smartstore.naver.com/gaebabking',
-'https://smartstore.naver.com/dajunghagae',
-'https://smartstore.naver.com/doggune?NaPm=ct%3Dk6by3qcw%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3D6a92852d3dbc644eee9b649f248ad3ce5655eae5',
-'https://smartstore.naver.com/romancedog',
-'https://smartstore.naver.com/dm-',
-'https://smartstore.naver.com/brooklynpetco?NaPm=ct%3Dk65udf9o%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3D%7Chk%3Dc16c520c26ea2002ab7d19b059b645e5ab42753d',
-'https://smartstore.naver.com/blueneko',
-'https://smartstore.naver.com/slowstep3',
-'https://smartstore.naver.com/mbtq',
-'https://smartstore.naver.com/cocker_sister',
-'https://smartstore.naver.com/cocomn8642',
-'https://smartstore.naver.com/titano',
-'https://smartstore.naver.com/purefriends',
-'https://smartstore.naver.com/fromb/category/7f79a8993de5493cb1fb881efd49e1d9?cp=1',
-'https://smartstore.naver.com/langdog',
-'https://smartstore.naver.com/petdodam0',
-'https://smartstore.naver.com/pet-story',
-'https://smartstore.naver.com/dogjeja',
-'https://smartstore.naver.com/aa4070809',
-'https://stellaandchewys.modoo.at/?link=au07evou',
-'https://smallbatch.modoo.at/?link=7gtln3pc',
-'https://noondog.modoo.at/?link=dm8uma4d',
-'https://dogtoc.modoo.at/?link=1maty8ji',
-'http://bonpuppy.com/',
-'https://shopping.naver.com/pet/stores/100045370',
-'https://shopping.naver.com/pet/stores/100144583',
-'https://shopping.naver.com/pet/stores/100205785',
-'https://shopping.naver.com/pet/stores/100161745',
-'https://shopping.naver.com/pet/stores/100131988',
-'https://shopping.naver.com/pet/stores/100167771',
-'https://www.biteme.co.kr/main/index.php',
-'https://www.fitpetmall.com/',
-'http://www.gaenimshop.com/',
-'http://ssfw.kr',
-'http://www.diditable.com/',
-'http://ainsoap.com/',
-'http://www.gulliverdog.co.kr/main/index.php',
-'http://www.edenchien.com/main/index.php',
-'http://mytrianon.co.kr/shop/goods/goods_list.php?&category=003',
-'http://www.petesthe.co.kr/main/index.php',
-'http://bourdog.com/main/index.php',
-'http://www.naturalex.co.kr/shop/main/index.php',
-'http://vlab.kr/',
-'https://www.wangzzang.com/',
-'www.petgear.kr/',
-'https://duit.kr/',
-'https://eledog.co.kr/',
-'http://andblank.com/home',
-'https://yosemite.pet/',
-'http://baumeo.net/33',
-'https://www.varram.co.kr/all#',
-'https://hipaw.co.kr',
-'https://www.vuumpet.co.kr/',
-'https://plumstudio.co.kr/78',
-'http://vavox.co.kr/',
-'http://gettouch.co.kr/',
-'https://www.cheesesun.com/',
-'http://www.oraeorae.com/',
-'http://www.cocochien.kr/',
-'http://www.hydewolf.co.kr/index.html',
-'http://www.itsdog.com/index.html',
-'http://www.petnoriter.co.kr/',
-'http://www.ecofoam.co.kr/index.html',
-'http://www.puppygallery.co.kr/index.html',
-'http://www.amylovespet.co.kr/index.html',
-'http://www.dermadog.co.kr/index.html',
-'http://www.affetto.co.kr/index.html',
-'http://howlpot.com/',
-'https://www.smallstuff.kr/',
-'https://www.guilty-pleasure.co.kr/shop',
-'https://www.comercotte.com/',
-'https://melonicoco.com/',
-'https://www.ddoang.com/',
-'https://pawunion.kr/shop',
-'http://www.harryspet.com/',
-'https://www.wilddog.co.kr/shop',
-'https://bonjourtou-tou.com/',
-'https://pethod.co.kr/',
-'https://www.purplestore.co.kr/',
-'http://www.dhuman.co.kr/view/main',
-'http://www.montraum.com/common/process/shopmain.asp?iniCategory=2&thisCategory=22',
-'http://www.petsandme.co.kr/main/main.php',
-'http://gubas.co.kr/',
-'http://www.bodeum.co.kr/html/shop/index.php',
-'http://www.queenpuppy.co.kr/index.html',
-'https://www.wekino.co.kr/products/category/6',
-'https://dog114.kr/main/index',
-'http://shop.i-avec.com',
-'https://www.wconcept.co.kr/Life/001014',
-'http://www.betterskorea.com/',
-'http://m.rudolphshop.kr/',
-'http://monchouchou.co.kr/',
-'https://pethroom.com/',
-'http://double-comma.com/product/list.html?cate_no=70',
-'http://honestmeal.kr/',
-'http://uglugl.com/',
-'http://peppymeal.kr/',
-'http://su-su.kr/index.html',
-'https://aboutmeal.co.kr/',
-'http://bowbowpet.com/',
-'http://www.yolohollo.com/',
-'http://beatto.kr/',
-'https://munikund.com/index.html',
-'http://terrylatte.com/',
-'http://its-sunnyoutside.com/',
-'http://littlecollin.kr/',
-'http://opaaap.com/',
-'http://www.hutsandbay.com/index.html',
-'https://tustus.co.kr/',
-'http://choandkang.com/',
-'http://dfang.co.kr/',
-'https://www.arrr.kr/index.html',
-'http://bridge.dog/#&panel1-1',
-'http://eyoushop.co.kr/',
-'http://www.coteacote.kr/',
-'http://dogshower.co.kr/',
-'http://lora.kr/',
-'http://buildapuppy.com/product/list.html?cate_no=59',
-'http://www.inherent.co.kr/',
-'http://pet-paradise.kr/index.html',
-);
+                    $storelist = array();
 
 
 
@@ -3178,9 +3699,17 @@ class Crawl extends CB_Controller
             
             $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
 
+            $str='';
+            $str = $this->input->post('crw_category2');
+            
+            preg_match_all($pattern, $str, $match);
+            $crw_category3 = implode('', $match[0]);
+            
+            $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
+
 
             
-            if(strpos($crw_category1,'고양이') !==false){
+            if(strpos($crw_category1,'고양이') !==false || strpos($crw_category2,'고양이') !==false || strpos($crw_category3,'고양이') !==false){
                 $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
@@ -3287,6 +3816,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '316'){
                 if(strpos(strtolower($crw_category1),strtolower('클래스')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+             if($brd_id == '105'){
+                if(strpos(strtolower($crw_category1),strtolower('캣사료')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3486,7 +4023,7 @@ class Crawl extends CB_Controller
                 }
            
            
-            if(strpos($updatedata['crw_category1'],'고양이') !==false ){
+            if(strpos($updatedata['crw_category1'],'고양이') !==false || strpos($updatedata['crw_category2'],'고양이') !==false || strpos($updatedata['crw_category3'],'고양이') !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3590,6 +4127,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '316'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('클래스')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '105'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('캣사료')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
