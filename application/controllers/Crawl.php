@@ -176,9 +176,7 @@ class Crawl extends CB_Controller
                 
                 $item = $this->Cmall_item_model->get_one('','',$where);
 
-                if($post_id && element('cit_id',$item)) {
-                    if(element('post_id',$item) != $post_id)  continue;
-                }
+               
 
                 if(!element('cit_id',$item)) {
                       continue;
@@ -4225,10 +4223,10 @@ class Crawl extends CB_Controller
         }
 
         $this->load->library('upload');
-        $file = json_encode($_FILES);
-            $post = json_encode($_POST);
-            log_message('error', $file);
-            log_message('error', $post);
+        // $file = json_encode($_FILES);
+        //     $post = json_encode($_POST);
+        //     log_message('error', $file);
+        //     log_message('error', $post);
         for ($k = 1; $k <= 10; $k++) {
             if (isset($_FILES) && isset($_FILES['cdt_file_' . $k]) && isset($_FILES['cdt_file_' . $k]['name']) && $_FILES['cdt_file_' . $k]['name']) {
                 $upload_path = config_item('uploads_dir') . '/crawlitemdetail/';
