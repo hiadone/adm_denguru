@@ -28,7 +28,7 @@ class Cmall_category_rel_model extends CB_Model
 	}
 
 
-	public function save_category($cit_id = 0, $category = '')
+	public function save_category($cit_id = 0, $category = '', $is_manual = 0)
 	{
 		$cit_id = (int) $cit_id;
 		if (empty($cit_id) OR $cit_id < 1) {
@@ -44,6 +44,7 @@ class Cmall_category_rel_model extends CB_Model
 				$insertdata = array(
 					'cit_id' => $cit_id,
 					'cca_id' => $cval,
+					'is_manual' => $is_manual,
 				);
 				$this->insert($insertdata);
 			}

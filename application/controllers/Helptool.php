@@ -1005,6 +1005,23 @@ class Helptool extends CB_Controller
 		}
 		$view['view']['post_id_list'] = $post_id_list;
 
+		$cit_id_list = '';
+		if ($this->input->post('chk_cit_id')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		}
+		if ($this->input->post('cit_id_list')) {
+			$cit_id_list = $this->input->post('cit_id_list');
+		}
+		$view['view']['cit_id_list'] = $cit_id_list;
+
+
 		$post = $this->Post_model->get_one($post_id);
 		$board = $this->board->item_all(element('brd_id', $post));
 
@@ -1108,6 +1125,25 @@ class Helptool extends CB_Controller
 						// );
 						// $this->Post_model->update($post_id, $postupdate);
 					}
+				}
+			}
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+				if ($arr) {					
+					
+					foreach($arr as $val){
+					
+						if (empty($val)) {
+							continue;
+						}
+						
+
+
+						$this->Cmall_category_rel_model->save_category($val, $cmall_category,1);
+						
+					}
+				
 				}
 			}
 			alert_refresh_close('카테고리가 변경되었습니다');
@@ -2319,5 +2355,1109 @@ class Helptool extends CB_Controller
 		$redirecturl = site_url('helptool/theme_in_store/' . $the_id. '?' . $param->output());
 
 		redirect($redirecturl);
+	}
+
+	public function post_change_brand($post_id = '')
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_helptool_post_change_category';
+		$this->load->event($eventname);
+
+		$is_admin = $this->member->is_admin();
+
+		if ($is_admin === false) {
+			alert('접근권한이 없습니다');
+			return false;
+		}
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_brand_model','Cmall_item_model'));
+
+		$post_id_list = '';
+		if ($this->input->post('chk_post_id')) {
+			$post_id_list = '';
+			$chk_post_id = $this->input->post('chk_post_id');
+			foreach ($chk_post_id as $val) {
+				if (empty($post_id)) {
+					$post_id = $val;
+				}
+				$post_id_list .= $val . ',';
+			}
+		} elseif ($post_id) {
+			$post_id_list = $post_id;
+		}
+		if ($this->input->post('post_id_list')) {
+			$post_id_list = $this->input->post('post_id_list');
+		}
+		$view['view']['post_id_list'] = $post_id_list;
+
+		$cit_id_list = '';
+		if ($this->input->post('chk_cit_id')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		} 
+		if ($this->input->post('cit_id_list')) {
+			$cit_id_list = $this->input->post('cit_id_list');
+		}
+		$view['view']['cit_id_list'] = $cit_id_list;
+
+		
+		$post = $this->Post_model->get_one($post_id);
+		$board = $this->board->item_all(element('brd_id', $post));
+
+		$view['view']['post'] = $post;
+		$view['view']['board'] = $board;
+
+		$config = array(
+			array(
+				'field' => 'is_submit',
+				'label' => '체크',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_brand_text',
+				'label' => '브랜드',
+				'rules' => 'trim',
+			),
+		);
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules($config);
+		$form_validation = $this->form_validation->run();
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($form_validation === false OR ! $this->input->post('is_submit')) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+			
+			
+			
+			$view['view']['data']['brand_list'] = $this->Cmall_brand_model->get();
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+			/**
+			 * 레이아웃을 정의합니다
+			 */
+			$page_title = element('brd_name', $board) . ' > 브랜드 변경';
+			$layoutconfig = array(
+				'path' => 'helptool',
+				'layout' => 'layout_popup',
+				'skin' => 'post_change_brand',
+				'layout_dir' => $this->cbconfig->item('layout_helptool'),
+				'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+				'skin_dir' => $this->cbconfig->item('skin_helptool'),
+				'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+				'page_title' => $page_title,
+			);
+			$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+			$this->data = $view;
+			$this->layout = element('layout_skin_file', element('layout', $view));
+			$this->view = element('view_skin_file', element('layout', $view));
+
+		} else {
+			
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+
+			if($this->input->post('brd_brand_text',null,'')){
+				$this->db->select('cbr_id');			
+				$this->db->from('cmall_brand');
+				$this->db->where('cbr_value_kr', $this->input->post('brd_brand_text',null,''));
+				$this->db->or_where('cbr_value_en', $this->input->post('brd_brand_text',null,''));
+				$result = $this->db->get();
+				$brd_brand = $result->row_array();
+			}
+
+			$cit_brand = empty($brd_brand) ? 0 : element('cbr_id',$brd_brand);
+
+			$updatedata = array(							
+							'cbr_id' => $cit_brand,
+							
+						);
+
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id', $postwhere, '', '');
+
+
+						
+
+
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+							$this->Cmall_item_model->update(element('cit_id', $c_value), $updatedata);
+						    
+						}
+						
+
+						
+
+						// $post = $this->Post_model->get_one($post_id);
+						// $board = $this->board->item_all(element('brd_id', $post));
+
+
+						// $chk_post_category = $this->input->post('chk_post_category', null, '');
+
+						// $postupdate = array(
+						// 	'post_category' => $chk_post_category,
+						// );
+						// $this->Post_model->update($post_id, $postupdate);
+					}
+				}
+			}
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+				if ($arr) {					
+					foreach($arr as $val){
+						if (empty($val)) {
+							continue;
+						}
+						
+
+
+						$this->Cmall_item_model->update($val, $updatedata);
+						
+					}
+				
+				}
+			}
+			alert_refresh_close('브랜드가 변경되었습니다');
+		}
+	}
+
+
+	public function post_delete_tag($post_id = '')
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_helptool_post_change_category';
+		$this->load->event($eventname);
+
+		$is_admin = $this->member->is_admin();
+
+		if ($is_admin === false) {
+			alert('접근권한이 없습니다');
+			return false;
+		}
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Crawl_tag_model','Crawl_tag_delete_model','Cmall_item_model','Vision_api_label_model'));
+
+		$post_id_list = '';
+		if ($this->input->post('chk_post_id')) {
+			$post_id_list = '';
+			$chk_post_id = $this->input->post('chk_post_id');
+			foreach ($chk_post_id as $val) {
+				if (empty($post_id)) {
+					$post_id = $val;
+				}
+				$post_id_list .= $val . ',';
+			}
+		} elseif ($post_id) {
+			$post_id_list = $post_id;
+		}
+		if ($this->input->post('post_id_list')) {
+			$post_id_list = $this->input->post('post_id_list');
+		}
+		$view['view']['post_id_list'] = $post_id_list;
+
+		$cit_id_list = '';
+		if ($this->input->post('chk_cit_id')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		} 
+		if ($this->input->post('cit_id_list')) {
+			$cit_id_list = $this->input->post('cit_id_list');
+		}
+		$view['view']['cit_id_list'] = $cit_id_list;
+
+		
+		$post = $this->Post_model->get_one($post_id);
+		$board = $this->board->item_all(element('brd_id', $post));
+
+		$view['view']['post'] = $post;
+		$view['view']['board'] = $board;
+
+		$config = array(
+			array(
+				'field' => 'is_submit',
+				'label' => '체크',
+				'rules' => 'trim',
+			),
+			
+		);
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules($config);
+		$form_validation = $this->form_validation->run();
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($form_validation === false OR ! $this->input->post('is_submit')) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+			
+			
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+
+					$getdata['cta_tag'] = '';
+					$getdata['val_tag'] = '';
+					$tag_array=array();
+					$label_array=array();
+
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id', $postwhere, '', '');
+
+
+						
+
+						
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+							
+							$crawlwhere = array(
+								'cit_id' => element('cit_id',$c_value),
+							);
+							$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+							if ($tag && is_array($tag)) {
+								
+								foreach ($tag as $tvalue) {
+									if (element('cta_tag', $tvalue)) {
+										if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
+										array_push($tag_array,trim(element('cta_tag', $tvalue)));
+									}
+								}
+								
+							}
+						}
+						
+						
+
+						$getdata['val_tag'] = '';
+						$label_array=array();
+						$crawlwhere = array(
+							'cit_id' => element('cit_id',$c_value),
+						);
+						$tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('val_tag', $tvalue)) {
+									if(!in_array(trim(element('val_tag', $tvalue)),$label_array))
+									array_push($label_array,trim(element('val_tag', $tvalue)));
+								}
+							}
+							
+						}
+
+						
+					}
+
+					$getdata['val_tag'] = implode("\n",$label_array);
+					$getdata['cta_tag'] = implode("\n",$tag_array);
+				}
+			}
+
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+
+				$getdata['cta_tag'] = '';
+				$getdata['val_tag'] = '';
+				$tag_array=array();
+				$label_array=array();
+
+				if ($arr) {
+					foreach($arr as $val){
+						if (empty($val)) {
+							continue;
+						}
+						
+
+						
+						
+
+							
+						$crawlwhere = array(
+							'cit_id' => $val,
+						);
+						$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('cta_tag', $tvalue)) {
+									if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
+									array_push($tag_array,trim(element('cta_tag', $tvalue)));
+								}
+							}
+							
+						}
+						
+						
+						
+
+						
+						
+						$crawlwhere = array(
+							'cit_id' => $val,
+						);
+						$tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('val_tag', $tvalue)) {
+									if(!in_array(trim(element('val_tag', $tvalue)),$label_array))
+									array_push($label_array,trim(element('val_tag', $tvalue)));
+								}
+							}
+							
+						}
+
+						
+
+						
+						
+					}
+
+				
+				$getdata['val_tag'] = implode("\n",$label_array);
+				$getdata['cta_tag'] = implode("\n",$tag_array);
+					
+				}
+			}
+			
+			
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+			$view['view']['data']['val_tag'] = element('val_tag', $getdata);
+			$view['view']['data']['cta_tag1'] = element('cta_tag', $getdata);
+
+			/**
+			 * 레이아웃을 정의합니다
+			 */
+			$page_title = '태그 삭제';
+			$layoutconfig = array(
+				'path' => 'helptool',
+				'layout' => 'layout_popup',
+				'skin' => 'post_add_tag',
+				'layout_dir' => $this->cbconfig->item('layout_helptool'),
+				'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+				'skin_dir' => $this->cbconfig->item('skin_helptool'),
+				'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+				'page_title' => $page_title,
+			);
+			$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+			$this->data = $view;
+			$this->layout = element('layout_skin_file', element('layout', $view));
+			$this->view = element('view_skin_file', element('layout', $view));
+
+		} else {
+			
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+			$cta_tag1 = $this->input->post('cta_tag1') ? $this->input->post('cta_tag1') : '';
+
+			$cta_tag_text=array();
+			
+			$cta_tag_text = explode("\n",urldecode($cta_tag1));
+
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id,post_id,brd_id', $postwhere, '', '');
+
+
+						
+
+
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+
+							if(count($cta_tag_text)){
+							    // $deletewhere = array(
+							    //     'cit_id' => $pid,
+							    //     'is_manual' => 0,
+							    // );
+							    // $this->Crawl_tag_model->delete_where($deletewhere);            
+							    if ($cta_tag_text && is_array($cta_tag_text)) {
+							        foreach ($cta_tag_text as $key => $value) {
+
+
+							            $value = trim($value);
+							            if ($value) {
+
+						            		$countwhere = array(
+						            	            'post_id' => element('post_id', $c_value),
+						            	            'cit_id' => element('cit_id', $c_value),
+						            	            'brd_id' => element('brd_id', $c_value),
+						            	            'ctd_tag' => $value,
+						            	        );
+						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
+						            		if(element('cta_id',$tag)){
+
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $c_value),
+						            			    'cit_id' => element('cit_id', $c_value),
+						            			    'brd_id' => element('brd_id', $c_value),
+						            			    'ctd_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);		            			
+						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
+						            		} else {
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $c_value),
+						            			    'cit_id' => element('cit_id', $c_value),
+						            			    'brd_id' => element('brd_id', $c_value),
+						            			    'ctd_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);
+						            			$this->Crawl_tag_delete_model->insert($tagdata);
+						            		}
+
+							                
+							            }
+							        }
+							    }
+							    
+							}
+						    
+						}
+						
+
+						
+
+						// $post = $this->Post_model->get_one($post_id);
+						// $board = $this->board->item_all(element('brd_id', $post));
+
+
+						// $chk_post_category = $this->input->post('chk_post_category', null, '');
+
+						// $postupdate = array(
+						// 	'post_category' => $chk_post_category,
+						// );
+						// $this->Post_model->update($post_id, $postupdate);
+					}
+				}
+			}
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+				if ($arr) {					
+					foreach($arr as $val){
+						if (empty($val)) {
+							continue;
+						}
+						
+						$Cmall_item = $this->Cmall_item_model
+						    ->get_one($val, 'cit_id,post_id,brd_id');
+
+						if(count($cta_tag_text)){
+							    
+
+
+							    if ($cta_tag_text && is_array($cta_tag_text)) {
+							        foreach ($cta_tag_text as $key => $value) {
+
+
+							            $value = trim($value);
+							            if ($value) {
+
+	            						    $deletewhere = array(
+	            						        'post_id' => element('post_id', $Cmall_item),
+	            	            	            'cit_id' => $val,
+	            	            	            'brd_id' => element('brd_id', $Cmall_item),
+	            	            	            'cta_tag' => $value,
+	            						        
+	            						    );
+	            						    $this->Crawl_tag_model->delete_where($deletewhere);            
+
+						            		$countwhere = array(
+						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            'cit_id' => $val,
+						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            'ctd_tag' => $value,
+						            	        );
+
+						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
+						            		if(element('cta_id',$tag)){						            		
+
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $Cmall_item),
+						            			    'cit_id' => $val,
+						            			    'brd_id' => element('brd_id', $Cmall_item),
+						            			    'ctd_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);		            			
+						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
+						            		} else {
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $Cmall_item),
+						            			    'cit_id' => $val,
+						            			    'brd_id' => element('brd_id', $Cmall_item),
+						            			    'ctd_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);
+						            			$this->Crawl_tag_delete_model->insert($tagdata);
+						            		}
+
+							                
+							            }
+							        }
+							    }
+							    
+							}
+						    
+						}
+						
+					}
+				
+				}
+			
+			alert_refresh_close('태그가 변경되었습니다');
+		}
+	}
+
+	public function post_add_tag($post_id = '')
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_helptool_post_change_category';
+		$this->load->event($eventname);
+
+		$is_admin = $this->member->is_admin();
+
+		if ($is_admin === false) {
+			alert('접근권한이 없습니다');
+			return false;
+		}
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Crawl_tag_model','Cmall_item_model','Vision_api_label_model'));
+
+		$post_id_list = '';
+		if ($this->input->post('chk_post_id')) {
+			$post_id_list = '';
+			$chk_post_id = $this->input->post('chk_post_id');
+			foreach ($chk_post_id as $val) {
+				if (empty($post_id)) {
+					$post_id = $val;
+				}
+				$post_id_list .= $val . ',';
+			}
+		} elseif ($post_id) {
+			$post_id_list = $post_id;
+		}
+		if ($this->input->post('post_id_list')) {
+			$post_id_list = $this->input->post('post_id_list');
+		}
+		$view['view']['post_id_list'] = $post_id_list;
+
+		$cit_id_list = '';
+		if ($this->input->post('chk_cit_id')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		} 
+		if ($this->input->post('cit_id_list')) {
+			$cit_id_list = $this->input->post('cit_id_list');
+		}
+		$view['view']['cit_id_list'] = $cit_id_list;
+
+		
+		$post = $this->Post_model->get_one($post_id);
+		$board = $this->board->item_all(element('brd_id', $post));
+
+		$view['view']['post'] = $post;
+		$view['view']['board'] = $board;
+
+		$config = array(
+			array(
+				'field' => 'is_submit',
+				'label' => '체크',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_brand_text',
+				'label' => '브랜드',
+				'rules' => 'trim',
+			),
+		);
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules($config);
+		$form_validation = $this->form_validation->run();
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($form_validation === false OR ! $this->input->post('is_submit')) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+			
+			
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+
+					$getdata['cta_tag'] = '';
+					$getdata['val_tag'] = '';
+					$tag_array=array();
+					$label_array=array();
+
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id', $postwhere, '', '');
+
+
+						
+
+						
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+							
+							$crawlwhere = array(
+								'cit_id' => element('cit_id',$c_value),
+							);
+							$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+							if ($tag && is_array($tag)) {
+								
+								foreach ($tag as $tvalue) {
+									if (element('cta_tag', $tvalue)) {
+										if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
+										array_push($tag_array,trim(element('cta_tag', $tvalue)));
+									}
+								}
+								
+							}
+						}
+						
+						
+
+						$getdata['val_tag'] = '';
+						$label_array=array();
+						$crawlwhere = array(
+							'cit_id' => element('cit_id',$c_value),
+						);
+						$tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('val_tag', $tvalue)) {
+									if(!in_array(trim(element('val_tag', $tvalue)),$label_array))
+									array_push($label_array,trim(element('val_tag', $tvalue)));
+								}
+							}
+							
+						}
+
+						
+					}
+
+					$getdata['val_tag'] = implode("\n",$label_array);
+					$getdata['cta_tag'] = implode("\n",$tag_array);
+				}
+			}
+
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+
+				$getdata['cta_tag'] = '';
+				$getdata['val_tag'] = '';
+				$tag_array=array();
+				$label_array=array();
+
+				if ($arr) {
+					foreach($arr as $val){
+						if (empty($val)) {
+							continue;
+						}
+						
+
+						
+						
+
+							
+						$crawlwhere = array(
+							'cit_id' => $val,
+						);
+						$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('cta_tag', $tvalue)) {
+									if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
+									array_push($tag_array,trim(element('cta_tag', $tvalue)));
+								}
+							}
+							
+						}
+						
+						
+						
+
+						
+						
+						$crawlwhere = array(
+							'cit_id' => $val,
+						);
+						$tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+						if ($tag && is_array($tag)) {
+							
+							foreach ($tag as $tvalue) {
+								if (element('val_tag', $tvalue)) {
+									if(!in_array(trim(element('val_tag', $tvalue)),$label_array))
+									array_push($label_array,trim(element('val_tag', $tvalue)));
+								}
+							}
+							
+						}
+
+						
+
+						
+						
+					}
+
+				
+				$getdata['val_tag'] = implode("\n",$label_array);
+				$getdata['cta_tag'] = implode("\n",$tag_array);
+					
+				}
+			}
+			
+			
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+			$view['view']['data']['val_tag'] = element('val_tag', $getdata);
+			$view['view']['data']['cta_tag1'] = element('cta_tag', $getdata);
+
+			/**
+			 * 레이아웃을 정의합니다
+			 */
+			$page_title = '태그 추가';
+			$layoutconfig = array(
+				'path' => 'helptool',
+				'layout' => 'layout_popup',
+				'skin' => 'post_add_tag',
+				'layout_dir' => $this->cbconfig->item('layout_helptool'),
+				'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+				'skin_dir' => $this->cbconfig->item('skin_helptool'),
+				'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+				'page_title' => $page_title,
+			);
+			$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+			$this->data = $view;
+			$this->layout = element('layout_skin_file', element('layout', $view));
+			$this->view = element('view_skin_file', element('layout', $view));
+
+		} else {
+			
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+			$cta_tag1 = $this->input->post('cta_tag1') ? $this->input->post('cta_tag1') : '';
+
+			$cta_tag_text=array();
+			
+			$cta_tag_text = explode("\n",urldecode($cta_tag1));
+
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id,post_id,brd_id', $postwhere, '', '');
+
+
+						
+
+
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+
+							if(count($cta_tag_text)){
+							    // $deletewhere = array(
+							    //     'cit_id' => $pid,
+							    //     'is_manual' => 0,
+							    // );
+							    // $this->Crawl_tag_model->delete_where($deletewhere);            
+							    if ($cta_tag_text && is_array($cta_tag_text)) {
+							        foreach ($cta_tag_text as $key => $value) {
+
+
+							            $value = trim($value);
+							            if ($value) {
+
+						            		$countwhere = array(
+						            	            'post_id' => element('post_id', $c_value),
+						            	            'cit_id' => element('cit_id', $c_value),
+						            	            'brd_id' => element('brd_id', $c_value),
+						            	            'cta_tag' => $value,
+						            	        );
+						            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+						            		if(element('cta_id',$tag)){
+
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $c_value),
+						            			    'cit_id' => element('cit_id', $c_value),
+						            			    'brd_id' => element('brd_id', $c_value),
+						            			    'cta_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);		            			
+						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $updatedata);
+						            		} else {
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $c_value),
+						            			    'cit_id' => element('cit_id', $c_value),
+						            			    'brd_id' => element('brd_id', $c_value),
+						            			    'cta_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);
+						            			$this->Crawl_tag_model->insert($tagdata);
+						            		}
+
+							                
+							            }
+							        }
+							    }
+							    
+							}
+						    
+						}
+						
+
+						
+
+						// $post = $this->Post_model->get_one($post_id);
+						// $board = $this->board->item_all(element('brd_id', $post));
+
+
+						// $chk_post_category = $this->input->post('chk_post_category', null, '');
+
+						// $postupdate = array(
+						// 	'post_category' => $chk_post_category,
+						// );
+						// $this->Post_model->update($post_id, $postupdate);
+					}
+				}
+			}
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+				if ($arr) {					
+					foreach($arr as $val){
+						if (empty($val)) {
+							continue;
+						}
+						
+						$Cmall_item = $this->Cmall_item_model
+						    ->get_one($val, 'cit_id,post_id,brd_id');
+
+						if(count($cta_tag_text)){
+							    // $deletewhere = array(
+							    //     'cit_id' => $pid,
+							    //     'is_manual' => 0,
+							    // );
+							    // $this->Crawl_tag_model->delete_where($deletewhere);            
+							    if ($cta_tag_text && is_array($cta_tag_text)) {
+							        foreach ($cta_tag_text as $key => $value) {
+
+
+							            $value = trim($value);
+							            if ($value) {
+
+						            		$countwhere = array(
+						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            'cit_id' => $val,
+						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            'cta_tag' => $value,
+						            	        );
+
+						            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+						            		if(element('cta_id',$tag)){						            		
+
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $Cmall_item),
+						            			    'cit_id' => $val,
+						            			    'brd_id' => element('brd_id', $Cmall_item),
+						            			    'cta_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);		            			
+						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $updatedata);
+						            		} else {
+						            			$tagdata = array(
+						            			    'post_id' => element('post_id', $Cmall_item),
+						            			    'cit_id' => $val,
+						            			    'brd_id' => element('brd_id', $Cmall_item),
+						            			    'cta_tag' => $value,
+						            			    'is_manual' => 1,
+						            			);
+						            			$this->Crawl_tag_model->insert($tagdata);
+						            		}
+
+							                
+							            }
+							        }
+							    }
+							    
+							}
+						    
+						}
+						
+					}
+				
+				}
+			
+			alert_refresh_close('태그가 변경되었습니다');
+		}
 	}
 }

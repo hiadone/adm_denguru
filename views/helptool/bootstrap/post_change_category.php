@@ -9,6 +9,7 @@
 	?>
 		<input type="hidden" name="is_submit" value="1" />
 		<input type="hidden" name="post_id_list" value="<?php echo element('post_id_list', $view); ?>" />
+		<input type="hidden" name="cit_id_list" value="<?php echo element('cit_id_list', $view); ?>" />
 		<table class="table table-striped mt20">
 			<tbody>
 			<?php

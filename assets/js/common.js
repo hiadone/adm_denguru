@@ -1061,10 +1061,49 @@ if (typeof(COMMON_JS) === 'undefined') {
 		
 	}
 
-	function theme_in_store(the_id) {
+	function theme_in_store(oth_id) {
 		var f = document.fboardlist;
-		var sub_win = window.open(cb_url + '/helptool/theme_in_store/'+the_id, 'theme_in_store', 'left=100, top=50, width=600, height=700, scrollbars=1');
+		var sub_win = window.open(cb_url + '/helptool/theme_in_store/'+oth_id, 'theme_in_store', 'left=100, top=50, width=600, height=700, scrollbars=1');
 
 		
+	}
+
+	function post_multi_change_brand() {
+		var f = document.fboardlist;
+		var sub_win = window.open('', 'change_brand', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+		f.target = 'change_brand';
+		f.method = 'post';
+		f.action = cb_url + '/helptool/post_change_brand';
+		f.submit();
+	}
+
+	function post_multi_add_tag() {
+		var f = document.fboardlist;
+		var sub_win = window.open('', 'add_tag', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+		f.target = 'add_tag';
+		f.method = 'post';
+		f.action = cb_url + '/helptool/post_add_tag';
+		f.submit();
+	}
+
+	function post_multi_delete_tag() {
+		var f = document.fboardlist;
+		var sub_win = window.open('', 'delete_tag', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+		f.target = 'delete_tag';
+		f.method = 'post';
+		f.action = cb_url + '/helptool/post_delete_tag';
+		f.submit();
+	}
+
+	function all_postlist_checked(flag) {
+		var f = document.fboardlist;
+		for (var i = 0; i < f.length; i++) {
+			if (f.elements[i].name === 'chk_cit_id[]') {
+				f.elements[i].checked = flag;
+			}
+		}
 	}
 }

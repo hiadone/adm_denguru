@@ -3,7 +3,7 @@
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
-		echo form_open(current_full_url(), $attributes);
+		echo form_open_multipart(current_full_url(), $attributes);
 		?>
 			<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
 			<div class="form-group">

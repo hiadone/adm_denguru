@@ -295,7 +295,9 @@ class Crawl extends CB_Controller
 
                 $item = array();
                 $_post_id='';
-                $cbr_id = '';
+                $cbr_id = 0;
+                $_cbr_id = 0;
+                $brd_brand = element('brd_brand',$board);
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -357,6 +359,20 @@ class Crawl extends CB_Controller
                 if(empty($cbr_id)) $cbr_id = $this->cmall_brand(element('crw_name',$val),1);
 
                 if(element('cit_id',$item)){
+
+                    if(element('cbr_id',$item)) {
+
+                        $_cbr_id = element('cbr_id',$item);
+                    } 
+
+                    if(empty($cbr_id)){
+                        if($brd_brand) {
+                            $cbr_id = $brd_brand;
+                        } 
+                    }
+                    
+
+
                     $is_new = false;
                     $new_icon_hour = ($this->cbconfig->get_device_view_type() === 'mobile')
                     ? element('mobile_new_icon_hour', $board)
@@ -378,7 +394,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
+                        'cbr_id' => isset($_cbr_id) ? $_cbr_id : $cbr_id,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -521,6 +537,13 @@ class Crawl extends CB_Controller
                         
                     } 
                 } else {
+                     
+
+                    if(empty($cbr_id)){
+                        if($brd_brand) {
+                            $cbr_id = $brd_brand;
+                        } 
+                    }
 
                     $updatedata = array(
                         
@@ -534,7 +557,7 @@ class Crawl extends CB_Controller
                         'cit_goods_code' => element('crw_goods_code', $val),                        
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => 1,
-                        'cbr_id' => isset($cbr_id[0]) ? $cbr_id[0] : 0,
+                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         'cit_type3' => 1,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
@@ -1987,7 +2010,7 @@ class Crawl extends CB_Controller
                     if(count($translate_text)){
                         
 
-                        
+            
                         
                         if ($translate_text && is_array($translate_text)) {
                             foreach ($translate_text as  $text) {
@@ -2000,7 +2023,7 @@ class Crawl extends CB_Controller
                                             'brd_id' => element('brd_id', $val),
                                             'cta_tag' => $text,
                                         );
-                                    if(!$this->Crawl_tag_model->count_by($where)) {
+                                    if(!$this->Crawl_tag_model->count_by($where) && !$this->Crawl_tag_delete_model->count_by($where)) {
                                         
                                         $tagdata = array(
                                             'post_id' => element('post_id', $val),
@@ -3713,7 +3736,13 @@ class Crawl extends CB_Controller
             }
 
             
+            if($brd_id == '24'){
+                if(strpos(strtolower($crw_category1),strtolower('brand')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
 
+            }
 
             if($brd_id == '82'){
                 if(strpos($crw_category1,'브랜드') !==false || strpos($crw_category1,'공부하는') !==false){
@@ -3725,6 +3754,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '94'){
                 if(strpos(strtolower($crw_category1),strtolower('KNITTING')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '105'){
+                if(strpos(strtolower($crw_category1),strtolower('캣사료')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3779,25 +3816,8 @@ class Crawl extends CB_Controller
 
             }
 
-            if($brd_id == '258'){
-                if(strpos(strtolower($crw_category2),strtolower('브랜드별')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
-
-
-            if($brd_id == '190'){
+             if($brd_id == '190'){
                 if(strpos(strtolower($crw_category1),strtolower('반려동물')) !==true ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
-
-            if($brd_id == '261'){
-                if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3812,6 +3832,27 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '258'){
+                if(strpos(strtolower($crw_category2),strtolower('브랜드별')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
+           
+
+            if($brd_id == '261'){
+                if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            
+
             if($brd_id == '316'){
                 if(strpos(strtolower($crw_category1),strtolower('클래스')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
@@ -3820,13 +3861,7 @@ class Crawl extends CB_Controller
 
             }
 
-             if($brd_id == '105'){
-                if(strpos(strtolower($crw_category1),strtolower('캣사료')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
+            
 
 
 
@@ -4027,6 +4062,23 @@ class Crawl extends CB_Controller
                 }
 
 
+            if($brd_id == '24'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '82'){
+                if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+
             if($brd_id == '82'){
                 if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
@@ -4037,6 +4089,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '94'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('KNITTING')) !==false){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '105'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('캣사료')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -4091,24 +4151,8 @@ class Crawl extends CB_Controller
 
             }
 
-            if($brd_id == '258'){
-                if(strpos(strtolower($updatedata['crw_category2']),strtolower('브랜드별')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
-
             if($brd_id == '190'){
                 if(strpos(strtolower($updatedata['crw_category2']),strtolower('반려동물')) !==true ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
-
-            if($brd_id == '261'){
-                if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -4123,6 +4167,26 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '258'){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('브랜드별')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            
+
+            if($brd_id == '261'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
+                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            
+
             if($brd_id == '316'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('클래스')) !==false ){
                     $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
@@ -4131,13 +4195,7 @@ class Crawl extends CB_Controller
 
             }
 
-            if($brd_id == '105'){
-                if(strpos(strtolower($updatedata['crw_category1']),strtolower('캣사료')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
-                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                }
-
-            }
+            
 
 
             
@@ -5955,6 +6013,7 @@ class Crawl extends CB_Controller
                 // if(empty(element('cca_text',$a_cvalue_))) continue; 
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
+                        'is_manual' => 0,
                     );
 
                     $this->Cmall_category_rel_model->delete_where($deletewhere);   
@@ -5962,6 +6021,11 @@ class Crawl extends CB_Controller
 
                 if($cmall_category){                                      
                     
+                    $manualwhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' => 1,
+                    );
+                    if($this->Cmall_category_rel_model->count_by($manualwhere)) continue;                       
                     // $updatedata['post_category'] = $post_category;
                     // $this->Post_model->update(element('post_id',$post), $updatedata);
                     // $deletewhere = array(
