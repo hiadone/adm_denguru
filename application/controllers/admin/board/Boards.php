@@ -403,6 +403,7 @@ class Boards extends CB_Controller
 				$brd_brand = $result->row_array();
 			}
 
+
 			$brd_order = $this->input->post('brd_order') ? $this->input->post('brd_order') : 0;
 			$brd_brand = empty($brd_brand) ? 0 : element('cbr_id',$brd_brand);
 			$brd_search = $this->input->post('brd_search') ? $this->input->post('brd_search') : 0;
@@ -606,13 +607,14 @@ class Boards extends CB_Controller
 		if(element('brd_brand', $getdata))			
 			$brand_text = $this->Cmall_brand_model->get_one(element('brd_brand', $getdata));
 
+
 			if(element('cbr_value_kr',$brand_text))
-				$getdata['cit_brand_text']	= element('cbr_value_kr',$brand_text);
+				$getdata['brd_brand_text']	= element('cbr_value_kr',$brand_text);
 			elseif(element('cbr_value_kr',$brand_text))
 				$getdata['brd_brand_text']	= element('cbr_value_en',$brand_text);
 			else
 				$getdata['brd_brand_text']	= '';
-
+			
 		$getdata['brand_list'] = $this->Cmall_brand_model->get();
 
 		$view['view']['data'] = $getdata;
