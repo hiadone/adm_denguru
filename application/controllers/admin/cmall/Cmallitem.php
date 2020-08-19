@@ -902,7 +902,7 @@ class Cmallitem extends CB_Controller
 			}
 
 			$cit_order = $this->input->post('cit_order') ? $this->input->post('cit_order') : 0;
-			$cit_brand = empty($cit_brand) ? 0 : $cit_brand;
+			$cbr_id = empty($cit_brand) ? 0 : element('cbr_id',$cit_brand);
 			$cit_type1 = $this->input->post('cit_type1') ? $this->input->post('cit_type1') : 0;
 			$cit_type2 = $this->input->post('cit_type2') ? $this->input->post('cit_type2') : 0;
 			$cit_type3 = $this->input->post('cit_type3') ? $this->input->post('cit_type3') : 0;
@@ -919,7 +919,7 @@ class Cmallitem extends CB_Controller
 			$updatedata = array(
 				'cit_key' => $this->input->post('cit_key', null, ''),
 				'cit_name' => $this->input->post('cit_name', null, ''),
-				'cbr_id' => element('cbr_id',$cit_brand),
+				'cbr_id' => $cbr_id,
 				'cit_order' => $cit_order,
 				'cit_type1' => $cit_type1,
 				'cit_type2' => $cit_type2,
