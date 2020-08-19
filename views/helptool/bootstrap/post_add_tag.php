@@ -27,10 +27,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <textarea class="form-control" name="val_tag" id="val_tag" rows="5"><?php echo set_value('val_tag', element('val_tag', element('data', $view))); ?></textarea>
                                             <div class="help-block">이미지 분석 라벨입니다(수정 불가)</div>
                                         </div>
-                                        <label class="col-sm-2 control-label">태그</label>
+                                        <label class="col-sm-2 control-label">적용된 태그들 </label>
                                         <div class="col-sm-4">
                                             <textarea class="form-control" name="cta_tag1" id="cta_tag1" rows="5"><?php echo set_value('cta_tag1', element('cta_tag1', element('data', $view))); ?></textarea>
-                                            <div class="help-block">태그 입력(엔터로 구분하여 입력)</div>
+                                            <div class="help-block"><?php echo element('page_title',  $layout); ?>(엔터로 구분하여 입력)</div>
                                         </div>
                                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">                    
