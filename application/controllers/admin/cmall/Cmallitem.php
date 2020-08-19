@@ -316,6 +316,11 @@ class Cmallitem extends CB_Controller
 				'rules' => 'trim|required',
 			),
 			array(
+				'field' => 'cit_goods_code',
+				'label' => '상품코드',
+				'rules' => 'trim|required',
+			),
+			array(
 				'field' => 'cit_brand_text',
 				'label' => '브랜드',
 				'rules' => 'trim',
@@ -558,11 +563,11 @@ class Cmallitem extends CB_Controller
 				'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[cmall_item.cit_key.cit_id.' . $getdata['cit_id'] . ']',
 			);
 		} else {
-			$config[] = array(
-				'field' => 'cit_key',
-				'label' => '페이지주소',
-				'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[cmall_item.cit_key]',
-			);
+			// $config[] = array(
+			// 	'field' => 'cit_key',
+			// 	'label' => '페이지주소',
+			// 	'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[cmall_item.cit_key]',
+			// );
 		}
 		$this->form_validation->set_rules($config);
 
@@ -583,7 +588,7 @@ class Cmallitem extends CB_Controller
 						@fclose($f);
 						@chmod($file, 0644);
 					}
-					$upload_path .= element('brd_id', $getdata) . '/';
+					$upload_path .= $this->input->post('brd_id', null, '') . '/';
 					if (is_dir($upload_path) === false) {
 						mkdir($upload_path, 0707);
 						$file = $upload_path . 'index.php';
@@ -592,7 +597,7 @@ class Cmallitem extends CB_Controller
 						@fclose($f);
 						@chmod($file, 0644);
 					}
-					$upload_path .= element('post_id', $getdata) . '/';
+					$upload_path .= $this->input->post('post_id', null, '') . '/';
 					if (is_dir($upload_path) === false) {
 						mkdir($upload_path, 0707);
 						$file = $upload_path . 'index.php';
@@ -612,7 +617,7 @@ class Cmallitem extends CB_Controller
 
 					if ($this->upload->do_upload('cit_file_' . $k)) {
 						$img = $this->upload->data();
-						$cit_file[$k] = element('brd_id', $getdata) . '/' . element('post_id', $getdata) . '/' . element('file_name', $img);
+						$cit_file[$k] = $this->input->post('brd_id', null, '') . '/' . $this->input->post('post_id', null, '') . '/' . element('file_name', $img);
 
 						$upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
 					} else {
@@ -903,6 +908,8 @@ class Cmallitem extends CB_Controller
 
 			$cit_order = $this->input->post('cit_order') ? $this->input->post('cit_order') : 0;
 			$cbr_id = empty($cit_brand) ? 0 : element('cbr_id',$cit_brand);
+			$cit_goods_code = $this->input->post('cit_goods_code') ? $this->input->post('cit_goods_code') : 0;
+			$cit_post_url = $this->input->post('cit_post_url') ? $this->input->post('cit_post_url') : '';
 			$cit_type1 = $this->input->post('cit_type1') ? $this->input->post('cit_type1') : 0;
 			$cit_type2 = $this->input->post('cit_type2') ? $this->input->post('cit_type2') : 0;
 			$cit_type3 = $this->input->post('cit_type3') ? $this->input->post('cit_type3') : 0;
@@ -920,6 +927,8 @@ class Cmallitem extends CB_Controller
 				'cit_key' => $this->input->post('cit_key', null, ''),
 				'cit_name' => $this->input->post('cit_name', null, ''),
 				'cbr_id' => $cbr_id,
+				'cit_goods_code' => $cit_goods_code,
+				'cit_post_url' => $cit_post_url,
 				'cit_order' => $cit_order,
 				'cit_type1' => $cit_type1,
 				'cit_type2' => $cit_type2,
@@ -959,7 +968,7 @@ class Cmallitem extends CB_Controller
 				'info_content_8', 'info_title_9', 'info_content_9', 'info_title_10', 'info_content_10',
 				'item_layout', 'item_mobile_layout', 'item_sidebar', 'item_mobile_sidebar', 'item_skin',
 				'item_mobile_skin', 'header_content', 'footer_content', 'mobile_header_content',
-				'mobile_footer_content', 'demo_user_link', 'demo_admin_link', 'seller_mem_userid', 'cit_post_url'
+				'mobile_footer_content', 'demo_user_link', 'demo_admin_link', 'seller_mem_userid'
 			);
 
 			$metadata = array();
@@ -998,6 +1007,10 @@ class Cmallitem extends CB_Controller
 				$updatedata['cit_datetime'] = cdate('Y-m-d H:i:s');
 				$updatedata['mem_id'] = $this->member->item('mem_id');
 				$pid = $this->{$this->modelname}->insert($updatedata);
+
+				$updatedata['cit_key'] = 'C_'.$pid;
+
+				$this->{$this->modelname}->update($pid, $updatedata);
 
 				$metadata['ip_address'] = $this->input->ip_address();
 

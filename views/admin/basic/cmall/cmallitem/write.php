@@ -177,6 +177,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 control-label">상품코드</label>
+					<div class="col-sm-10 form-inline">
+						<input type="text" class="form-control" name="cit_goods_code" value="<?php echo set_value('cit_goods_code', element('cit_goods_code', element('data', $view))); ?>" />
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 control-label">판매가격</label>
 					<div class="col-sm-10 form-inline">
 						<input type="number" class="form-control" name="cit_price" value="<?php echo set_value('cit_price', element('cit_price', element('data', $view))); ?>" /> 원
