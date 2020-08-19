@@ -9,7 +9,7 @@ $cmall_count =array();
 $cmall_total = 0;
 
 
-
+if(element('cmall_count', $view))
 foreach (element('cmall_count', $view) as $key => $val) 
 {
 	$cmall_count[$key] = $val;
@@ -23,7 +23,7 @@ $warning_count =array();
 $warning_total = 0;
 
 
-
+if(element('warning_count', $view))
 foreach (element('warning_count', $view) as $key => $val) 
 {
 	$warning_count[$key] = $val;
@@ -36,7 +36,7 @@ $notcategory_count =array();
 
 $notcategory_total = 0;
 
-
+if(element('notcategory_count', $view))
 foreach (element('notcategory_count', $view) as $key => $val) 
 {	
 	foreach($val as $val_){

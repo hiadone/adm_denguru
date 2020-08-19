@@ -161,12 +161,15 @@
                     </td>
                     <td style="width:130px;">
                                 <?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
-                                <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
+                                
+                            </td>
+                    <td ><?php echo element('cit_goods_code', $result); ?><br>
+                        <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
                                 <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
                                 <?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
                                 <?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
-                            </td>
-                    <td ><?php echo element('cit_goods_code', $result); ?></td>
+                        
+                    </td>
                     <td ><?php echo number_format(element('display_price', $result)); ?>
                         
                         <?php 
