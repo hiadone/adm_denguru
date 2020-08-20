@@ -546,18 +546,26 @@ class Notice extends CB_Controller
         $getdata = $this->{$this->modelname}->get_one($pid);
      
         $this->load->library('notificationlib');
-        $this->load->model('member_model');
+        $this->load->model('member_model','Notification_model');
 
         $result = $this->Member_model   
             ->get_admin_list();
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
+                $countwhere = array(
+                    'target_mem_id' => element('mem_id', $val),
+                    'not_type' => 'notice',
+                    'not_content_id' => element('noti_id',$getdata),
+                    
+                );
+                if($this->Notification_model->count_by($countwhere)) continue;
+
                 $noti_file ='';
                 if(element('is_image',$getdata))
                     $noti_file =  cdn_url('notice',element('noti_file',$getdata));
 
                 $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-                $not_url = $protocol.'//api.denguru.kr/notice/post/'.element('noti_id', $getdata); 
+                $not_url = $protocol.'://api.denguru.kr/notice/post/'.element('noti_id', $getdata); 
 
                 $this->notificationlib->set_noti(
                     1,
@@ -576,7 +584,7 @@ class Notice extends CB_Controller
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
         
-        // redirect($redirecturl);
+        redirect($redirecturl);
         
         
     }
