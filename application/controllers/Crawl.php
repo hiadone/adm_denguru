@@ -83,9 +83,6 @@ class Crawl extends CB_Controller
     public function brand_update($post_id = 0,$brd_id = 0)
     {
 
-
-
-
         
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -119,10 +116,14 @@ class Crawl extends CB_Controller
             show_404();
         }
 
+        $brd_brand = 0;
         
+        if(in_array(element('brd_id',$board),config_item('brand_auto'))){
+            
+            $brd_brand = element('brd_brand',$board);
+        }
         
 
-        
 
         $brdwhere = array(
                 'crawl_item.brd_id' => $brd_id,
@@ -165,7 +166,7 @@ class Crawl extends CB_Controller
                 $item = array();
                 $_post_id='';
                 $cbr_id = '';
-                
+                $_cbr_id='';
                 $where = array(
                     'brd_id' => element('brd_id', $val),
                     'cit_goods_code' => element('crw_goods_code', $val),
@@ -176,7 +177,7 @@ class Crawl extends CB_Controller
                 
                 $item = $this->Cmall_item_model->get_one('','',$where);
 
-               
+                
 
                 if(!element('cit_id',$item)) {
                       continue;
@@ -193,7 +194,7 @@ class Crawl extends CB_Controller
                     continue;
                 }
 
-                $cbr_id='';
+                
                 for($a=1 ; $a <6;$a++ ){
                     if(!empty($cbr_id)) break;
                     if(element('crw_brand'.$a,$val))                        
@@ -211,12 +212,20 @@ class Crawl extends CB_Controller
 
                 if(empty($cbr_id)) $cbr_id = $this->cmall_brand(element('crw_name',$val),1);
 
+                if(!empty(element('cbr_id',$item))){
+                    $_cbr_id = element('cbr_id',$item) ;                    
+                }
+                else {
+                    if(empty($cbr_id))
+                        $_cbr_id = $brd_brand ;
+                    else 
+                        $_cbr_id = $cbr_id ;
+                }
                 
-
                     $updatedata = array(
                         
                      
-                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
+                        'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
                     
                     );
 
@@ -241,7 +250,7 @@ class Crawl extends CB_Controller
     public function crawling_update($post_id = 0,$brd_id = 0)
     {
 
-
+        
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -276,7 +285,12 @@ class Crawl extends CB_Controller
         }
 
         
+         $brd_brand = 0;
         
+        if(in_array(element('brd_id',$board),config_item('brand_auto'))){
+            
+            $brd_brand = element('brd_brand',$board);
+        }
 
         
 
@@ -298,7 +312,7 @@ class Crawl extends CB_Controller
                 $_post_id='';
                 $cbr_id = 0;
                 $_cbr_id = 0;
-                $brd_brand = element('brd_brand',$board);
+                
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -361,15 +375,14 @@ class Crawl extends CB_Controller
 
                 if(element('cit_id',$item)){
 
-                    if(element('cbr_id',$item)) {
-
-                        $_cbr_id = element('cbr_id',$item);
-                    } 
-
-                    if(empty($cbr_id)){
-                        if($brd_brand) {
-                            $cbr_id = $brd_brand;
-                        } 
+                    if(!empty(element('cbr_id',$item))){
+                        $_cbr_id = element('cbr_id',$item) ;                    
+                    }
+                    else {
+                        if(empty($cbr_id))
+                            $_cbr_id = $brd_brand ;
+                        else 
+                            $_cbr_id = $cbr_id ;
                     }
                     
 
@@ -395,7 +408,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => element('is_del', $val) ? 0 : 1 ,
-                        'cbr_id' => isset($_cbr_id) ? $_cbr_id : $cbr_id,
+                        'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
@@ -540,11 +553,12 @@ class Crawl extends CB_Controller
                 } else {
                      
 
-                    if(empty($cbr_id)){
-                        if($brd_brand) {
-                            $cbr_id = $brd_brand;
-                        } 
-                    }
+                    
+                    if(empty($cbr_id))
+                        $_cbr_id = $brd_brand ;
+                    else 
+                        $_cbr_id = $cbr_id ;
+                    
 
                     $updatedata = array(
                         
@@ -558,7 +572,7 @@ class Crawl extends CB_Controller
                         'cit_goods_code' => element('crw_goods_code', $val),                        
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         'cit_status' => 1,
-                        'cbr_id' => isset($cbr_id) ? $cbr_id : 0,
+                        'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         'cit_type3' => 1,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
@@ -2918,154 +2932,10 @@ class Crawl extends CB_Controller
         
        
         $arr_str = preg_split("//u", $brand_word, -1, PREG_SPLIT_NO_EMPTY);
-                
-        $str_2 = array(
-            '우프',
-            '베럴즈',
-            '바잇미',
-            '나우',
-            '나우',
-            '갓샵',
-            '게더',
-            '고',
-            '고프',
-            '꼬뜨',
-            '뉴로',
-            '더독',
-            '도노',
-            '라루',
-            '롬',
-            '미피',
-            '부들',
-            '비킷',
-            '엔본',
-            '엔펫',
-            '올치',
-            '왈',
-            '왕짱',
-            '워피',
-            '위팸',
-            '이유',
-            '졸리',
-            '지독',
-            '지캣',
-            '질',
-            '코코',
-            '포펫',
-            '풉백',
-            '휘게',
-            '힐러',
-            '도고',
-            '도기',
-            '바비',
-            '올펫',
-            '지구',
-            '콩',
-            '로라',
-            '분독',
-            '인벳',
-            '피랩',
-            '더펫',
-            '위위',
-            '펫존',
-            '헌터',
-            '빌라',
-            '스파',
-            '벨라',
-            '벳츠',
-            '순수',
-            '오션',
-            '에바',
-            '에띠',
-            '탑컷',
-            '탑독',
-            '비유',
-            '와우',
-            '엠씨',
-            '인',
-            '폴카',
-            '파우',
-            '내추럴펫',
-            '굿독',
-            );
-        $str_2_en = array(
-            'wooof',
-'BETTERS',
-'bite me',
-'woof',
-'NOA',
-'noa',
-'godshop',
-'gather',
-'GO',
-'GOPE',
-'COTE',
-'nulo',
-'THE DOG',
-'DONO',
-'LAROO',
-'ROAM',
-'miffy',
-'booodl',
-'BIKIT',
-'N-BONE',
-'NPET',
-'OLCHI',
-'WAHL',
-'wangzzang',
-'WOOFI',
-'WE FAM',
-'EYOU',
-'JOLLY',
-'ZEEDOG',
-'ZEECAT',
-'ZEAL',
-'COCO',
-'FOR PET',
-'POOPBAG',
-'HYGGE',
-'HEALER',
-'DOGO',
-'DOGGY',
-'BOBBY',
-'allpet',
-'Zigoopets',
-'Kong',
-'AGAO PET',
-'H2O4K9',
-'4pets',
-'SSFW',
-'LORA',
-'BOONDOG',
-'CLOUD7',
-'INVET',
-'PLAB',
-'THE PET',
-'WEWE',
-'PET ZONE',
-'HUNTER',
-'vila',
-'SPA',
-'Bella',
-"VET's",
-'pure',
-'OCEAN',
-'EVA',
-'TOPCUT',
-'topdog',
-'BEYOO',
-'WAW',
-'PB',
-'MC',
-'IN',
-'NWC',
-'FAD',
-'HS',
-'POLKA',
-'PAW',
-'NATURAL PET',
+        
 
-        );
+        
+        
         // $brand_word = strtolower(str_replace(" ","",$brand_word));
         $result_kr = $this->Cmall_brand_model->get('','','','','','length(cbr_value_kr)','desc');
 
@@ -3096,7 +2966,7 @@ class Crawl extends CB_Controller
 
                     
                     $s2flag=true;
-                        foreach($str_2 as $s2val){
+                        foreach(config_item('str_2') as $s2val){
                             if(strtolower($s2val) === strtolower(element('cbr_value_kr',$value))){
                                 $s2flag = false;
                                 break;
@@ -3136,14 +3006,7 @@ class Crawl extends CB_Controller
 
 
                     
-                    $s2flag=true;
-                        foreach($str_2 as $s2val){
-                            if(strtolower($s2val) === strtolower(element('cbr_value_kr',$value))){
-                                $s2flag = false;
-                                break;
-                            }
-
-                        }
+                    
                     
 
                     if(count($arr_str_kr) > 2){
@@ -3210,7 +3073,7 @@ class Crawl extends CB_Controller
                     $cbr_value_en = preg_split("//u", element('cbr_value_en',$value), -1, PREG_SPLIT_NO_EMPTY);
                     
                     $s2flag=true;
-                        foreach($str_2_en as $s2val){
+                        foreach(config_item('str_2_en') as $s2val){
                             if(strtolower($s2val) === strtolower(element('cbr_value_en',$value))){
                                 $s2flag = false;
                                 break;
