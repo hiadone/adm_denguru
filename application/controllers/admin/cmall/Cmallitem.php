@@ -1009,6 +1009,7 @@ class Cmallitem extends CB_Controller
 				$pid = $this->{$this->modelname}->insert($updatedata);
 
 				$updatedata['cit_key'] = 'C_'.$pid;
+				$updatedata['is_manual'] = 1;
 
 				$this->{$this->modelname}->update($pid, $updatedata);
 
