@@ -13,7 +13,7 @@
                     <?php
                     if (element('noti_file', element('data', $view))) {
                     ?>
-                        <img src="<?php echo thumb_url('notice',element('noti_file', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+                        <img src="<?php echo cdn_url('notice',element('noti_file', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
                         <label for="noti_file_del">
                             <input type="checkbox" name="noti_file_del" id="noti_file_del" value="1" <?php echo set_checkbox('noti_file_del', '1'); ?> /> 삭제
                         </label>

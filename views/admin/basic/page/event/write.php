@@ -15,7 +15,7 @@
                         <?php
                         if (element('eve_image', element('data', $view))) {
                         ?>
-                            <img src="<?php echo event_image_url(element('eve_image', element('data', $view)), '', 150); ?>" alt="배너 이미지" title="배너 이미지" />
+                            <img src="<?php echo cdn_url('event',element('eve_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
                             <label for="eve_image_del">
                                 <input type="checkbox" name="eve_image_del" id="eve_image_del" value="1" <?php echo set_checkbox('eve_image_del', '1'); ?> /> 삭제
                             </label>

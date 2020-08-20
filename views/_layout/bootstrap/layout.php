@@ -153,7 +153,11 @@ var cookie_prefix = "<?php echo config_item('cookie_prefix'); ?>";
 
 								} else {
 									$mlink = element('men_link', $mval) ? element('men_link', $mval) : 'javascript:;';
-									$menuhtml .= '<li><a href="' . $mlink . '" ' . element('men_custom', $mval);
+									$active = '';
+									if(strpos(element('group_url',$view),$mlink) !== false )
+										$active = 'class="active"';
+									
+									$menuhtml .= '<li '.$active.'><a href="' . $mlink . '" ' . element('men_custom', $mval);
 									if (element('men_target', $mval)) {
 										$menuhtml .= ' target="' . element('men_target', $mval) . '"';
 									}

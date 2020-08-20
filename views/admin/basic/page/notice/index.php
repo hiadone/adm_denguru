@@ -31,6 +31,7 @@
                         <tr>
                             <th class="px80"><a href="<?php echo element('noti_id', element('sort', $view)); ?>">번호</a></th>
                             <th><a href="<?php echo element('noti_title', element('sort', $view)); ?>">제목</a></th>
+                            <th>이미지</th>
                             <!-- <th><a href="<?php echo element('noti_device', element('sort', $view)); ?>">접속기기</a></th> -->
                             <th class="px150"><a href="<?php echo element('noti_start_date', element('sort', $view)); ?>">시작일시</a></th>
                             <th class="px150"><a href="<?php echo element('noti_end_date', element('sort', $view)); ?>">종료일시</a></th>
@@ -38,6 +39,7 @@
                             <th>가운데정렬</th> -->
                             <th class="px100"><a href="<?php echo element('noti_order', element('sort', $view)); ?>">정렬순서</a></th>
                             <th class="px100"><a href="<?php echo element('noti_activated', element('sort', $view)); ?>">활성여부</a></th>
+                            <th class="px100">알림발송</th>
                             <th class="px100">수정</th>
                             <th class="px50"><input type="checkbox" name="chkall" id="chkall" /></th>
                         </tr>
@@ -50,13 +52,15 @@
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php echo html_escape(element('noti_title', $result)); ?></td>
+                            <td><?php if (element('cdn_url', $result)) {?><img src="<?php echo element('cdn_url', $result); ?>" alt="<?php echo html_escape(element('noti_title', $result)); ?>" title="<?php echo html_escape(element('noti_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
                             <!-- <td class="text-center"><?php echo element('noti_device', $result); ?></td> -->
                             <td><?php echo element('noti_start_date', $result); ?></td>
                             <td><?php echo element('noti_end_date', $result); ?></td>
                             <!-- <td class="text-center"><?php echo element('noti_disable_hours', $result); ?></td>
                             <td><?php echo element('noti_is_center', $result) ? '가운데정렬' : ''; ?></td> -->
                             <td><?php echo element('noti_order', $result); ?></td>
-                            <td><?php echo element('noti_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
+                            <td><?php echo element('noti_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-info">비활성</button>'; ?></td>
+                            <td><a href="<?php echo admin_url($this->pagedir); ?>/notification_send/<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-danger btn-xs">발송</a></td>
                             <td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
                             <td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
                         </tr>

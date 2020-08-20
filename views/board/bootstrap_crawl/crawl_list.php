@@ -93,7 +93,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_postlist_checked(true); else all_boardlist_checked(false);" type="checkbox" /></th><?php } ?>
+                    <?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_postlist_checked(true); else all_postlist_checked(false);" type="checkbox" /></th><?php } ?>
                     <th>번호</th>
                     <th>IMG</th>
                     <th>제목</th>

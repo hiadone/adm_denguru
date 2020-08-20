@@ -128,6 +128,8 @@ class Group extends CB_Controller
 
 		$view['view']['canonical'] = group_url($bgr_key);
 
+		$view['view']['group_url'] = group_url($bgr_key);
+
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 

@@ -2884,6 +2884,15 @@ class Helptool extends CB_Controller
 							            $value = trim($value);
 							            if ($value) {
 
+							            	$deletewhere = array(
+	            						        'post_id' => element('post_id', $c_value),
+	            	            	            'cit_id' => element('cit_id', $c_value),
+	            	            	            'brd_id' => element('brd_id', $c_value),
+	            	            	            'cta_tag' => $value,
+	            						        
+	            						    );
+	            						    $this->Crawl_tag_model->delete_where($deletewhere);    
+	            						    
 						            		$countwhere = array(
 						            	            'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),

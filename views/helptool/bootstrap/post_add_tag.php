@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">                    
-                        <button type="submit" class="btn btn-success btn-sm">저장하기</button>
+                        <button type="submit" class="btn btn-success btn-sm"><?php echo element('page_title',  $layout); ?>하기</button>
                     </div>
                 </div>
             <?php echo form_close(); ?>

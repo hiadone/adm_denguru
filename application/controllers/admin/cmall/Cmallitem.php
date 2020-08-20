@@ -328,7 +328,7 @@ class Cmallitem extends CB_Controller
 			array(
 				'field' => 'cit_order',
 				'label' => '상품정렬순서',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'cit_type1',
@@ -554,6 +554,16 @@ class Cmallitem extends CB_Controller
 				'field' => 'cit_post_url',
 				'label' => '실제상품페이지주소',
 				'rules' => 'trim',
+			),
+			array(
+				'field' => 'brd_id',
+				'label' => '쇼핑몰명',
+				'rules' => 'trim|required',
+			),
+			array(
+				'field' => 'post_id',
+				'label' => '게시글명',
+				'rules' => 'trim|required',
 			),
 		);
 		if ($this->input->post($primary_key)) {

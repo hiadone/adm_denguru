@@ -102,7 +102,7 @@ class Event extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 if (element('eve_image', $val)) {
-                    $result['list'][$key]['thumb_url'] = thumb_url('event', element('eve_image', $val), '80');
+                    $result['list'][$key]['cdn_url'] = cdn_url('event', element('eve_image', $val), '80');
                 }
                 if (empty($val['eve_start_date']) OR $val['eve_start_date'] === '0000-00-00') {
                     $result['list'][$key]['eve_start_date'] = '미지정';

@@ -50,7 +50,7 @@
                     ?>
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
-                            <td><?php if (element('thumb_url', $result)) {?><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('eve_title', $result)); ?>" title="<?php echo html_escape(element('eve_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
+                            <td><?php if (element('cdn_url', $result)) {?><img src="<?php echo element('cdn_url', $result); ?>" alt="<?php echo html_escape(element('eve_title', $result)); ?>" title="<?php echo html_escape(element('eve_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
                             <td><?php echo html_escape(element('eve_title', $result)); ?></td>
                             <!-- <td class="text-center"><?php echo element('eve_device', $result); ?></td> -->
                             <td><?php echo element('eve_start_date', $result); ?></td>

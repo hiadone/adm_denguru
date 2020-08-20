@@ -32,7 +32,7 @@ class Board_post extends CB_Controller
 		/**
 		 * 라이브러리를 로딩합니다
 		 */
-		$this->load->library(array('pagination','pagination_sub', 'querystring', 'accesslevel', 'videoplayer', 'point'));
+		$this->load->library(array('pagination','pagination_sub', 'querystring', 'accesslevel', 'videoplayer', 'point','board_group'));
 	}
 
 
@@ -77,6 +77,9 @@ class Board_post extends CB_Controller
 			)
 		);
 
+		$group_key = $this->board_group->item_id('bgr_key', $bgr_id);
+
+		$view['view']['group_url'] = group_url($group_key);
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 
@@ -177,6 +180,10 @@ class Board_post extends CB_Controller
 			show_404();
 		}
 
+		$group_key = $this->board_group->item_id('bgr_key', element('bgr_id', $board));
+
+		$view['view']['group_url'] = group_url($group_key);
+		
 		$skeyword = $this->input->get('skeyword', null, '');
 
 		if ($print === false && $this->uri->segment('1') !== config_item('uri_segment_admin')) {

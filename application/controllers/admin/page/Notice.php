@@ -101,6 +101,11 @@ class Notice extends CB_Controller
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
+
+                if (element('is_image', $val)) {
+                    $result['list'][$key]['cdn_url'] = cdn_url('notice', element('noti_image', $val), '80');
+                }
+
                 if (empty($val['noti_start_date']) OR $val['noti_start_date'] === '0000-00-00') {
                     $result['list'][$key]['noti_start_date'] = '미지정';
                 }
@@ -507,5 +512,64 @@ class Notice extends CB_Controller
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
         redirect($redirecturl);
+    }
+
+    public function notification_send($pid)
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_admin_page_notice_write';
+        $this->load->event($eventname);
+
+        $view = array();
+        $view['view'] = array();
+
+        // 이벤트가 존재하면 실행합니다
+        $view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+        /**
+         * 프라이머리키에 숫자형이 입력되지 않으면 에러처리합니다
+         */
+        
+        $pid = (int) $pid;
+        if (empty($pid) OR $pid < 1) {
+            show_404();
+        }
+        
+        
+
+        /**
+         * 수정 페이지일 경우 기존 데이터를 가져옵니다
+         */
+        
+        
+        $getdata = $this->{$this->modelname}->get_one($pid);
+        
+        $this->load->library('notificationlib');
+        $this->load->model('member_model');
+
+        $result = $this->Member_model
+            ->get_admin_list();
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                print_r2($val);
+            }
+        }
+
+        // $this->notificationlib->set_noti(
+        //     abs(element('mem_id', $post)),
+        //     $mem_id,
+        //     'comment',
+        //     $cmt_id,
+        //     $not_message,
+        //     $not_url
+        // );
+
+        $param =& $this->querystring;
+        $redirecturl = admin_url($this->pagedir . '?' . $param->output());
+        echo $redirecturl;
+        // redirect($redirecturl);
+        
+        
     }
 }
