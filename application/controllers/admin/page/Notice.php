@@ -544,30 +544,38 @@ class Notice extends CB_Controller
         
         
         $getdata = $this->{$this->modelname}->get_one($pid);
-        
+     
         $this->load->library('notificationlib');
         $this->load->model('member_model');
 
-        $result = $this->Member_model
+        $result = $this->Member_model   
             ->get_admin_list();
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
-                print_r2($val);
+                $noti_file ='';
+                if(element('is_image',$getdata))
+                    $noti_file =  cdn_url('notice',element('noti_file',$getdata));
+
+                $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+                $not_url = $protocol.'//api.denguru.kr/notice/post/'.element('noti_id', $getdata); 
+
+                $this->notificationlib->set_noti(
+                    1,
+                    element('mem_id', $val),
+                    'notice',
+                    element('noti_id',$getdata),
+                    element('noti_content',$getdata),
+                    $not_url,
+                    $noti_file,
+                );
             }
         }
 
-        // $this->notificationlib->set_noti(
-        //     abs(element('mem_id', $post)),
-        //     $mem_id,
-        //     'comment',
-        //     $cmt_id,
-        //     $not_message,
-        //     $not_url
-        // );
+        
 
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
-        echo $redirecturl;
+        
         // redirect($redirecturl);
         
         

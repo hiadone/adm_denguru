@@ -237,8 +237,8 @@
                     <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
                     <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
                     <div class="item" onClick="post_multi_action('cit_multi_delete', '0', '선택하신 항목을 완전삭제하시겠습니까?');"><i class="fa fa-trash-o"></i> 선택삭제하기</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
+                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
+                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
                
                 </div>
             </div>

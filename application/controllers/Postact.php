@@ -2352,6 +2352,43 @@ class Postact extends CB_Controller
 		);
 		$this->Post_model->update($post_id, $updatedata);
 
+		$postwhere = array(
+            'post_id' => $post_id,
+        );
+		$this->load->model(array('Cmall_item_model'));
+		$cresult['list'] = $this->Cmall_item_model
+		    ->get('', '', $postwhere);
+		if (element('list', $cresult)) {			
+		    foreach (element('list', $cresult) as $ckey => $cval){ 
+
+
+		    	
+
+		    	
+		    	$cit_id = (int) element('cit_id',$cval);
+		    	if (empty($cit_id) OR $cit_id < 1) {
+		    		$result = array('error' => '잘못된 접근입니다');
+		    		exit(json_encode($result));
+		    	}
+
+		    	$select = 'cit_id,post_id, brd_id,  cit_status';
+		    	$cmail = $this->Cmall_item_model->get_one($cit_id, $select);
+
+		    	if ( ! element('cit_id', $cmail)) {
+		    		$result = array('error' => '존재하지 않는 게시물입니다');
+		    		exit(json_encode($result));
+		    	}
+		    	
+
+		    	$cit_status = ((int) $flag === 1) ? 0 : 1;
+		    	$updatedata = array(
+		    		'cit_status' => $cit_status,
+		    	);
+		    	$this->Cmall_item_model->update($cit_id, $updatedata);
+
+		    }
+		}
+
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
 
@@ -2428,6 +2465,45 @@ class Postact extends CB_Controller
 				'post_blame' => $blame_count,
 			);
 			$this->Post_model->update($post_id, $updatedata);
+
+			$postwhere = array(
+                'post_id' => $post_id,
+            );
+			$this->load->model(array('Cmall_item_model'));
+			$cresult['list'] = $this->Cmall_item_model
+			    ->get('', '', $postwhere);
+			if (element('list', $cresult)) {
+				
+			    foreach (element('list', $cresult) as $ckey => $cval){ 
+
+
+			    	
+
+			    	
+			    	$cit_id = (int) element('cit_id',$cval);
+			    	if (empty($cit_id) OR $cit_id < 1) {
+			    		$result = array('error' => '잘못된 접근입니다');
+			    		exit(json_encode($result));
+			    	}
+
+			    	$select = 'cit_id,post_id, brd_id,  cit_status';
+			    	$cmail = $this->Cmall_item_model->get_one($cit_id, $select);
+
+			    	if ( ! element('cit_id', $cmail)) {
+			    		$result = array('error' => '존재하지 않는 게시물입니다');
+			    		exit(json_encode($result));
+			    	}
+			    	
+
+			    	$cit_status = ((int) $flag === 1) ? 0 : 1;
+			    	$updatedata = array(
+			    		'cit_status' => $cit_status,
+			    	);
+			    	$this->Cmall_item_model->update($cit_id, $updatedata);
+
+			    }
+			}
+
 		}
 
 		// 이벤트가 존재하면 실행합니다
