@@ -3710,7 +3710,7 @@ class Crawl extends CB_Controller
             $DB2 = $this->load->database('db2', TRUE);
             $DB2->from('crawl_item');
             if ($crw_id) {
-                $DB2->where('crw_id,crw_updated_datetime,is_del', $crw_id);
+                $DB2->where('crw_id', $crw_id);
             }
             
             
