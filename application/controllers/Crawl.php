@@ -3413,14 +3413,14 @@ class Crawl extends CB_Controller
 
             
             if(strpos($crw_category1,'고양이') !==false || strpos($crw_category2,'고양이') !==false || strpos($crw_category3,'고양이') !==false){
-                $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
             
             if($brd_id == '24'){
                 if(strpos(strtolower($crw_category1),strtolower('brand')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3428,7 +3428,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '82'){
                 if(strpos($crw_category1,'브랜드') !==false || strpos($crw_category1,'공부하는') !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3436,7 +3436,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '94'){
                 if(strpos(strtolower($crw_category1),strtolower('KNITTING')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3444,7 +3444,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '105'){
                 if(strpos(strtolower($crw_category1),strtolower('캣사료')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3452,7 +3452,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '115'){
                 if(strpos(strtolower($crw_category1),strtolower('EVENT-EVENT')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3460,7 +3460,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '140'){
                 if(strpos($crw_category1,'도매결제') !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3468,7 +3468,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '144'){
                 if(strpos(strtolower($crw_category1),strtolower('BEAUTY')) !==false || strpos(strtolower($crw_category1),strtolower('KITCHEN')) !==false || strpos(strtolower($crw_category1),strtolower('Food')) !==false || strpos(strtolower($crw_category1),strtolower('forCAT')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3476,7 +3476,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '150'){
                 if(strpos(strtolower($crw_category1),strtolower('BABY')) !==false || strpos(strtolower($crw_category1),strtolower('BEDDING')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3484,7 +3484,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '158'){
                 if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3492,7 +3492,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '165'){
                 if(strpos(strtolower($crw_category1),strtolower('브랜드')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3500,7 +3500,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '168'){
                 if(strpos(strtolower($crw_category2),strtolower('color')) !==false || strpos(strtolower($crw_category2),strtolower('Hashtag')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3508,7 +3508,7 @@ class Crawl extends CB_Controller
 
              if($brd_id == '190'){
                 if(strpos(strtolower($crw_category1),strtolower('반려동물')) !==true ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3517,7 +3517,7 @@ class Crawl extends CB_Controller
             
             if($brd_id == '195'){
                 if(strpos(strtolower($crw_category1),strtolower('반려묘')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3525,14 +3525,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '207'){
                 if(strpos(strtolower($crw_category1),strtolower('개인결제')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
             }
             if($brd_id == '228'){
                 if(strpos(strtolower($crw_category2),strtolower('all')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3540,7 +3540,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '258'){
                 if(strpos(strtolower($crw_category2),strtolower('브랜드별')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3551,15 +3551,15 @@ class Crawl extends CB_Controller
 
             if($brd_id == '261'){
                 if(strpos(strtolower($crw_category1),strtolower('brand')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
             }
 
             if($brd_id == '281'){
-                if(strpos(strtolower($crw_category1),strtolower('애견')) !==true && strpos(strtolower($crw_category2),strtolower('애견')) !==true){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                if(strpos(strtolower($crw_category2),strtolower('애견')) !==true){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3569,7 +3569,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '316'){
                 if(strpos(strtolower($crw_category1),strtolower('클래스')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3710,7 +3710,7 @@ class Crawl extends CB_Controller
             $DB2 = $this->load->database('db2', TRUE);
             $DB2->from('crawl_item');
             if ($crw_id) {
-                $DB2->where('crw_id', $crw_id);
+                $DB2->where('crw_id,crw_updated_datetime,is_del', $crw_id);
             }
             
             
@@ -3735,9 +3735,14 @@ class Crawl extends CB_Controller
                     $d++;
                 }
             }
-            if($c < $d) {
-                $result = array('resultcode'=>9000,'message' => '카테고리가 기존 데이터보다 적습니다.');
-                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            if(empty(element('is_del',$crawl_item))){
+                if(element('crw_updated_datetime',$crawl_item) && ( ctimestamp() - strtotime(element('crw_updated_datetime', $crawl_item)) <= 48 * 3600)) {                                        
+                    
+                    if($c < $d) {
+                        $result = array('resultcode'=>9001,'message' => '카테고리가 기존 데이터보다 적습니다.');
+                        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                    }
+                }
             }
 
            
@@ -3771,14 +3776,14 @@ class Crawl extends CB_Controller
            
            
             if(strpos($updatedata['crw_category1'],'고양이') !==false || strpos($updatedata['crw_category2'],'고양이') !==false || strpos($updatedata['crw_category3'],'고양이') !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
 
             if($brd_id == '24'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3786,7 +3791,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '82'){
                 if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3795,7 +3800,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '82'){
                 if(strpos($updatedata['crw_category1'],'브랜드') !==false || strpos($updatedata['crw_category1'],'공부하는') !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3803,7 +3808,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '94'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('KNITTING')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3811,7 +3816,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '105'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('캣사료')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3819,7 +3824,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '115'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('EVENT-EVENT')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3827,7 +3832,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '140'){
                 if(strpos($updatedata['crw_category1'],'도매결제') !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3835,7 +3840,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '144'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('BEAUTY')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('KITCHEN')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('Food')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('forCAT')) !==false){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3844,7 +3849,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '150'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('BABY')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('BEDDING')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3852,7 +3857,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '158'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3860,7 +3865,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '165'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('브랜드')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3868,7 +3873,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '168'){
                 if(strpos(strtolower($updatedata['crw_category2']),strtolower('color')) !==false || strpos(strtolower($updatedata['crw_category2']),strtolower('Hashtag')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3876,7 +3881,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '190'){
                 if(strpos(strtolower($updatedata['crw_category2']),strtolower('반려동물')) !==true ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3884,7 +3889,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '195'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('반려묘')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3892,7 +3897,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '207'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('개인결제')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3900,7 +3905,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '228'){
                 if(strpos(strtolower($updatedata['crw_category2']),strtolower('all')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3908,7 +3913,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '258'){
                 if(strpos(strtolower($updatedata['crw_category2']),strtolower('브랜드별')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3918,15 +3923,15 @@ class Crawl extends CB_Controller
 
             if($brd_id == '261'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('brand')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
             }
 
             if($brd_id == '281'){
-                if(strpos(strtolower($updatedata['crw_category1']),strtolower('애견')) !==true && strpos(strtolower($updatedata['crw_category2']),strtolower('애견')) !==true ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('애견')) !==true ){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
@@ -3936,7 +3941,7 @@ class Crawl extends CB_Controller
 
             if($brd_id == '316'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('클래스')) !==false ){
-                    $result = array('resultcode'=>9000,'message' => '불필요한 카테고리 입니다..');
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
 
