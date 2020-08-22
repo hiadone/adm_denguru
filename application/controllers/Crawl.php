@@ -3469,7 +3469,7 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '144'){
-                if(strpos(strtolower($crw_category1),strtolower('BEAUTY')) !==false || strpos(strtolower($crw_category1),strtolower('KITCHEN')) !==false || strpos(strtolower($crw_category1),strtolower('Food')) !==false || strpos(strtolower($crw_category1),strtolower('forCAT')) !==false){
+                if(strpos(strtolower($crw_category1),strtolower('forDOG')) ===false && strpos(strtolower($crw_category2),strtolower('forDOG')) ===false ){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3841,7 +3841,7 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '144'){
-                if(strpos(strtolower($updatedata['crw_category1']),strtolower('BEAUTY')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('KITCHEN')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('Food')) !==false || strpos(strtolower($updatedata['crw_category1']),strtolower('forCAT')) !==false){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('forDOG')) ===false && strpos(strtolower($updatedata['crw_category2']),strtolower('forDOG')) ===false ){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
