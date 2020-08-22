@@ -2244,6 +2244,7 @@ class Crawl extends CB_Controller
                     
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
+                        'is_manual' => 0,
                     );
                     $this->Crawl_tag_model->delete_where($deletewhere);            
                     if ($translate_text && is_array($translate_text)) {
@@ -2255,6 +2256,7 @@ class Crawl extends CB_Controller
                                     'cit_id' => element('cit_id', $val),
                                     'brd_id' => element('brd_id', $val),
                                     'cta_tag' => $text,
+                                    'is_manual' => 0,
                                 );
                                 $this->Crawl_tag_model->insert($tagdata);
                             }
@@ -3507,7 +3509,7 @@ class Crawl extends CB_Controller
             }
 
              if($brd_id == '190'){
-                if(strpos(strtolower($crw_category1),strtolower('반려동물')) !==true ){
+                if(strpos(strtolower($crw_category1),strtolower('반려동물')) ===false ){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3558,7 +3560,7 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '281'){
-                if(strpos(strtolower($crw_category2),strtolower('애견')) !==true){
+                if(strpos(strtolower($crw_category2),strtolower('애견')) ===false){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3880,7 +3882,7 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '190'){
-                if(strpos(strtolower($updatedata['crw_category2']),strtolower('반려동물')) !==true ){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('반려동물')) ===false ){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }
@@ -3930,7 +3932,7 @@ class Crawl extends CB_Controller
             }
 
             if($brd_id == '281'){
-                if(strpos(strtolower($updatedata['crw_category2']),strtolower('애견')) !==true ){
+                if(strpos(strtolower($updatedata['crw_category2']),strtolower('애견')) ===false ){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }

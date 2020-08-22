@@ -28,7 +28,7 @@ class Cmall_attr_rel_model extends CB_Model
     }
 
 
-    public function save_attr($cit_id = 0, $attr = '')
+    public function save_attr($cit_id = 0, $attr = '', $is_manual = 0)
     {
         $cit_id = (int) $cit_id;
         if (empty($cit_id) OR $cit_id < 1) {
@@ -44,6 +44,7 @@ class Cmall_attr_rel_model extends CB_Model
                 $insertdata = array(
                     'cit_id' => $cit_id,
                     'cat_id' => $cval,
+                    'is_manual' => $is_manual,
                 );
                 $this->insert($insertdata);
             }

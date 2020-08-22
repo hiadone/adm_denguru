@@ -1003,8 +1003,8 @@ class Cmallitem extends CB_Controller
 			if ($this->input->post($primary_key)) {
 				$this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
 				$this->Cmall_item_meta_model->save($pid, $metadata);
-				$this->Cmall_category_rel_model->save_category($this->input->post($primary_key), $cmall_category);
-				$this->Cmall_attr_rel_model->save_attr($this->input->post($primary_key), $cmall_attr);
+				$this->Cmall_category_rel_model->save_category($this->input->post($primary_key), $cmall_category,1);
+				$this->Cmall_attr_rel_model->save_attr($this->input->post($primary_key), $cmall_attr,1);
 
 				$this->session->set_flashdata(
 					'message',
@@ -1026,8 +1026,8 @@ class Cmallitem extends CB_Controller
 				$metadata['ip_address'] = $this->input->ip_address();
 
 				$this->Cmall_item_meta_model->save($pid, $metadata);
-				$this->Cmall_category_rel_model->save_category($pid, $cmall_category);
-				$this->Cmall_attr_rel_model->save_attr($pid, $cmall_attr);
+				$this->Cmall_category_rel_model->save_category($pid, $cmall_category,1);
+				$this->Cmall_attr_rel_model->save_attr($pid, $cmall_attr,1);
 
 				$this->session->set_flashdata(
 					'message',
@@ -1053,6 +1053,7 @@ class Cmallitem extends CB_Controller
 			                    'cit_id' => $pid,
 			                    'brd_id' => $this->input->post('brd_id', null, ''),
 			                    'cta_tag' => $value,
+			                    'is_manual' => 1,
 			                );
 			                $this->Crawl_tag_model->insert($tagdata);
 			            }
