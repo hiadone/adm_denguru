@@ -3540,7 +3540,7 @@ class Postact extends CB_Controller
 
 		$this->load->model(array('Cmall_item_model'));
 
-		$cit_ids = $this->input->post('chk_cit_id');
+		$cit_ids = $this->input->post('chk');
 		
 		
 		if (empty($cit_ids)) {
@@ -3668,7 +3668,7 @@ class Postact extends CB_Controller
 		$result = array();
 		$this->output->set_content_type('application/json');
 
-		$cit_ids = $this->input->post('chk_cit_id');
+		$cit_ids = $this->input->post('chk');
 		if (empty($cit_ids)) {
 			$result = array('error' => '선택된 게시물이 없습니다.');
 			exit(json_encode($result));
@@ -4258,7 +4258,7 @@ class Postact extends CB_Controller
 		
 		$this->load->model(array('Cmall_item_model'));
 
-		$cit_ids = $this->input->post('chk_cit_id');
+		$cit_ids = $this->input->post('chk');
 		
 		
 		if (empty($cit_ids)) {

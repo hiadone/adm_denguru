@@ -119,7 +119,7 @@
                 foreach (element('list', element('data', element('list', $view))) as $result) {
             ?>
                 <tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-                    <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk_cit_id[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
+                    <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
                     <td ><?php echo element('num', $result); ?></td>
                     <td>
                         <a href="<?php echo element('cit_post_url', $result); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank"><img src="<?php echo element('origin_image_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', $view)); ?>px;height:<?php echo element('gallery_image_height', element('board', $view)); ?>px;" /></a>

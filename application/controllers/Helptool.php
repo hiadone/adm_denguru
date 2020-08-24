@@ -1006,16 +1006,7 @@ class Helptool extends CB_Controller
 		$view['view']['post_id_list'] = $post_id_list;
 
 		$cit_id_list = '';
-		if ($this->input->post('chk_cit_id')) {
-			$cit_id_list = '';
-			$chk_cit_id = $this->input->post('chk_cit_id');
-			foreach ($chk_cit_id as $val) {
-				if (empty($cit_id)) {
-					$cit_id = $val;
-				}
-				$cit_id_list .= $val . ',';
-			}
-		}elseif ($this->input->post('chk')) {
+		if ($this->input->post('chk')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
@@ -1029,7 +1020,7 @@ class Helptool extends CB_Controller
 			$cit_id_list = $this->input->post('cit_id_list');
 		}
 
-		
+
 		$view['view']['cit_id_list'] = $cit_id_list;
 
 
@@ -2408,16 +2399,7 @@ class Helptool extends CB_Controller
 		$view['view']['post_id_list'] = $post_id_list;
 
 		$cit_id_list = '';
-		if ($this->input->post('chk_cit_id')) {
-			$cit_id_list = '';
-			$chk_cit_id = $this->input->post('chk_cit_id');
-			foreach ($chk_cit_id as $val) {
-				if (empty($cit_id)) {
-					$cit_id = $val;
-				}
-				$cit_id_list .= $val . ',';
-			}
-		}elseif ($this->input->post('chk')) {
+		if ($this->input->post('chk')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
@@ -2426,7 +2408,7 @@ class Helptool extends CB_Controller
 				}
 				$cit_id_list .= $val . ',';
 			}
-		} 
+		}
 		if ($this->input->post('cit_id_list')) {
 			$cit_id_list = $this->input->post('cit_id_list');
 		}
@@ -2626,16 +2608,7 @@ class Helptool extends CB_Controller
 		$view['view']['post_id_list'] = $post_id_list;
 
 		$cit_id_list = '';
-		if ($this->input->post('chk_cit_id')) {
-			$cit_id_list = '';
-			$chk_cit_id = $this->input->post('chk_cit_id');
-			foreach ($chk_cit_id as $val) {
-				if (empty($cit_id)) {
-					$cit_id = $val;
-				}
-				$cit_id_list .= $val . ',';
-			}
-		}elseif ($this->input->post('chk')) {
+		if ($this->input->post('chk')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
@@ -2977,6 +2950,7 @@ class Helptool extends CB_Controller
 			}
 
 			if ($cit_id_list) {
+				
 				$arr = explode(',', $cit_id_list);
 				if ($arr) {					
 					foreach($arr as $val){
@@ -3093,16 +3067,7 @@ class Helptool extends CB_Controller
 		$view['view']['post_id_list'] = $post_id_list;
 
 		$cit_id_list = '';
-		if ($this->input->post('chk_cit_id')) {
-			$cit_id_list = '';
-			$chk_cit_id = $this->input->post('chk_cit_id');
-			foreach ($chk_cit_id as $val) {
-				if (empty($cit_id)) {
-					$cit_id = $val;
-				}
-				$cit_id_list .= $val . ',';
-			}
-		}elseif ($this->input->post('chk')) {
+		if ($this->input->post('chk')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
