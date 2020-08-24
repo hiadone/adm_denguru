@@ -8,14 +8,19 @@ $cmall_count =array();
 
 $cmall_total = 0;
 
-
-if(element('cmall_count', $view))
-foreach (element('cmall_count', $view) as $key => $val) 
+foreach (element('cmall_count', $view) as $val) 
 {
-	$cmall_count[$key] = $val;
-
-	$cmall_total +=$val; 
+	foreach(element('board_list', $view) as $gval){
+		if(element('brd_id',$gval) === element('brd_id',$val)){
+			$cmall_count[element('brd_id',$val)] = element('rownum',$val);
+			$cmall_total +=element('rownum',$val); 
+			break;
+		}
+	}
+	
 }
+
+
 
 
 $warning_count =array();
@@ -23,26 +28,35 @@ $warning_count =array();
 $warning_total = 0;
 
 
-if(element('warning_count', $view))
-foreach (element('warning_count', $view) as $key => $val) 
-{
-	$warning_count[$key] = $val;
+foreach (element('warning_count', $view) as $val) 
+{	
+	foreach(element('board_list', $view) as $gval){
+		if(element('brd_id',$gval) === element('brd_id',$val)){
+			$warning_count[element('brd_id',$val)] = element('rownum',$val);
 
-	$warning_total +=$val; 
+			$warning_total +=element('rownum',$val); 
+			break;
+		}
+	}
 }
+
+
 
 
 $notcategory_count =array();
 
 $notcategory_total = 0;
 
-if(element('notcategory_count', $view))
-foreach (element('notcategory_count', $view) as $key => $val) 
-{	
-	foreach($val as $val_){
-		$notcategory_count[$key] = element('cnt',$val_);
 
-		$notcategory_total +=element('cnt',$val_);
+foreach (element('notcategory_count', $view) as $val) 
+{
+	foreach(element('board_list', $view) as $gval){
+		if(element('brd_id',$gval) === element('brd_id',$val)){
+			$notcategory_count[element('brd_id',$val)] = element('cnt',$val);
+
+			$notcategory_total +=element('cnt',$val); 
+			break;
+		}
 	}
 }
 

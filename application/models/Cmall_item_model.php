@@ -207,12 +207,17 @@ class Cmall_item_model extends CB_Model
 	public function total_count_by($where = '', $like = '',$or_where = '')
 	{
 		
-		$this->db->select('brd_id,count(*) as rownum');
+		
 
 		if ($where) {
-
+			$this->db->select('post_id,count(*) as rownum');
 			$this->db->where($where);
+			$this->db->group_by('post_id');
+		} else {
+			$this->db->group_by('brd_id');
+			$this->db->select('brd_id,count(*) as rownum');
 		}
+
 		if ($like) {
 			$this->db->like($like);
 		}
@@ -222,7 +227,7 @@ class Cmall_item_model extends CB_Model
 			$this->db->group_end();
 		}
 
-		$this->db->group_by('brd_id');
+		
 		$this->db->from($this->_table);
 		$qry = $this->db->get();
 		$result = $qry->result_array();

@@ -30,6 +30,8 @@ foreach (element('warning_count', $view) as $val)
 $notcategory_count =array();
 
 $notcategory_total = 0;
+
+print_r2(element('notcategory_count', $view));
 foreach (element('notcategory_count', $view) as $val) 
 {
 	$notcategory_count[element('brd_id',$val)] = element('cnt',$val);

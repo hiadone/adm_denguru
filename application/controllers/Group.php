@@ -74,30 +74,32 @@ class Group extends CB_Controller
 			foreach ($board_id as $key => $val) {
 				$board_list[] = $this->board->item_all(element('brd_id', $val));
 
-				$itemwhere = array(
-							'brd_id' => element('brd_id', $val),
-						);
-
-				$or_where = array(
-						'cit_name' => '',
-						'cit_price' => 0,
-						'cit_post_url' => '',
-						'cit_goods_code' => '',
-						'cit_file_1' => '',
-						'cbr_id' => 0,
-				);
-					
 				
 
-				$view['view']['warning_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
-
-				$view['view']['cmall_count'][element('brd_id', $val)] = $this->Cmall_item_model->count_by($itemwhere);
-
 				
-				$view['view']['notcategory_count'][element('brd_id', $val)] = $this->Cmall_category_model->get_postcategory(0,element('brd_id', $val));
+				
 				
 			}
 		}
+
+		
+
+		$or_where = array(
+				'cit_name' => '',
+				'cit_price' => 0,
+				'cit_post_url' => '',
+				'cit_goods_code' => '',
+				'cit_file_1' => '',
+				'cbr_id' => 0,
+		);
+			
+		
+
+		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','',$or_where);
+
+		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by();
+
+		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_postcategory();		
 
 		$group['headercontent'] = ($this->cbconfig->get_device_view_type() === 'mobile')
 			? element('mobile_header_content', $group)

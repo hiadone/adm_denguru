@@ -1617,6 +1617,124 @@ class Board_post extends CB_Controller
 		if (empty($category_id) OR $category_id < 1) {
 			$category_id = '';
 		}
+
+		$result= array();
+		$result_c= array();
+		$result_b= array();
+		
+
+		$itemwhere = array(
+					'brd_id' => element('brd_id', $board),
+				);
+
+		$or_where = array(
+				'cit_name' => '',
+				'cit_price' => 0,
+				'cit_post_url' => '',
+				'cit_goods_code' => '',
+				'cit_file_1' => '',
+				'cbr_id' => 0,
+		);
+
+		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'',$or_where);
+		$result['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere);
+
+		$result['category'] = $this->Cmall_category_model->get_postcategory(element('brd_id', $board));
+
+		if($result['warning_count'])
+			foreach($result['warning_count'] as $val){				
+				$result_c['warning_count'][element('post_id',$val)] = element('rownum',$val);
+			}
+
+		if($result['cmall_count'])
+			foreach($result['cmall_count'] as $val){
+				$result_c['cmall_count'][element('post_id',$val)] = element('rownum',$val);
+			}
+
+		if($result['category'])
+			foreach($result['category'] as $val){
+				$result_c['category'][element('post_id',$val)] = element('rownum',$val);
+			}
+			
+			$a = 0;
+			$a_t=0;
+			foreach($result['category'] as $val){
+				
+				// if(element('cca_parent',$aval) === '0'){
+					$result_c['category'][element('post_id',$val)][$a]['cnt'] = element('cnt',$val);
+					$result_c['category'][element('post_id',$val)][$a]['cca_value'] = element('cca_value',$val);
+					if(element('cca_parent',$val) ==0){
+						if(empty($result_c['category'][element('post_id',$val)]['a_t']))
+							$result_c['category'][element('post_id',$val)]['a_t'] = element('cnt',$val);
+						else
+							$result_c['category'][element('post_id',$val)]['a_t'] += element('cnt',$val);
+					}
+						$a++;
+				// }
+
+			}
+
+			if($result_c['cmall_count']){
+				foreach($result_c['cmall_count'] as $c_key => $c_val){
+
+					if(empty($result_c['category'][$c_key]['a_t'])) $result_c['category'][$c_key]['a_t'] = 0;
+					if(($c_val - $result_c['category'][$c_key]['a_t']) > 0){
+						$result_c['category'][$c_key][$a]['cnt'] = $c_val - $result_c['category'][$c_key]['a_t'];
+						$result_c['category'][$c_key][$a]['cca_value'] ='no category';
+					}		
+				}
+			}
+
+			
+		// print_r2($result_c['category']);
+		
+		// if($result_b['category'] && $result_c['cmall_count'])
+		// 	foreach($result_c['cmall_count'] as $key => $val){
+		// 		if(element($key,$result_b['category']) < element($key,$result_c['cmall_count'])){
+		// 			$result_c['category'][$key]['cnt'] = element($key,$result_c['cmall_count']) - element($key,$result_b['category']);
+		// 			$result_c['category'][$key]['cca_value'] ='no category';
+		// 		}
+				
+		// 	}
+
+
+		// $result_c['list']['disable'] = $result['list']['cnt'];
+		
+		
+		
+
+		// if (element('use_category', $board) && element('post_category', $val)) {
+		// if (element('use_category', $board) ) {
+		// 	$result_c['list']['category'] = array();
+		// 	$aaa =array();
+		// 	$aaa = $this->Cmall_category_model->get_postcategory(element('brd_id', $board));
+
+		// 	$a = 0;
+		// 	$a_t=0;
+		// 	foreach($aaa as $aval){
+				
+		// 		// if(element('cca_parent',$aval) === '0'){
+		// 			// $result_c['list']['category'][$a]['cnt'] = element('cnt',$aval);
+		// 			// $result_c['list']['category'][$a]['cca_value'] = element('cca_value',$aval);
+		// 			if(element('cca_parent',$aval) ==0){
+		// 				$a_t += element('cnt',$aval);
+		// 			}
+		// 				$a++;
+		// 		// }
+
+		// 	}
+		// 	if($result_c['list']['cmall_count']){
+		// 		foreach($result_c['list']['cmall_count'] as $c_val){
+		// 			if((element('rownum',$c_val) - $a_t) > 0){
+		// 				$result_c['list']['category'][element('post_id',$c_val)][$a]['cnt'] = element('rownum',$c_val) - $a_t;
+		// 				$result_c['list']['category'][element('post_id',$c_val)][$a]['cca_value'] ='no category';
+		// 			}		
+		// 		}
+		// 	}
+			
+			
+		// }
+		// print_r2($result_c['list']['category']);
 		$result = $this->Post_model
 			->get_cmall_list($per_page, $offset, $where, $category_id, $findex, $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
@@ -1669,9 +1787,9 @@ class Board_post extends CB_Controller
 					$post_poll = $this->Post_poll_model->get_one('', '', $poll_where);
 					$result['list'][$key]['ppo_id'] = element('ppo_id', $post_poll);
 				}
-				if ($param->output()) {
-					$result['list'][$key]['post_url'] .= '?' . $param->output();
-				}
+				// if ($param->output()) {
+				// 	$result['list'][$key]['post_url'] .= '?' . $param->output();
+				// }
 				$result['list'][$key]['num'] = $list_num--;
 				$result['list'][$key]['is_hot'] = false;
 
@@ -1724,6 +1842,12 @@ class Board_post extends CB_Controller
 					}
 				}
 
+				$result['list'][$key]['disable'] = $result['list'][$key]['cnt'];
+
+				$result['list'][$key]['warning_count'] = element(element('post_id', $val),element('warning_count',$result_c));
+                $result['list'][$key]['cmall_count'] = element(element('post_id', $val),element('cmall_count',$result_c));
+
+                $result['list'][$key]['category'] = element(element('post_id', $val),element('category',$result_c));
 				// for($s = 1;$s <8;$s++){
 				// 	$linkwhere = array(
 				// 			'post_id' => element('post_id', $val),
@@ -1737,61 +1861,7 @@ class Board_post extends CB_Controller
 				
 
 
-				$result['list'][$key]['cmall_count'] = '';
-				$result['list'][$key]['warning_count'] = '';
-
-				$itemwhere = array(
-							'post_id' => element('post_id', $val),
-						);
-
-				$or_where = array(
-						'cit_name' => '',
-						'cit_price' => 0,
-						'cit_post_url' => '',
-						'cit_goods_code' => '',
-						'cit_file_1' => '',
-						'cbr_id' => 0,
-				);
-
-				$result['list'][$key]['warning_count'] = $this->Cmall_item_model->count_by($itemwhere,'',$or_where);
-				$result['list'][$key]['cmall_count'] = $this->Cmall_item_model->count_by($itemwhere);
-
-
-				$result['list'][$key]['disable'] = $result['list'][$key]['cnt'];
 				
-				
-				
-
-				// if (element('use_category', $board) && element('post_category', $val)) {
-				if (element('use_category', $board) ) {
-					$result['list'][$key]['category'] = array();
-					$aaa =array();
-					$aaa = $this->Cmall_category_model->get_postcategory(element('post_id', $val));
-
-					
-					$a = 0;
-					$a_t=0;
-					foreach($aaa as $aval){
-						
-						// if(element('cca_parent',$aval) === '0'){
-							$result['list'][$key]['category'][$a]['cnt'] = element('cnt',$aval);
-							$result['list'][$key]['category'][$a]['cca_value'] = element('cca_value',$aval);
-							if(element('cca_parent',$aval) ==0){
-								$a_t += element('cnt',$aval);
-							}
-								$a++;
-						// }
-
-					}
-					if(($result['list'][$key]['cmall_count'] - $a_t) > 0){
-						$result['list'][$key]['category'][$a]['cnt'] = $result['list'][$key]['cmall_count'] - $a_t;
-						$result['list'][$key]['category'][$a]['cca_value'] ='no category';
-					}elseif(($result['list'][$key]['cmall_count'] - $a_t) < 0){
-						// $result['list'][$key]['category'][$a]['cnt'] = abs($result['list'][$key]['cmall_count'] - $a_t);
-						// $result['list'][$key]['category'][$a]['cca_value'] ='over category ';
-					}
-					
-				}
 			}
 		}
 
