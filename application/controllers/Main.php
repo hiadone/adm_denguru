@@ -88,7 +88,7 @@ class Main extends CB_Controller
 
 
 		// if(!empty($view['view']['cmall_count'] - $a_t))
-		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_postcategory();
+		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_brdcategory();
 		
 
 

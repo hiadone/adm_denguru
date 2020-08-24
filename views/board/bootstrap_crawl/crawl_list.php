@@ -93,7 +93,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_postlist_checked(true); else all_postlist_checked(false);" type="checkbox" /></th><?php } ?>
+                    <?php if (element('is_admin', $view)) { ?><th><input onclick="if (this.checked) all_boardlist_checked(true); else all_boardlist_checked(false);" type="checkbox" /></th><?php } ?>
                     <th>번호</th>
                     <th>IMG</th>
                     <th>제목</th>
@@ -119,7 +119,7 @@
                 foreach (element('list', element('data', element('list', $view))) as $result) {
             ?>
                 <tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-                    <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk_cit_id[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
+                    <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk_post_id[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
                     <td ><?php echo element('num', $result); ?></td>
                     <td>
                         <a href="<?php echo element('cit_post_url', $result); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank"><img src="<?php echo element('origin_image_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', $view)); ?>px;height:<?php echo element('gallery_image_height', element('board', $view)); ?>px;" /></a>
@@ -161,15 +161,12 @@
                     </td>
                     <td style="width:130px;">
                                 <?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
-                                
-                            </td>
-                    <td ><?php echo element('cit_goods_code', $result); ?><br>
-                        <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
+                                <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
                                 <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
                                 <?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
                                 <?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
-                        
-                    </td>
+                            </td>
+                    <td ><?php echo element('cit_goods_code', $result); ?></td>
                     <td ><?php echo number_format(element('display_price', $result)); ?>
                         
                         <?php 
@@ -224,37 +221,21 @@
             <?php } ?>
         </div>
         <?php if (element('is_admin', $view)) { ?>
-
             <div class="pull-left">
-                <button type="button" class="btn btn-default btn-sm admin-manage-list"><i class="fa fa-cog big-fa"></i> 관리</button>
-                <div class="btn-admin-manage-layer admin-manage-layer-list">
-                    
-                    <div class="item" onClick="post_multi_change_category();"><i class="fa fa-tags"></i> 카테고리변경</div>
-                    
-                    
-                    
-                    <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
-                    <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
-                    <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_delete', '0', '선택하신 항목을 완전삭제하시겠습니까?');"><i class="fa fa-trash-o"></i> 선택삭제하기</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
-               
-                </div>
-            </div>
-
-
-            <div class="pull-right">
                 <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'vision_api_label', '선택하신 항목을 vision_api_label update ?');"><i class="fa fa-trash-o"></i>item vision_api_label update</div>
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');"><i class="fa fa-trash-o"></i>item tag overwrite</div>
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_update', '선택하신 항목을 item tag update ?');"><i class="fa fa-trash-o"></i>item tag update</div>
                     
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'category_update', '선택하신 항목을 item category update ?');"><i class="fa fa-trash-o"></i>item category update</div>
-                    
+                    <div class="btn btn-danger btn-sm" onClick="post_multi_action('cit_multi_delete', '0', '선택하신 항목을 완전삭제하시겠습니까?');"><i class="fa fa-trash-o"></i> 선택삭제하기</div>
                     <a href="<?php echo element('list_url', element('list', $view)); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
-                    
-            
-                    <a href="<?php echo admin_url('cmall/cmallitem/write/') ?>" target="_blank" class="btn btn-success btn-sm">Item 추가</a>
+                    <a href="<?php echo element('list_url', element('list', $view)); ?>?nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
+                    <div class="btn btn-primary btn-sm" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
+                    <div class="btn btn-primary btn-sm" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
+            </div>
+
+            <div class="pull-right">
+                    <div class="" ><a href="<?php echo admin_url('cmall/cmallitem/write/') ?>" target="_blank" class="btn btn-success btn-sm">Item 추가</a></div>
             </div>
         <?php } ?>
         <?php if (element('write_url', element('list', $view))) { ?>

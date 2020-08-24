@@ -274,7 +274,7 @@ class Board extends CI_Controller
 		
 		
 		$result = $this->CI->Cmall_item_model
-			->get_item_list('','', $crawlwhere);
+			->get_list('','', $crawlwhere);
 		
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {

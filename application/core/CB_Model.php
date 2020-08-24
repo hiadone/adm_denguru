@@ -45,6 +45,10 @@ class CB_Model extends CI_Model
 
 	public $where_in = array();
 
+	public $where_not_in = array();
+
+
+
 	/* --------------------------------------------------------------
 	 * GENERIC METHODS
 	 * ------------------------------------------------------------ */
@@ -458,4 +462,19 @@ class CB_Model extends CI_Model
 			
 		}
 	}
+
+	public function set_where_not_in($field_key,$where = array())
+	{
+		if (empty($field_key)) {
+			return false;
+		}
+
+		if ($where && is_array($where)) {
+			
+			$this->where_not_in = array($field_key => $where);
+			
+		}
+	}
+
+	
 }

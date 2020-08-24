@@ -127,6 +127,13 @@ class Cmall_item_model extends CB_Model
 		if ($search_where) {
 			$this->db->where($search_where);
 		}
+
+		if ($this->where_not_in) {			
+			foreach ($this->where_not_in as $skey => $sval) {
+				$this->db->where_not_in($skey, $sval);				
+			}
+		}
+
 		$category_id = (int) $category_id;
 		if ($category_id) {
 			$this->db->join('cmall_category_rel', 'cmall_item.cit_id = cmall_category_rel.cit_id', 'inner');
@@ -163,6 +170,11 @@ class Cmall_item_model extends CB_Model
 		}
 		if ($search_where) {
 			$this->db->where($search_where);
+		}
+		if ($this->where_not_in) {			
+			foreach ($this->where_not_in as $skey => $sval) {
+				$this->db->where_not_in($skey, $sval);				
+			}
 		}
 		if ($category_id) {
 			$this->db->join('cmall_category_rel', 'cmall_item.cit_id = cmall_category_rel.cit_id', 'inner');

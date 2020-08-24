@@ -1210,10 +1210,29 @@ class Board_post extends CB_Controller
 			
 		} 
 
+		
+
+
 		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model'));
 		
+
+		if(!empty($this->input->get('nocategory'))){
+			
+			
+			$category_rel = $where_not_in =array();
+			$category_rel = $this->Cmall_category_model->get_postcategory($post_id);
+			if($category_rel)
+			foreach($category_rel as $othval)
+			    array_push($where_not_in,element('cit_id',$othval));
+
+			
+			$this->Cmall_item_model->set_where_not_in('cit_id',$where_not_in);
+
+			
+		} 
+
 		$result = $this->Cmall_item_model
-			->get_list($per_page, $offset, $where, '', $findex,'desc', $sfield, $skeyword);
+			->get_item_list($per_page, $offset, $where, '', $findex,'desc', $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 
 		
@@ -1225,6 +1244,8 @@ class Board_post extends CB_Controller
 				
 				
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
+
+
 				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
 
 				if(element('cbr_id', $val))
@@ -1639,7 +1660,7 @@ class Board_post extends CB_Controller
 		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'',$or_where);
 		$result['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere);
 
-		$result['category'] = $this->Cmall_category_model->get_postcategory(element('brd_id', $board));
+		$result['category'] = $this->Cmall_category_model->get_brdcategory(element('brd_id', $board));
 
 		if($result['warning_count'])
 			foreach($result['warning_count'] as $val){				
@@ -1707,7 +1728,7 @@ class Board_post extends CB_Controller
 		// if (element('use_category', $board) ) {
 		// 	$result_c['list']['category'] = array();
 		// 	$aaa =array();
-		// 	$aaa = $this->Cmall_category_model->get_postcategory(element('brd_id', $board));
+		// 	$aaa = $this->Cmall_category_model->get_brdcategory(element('brd_id', $board));
 
 		// 	$a = 0;
 		// 	$a_t=0;

@@ -99,7 +99,7 @@ class Group extends CB_Controller
 
 		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by();
 
-		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_postcategory();		
+		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_brdcategory();		
 
 		$group['headercontent'] = ($this->cbconfig->get_device_view_type() === 'mobile')
 			? element('mobile_header_content', $group)
