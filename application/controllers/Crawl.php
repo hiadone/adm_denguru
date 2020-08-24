@@ -1198,6 +1198,7 @@ class Crawl extends CB_Controller
     public function crawling_overwrite($post_id=0,$brd_id =0)
     {
 
+        exit;
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -5593,7 +5594,7 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
-        if(empty($is_admin)) exit;
+        // if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
@@ -5668,7 +5669,7 @@ class Crawl extends CB_Controller
                 // }
                 
                 
-                
+                echo element('cit_id',$val)."\n";
                 
 
                 $all_category = $this->Cmall_category_model->get_all_category();
