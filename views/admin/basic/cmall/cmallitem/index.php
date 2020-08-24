@@ -2,16 +2,37 @@
 	<div class="box-table">
 		<?php
 		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
-		$attributes = array('class' => 'form-inline', 'name' => 'flist', 'id' => 'flist');
+		$attributes = array('class' => 'form-inline', 'name' => 'fboardlist', 'id' => 'fboardlist');
 		echo form_open(current_full_url(), $attributes);
 		?>
-			<div class="box-table-header">
+			<div class="box-table-header ">
 				<?php
 				ob_start();
-				?>
+				?>	
+				<div class="pull-left">
+                <button type="button" class="btn btn-default btn-sm admin-manage-list"><i class="fa fa-cog big-fa"></i> 관리</button>
+                <div class=" btn-admin-manage-layer admin-manage-layer-list" style="display: none;">
+                    
+                    <div class="item" onClick="post_multi_change_category();"><i class="fa fa-tags"></i> 카테고리변경</div>
+                    
+                    
+
+                    
+                    <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
+                    <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
+                    <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
+                    
+                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
+                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
+               
+                </div>
+            </div>
 					<div class="btn-group pull-right" role="group" aria-label="...">
+
+
 						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
 						<a href="<?php echo element('listall_url', $view); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
+						<a href="<?php echo element('listall_url', $view); ?>?nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택수정</button>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
@@ -131,7 +152,7 @@
 
 
 $(document).on('change', 'textarea[name^=cta_tag]', function() {
-    post_action_crawl('cta_tag_update', $(this).data('cit_id'),'cta_tag_');
+    post_action_crawl('cta_tag_update', $(this).data('cit_id'),'','cta_tag_');
 });
 
 

@@ -176,7 +176,7 @@
 
 
 $(document).on('change', 'textarea[name^=cta_tag]', function() {
-    post_action_crawl('cta_tag_update', $(this).data('crw_id'),'cta_tag_');
+    post_action_crawl('cta_tag_update', $(this).data('crw_id'),'','cta_tag_');
 });
 
 

@@ -278,14 +278,14 @@
 $(document).on('change', 'textarea[name^=cta_tag]', function() {
 
 
-    post_action_crawl('cta_tag_update', $(this).data('cit_id'),'cta_tag_');
+    post_action_crawl('cta_tag_update', $(this).data('cit_id'),'','cta_tag_');
 });
 
 
 $(document).on('change', 'textarea[name^=cit_color]', function() {
 
 
-    post_action_crawl('cit_color_update', $(this).data('cit_id'),'cit_color_');
+    post_action_crawl('cit_color_update', $(this).data('cit_id'),'','cit_color_');
 });
 
 

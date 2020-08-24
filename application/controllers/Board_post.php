@@ -1216,17 +1216,9 @@ class Board_post extends CB_Controller
 		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model'));
 		
 
-		if(!empty($this->input->get('nocategory'))){
+		if(!empty($this->input->get('nocategory'))){			
 			
-			
-			$category_rel = $where_not_in =array();
-			$category_rel = $this->Cmall_category_model->get_postcategory($post_id);
-			if($category_rel)
-			foreach($category_rel as $othval)
-			    array_push($where_not_in,element('cit_id',$othval));
-
-			
-			$this->Cmall_item_model->set_where_not_in('cit_id',$where_not_in);
+			$this->Cmall_item_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_category_rel B on A.cit_id = B.cit_id )','',false);
 
 			
 		} 

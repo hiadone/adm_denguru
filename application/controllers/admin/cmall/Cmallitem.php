@@ -99,7 +99,18 @@ class Cmallitem extends CB_Controller
 
 			
 		} 
+
+		if(!empty($this->input->get('nocategory'))){			
+			
+			$this->Cmall_item_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_category_rel B on A.cit_id = B.cit_id )','',false);
+
+			
+		} 
+		$where = array();
 		
+
+		
+
 		$per_page = admin_listnum();
 		$offset = ($page - 1) * $per_page;
 
@@ -110,7 +121,7 @@ class Cmallitem extends CB_Controller
 		$this->{$this->modelname}->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
 		$this->{$this->modelname}->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
 		$result = $this->{$this->modelname}
-			->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
+			->get_item_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
 
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 		if (element('list', $result)) {
@@ -1213,7 +1224,7 @@ class Cmallitem extends CB_Controller
 		$param =& $this->querystring;
 		$redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
-		redirect($redirecturl);
+		// redirect($redirecturl);
 	}
 
 	/**

@@ -941,7 +941,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 		}
 	}
 
-	function post_action_crawl(action_type, action_id, input_key) {
+	function post_action_crawl(action_type, action_id,flag, input_key) {
         var href;
         if ( action_type == '') {
             return false;
@@ -954,7 +954,7 @@ if (typeof(COMMON_JS) === 'undefined') {
         
 
         
-        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : input_key;
+        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : flag;
         
         
         href = cb_url + '/postact/' + action_type + '/' + action_id + '/' + encodeURIComponent(t);
@@ -1069,9 +1069,10 @@ if (typeof(COMMON_JS) === 'undefined') {
 	}
 
 	function post_multi_change_brand() {
+
 		var f = document.fboardlist;
 		var sub_win = window.open('', 'change_brand', 'left=100, top=100, width=620, height=500, scrollbars=1');
-
+		
 		f.target = 'change_brand';
 		f.method = 'post';
 		f.action = cb_url + '/helptool/post_change_brand';

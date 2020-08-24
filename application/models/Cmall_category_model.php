@@ -120,41 +120,7 @@ class Cmall_category_model extends CB_Model
 		return $result;
 	}
 
-	public function get_postcategory($post_id = 0)
-	{
-		$post_id = (int) $post_id;
-		if (empty($post_id) OR $post_id < 1) {
-			return;
-		}
-
-		
-		
-			$this->db->select('cmall_item.cit_id');
-		
-			
-
-		$this->db->join('cmall_category_rel', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'inner');
-		$this->db->join('cmall_item', 'cmall_item.cit_id = cmall_category_rel.cit_id', 'inner');
-		// if (!empty($post_id)) 
-		// 	$this->db->where(array('cmall_item.post_id' => $post_id));
-
-		
-			$this->db->where(array('cmall_item.post_id' => $post_id));
-
-		// $this->db->where(array('cmall_category.cca_parent' => 0));
-		// $this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
-		
-		$this->db->order_by('cca_order', 'asc');
-		// $this->db->order_by('cmall_category.cca_id', 'desc');
-
-		
-		$this->db->group_by('cmall_item.cit_id');
-			
-		$qry = $this->db->get($this->_table);
-		$result = $qry->result_array();
-
-		return $result;
-	}
+	
 }
 
 

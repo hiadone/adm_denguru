@@ -128,9 +128,23 @@ class Cmall_item_model extends CB_Model
 			$this->db->where($search_where);
 		}
 
-		if ($this->where_not_in) {			
-			foreach ($this->where_not_in as $skey => $sval) {
-				$this->db->where_not_in($skey, $sval);				
+		if($this->or_where){
+			$this->db->group_start();
+					
+			foreach ($this->or_where as $skey => $sval) {
+				$this->db->or_where($skey, $sval);
+			}
+			
+			$this->db->group_end();
+		}
+
+		if ($this->where_in) {
+			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+		}
+
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
 			}
 		}
 
@@ -171,11 +185,26 @@ class Cmall_item_model extends CB_Model
 		if ($search_where) {
 			$this->db->where($search_where);
 		}
-		if ($this->where_not_in) {			
-			foreach ($this->where_not_in as $skey => $sval) {
-				$this->db->where_not_in($skey, $sval);				
+
+		if($this->or_where){
+			$this->db->group_start();
+					
+			foreach ($this->or_where as $skey => $sval) {
+				$this->db->or_where($skey, $sval);
+			}
+			
+			$this->db->group_end();
+		}
+
+		if ($this->where_in) {
+			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+		}
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
 			}
 		}
+		
 		if ($category_id) {
 			$this->db->join('cmall_category_rel', 'cmall_item.cit_id = cmall_category_rel.cit_id', 'inner');
 			$this->db->where('cca_id', $category_id);

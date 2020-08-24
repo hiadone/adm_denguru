@@ -45,7 +45,7 @@ class CB_Model extends CI_Model
 
 	public $where_in = array();
 
-	public $where_not_in = array();
+	public $set_where = array();
 
 
 
@@ -463,17 +463,17 @@ class CB_Model extends CI_Model
 		}
 	}
 
-	public function set_where_not_in($field_key,$where = array())
+	public function set_where($key, $value = NULL, $escape = NULL)
 	{
-		if (empty($field_key)) {
+		if (empty($key)) {
 			return false;
 		}
 
-		if ($where && is_array($where)) {
+		$this->set_where = array($key => $value);
+		
 			
-			$this->where_not_in = array($field_key => $where);
 			
-		}
+		
 	}
 
 	

@@ -1015,10 +1015,21 @@ class Helptool extends CB_Controller
 				}
 				$cit_id_list .= $val . ',';
 			}
+		}elseif ($this->input->post('chk')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
 		}
 		if ($this->input->post('cit_id_list')) {
 			$cit_id_list = $this->input->post('cit_id_list');
 		}
+
+		
 		$view['view']['cit_id_list'] = $cit_id_list;
 
 
@@ -1108,7 +1119,7 @@ class Helptool extends CB_Controller
 
 						foreach ($Cmall_item as $c_key => $c_value) {
 
-						    $this->Cmall_category_rel_model->save_category(element('cit_id', $c_value), $cmall_category);
+						    $this->Cmall_category_rel_model->save_category(element('cit_id', $c_value), $cmall_category,1);
 						}
 						
 
@@ -2406,6 +2417,15 @@ class Helptool extends CB_Controller
 				}
 				$cit_id_list .= $val . ',';
 			}
+		}elseif ($this->input->post('chk')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
 		} 
 		if ($this->input->post('cit_id_list')) {
 			$cit_id_list = $this->input->post('cit_id_list');
@@ -2609,6 +2629,15 @@ class Helptool extends CB_Controller
 		if ($this->input->post('chk_cit_id')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		}elseif ($this->input->post('chk')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
 				if (empty($cit_id)) {
 					$cit_id = $val;
@@ -3043,7 +3072,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Crawl_tag_model','Cmall_item_model','Vision_api_label_model'));
+		$this->load->model(array('Crawl_tag_model','Cmall_item_model','Crawl_tag_delete_model','Vision_api_label_model'));
 
 		$post_id_list = '';
 		if ($this->input->post('chk_post_id')) {
@@ -3067,6 +3096,15 @@ class Helptool extends CB_Controller
 		if ($this->input->post('chk_cit_id')) {
 			$cit_id_list = '';
 			$chk_cit_id = $this->input->post('chk_cit_id');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		}elseif ($this->input->post('chk')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk');
 			foreach ($chk_cit_id as $val) {
 				if (empty($cit_id)) {
 					$cit_id = $val;
