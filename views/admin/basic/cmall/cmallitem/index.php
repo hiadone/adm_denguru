@@ -125,6 +125,9 @@
 			<div class="box-info">
 				<?php echo element('paging', $view); ?>
 				<div class="pull-left ml20"><?php echo admin_listnum_selectbox();?></div>
+				
+			</div>
+			<div class="box-table-header ">
 				<?php echo $buttons; ?>
 			</div>
 		<?php echo form_close(); ?>

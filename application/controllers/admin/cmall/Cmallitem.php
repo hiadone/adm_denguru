@@ -106,6 +106,25 @@ class Cmallitem extends CB_Controller
 
 			
 		} 
+
+		if($this->input->get('sfield') === 'brd_id'){
+
+            
+            $this->db->like('brd_name',$this->input->get('skeyword'));
+            $res = $this->Board_model->get('','brd_id');
+            
+            if($res){
+                $brd_id_arr=array();
+                foreach ($res as $key => $value) {
+                    $brd_id_arr[] = element('brd_id',$value);
+                }
+
+                $this->Cmall_item_model->set_where_in('cmall_item.brd_id',$brd_id_arr);
+
+
+                // $this->db2->group_end();
+            }
+        } 
 		$where = array();
 		
 
@@ -200,7 +219,7 @@ class Cmallitem extends CB_Controller
 		/**
 		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
 		 */
-		$search_option = array('cit_goods_code' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_mobile_content' => '모바일상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격');
+		$search_option = array('brd_id' => '스토어 명','cit_goods_code' => '상품코드', 'cit_name' => '상품명', 'cit_content' => '상품내용', 'cit_datetime' => '입력일', 'cit_updated_datetime' => '최종수정일', 'cit_price' => '판매가격');
 		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
 		$view['view']['search_option'] = search_option($search_option, $sfield);
 		$view['view']['listall_url'] = admin_url($this->pagedir);
