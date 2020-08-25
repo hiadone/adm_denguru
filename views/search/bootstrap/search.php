@@ -23,6 +23,7 @@
 			<div class="form-group">
 				<select class="form-control per100" name="sfield">
 					<option value="post_both" <?php echo $this->input->get('sfield') === 'post_both' ? 'selected="selected"' : ''; ?>>스토어명 + 제목</option>
+					<option value="brd_name" <?php echo $this->input->get('sfield') === 'brd_name' ? 'selected="selected"' : ''; ?>>스토어명</option>
 					<option value="post_title" <?php echo $this->input->get('sfield') === 'post_title' ? 'selected="selected"' : ''; ?>>제목</option>
 					<option value="post_content" <?php echo $this->input->get('sfield') === 'post_content' ? 'selected="selected"' : ''; ?>>내용</option>
 					<option value="post_userid" <?php echo $this->input->get('sfield') === 'post_userid' ? 'selected="selected"' : ''; ?>>회원아이디</option>

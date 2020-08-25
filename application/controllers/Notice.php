@@ -99,7 +99,7 @@ class Notice extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
 
-                $result['list'][$key]['post_url'] = document_post_url('notice', element('noti_id', $val));
+                $result['list'][$key]['post_url'] = base_url('notice', element('noti_id', $val));
 
                 $result['list'][$key]['display_datetime'] = display_datetime(
                     element('noti_datetime', $val),'full'
@@ -270,7 +270,7 @@ class Notice extends CB_Controller
 
             
             if ($use_prev_next) {
-                $where = '';
+                $where = array();
                 $where['noti_activated'] =1;
 
                 $view['view']['next_post'] = $next_post
@@ -283,7 +283,7 @@ class Notice extends CB_Controller
                     );
 
                 if (element('noti_id', $next_post)) {
-                    $view['view']['next_post']['url'] = document_post_url('notice', element('noti_id', $next_post)) . '?' . $param->output();
+                    $view['view']['next_post']['url'] = base_url('notice', element('noti_id', $next_post)) . '?' . $param->output();
                 }
 
                 $view['view']['prev_post'] = $prev_post
@@ -295,7 +295,7 @@ class Notice extends CB_Controller
                         $where                        
                     );
                 if (element('noti_id', $prev_post)) {
-                    $view['view']['prev_post']['url'] = document_post_url('notice', element('noti_id', $prev_post)) . '?' . $param->output();
+                    $view['view']['prev_post']['url'] = base_url('notice', element('noti_id', $prev_post)) . '?' . $param->output();
                 }
             }
             /**

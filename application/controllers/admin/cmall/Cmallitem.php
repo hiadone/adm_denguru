@@ -24,7 +24,7 @@ class Cmallitem extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand', 'Cmall_attr', 'Cmall_attr_rel');
+	protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand', 'Cmall_attr', 'Cmall_attr_rel','Cmall_kind','Cmall_kind_rel');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -148,6 +148,7 @@ class Cmallitem extends CB_Controller
 				$result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
 				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
 				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+				$result['list'][$key]['kind'] = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
 				
 
 				$cmall_wishlist_where = array(
@@ -288,12 +289,20 @@ class Cmallitem extends CB_Controller
 					$getdata['attr'][] = $ctv['cat_id'];
 				}
 			}
+			$kind = $this->Cmall_kind_model->get_kind(element('cit_id', $getdata));
+			if ($kind) {
+				foreach ($kind as $kkey => $kval) {
+					$getdata['kind'][] = $kval['ckd_id'];
+				}
+			}
 		} else {
 			// 기본값 설정
 			$getdata['cit_key'] = time();
 			$getdata['cit_status'] = '1';
 		}
 
+		
+		
 		$getdata['cta_tag'] = '';
 		$crawlwhere = array(
 			'cit_id' => element('cit_id', $getdata),
@@ -309,6 +318,8 @@ class Cmallitem extends CB_Controller
 			$getdata['cta_tag'] = implode("\n",$tag_array);
 		}
 		
+		
+
 		$getdata['val_tag'] = '';
 		$crawlwhere = array(
 			'cit_id' => element('cit_id', $getdata),
@@ -834,6 +845,12 @@ class Cmallitem extends CB_Controller
 						$getdata['attr'][] = $ctv['cat_id'];
 					}
 				}
+				$kind = $this->Cmall_kind_model->get_kind(element('cit_id', $getdata));
+				if ($kind) {
+					foreach ($kind as $kkey => $kval) {
+						$getdata['kind'][] = $kval['ckd_id'];
+					}
+				}				
 				$where = array(
 					'cit_id' => element('cit_id', $getdata),
 				);
@@ -853,6 +870,8 @@ class Cmallitem extends CB_Controller
 					}
 					$getdata['cta_tag'] = implode("\n",$tag_array);
 				}
+
+				
 				
 				$getdata['val_tag'] = '';
 				$crawlwhere = array(
@@ -908,6 +927,7 @@ class Cmallitem extends CB_Controller
 			);
 			$view['view']['data']['all_category'] = $this->Cmall_category_model->get_all_category();
 			$view['view']['data']['all_attr'] = $this->Cmall_attr_model->get_all_attr();
+			$view['view']['data']['all_kind'] = $this->Cmall_kind_model->get_all_kind();
 
 			/**
 			 * primary key 정보를 저장합니다
@@ -1029,12 +1049,14 @@ class Cmallitem extends CB_Controller
 			 */
 			$cmall_category = $this->input->post('cmall_category', null, '');
 			$cmall_attr = $this->input->post('cmall_attr', null, '');
+			$cmall_kind = $this->input->post('cmall_kind', null, '');
 
 			if ($this->input->post($primary_key)) {
 				$this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
 				$this->Cmall_item_meta_model->save($pid, $metadata);
 				$this->Cmall_category_rel_model->save_category($this->input->post($primary_key), $cmall_category,1);
 				$this->Cmall_attr_rel_model->save_attr($this->input->post($primary_key), $cmall_attr,1);
+				$this->Cmall_kind_rel_model->save_kind($this->input->post($primary_key), $cmall_kind,1);
 
 				$this->session->set_flashdata(
 					'message',
@@ -1058,6 +1080,7 @@ class Cmallitem extends CB_Controller
 				$this->Cmall_item_meta_model->save($pid, $metadata);
 				$this->Cmall_category_rel_model->save_category($pid, $cmall_category,1);
 				$this->Cmall_attr_rel_model->save_attr($pid, $cmall_attr,1);
+				$this->Cmall_kind_rel_model->save_kind($pid, $cmall_kind,1);
 
 				$this->session->set_flashdata(
 					'message',
@@ -1083,7 +1106,7 @@ class Cmallitem extends CB_Controller
 			                    'cit_id' => $pid,
 			                    'brd_id' => $this->input->post('brd_id', null, ''),
 			                    'cta_tag' => $value,
-			                    // 'is_manual' => 1,
+			                    'is_manual' => 1,
 			                );
 			                $this->Crawl_tag_model->insert($tagdata);
 			            }
@@ -1091,6 +1114,9 @@ class Cmallitem extends CB_Controller
 			    }
 			    
 			}
+
+			
+
 
 			$this->load->model('Cmall_item_history_model');
 			$historydata = array(

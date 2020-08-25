@@ -5669,7 +5669,7 @@ class Crawl extends CB_Controller
                 // }
                 
                 
-                echo element('cit_id',$val)."\n";
+                // echo element('cit_id',$val)."\n";
                 
 
                 $all_category = $this->Cmall_category_model->get_all_category();

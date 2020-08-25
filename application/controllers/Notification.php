@@ -323,6 +323,10 @@ class Notification extends CB_Controller
 					$read_url = 'javascript:;';
 					$jsevent = 'onClick="note_list(' . element('not_content_id', $val) . ');"';
 				}
+				// if (element('not_type', $val) === 'notice' || element('not_type', $val) === 'event') {
+				// 	$read_url = 'javascript:;';
+				// 	$jsevent = 'onClick="note_list(' . element('not_content_id', $val) . ');"';
+				// }
 				$html .= '<div class="notifications-list">
 					<a href="' . $read_url . '" ' . $jsevent . ' class="notification_read '
 					. element('not_type', $val) . '" data-not-id="' . element('not_id', $val) . '">'

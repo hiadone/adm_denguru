@@ -67,7 +67,7 @@ class Search extends CB_Controller
 
 		$mem_id = (int) $this->member->item('mem_id');
 
-		$skeyword = $this->input->get('skeyword', null, '');
+		$skeyword = trim($this->input->get('skeyword', null, ''));
 		if (empty($skeyword)) {
 
 			// 이벤트가 존재하면 실행합니다

@@ -90,9 +90,9 @@ class Cmall_category_model extends CB_Model
 
 		
 		if (!empty($brd_id)) 
-			$this->db->select('count(*) as cnt,post_id,cca_value,cca_parent');
+			$this->db->select('count(*) as cnt,cmall_category_rel.cit_id,post_id,cca_value,cca_parent');
 		else
-			$this->db->select('count(DISTINCT cb_cmall_item.cit_id) as cnt,brd_id,cca_parent');
+			$this->db->select('count(DISTINCT cb_cmall_category_rel.cit_id) as cnt,brd_id,cca_parent');
 			
 
 		$this->db->join('cmall_category_rel', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'inner');
@@ -110,7 +110,7 @@ class Cmall_category_model extends CB_Model
 		// $this->db->order_by('cmall_category.cca_id', 'desc');
 
 		if (!empty($brd_id)) 
-			$this->db->group_by('cmall_category_rel.cca_id,cmall_item.post_id');
+			$this->db->group_by('cmall_category_rel.cca_id,cmall_category_rel.cit_id');
 		else
 			$this->db->group_by('cmall_item.brd_id');
 			

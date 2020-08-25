@@ -152,6 +152,80 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="box-table-header">
+				<h4><a data-toggle="collapse" href="#cmalltab9" aria-expanded="true" aria-controls="cmalltab9">제품견종</a></h4>
+				<a data-toggle="collapse" href="#cmalltab9" aria-expanded="true" aria-controls="cmalltab9"><i class="fa fa-chevron-up pull-right"></i></a>
+			</div>
+			<div class="collapse in" id="cmalltab9">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">제품견종</label>
+					<div class="col-sm-10">
+						<?php
+						$open = false;
+						$kind = element('all_kind', element('data', $view));
+						$item_kind = element('kind', element('data', $view));
+						if ($kind) {
+							$i = 0;
+							foreach ($kind as $key => $val) {
+								$display = (is_array($item_kind) && in_array(element('ckd_id', $val), $item_kind)) ? "block" : 'none';
+								if ($i%5== 0) {
+									echo '<div>';
+									$open = true;
+								}
+								echo '<div class="checkbox checkbox-inline" style="vertical-align:top;">';
+								$ckd_checked = (is_array($item_kind) && in_array(element('ckd_id', $val), $item_kind)) ? 'checked="checked"' : '';
+								echo '<label for="ckd_id_' . element('ckd_id', $val) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $val) . '" ' . $ckd_checked . ' id="ckd_id_' . element('ckd_id', $val) . '" onclick="display_cmall_kind(this.checked,\'ckindwrap_' . element('ckd_id', $val) . '\');" />' . element('ckd_value_kr', $val) . '</label> ';
+								echo get_subkind($kind, $item_kind, element('ckd_id', $val), $display);
+								echo '</div>';
+								if ($i%5== 4) {
+									echo '</div>';
+									$open = false;
+								}
+								$i++;
+							}
+							if ($open) {
+								echo '</div>';
+								$open = false;
+							}
+						}
+						function get_subkind($kind, $item_kind, $key, $display)
+						{
+
+							$subcat = element($key, $kind);
+							$html = '';
+							if ($subcat) {
+								$html .= '<div class="form-group" id="ckindwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
+								foreach ($subcat as $skey => $sval) {
+									$display = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'block' : 'none';
+									$ckd_checked = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'checked="checked"' : '';
+									$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
+									$html .= '<label for="ckd_id_' . element('ckd_id', $sval) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $sval) . '" ' . $ckd_checked . ' id="ckd_id_' . element('ckd_id', $sval) . '" onclick="display_cmall_kind(this.checked,\'ckindwrap_' . element('ckd_id', $sval) . '\');" /> ' . element('ckd_value_kr', $sval) . '</label>';
+									$html .= get_subkind($kind, $item_kind, element('ckd_id', $sval), $display);
+									$html .= '</div>';
+								}
+								$html .= '</div>';
+							}
+							return $html;
+						}
+
+						?>
+						<script type="text/javascript">
+						//<![CDATA[
+						function display_cmall_kind(check, idname) {
+							// if (check === true) {
+							// 	$('#' + idname).show();
+							// } else {
+							// 	$('#' + idname).hide();
+							// 	$('#' + idname).find('input:checkbox').attr('checked', false);
+							// }
+						}
+						//]]>
+						</script>
+					</div>
+				</div>
+			</div>
+
 			<div class="box-table-header">
 				<h4><a data-toggle="collapse" href="#cmalltab2" aria-expanded="true" aria-controls="cmalltab2">기본정보</a></h4>
 				<a data-toggle="collapse" href="#cmalltab2" aria-expanded="true" aria-controls="cmalltab2"><i class="fa fa-chevron-up pull-right"></i></a>

@@ -782,7 +782,7 @@ class Board_post extends CB_Controller
 			? site_url('postact/delete/' . element('post_id', $post) . '?' . $param->output()) : '';
 
 		if ($skeyword) {
-			$view['view']['list_url'] = board_url(element('brd_key', $board));
+			$view['view']['list_url'] = board_url(element('brd_key', $board) . '?' . $param->replace('page_sub'));
 			$view['view']['search_list_url'] = board_url(element('brd_key', $board) . '?' . $param->output());
 		} else {
 			$view['view']['list_url'] = board_url(element('brd_key', $board) . '?' . $param->replace('page_sub'));
@@ -1674,13 +1674,16 @@ class Board_post extends CB_Controller
 			foreach($result['category'] as $val){
 				
 				// if(element('cca_parent',$aval) === '0'){
-					$result_c['category'][element('post_id',$val)][$a]['cnt'] = element('cnt',$val);
-					$result_c['category'][element('post_id',$val)][$a]['cca_value'] = element('cca_value',$val);
+					if(empty($result_c['category'][element('post_id',$val)][element('cca_value',$val)]['cnt']))
+						$result_c['category'][element('post_id',$val)][element('cca_value',$val)]['cnt'] = element('cnt',$val);
+					else 
+						$result_c['category'][element('post_id',$val)][element('cca_value',$val)]['cnt'] += element('cnt',$val);
+					$result_c['category'][element('post_id',$val)][element('cca_value',$val)]['cca_value'] = element('cca_value',$val);
 					if(element('cca_parent',$val) ==0){
-						if(empty($result_c['category'][element('post_id',$val)]['a_t']))
-							$result_c['category'][element('post_id',$val)]['a_t'] = element('cnt',$val);
-						else
-							$result_c['category'][element('post_id',$val)]['a_t'] += element('cnt',$val);
+						
+						
+							$result_c['category'][element('post_id',$val)]['a_t'][element('cit_id',$val)] = element('cnt',$val);
+						
 					}
 						$a++;
 				// }
@@ -1690,9 +1693,9 @@ class Board_post extends CB_Controller
 			if($result_c['cmall_count']){
 				foreach($result_c['cmall_count'] as $c_key => $c_val){
 
-					if(empty($result_c['category'][$c_key]['a_t'])) $result_c['category'][$c_key]['a_t'] = 0;
-					if(($c_val - $result_c['category'][$c_key]['a_t']) > 0){
-						$result_c['category'][$c_key][$a]['cnt'] = $c_val - $result_c['category'][$c_key]['a_t'];
+					if(empty($result_c['category'][$c_key]['a_t'])) $result_c['category'][$c_key]['a_t'] = array();
+					if(($c_val - count($result_c['category'][$c_key]['a_t'])) > 0){
+						$result_c['category'][$c_key][$a]['cnt'] = $c_val - count($result_c['category'][$c_key]['a_t']);
 						$result_c['category'][$c_key][$a]['cca_value'] ='no category';
 					}		
 				}
@@ -1754,7 +1757,7 @@ class Board_post extends CB_Controller
 
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
-				$result['list'][$key]['post_url'] = post_url(element('brd_key', $board), element('post_id', $val));
+				$result['list'][$key]['post_url'] = post_url(element('brd_key', $board), element('post_id', $val).'?'.$param->replace('warning'));
 
 				$result['list'][$key]['meta'] = $meta
 					= $this->Post_meta_model

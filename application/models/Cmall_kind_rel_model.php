@@ -20,7 +20,7 @@ class Cmall_kind_rel_model extends CB_Model
     /**
      * 사용되는 테이블의 프라이머리키
      */
-    public $primary_key = 'cer_id'; // 사용되는 테이블의 프라이머리키
+    public $primary_key = 'ckr_id'; // 사용되는 테이블의 프라이머리키
 
     function __construct()
     {
@@ -28,7 +28,7 @@ class Cmall_kind_rel_model extends CB_Model
     }
 
 
-    public function save_kind($cit_id = 0, $kind = '')
+    public function save_kind($cit_id = 0, $kind = '',$is_manual = 0)
     {
         $cit_id = (int) $cit_id;
         if (empty($cit_id) OR $cit_id < 1) {
@@ -40,10 +40,11 @@ class Cmall_kind_rel_model extends CB_Model
         $this->delete_where($deletewhere);
 
         if ($kind) {
-            foreach ($attkindr as $cval) {
+            foreach ($kind as $cval) {
                 $insertdata = array(
                     'cit_id' => $cit_id,
-                    'ced_id' => $cval,
+                    'ckd_id' => $cval,
+                    'is_manual' => $is_manual,
                 );
                 $this->insert($insertdata);
             }
