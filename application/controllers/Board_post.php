@@ -1503,8 +1503,10 @@ class Board_post extends CB_Controller
 			$this->load->model(array('Cmall_category_model'));			
 			
 			$board['category'] = $this->Cmall_category_model->get_all_category();
-			
-			
+			$cca_id_arr = array();
+			foreach(element(0,$board['category']) as $cval){	
+				array_push($cca_id_arr,element('cca_id',$cval));
+			}
 			$this->db->select('count(cb_cmall_item.cit_id) as cnt,cmall_category.cca_id');
 			$this->db->from('post');
 			$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
@@ -1512,7 +1514,7 @@ class Board_post extends CB_Controller
 			$this->db->join('cmall_category', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'left');
 			$this->db->where(array('post.brd_id' => element('brd_id', $board)));
 
-			$this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
+			$this->db->where_in('cmall_category_rel.cca_id' , $cca_id_arr);
 
 			
 			$this->db->group_by('cmall_category.cca_id');
