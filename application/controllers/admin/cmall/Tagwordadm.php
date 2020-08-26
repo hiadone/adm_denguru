@@ -24,7 +24,7 @@ class Tagwordadm extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Tag_word');
+    protected $models = array('Tag_word','Cmall_category');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
@@ -65,6 +65,14 @@ class Tagwordadm extends CB_Controller
 
         $getdata = array();
         $word = $this->Tag_word_model->get();
+        $all_category = $this->Cmall_category_model->get_all_category();
+        $parent_category = array();
+        foreach(element(0,$all_category) as $val){
+            array_push($parent_category,element('cca_id',$val));
+        }
+
+        $view['view']['parent_category'] = $parent_category;
+
         if ($word && is_array($word)) {
             $word_array=array();
             foreach ($word as $wvalue) {
@@ -75,7 +83,7 @@ class Tagwordadm extends CB_Controller
             }
             
             foreach ($word_array as $wkey => $wvalue) {
-                $getdata[] = implode("\n",$wvalue);
+                $getdata[$wkey] = implode("\n",$wvalue);
             }
             
         }
@@ -153,21 +161,14 @@ class Tagwordadm extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-            $tgw_value_1 = $this->input->post('tgw_value_1') ? $this->input->post('tgw_value_1') : '';
-            $tgw_value_2 = $this->input->post('tgw_value_2') ? $this->input->post('tgw_value_2') : '';
-            $tgw_value_3 = $this->input->post('tgw_value_3') ? $this->input->post('tgw_value_3') : '';
-            $tgw_value_4 = $this->input->post('tgw_value_4') ? $this->input->post('tgw_value_4') : '';
-            $tgw_value_5 = $this->input->post('tgw_value_5') ? $this->input->post('tgw_value_5') : '';
-            $tgw_value_6 = $this->input->post('tgw_value_6') ? $this->input->post('tgw_value_6') : '';
-            $tgw_value_7 = $this->input->post('tgw_value_7') ? $this->input->post('tgw_value_7') : '';
-            $tgw_value_8 = $this->input->post('tgw_value_8') ? $this->input->post('tgw_value_8') : '';
-            
-            for($t=1;$t < 9;$t++) {
+            foreach($parent_category as $val){
+                ${'tgw_value_'.$val} = $this->input->post('tgw_value_'.$val) ? $this->input->post('tgw_value_'.$val) : '';
+                
 
-                if(empty(${'tgw_value_'.$t})) continue;
+                if(empty(${'tgw_value_'.$val})) continue;
                 $tgw_word_text=array();
                 
-                $tgw_word_text = str_replace("\n",",",${'tgw_value_'.$t});
+                $tgw_word_text = str_replace("\n",",",${'tgw_value_'.$val});
 
                 $tgw_word_text = preg_replace("/[ #\&\-%=\/\\\:;\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $tgw_word_text);
 
@@ -177,7 +178,7 @@ class Tagwordadm extends CB_Controller
 
                 if(count($tgw_word_text)){
                     $deletewhere = array(
-                        'tgw_category' => ($t+5),
+                        'tgw_category' => $val,
                     );
                     $this->Tag_word_model->delete_where($deletewhere);            
                     if ($tgw_word_text && is_array($tgw_word_text)) {
@@ -189,7 +190,7 @@ class Tagwordadm extends CB_Controller
                                 $tagdata = array(
                                     'tgw_id' => $i,
                                     'tgw_value' => $value,
-                                    'tgw_category' => ($t+5),
+                                    'tgw_category' => $val,
                                     
                                 );
                                 $this->Tag_word_model->insert($tagdata);
@@ -198,7 +199,12 @@ class Tagwordadm extends CB_Controller
                     }
                     
                 }
+            
+
             }
+            
+            
+            
             
             $this->session->set_flashdata(
                     'message',

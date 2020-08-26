@@ -4286,7 +4286,7 @@ class Postact extends CB_Controller
 
 	    	$cmd='/usr/bin/curl -k '.base_url('crawl/crawling_item_update/'.$cit_id.'/'.$crawl_mode.'/'.$crawl_type).' --connect-timeout 86000 > /tmp/crawl_crawling_item_update_'.$_SERVER['HTTP_HOST'].'.log';
     	
-	    	// echo $cmd;
+	    	echo $cmd;
 	    	@exec($cmd, $output, $retval);
 
 			    	

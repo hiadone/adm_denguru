@@ -742,10 +742,10 @@ class Board_post extends CB_Controller
 		if($is_admin && element('bgr_id', $board) !== "4" ){			
 			// if(strpos(base_url(),'devadm.denguru.kr') !== false) {
 				$view['view']['crawl_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/update');
-				$view['view']['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/overwrite');
+				// $view['view']['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/overwrite');
 				$view['view']['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/category_update');
 				$view['view']['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_update');
-				$view['view']['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_overwrite');
+				// $view['view']['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_overwrite');
 				$view['view']['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/vision_api_label');
 
 			// } else {
@@ -1213,7 +1213,7 @@ class Board_post extends CB_Controller
 		
 
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model'));
+		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model','Cmall_kind_model'));
 		
 
 		if(!empty($this->input->get('nocategory'))){			
@@ -1239,6 +1239,8 @@ class Board_post extends CB_Controller
 
 
 				$result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+
+				$result['list'][$key]['kind'] = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
 
 				if(element('cbr_id', $val))
 					$cmall_brand = $this->Cmall_brand_model->get_one(element('cbr_id', $val));
@@ -2060,10 +2062,10 @@ class Board_post extends CB_Controller
 
 			// if(strpos(base_url(),'devadm.denguru.kr') !== false) {
 				$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
-				$return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
+				// $return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
 				$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');
 				$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
-				$return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
+				// $return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
 				$return['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/vision_api_label');
 				$return['crawl_category_update2'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update2');
 			// } else {

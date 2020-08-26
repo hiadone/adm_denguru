@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -1925,7 +1925,7 @@ class Crawl extends CB_Controller
 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
-
+                
 
                 // $post['category'] = $this->Board_category_model->get_category_info(element('brd_id', $post), element('post_category', $post));
                 // if(empty($post['category'])) 
@@ -1941,16 +1941,21 @@ class Crawl extends CB_Controller
                     
 
                     $all_category=array();
-        
+                
+                
         
         // $all_category = $this->Cmall_category_model->get_all_category();
         
 
         
         
-        
-
-        
+                foreach(config_item('total_tag_word') as $tval){
+                    if(empty($tval)) continue;
+                        $this->tag_word[]['tgw_value'] =  $tval;
+                    
+                }
+                
+                
                 $crawlwhere = array(
                     'cit_id' => element('cit_id', $val),
                 );
@@ -1995,26 +2000,25 @@ class Crawl extends CB_Controller
                             //             array_push($translate_text,element('tgw_value',$word));       
                             //     }     
                             // }
-
-
                             $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
-                                if(count($arr_str) > 1){
-                                    if(strpos(strtolower(str_replace(" ","",element('tgw_value',$word))),strtolower(str_replace(" ","",$tval))) !== false ){
-                                        if(!in_array(strtolower(str_replace(" ","",$tval)),$translate_text))
-                                            array_push($translate_text,strtolower(str_replace(" ","",$tval)));       
-                                    }     
-                                } else {
-                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                        if(!in_array(strtolower(str_replace(" ","",$tval)),$translate_text))
-                                            array_push($translate_text,strtolower(str_replace(" ","",$tval)));       
-                                    }     
-                                }
+                            if(count($arr_str) > 2){
+                                if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                    if(!in_array(strtolower($tval),$translate_text))
+                                        array_push($translate_text,strtolower($tval));       
+                                }     
+                            } else {
+                                if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                    if(!in_array(strtolower($tval),$translate_text))
+                                        array_push($translate_text,strtolower($tval));
+                                }     
                             }
+                            
                             
                         }
                         
                         
                     }
+                    
                 }
                     // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
 
@@ -2056,12 +2060,7 @@ class Crawl extends CB_Controller
                         }                  
                     } 
                 }
-        
-            
-
-                
-
-                
+            }     
             
         }   
 
@@ -5854,7 +5853,7 @@ class Crawl extends CB_Controller
         
         $this->load->model(array('Cmall_item_model'));
 
-        $cit_ids = $this->input->post('chk_post_id');
+        $cit_ids = $this->input->post('chk');
         
         
         if (empty($cit_ids)) {

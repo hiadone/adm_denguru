@@ -35,7 +35,7 @@ class Crawl_tag_delete_model extends CB_Model
         }
         $left = ($type === 'y') ? 4 : ($type === 'm' ? 7 : 10);
 
-        $this->db->select('count(*) as cnt, ctd_tag ', false);
+        $this->db->select('count(*) as cnt, cta_tag ', false);
         $this->db->from('crawl_tag_delete');
         $this->db->join('crawl', 'crawl.crawl_id = crawl_tag_delete.crawl_id', 'left');
         $this->db->where('left(crawl_datetime, 10) >=', $start_date);
@@ -45,7 +45,7 @@ class Crawl_tag_delete_model extends CB_Model
         if ($brd_id) {
             $this->db->where('crawl.brd_id', $brd_id);
         }
-        $this->db->group_by('ctd_tag');
+        $this->db->group_by('cta_tag');
         $this->db->order_by('cnt', 'desc');
         $qry = $this->db->get();
         $result = $qry->result_array();
@@ -81,7 +81,7 @@ class Crawl_tag_delete_model extends CB_Model
         $where = array(
             'board.brd_search' => 1,
             'crawl.crawl_secret' => 0,
-            'crawl_tag_delete.ctd_tag' => $tag,
+            'crawl_tag_delete.cta_tag' => $tag,
             'crawl.crawl_del' => 0,
         );
         $this->db->where($where);
@@ -109,12 +109,12 @@ class Crawl_tag_delete_model extends CB_Model
 
     public function get_popular_tags($start_date = '', $limit = '')
     {
-        $this->db->select('count(*) as cnt, ctd_tag ', false);
+        $this->db->select('count(*) as cnt, cta_tag ', false);
         $this->db->from('crawl_tag_delete');
         $this->db->join('crawl', 'crawl.crawl_id = crawl_tag_delete.crawl_id', 'left');
         $this->db->where('left(crawl_datetime, 10) >=', $start_date);
         $this->db->where('crawl_del', 0);
-        $this->db->group_by('ctd_tag');
+        $this->db->group_by('cta_tag');
         $this->db->order_by('cnt', 'desc');
         if ($limit) {
             $this->db->limit($limit);

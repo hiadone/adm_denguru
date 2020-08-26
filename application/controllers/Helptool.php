@@ -2899,7 +2899,7 @@ class Helptool extends CB_Controller
 						            	            'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
 						            	            'brd_id' => element('brd_id', $c_value),
-						            	            'ctd_tag' => $value,
+						            	            'cta_tag' => $value,
 						            	        );
 						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
 						            		if(element('cta_id',$tag)){
@@ -2908,7 +2908,7 @@ class Helptool extends CB_Controller
 						            			    'post_id' => element('post_id', $c_value),
 						            			    'cit_id' => element('cit_id', $c_value),
 						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'ctd_tag' => $value,
+						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);		            			
 						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
@@ -2917,7 +2917,7 @@ class Helptool extends CB_Controller
 						            			    'post_id' => element('post_id', $c_value),
 						            			    'cit_id' => element('cit_id', $c_value),
 						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'ctd_tag' => $value,
+						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);
 						            			$this->Crawl_tag_delete_model->insert($tagdata);
@@ -2985,7 +2985,7 @@ class Helptool extends CB_Controller
 						            	            'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => $val,
 						            	            'brd_id' => element('brd_id', $Cmall_item),
-						            	            'ctd_tag' => $value,
+						            	            'cta_tag' => $value,
 						            	        );
 
 						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
@@ -2995,7 +2995,7 @@ class Helptool extends CB_Controller
 						            			    'post_id' => element('post_id', $Cmall_item),
 						            			    'cit_id' => $val,
 						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'ctd_tag' => $value,
+						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);		            			
 						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
@@ -3004,7 +3004,7 @@ class Helptool extends CB_Controller
 						            			    'post_id' => element('post_id', $Cmall_item),
 						            			    'cit_id' => $val,
 						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'ctd_tag' => $value,
+						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);
 						            			$this->Crawl_tag_delete_model->insert($tagdata);
@@ -3353,7 +3353,7 @@ class Helptool extends CB_Controller
 	            						        'post_id' => element('post_id', $c_value),
 					            	            'cit_id' => element('cit_id', $c_value),
 					            	            'brd_id' => element('brd_id', $c_value),
-	            	            	            'ctd_tag' => $value,
+	            	            	            'cta_tag' => $value,
 	            						        
 	            						    );
 	            						    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
@@ -3440,7 +3440,7 @@ class Helptool extends CB_Controller
 	            						        'post_id' => element('post_id', $Cmall_item),
 					            	            'cit_id' => $val,
 					            	            'brd_id' => element('brd_id', $Cmall_item),
-	            	            	            'ctd_tag' => $value,
+	            	            	            'cta_tag' => $value,
 	            						        
 	            						    );
 	            						    $this->Crawl_tag_delete_model->delete_where($deletewhere); 

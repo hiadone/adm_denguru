@@ -176,7 +176,7 @@
 								echo '<div class="checkbox checkbox-inline" style="vertical-align:top;">';
 								$ckd_checked = (is_array($item_kind) && in_array(element('ckd_id', $val), $item_kind)) ? 'checked="checked"' : '';
 								echo '<label for="ckd_id_' . element('ckd_id', $val) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $val) . '" ' . $ckd_checked . ' id="ckd_id_' . element('ckd_id', $val) . '" onclick="display_cmall_kind(this.checked,\'ckindwrap_' . element('ckd_id', $val) . '\');" />' . element('ckd_value_kr', $val) . '</label> ';
-								echo get_subkind($kind, $item_kind, element('ckd_id', $val), $display);
+								// echo get_subkind($kind, $item_kind, element('ckd_id', $val), $display);
 								echo '</div>';
 								if ($i%5== 4) {
 									echo '</div>';

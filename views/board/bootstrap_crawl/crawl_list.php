@@ -180,7 +180,30 @@
                         
                     </td>
                     <td style="width:130px;">
-                        <?php foreach (element('attr', $result) as $cv) { echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv)) . '</label> ';} ?>
+
+                        <?php 
+                            if(element('attr', $result)){
+                                echo '<div>';
+                                foreach (element('attr', $result) as $cv) { 
+                                    if(element('cat_parent', $cv) ==0 ) echo "<br>";
+                                    echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv)) . '</label> ';
+                                } 
+                                echo '</div>';
+                            }
+                        ?>
+
+                         <?php 
+                            if(element('kind', $result)){
+                                echo '<div>';
+                                foreach (element('kind', $result) as $cv) { 
+                                    
+                                    echo '<label class="label label-danger">' . html_escape(element('ckd_value_kr', $cv)) . '</label> ';
+                                } 
+                                echo '</div>';
+                            }
+                        ?>
+
+                        
                     </td>
                     <td>
                         <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="이미지 분석 라벨입니다(수정 불가)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
@@ -246,7 +269,7 @@
 
             <div class="pull-right">
                 <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'vision_api_label', '선택하신 항목을 vision_api_label update ?');"><i class="fa fa-trash-o"></i>item vision_api_label update</div>
-                    <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');"><i class="fa fa-trash-o"></i>item tag overwrite</div>
+                    <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');"><i class="fa fa-trash-o"></i>item tag overwrite</div> -->
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_update', '선택하신 항목을 item tag update ?');"><i class="fa fa-trash-o"></i>item tag update</div>
                     
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'category_update', '선택하신 항목을 item category update ?');"><i class="fa fa-trash-o"></i>item category update</div>
