@@ -140,6 +140,7 @@ class CI_Session {
 			unset($_COOKIE[$this->_config['cookie_name']]);
 		}
 
+		if($_SERVER['REMOTE_ADDR'] !== '52.78.76.233')
 		session_start();
 
 		// Is session ID auto-regeneration configured? (ignoring ajax requests)
