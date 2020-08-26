@@ -1865,10 +1865,10 @@ class Board_post extends CB_Controller
 					}
 				}
 
-				$result['list'][$key]['disable'] = $result['list'][$key]['cnt'];
+				// $result['list'][$key]['disable'] = $result['list'][$key]['cnt'];
 
 				$result['list'][$key]['warning_count'] = element(element('post_id', $val),element('warning_count',$result_c));
-                $result['list'][$key]['cmall_count'] = element(element('post_id', $val),element('cmall_count',$result_c));
+                $result['list'][$key]['cmall_count'] = element(element('post_id', $val),element('cmall_count',$result_c),0);
 
                 $result['list'][$key]['category'] = element(element('post_id', $val),element('category',$result_c));
 				// for($s = 1;$s <8;$s++){
