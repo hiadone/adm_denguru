@@ -1262,7 +1262,10 @@ class Board_post extends CB_Controller
 					$list_date_style_manual
 				);
 
-				$result['list'][$key]['display_price'] = element('cit_price', $val) ? element('cit_price', $val) : 0 ; 
+				$result['list'][$key]['display_price'] = element('cit_price', $val) ? number_format(element('cit_price', $val)) : 0 ; 
+
+				if(element('cit_price_sale', $val) && element('cit_price_sale', $val) != element('cit_price', $val))
+					$result['list'][$key]['display_price'] .= '<br>('.number_format(element('cit_price_sale', $val)).')' ; 
 
 				
 
@@ -1694,7 +1697,7 @@ class Board_post extends CB_Controller
 
 			}
 
-			if($result_c['cmall_count']){
+			if(!empty($result_c['cmall_count'])){
 				foreach($result_c['cmall_count'] as $c_key => $c_val){
 
 					if(empty($result_c['category'][$c_key]['a_t'])) $result_c['category'][$c_key]['a_t'] = array();

@@ -170,7 +170,7 @@
                                 <?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
                         
                     </td>
-                    <td ><?php echo number_format(element('display_price', $result)); ?>
+                    <td ><?php echo element('display_price', $result); ?>
                         
                         <?php 
                             if(element('cit_is_soldout', $result))
