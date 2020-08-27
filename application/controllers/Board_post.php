@@ -145,7 +145,51 @@ class Board_post extends CB_Controller
 		$this->load->event($eventname);
 
 		
+// 		$this->load->library('aws_s3');
 		
+// 		$aaa = $this->aws_s3->get_listObjects();     
+
+// 		$objects = $aaa ?? [];
+
+
+// 		$i=0;
+// 		$a=0;
+
+// 		$citem = $this->Cmall_item_model->get('','cit_file_1');
+		
+// 		$expression = '[Contents[].Key][]';
+// 		foreach ($objects->search($expression) as $item) {
+// 		    $s3key = str_replace("denguru_uploads/cmallitem/","",$item);
+// 		    $flag=false;
+// 		    foreach($citem as $cval){
+// 		    	if(element('cit_file_1',$cval) === $s3key){
+// 		    		$i++;
+// 		    		$flag = true;
+// 		    		break;
+// 		    	} 
+
+// 		    }
+		    
+// 			if(!$flag) {
+// 				$deleted = $this->aws_s3->delete_file($item);				
+// 			}
+// 		    // $where = array('cit_file_1' =>$s3key);
+
+		    
+
+
+// 		    // if($item)  $i++;
+// 		    // else $a++;
+
+// 		    // $deleted = $this->aws_s3->delete_file($item);
+		    	
+// 		}
+
+// 		echo $i;
+// 		echo "<br>";
+// 		echo $a;
+// exit;
+
 		$view = array();
 		$view['view'] = array();
 
@@ -1124,7 +1168,7 @@ class Board_post extends CB_Controller
 				? (int) element('list_count', $board) : 20;
 		}
 
-		$per_page = 50;
+		$per_page = admin_listnum();
 		$offset = ($page - 1) * $per_page;
 
 		$this->Cmall_item_model->allow_search_field = array('cit_id', 'cit_name'); // 검색이 가능한 필드

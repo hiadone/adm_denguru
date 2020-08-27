@@ -264,6 +264,7 @@
                     <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
                
                 </div>
+                <?php echo listnum_selectbox();?>
             </div>
 
 
@@ -288,6 +289,7 @@
         <?php } ?>
     </div>
     <nav><?php echo element('paging', element('list', $view)); ?></nav>
+
 </div>
 
 <?php echo element('footercontent', element('board', element('list', $view))); ?>
