@@ -1123,6 +1123,8 @@ class Board_post extends CB_Controller
 			$per_page = element('list_count', $board)
 				? (int) element('list_count', $board) : 20;
 		}
+
+		$per_page = 50;
 		$offset = ($page - 1) * $per_page;
 
 		$this->Cmall_item_model->allow_search_field = array('cit_id', 'cit_name'); // 검색이 가능한 필드

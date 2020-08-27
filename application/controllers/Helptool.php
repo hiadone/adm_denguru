@@ -2581,7 +2581,7 @@ class Helptool extends CB_Controller
 			return false;
 		}
 
-		$view = array();
+		$view = $getdata = array();
 		$view['view'] = array();
 
 		// 이벤트가 존재하면 실행합니다
@@ -3040,7 +3040,7 @@ class Helptool extends CB_Controller
 			return false;
 		}
 
-		$view = array();
+		$view = $getdata = array();
 		$view['view'] = array();
 
 		// 이벤트가 존재하면 실행합니다

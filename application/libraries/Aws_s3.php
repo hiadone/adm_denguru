@@ -89,6 +89,32 @@ class Aws_s3 {
         );
     }
 
+
+
+
+    function get_listObjects()
+    {   
+
+        try {
+          return $this->s3Client->getPaginator('ListObjects', array(
+                    'Bucket' => $this->s3_bucket_name,'Prefix' => 'denguru_uploads/cmallitem'
+                ));
+
+          
+
+
+        } catch (S3Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+
+
+
+        
+
+        
+    }
+
     function delete_file($file_name)
     {   
 

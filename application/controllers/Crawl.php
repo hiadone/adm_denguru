@@ -2790,6 +2790,7 @@ class Crawl extends CB_Controller
 
                     if($crawl_type==='update'){
                         $this->crawling_update(0,element('brd_id', $val));
+                        $this->crawling_category_update2(0,element('brd_id', $val));
                     } 
 
                     if($crawl_type==='overwrite'){
@@ -5610,40 +5611,21 @@ class Crawl extends CB_Controller
             show_404();
         }
 
-        
-        if($post_id){
-            $postwhere = array(
-                'post_id' => $post_id,
-            );
-            
-
-
-
-           
-
-
-           
+        $where = array();
+        if(!empty($post_id)){
+            $where['post_id'] = $post_id;
         } 
 
-        if(empty($post_id)){
-            if($brd_id){
-                $postwhere = array(
-                    'brd_id' => $brd_id,
-                );
-                
+        if(!empty($brd_id)){
+            $where['brd_id'] = $brd_id;
+        } 
 
-
-
-             
-
-
-                
-
-            } 
-        }
+        
+            
+        
 
         $result['list'] = $this->Cmall_item_model
-            ->get('', '', $postwhere);
+            ->get('', '', $where);
 
         $post_category=array();
 
