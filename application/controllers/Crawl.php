@@ -3461,6 +3461,14 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '132'){
+                if(strpos(strtolower($crw_category1),strtolower('PERSONAL')) !==false){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
             if($brd_id == '140'){
                 if(strpos($crw_category1,'도매결제') !==false){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
@@ -3832,6 +3840,16 @@ class Crawl extends CB_Controller
                 }
 
             }
+
+            if($brd_id == '132'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('PERSONAL')) !==false){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            
 
             if($brd_id == '140'){
                 if(strpos($updatedata['crw_category1'],'도매결제') !==false){
