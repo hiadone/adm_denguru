@@ -31,6 +31,10 @@
 
 
 						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+
+						<a href="<?php echo element('listall_url', $view); ?>?cit_type=1" class="btn btn-warning btn-sm">베스트상품 목록</a>
+						<a href="<?php echo element('listall_url', $view); ?>?cit_type=2" class="btn btn-warning btn-sm">인기상품  목록</a>
+						<a href="<?php echo element('listall_url', $view); ?>?cit_type=3" class="btn btn-warning btn-sm">신상품 목록</a>						
 						<a href="<?php echo element('listall_url', $view); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
 						<a href="<?php echo element('listall_url', $view); ?>?nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택수정</button>
@@ -69,13 +73,16 @@
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
 						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
-							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><span class="glyphicon glyphicon-new-window"></span> <?php echo html_escape(element('cit_key', $result)); ?></a></td>
-							<td style="width:130px;">
-								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
+							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><span class="glyphicon glyphicon-new-window"></span> <?php echo html_escape(element('cit_key', $result)); ?></a>
+								<br>
 								<?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
 								<?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
 								<?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
 								<?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
+							</td>
+							<td style="width:130px;">
+								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
+								
 							</td>
 							<td>
 								<?php if (element('cit_file_1', $result)) {?>
@@ -133,6 +140,124 @@
 		<?php echo form_close(); ?>
 	</div>
 	<form name="fsearch" id="fsearch" action="<?php echo current_full_url(); ?>" method="get">
+		<div>추가 검색 조건 
+		<div id="where">
+		<?php 
+
+
+			$html ='';
+			if(!empty($this->input->get('cit_name'))){
+				
+				$where['cit_name'] = element(0,$this->input->get('cit_name'));
+				$html = "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='cit_name[]' value='".$where['cit_name']."'>'".$where['cit_name']."'</button>";
+				
+			} 
+
+
+			if(!empty($this->input->get('cit_price'))){
+				
+				$where['cit_price'] = element(0,$this->input->get('cit_price'));
+
+				$html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='cit_price[]' value='".$where['cit_price']."'>'".$where['cit_price']."'</button>";
+
+				
+			} 
+
+			if($this->input->get('brd_id')){
+
+	            
+	            $res = $this->input->get('brd_id');
+	            
+	            if($res){
+	                $brd_id_arr=array();
+	                foreach ($res as $key => $value) {
+
+	                	$html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='brd_id[]' value='".$value."'>'".$value."'</button>";
+	                    
+	                }
+
+	                
+
+	                
+	                // $this->db2->group_end();
+	            }
+	        } 
+			
+			if($this->input->get('cbr_id')){
+
+
+				$res = $this->input->get('cbr_id');
+				
+				if($res){
+				    $cbr_id_arr=array();
+				    foreach ($res as $key => $value) {
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='cbr_id[]' value='".$value."'>'".$value."'</button>";
+				    }
+
+				    
+
+
+				    // $this->db2->group_end();
+				}
+
+
+
+			}
+
+			if($this->input->get('cca_id')) {
+
+
+				$res = $this->input->get('cca_id');
+				
+				if($res){
+				    $cca_id_arr=array();
+				    foreach ($res as $key => $value) {
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='cca_id[]' value='".$value."'>'".$value."'</button>";
+				    }
+
+				    
+				    
+
+				    // $this->db2->group_end();
+				}
+				
+			}
+
+
+			if($this->input->get('cat_id')) {
+
+
+				$res = $this->input->get('cat_id');
+				
+				if($res){
+				    $cat_id_arr=array();
+				    foreach ($res as $key => $value) {
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='cat_id[]' value='".$value."'>'".$value."'</button>";
+				    }
+
+				    
+				}
+				
+			}
+
+
+			if($this->input->get('search_tag')) {
+
+
+				$value = $this->input->get('search_tag');
+				
+				
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='search_tag' value='".$value."'>'".$value."'</button>";
+				    
+
+				    
+				
+				
+			}
+			echo $html;
+		?>
+		</div>
+		
 		<div class="box-search">
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
@@ -140,9 +265,10 @@
 						<?php echo element('search_option', $view); ?>
 					</select>
 					<div class="input-group">
-						<input type="text" class="form-control" name="skeyword" value="<?php echo html_escape(element('skeyword', $view)); ?>" placeholder="Search for..." />
+						<input type="text" class="form-control" name="skeyword" id="skeyword" value="<?php echo html_escape(element('skeyword', $view)); ?>" placeholder="Search for..." />
 						<span class="input-group-btn">
-							<button class="btn btn-default btn-sm" name="search_submit" type="submit">검색!</button>
+							<button type="button" class="btn btn-default btn-sm" id="addsearch">추가!</button>
+							<button class="btn btn-danger btn-sm" name="search_submit" type="submit">검색!</button>
 						</span>
 					</div>
 				</div>
@@ -150,16 +276,173 @@
 		</div>
 	</form>
 </div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 
+$('input[type="text"]').keydown(function() {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+  };
+});
+
+
+
+
+$(document).on('click', 'button.where-btn', function() {
+    
+  $(this).remove();
+});
+
+
+$(document).on('click', '#addsearch', function() {
+
+	if($("select[name='sfield']").val() =='brd_id' ||  $("select[name='sfield']").val() =='cit_price' ||  $("select[name='sfield']").val() =='cbr_id'){
+
+		var input = "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='"+$("select[name='sfield']").val()+"[]' value='"+$("#skeyword").val()+"'>'"+$("#skeyword").val()+"'</button>";
+		
+		$('#where').append(input);
+	}
+	
+});
+$("select[name='sfield']").change(function(e){
+
+		$("#skeyword").off("keydown", function( event ) {});
+
+		if($(this).val() =='brd_id') board_list();
+
+		if($(this).val() =='cbr_id') brand_list();
+
+		if($(this).val() =='cca_id') search_category();
+
+		if($(this).val() =='cat_id') search_attr();
+
+		if($(this).val() =='cta_id') search_tag();
+	    	
+	    });
 
 $(document).on('change', 'textarea[name^=cta_tag]', function() {
     post_action_crawl('cta_tag_update', $(this).data('cit_id'),'','cta_tag_');
 });
 
 
+var searchbrand_list = [
+	<?php
+	if (element('brand_list', $view)) {
+	    foreach (element('brand_list', $view) as $result) {
+	 		echo '"'.element('cbr_value_kr',$result).'","'.element('cbr_value_en',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
 
+
+var searchboard_list = [
+	<?php
+	if (element('board_list', $view)) {
+	    foreach (element('board_list', $view) as $result) {
+	 		echo '"'.element('brd_name',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
+
+function search_category() {
+	
+	var sub_win = window.open(cb_url + '/helptool/search_category', 'search_category', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+	
+	;
+	
+}
+
+function search_attr() {
+	
+	var sub_win = window.open(cb_url + '/helptool/search_attr', 'search_attr', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+	
+	;
+	
+}
+
+function search_tag() {
+	
+	var sub_win = window.open(cb_url + '/helptool/search_tag', 'search_tag', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+	
+	;
+	
+}
+
+function board_list(){
+	$("#skeyword")
+	.on("keydown", function( event ) {
+	    if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+	        event.preventDefault();
+	    }
+	})
+	.autocomplete({  //오토 컴플릿트 시작
+	    source : searchbrand_list,    // source 는 자동 완성 대상
+	    select: function(event, ui) {
+	        this.value = "";
+	        this.value = ui.item.value;
+
+	        return false;
+	    },
+	    focus : function(event, ui) {    //포커스 가면
+	        return false;//한글 에러 잡기용도로 사용됨
+	    },
+	    minLength: 1,// 최소 글자수
+	    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+	    classes: {    //잘 모르겠음
+	        "ui-autocomplete": "highlight"
+	    },
+	    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+	//            disabled: true, //자동완성 기능 끄기
+	    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+	    close : function(event){    //자동완성창 닫아질때 호출
+	        console.log(1);
+	    }
+	});
+}
+
+function brand_list(){
+	$("#skeyword")
+	.on("keydown", function( event ) {
+	    if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+	        event.preventDefault();
+	    }
+	})
+	.autocomplete({  //오토 컴플릿트 시작
+	    source : searchbrand_list,    // source 는 자동 완성 대상
+	    select: function(event, ui) {
+	        this.value = "";
+	        this.value = ui.item.value;
+
+	        return false;
+	    },
+	    focus : function(event, ui) {    //포커스 가면
+	        return false;//한글 에러 잡기용도로 사용됨
+	    },
+	    minLength: 1,// 최소 글자수
+	    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+	    classes: {    //잘 모르겠음
+	        "ui-autocomplete": "highlight"
+	    },
+	    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+	    // disabled: true, //자동완성 기능 끄기
+	    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+	    close : function(event){    //자동완성창 닫아질때 호출
+	        console.log(1);
+	    }
+	});
+}
+board_list();
 //]]>
 </script>
 

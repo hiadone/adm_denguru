@@ -257,6 +257,7 @@
                     
                     
                     <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
+                    <div class="item" onClick="post_multi_change_attr();"><i class="fa fa-tags"></i> 특성변경</div>     
                     <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
                     <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
                     <div class="item" onClick="post_multi_action('cit_multi_delete', '0', '선택하신 항목을 완전삭제하시겠습니까?');"><i class="fa fa-trash-o"></i> 선택삭제하기</div>
@@ -264,7 +265,7 @@
                     <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
                
                 </div>
-                <?php echo listnum_selectbox();?>
+                
             </div>
 
 
@@ -288,7 +289,12 @@
             </div>
         <?php } ?>
     </div>
-    <nav><?php echo element('paging', element('list', $view)); ?></nav>
+    
+    <div class="form-inline" style="padding-left:40%;">
+        <div class="pull-left"><?php echo element('paging', element('list', $view)); ?></div>
+        <div class="pull-left ml20 mt20 mb20"><?php echo admin_listnum_selectbox();?></div>
+     </div>
+    
 
 </div>
 

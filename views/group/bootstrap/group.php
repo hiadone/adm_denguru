@@ -154,8 +154,8 @@ echo display_html_content(element('footercontent', element('group', $view)));
 
 <script>
 
-$('.btn-warning').click(function(){	
-	if ( ! confirm('정말 실행 하겠습니까?')) 
-		{ event.preventDefault() ;return false; }
-});
+// $('.btn-warning').click(function(){	
+// 	if ( ! confirm('정말 실행 하겠습니까?')) 
+// 		{ event.preventDefault() ;return false; }
+// });
 	</script>

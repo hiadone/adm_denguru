@@ -17,6 +17,8 @@ class Cmall_item_model extends CB_Model
 	 */
 	public $_table = 'cmall_item';
 
+	public $_join = array();
+
 	/**
 	 * 사용되는 테이블의 프라이머리키
 	 */
@@ -121,6 +123,14 @@ class Cmall_item_model extends CB_Model
 		$this->db->select('cmall_item.*');
 		$this->db->from($this->_table);
 
+
+		if ($this->_join) {
+			
+			$this->db->join(element(0,$this->_join),element(1,$this->_join),element(2,$this->_join));
+			
+		}
+
+		
 		if ($where) {
 			$this->db->where($where);
 		}
@@ -179,6 +189,12 @@ class Cmall_item_model extends CB_Model
 
 		$this->db->select('count(*) as rownum');
 		$this->db->from($this->_table);
+		if ($this->_join) {
+			
+			$this->db->join(element(0,$this->_join),element(1,$this->_join),element(2,$this->_join));
+			
+		}
+		
 		if ($where) {
 			$this->db->where($where);
 		}
@@ -274,4 +290,20 @@ class Cmall_item_model extends CB_Model
 		$result = $qry->result_array();
 		return $result;
 	}
+
+
+	public function set_join($join = array())
+	{
+		if (empty($join)) {
+			return false;
+		}
+
+		
+			
+		$this->_join = $join;
+			
+		
+	}
+
+	
 }

@@ -1912,7 +1912,7 @@ class Crawl extends CB_Controller
                 // if(empty($post['category'])) 
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
-                echo element('cit_id', $val)."<br>\n";
+                // echo element('cit_id', $val)."<br>\n";
                 foreach($cateinfo as $value){
 
                     if((int) $value['cca_parent'] < 1)

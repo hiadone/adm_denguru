@@ -1107,4 +1107,14 @@ if (typeof(COMMON_JS) === 'undefined') {
 			}
 		}
 	}
+
+	function post_multi_change_attr() {
+		var f = document.fboardlist;
+		var sub_win = window.open('', 'change_attr', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+		f.target = 'change_attr';
+		f.method = 'post';
+		f.action = cb_url + '/helptool/post_change_attr';
+		f.submit();
+	}
 }

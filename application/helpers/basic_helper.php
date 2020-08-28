@@ -1636,31 +1636,3 @@ if ( ! function_exists('event_image_url')) {
 }
 
 
-if ( ! function_exists('listnum_selectbox')) {
-	function listnum_selectbox()
-	{
-		$CI = & get_instance();
-		if ($CI->input->get('listnum')
-			&& is_numeric($CI->input->get('listnum'))
-			&& $CI->input->get('listnum') > 0
-			&& $CI->input->get('listnum') <= 1000) {
-			$listnum = $CI->input->get('listnum');
-		} else {
-			$listnum = get_cookie('admin_listnum')
-				? get_cookie('admin_listnum') : '20';
-		}
-		$array = array('10', '15', '20', '25', '30', '40', '50', '60', '70', '100');
-
-		$html = '<select name="listnum" class="form-control input px100" onchange="location.href=\'' . current_url() . '?listnum=\' + this.value;">';
-		$html .= '<option value="">선택</option>';
-
-		foreach ($array as $val) {
-			$html .= '<option value="' . $val . '" ';
-			$html .= ((int) $listnum === (int) $val) ? ' selected="selected" ' : '';
-			$html .= ' >' . $val . '</option>';
-		}
-		$html .= '</select>개씩 보기';
-
-		return $html;
-	}
-}
