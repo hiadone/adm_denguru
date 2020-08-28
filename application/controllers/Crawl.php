@@ -1931,6 +1931,7 @@ class Crawl extends CB_Controller
                 // if(empty($post['category'])) 
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
+                echo element('cit_id', $c_value)."<br>\n";
                 foreach($cateinfo as $value){
 
                     if((int) $value['cca_parent'] < 1)
@@ -5765,6 +5766,11 @@ class Crawl extends CB_Controller
 
                
                 // if(empty(element('cca_text',$a_cvalue_))) continue; 
+                    
+
+
+                if(!empty($cmall_category)){
+                    
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
                         'is_manual' => 0,
@@ -5772,9 +5778,6 @@ class Crawl extends CB_Controller
 
                     $this->Cmall_category_rel_model->delete_where($deletewhere);   
 
-
-                if($cmall_category){                                      
-                    
                     $manualwhere = array(
                         'cit_id' => element('cit_id',$val),
                         'is_manual' => 1,
