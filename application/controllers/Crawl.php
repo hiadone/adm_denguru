@@ -1874,6 +1874,7 @@ class Crawl extends CB_Controller
         //     'brd_id' => $brd_id,
         // );
 
+        $where = array();
         $board = $this->board->item_all($brd_id);
         if ( ! element('brd_id', $board)) {
             show_404();
@@ -1881,42 +1882,20 @@ class Crawl extends CB_Controller
 
         
         if($post_id){
-            $postwhere = array(
-                'post_id' => $post_id,
-            );
-            
-
-
-
-            $result['list'] = $this->Cmall_item_model
-                ->get('', '', $postwhere);
-
-
+            $where['post_id'] = $post_id;
            
         } 
 
-        if(empty($post_id)){
-            if($brd_id){
-                $brdwhere = array(
-                    'brd_id' => $brd_id,
-                );
-                
-
-
-
-                $result['list'] = $this->Cmall_item_model
-                ->get('', '', $brdwhere);
-
-
-                
-
-            } 
-        }
+        
+        if($brd_id){
+            $where['brd_id'] = $brd_id;
+        } 
+        
 
         if($cit_id){
-            $postwhere['cit_id'] = $cit_id;
+            $where['cit_id'] = $cit_id;
             $result['list'] = $this->Cmall_item_model
-                ->get('', '', $postwhere);
+                ->get('', '', $where, '', '', 'cit_id', 'ASC');
         }
 
         if (element('list', $result)) {
@@ -1931,7 +1910,7 @@ class Crawl extends CB_Controller
                 // if(empty($post['category'])) 
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
-                echo element('cit_id', $c_value)."<br>\n";
+                echo element('cit_id', $val)."<br>\n";
                 foreach($cateinfo as $value){
 
                     if((int) $value['cca_parent'] < 1)
