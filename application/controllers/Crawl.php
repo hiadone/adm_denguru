@@ -1894,9 +1894,11 @@ class Crawl extends CB_Controller
 
         if($cit_id){
             $where['cit_id'] = $cit_id;
-            $result['list'] = $this->Cmall_item_model
-                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+            
         }
+
+        $result['list'] = $this->Cmall_item_model
+                ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
