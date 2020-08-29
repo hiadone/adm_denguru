@@ -2066,7 +2066,7 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
-        if(empty($is_admin)) exit;
+        // if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
