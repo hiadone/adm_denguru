@@ -1204,6 +1204,8 @@ class Crawl extends CB_Controller
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
 
+        if($this->input->ip_address() !== '182.162.170.75') exit;
+
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
@@ -1901,6 +1903,7 @@ class Crawl extends CB_Controller
                 ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
 
+
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
@@ -1918,8 +1921,11 @@ class Crawl extends CB_Controller
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
                 // echo element('cit_id', $val)."<br>\n";
+                // 
+                if(!empty($cateinfo)){
                 foreach($cateinfo as $value){
 
+                    
                     if((int) $value['cca_parent'] < 1)
                         $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
                     else 
@@ -1930,7 +1936,7 @@ class Crawl extends CB_Controller
                     
                 
                 
-        
+                
         // $all_category = $this->Cmall_category_model->get_all_category();
         
 
@@ -1970,6 +1976,73 @@ class Crawl extends CB_Controller
                             }
                             
                         }
+
+
+                        
+                        foreach($this->tag_word as $word){
+                            foreach ($tag_array as $tval) {
+                                // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                
+                                // if(count($arr_str) > 2){
+                                //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //     }     
+                                // } else {
+                                //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //     }     
+                                // }
+                                $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                if(count($arr_str) > 2){
+                                    if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                        if(!in_array(strtolower($tval),$translate_text))
+                                            array_push($translate_text,strtolower($tval));       
+                                    }     
+                                } else {
+                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                        if(!in_array(strtolower($tval),$translate_text))
+                                            array_push($translate_text,strtolower($tval));
+                                    }     
+                                }
+                                
+                                
+                            }
+                            
+                            
+                        }
+                        
+                    }
+
+                    print_r2($translate_text);
+                } 
+            }else {
+                    foreach(config_item('total_tag_word') as $tval){
+                        if(empty($tval)) continue;
+                            $this->tag_word[]['tgw_value'] =  $tval;
+                        
+                    }
+                    
+                    
+                    $crawlwhere = array(
+                        'cit_id' => element('cit_id', $val),
+                    );
+
+            
+                    $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+                    if ($tag && is_array($tag)) {
+                        $tag_array=array();
+                        foreach ($tag as $tvalue) {
+                            if (element('val_tag', $tvalue)) {
+                                array_push($tag_array,trim(element('val_tag', $tvalue)));
+                            }
+                        }
+                        
+
+                        
+
+                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);
 
                         
                         foreach($this->tag_word as $word){
@@ -2066,7 +2139,8 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
-        // if(empty($is_admin)) exit;
+
+        if($this->input->ip_address() !== '182.162.170.75') exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
@@ -2129,20 +2203,94 @@ class Crawl extends CB_Controller
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
                 // echo element('cit_id', $val)."<br>\n";
-                foreach($cateinfo as $value){
+                
+                    if(empty(!$cateinfo)){
 
-                    if((int) $value['cca_parent'] < 1)
-                        $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
-                    else 
-                        continue;
+                    foreach($cateinfo as $value){
 
-                    
+                        if((int) $value['cca_parent'] < 1)
+                            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
+                        else 
+                            continue;
 
-                    $all_category=array();
-            
+                        
 
-            
-            
+                        $all_category=array();
+                
+
+                
+                        if(element('cca_id',$value) =='13'){
+                            foreach(config_item('total_tag_word') as $tval){
+                                if(empty($tval)) continue;
+                                    $this->tag_word[]['tgw_value'] =  $tval;
+                                
+                            }
+                        }
+
+               
+                        $crawlwhere = array(
+                            'cit_id' => element('cit_id', $val),
+                        );
+
+                
+                        $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+
+                        if ($tag && is_array($tag)) {
+                            $tag_array=array();
+                            foreach ($tag as $tvalue) {
+                                if (element('val_tag', $tvalue)) {
+                                    array_push($tag_array,trim(element('val_tag', $tvalue)));
+                                }
+                            }
+                            
+                            
+                            $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+
+                            foreach($cateinfo as $cval){
+                                foreach(explode("/",element('cca_value',$cval)) as $eval){
+                                    if(empty($eval)) continue;
+                                    $this->tag_word[]['tgw_value'] =  $eval;
+                                }
+                                
+                            }
+
+                            foreach($this->tag_word as $word){
+                                foreach ($tag_array as $tval) {
+                                    // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                    
+                                    // if(count($arr_str) > 2){
+                                    //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                    //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                    //             array_push($translate_text,element('tgw_value',$word));       
+                                    //     }     
+                                    // } else {
+                                    //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                    //         if(!in_array(element('tgw_value',$word),$translate_text))
+                                    //             array_push($translate_text,element('tgw_value',$word));       
+                                    //     }     
+                                    // }
+                                    $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                    if(count($arr_str) > 2){
+                                        if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                            if(!in_array(strtolower($tval),$translate_text))
+                                                array_push($translate_text,strtolower($tval));       
+                                        }     
+                                    } else {
+                                        if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                            if(!in_array(strtolower($tval),$translate_text))
+                                                array_push($translate_text,strtolower($tval));
+                                        }     
+                                    }
+                                    
+                                    
+                                }
+                                
+                                
+                            }
+                        }
+                        
+                    }
+                } else {
                     foreach(config_item('total_tag_word') as $tval){
                         if(empty($tval)) continue;
                             $this->tag_word[]['tgw_value'] =  $tval;
@@ -2150,12 +2298,12 @@ class Crawl extends CB_Controller
                     }
 
 
-           
+                    
                     $crawlwhere = array(
                         'cit_id' => element('cit_id', $val),
                     );
 
-            
+                    
                     $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
 
                     if ($tag && is_array($tag)) {
@@ -2211,9 +2359,7 @@ class Crawl extends CB_Controller
                             
                         }
                     }
-                    
                 }
-                
                 
                 if(count($translate_text)){
                     
