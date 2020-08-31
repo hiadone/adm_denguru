@@ -91,7 +91,7 @@ function add() {
         var input = "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden'  name='cca_id[]' value='"+$(this).attr('label')+"'>'"+$(this).attr('label')+"'</button>";
         
 
-        $("#where",opener.document).append(input);
+        $(".searchwhere",opener.document).append(input);
         
     });  
     

@@ -93,7 +93,7 @@ function add() {
         
         
 
-        $("#where",opener.document).append(input);
+        $(".searchwhere",opener.document).append(input);
         
     });  
     

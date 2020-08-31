@@ -50,7 +50,7 @@ function add() {
         var input = "<button class='btn btn-default btn-xs where-btn'><input type='hidden'  name='search_tag' value='"+$('#search_tag').val().replace("\n", ",")+"'></button>";
         
 
-        $("#where",opener.document).append(input);
+        $(".searchwhere",opener.document).append(input);
         
    
     
