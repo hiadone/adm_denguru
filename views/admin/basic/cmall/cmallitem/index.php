@@ -168,11 +168,11 @@
 
 						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
 
-						<a href="<?php echo element('listall_url', $view); ?>?cit_type=1" class="btn btn-warning btn-sm">베스트상품 목록</a>
-						<a href="<?php echo element('listall_url', $view); ?>?cit_type=2" class="btn btn-warning btn-sm">인기상품  목록</a>
-						<a href="<?php echo element('listall_url', $view); ?>?cit_type=3" class="btn btn-warning btn-sm">신상품 목록</a>						
-						<a href="<?php echo element('listall_url', $view); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
-						<a href="<?php echo element('listall_url', $view); ?>?nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-warning btn-sm">베스트상품 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-warning btn-sm">인기상품  목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-warning btn-sm">신상품 목록</a>						
+						<a href="<?php echo element('search_url', $view); ?>&warning=1" class="btn btn-warning btn-sm">warning 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택수정</button>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
@@ -227,8 +227,20 @@
 									</a>
 								<?php } ?>
 							</td>
-							<td><input type="text" name="cit_name[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_name', $result)); ?>" /></td>
-							<td><input type="number" name="cit_price[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_price', $result)); ?>" /></td>
+							<td>
+							<?php 
+                            if(element('display_store_name', $result))
+                                echo '<div>브랜드 : <label class="label label-default">'.element('display_store_name', $result).'</label></div>';
+                        	?>
+								
+								<?php echo html_escape(element('cit_name', $result)); ?>
+									
+							<?php 
+                            if(element('display_brand', $result))
+                                echo '<div>브랜드 : <label class="label label-default">'.element('display_brand', $result).'</label></div>';
+                        	?>
+							</td>
+							<td><?php echo number_format(element('cit_price', $result)); ?></td>
 							
 							<!-- <td>
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
@@ -237,8 +249,8 @@
 		                       <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
 		                    </td>
 							
-							<td><input type="number" name="cit_price_sale[<?php echo element(element('primary_key', $view), $result); ?>]" class="form-control" value="<?php echo html_escape(element('cit_price_sale', $result)); ?>" /></td>
-							<td><input type="checkbox" name="cit_status[<?php echo element(element('primary_key', $view), $result); ?>]" value="1" <?php echo set_checkbox('cit_status', '1', (element('cit_status', $result) ? true : false)); ?> /></td>
+							<td><?php echo number_format(element('cit_price_sale', $result)); ?></td>
+							<td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>

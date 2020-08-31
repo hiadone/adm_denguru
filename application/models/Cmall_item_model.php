@@ -125,8 +125,10 @@ class Cmall_item_model extends CB_Model
 
 
 		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
+			}
 			
-			$this->db->join(element(0,$this->_join),element(1,$this->_join),element(2,$this->_join));
 			
 		}
 
@@ -148,8 +150,12 @@ class Cmall_item_model extends CB_Model
 			$this->db->group_end();
 		}
 
+
 		if ($this->where_in) {
-			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+			foreach($this->where_in as $wval){
+				$this->db->where_in(key($wval),$wval[key($wval)]);	
+			}
+			
 		}
 
 		if ($this->set_where) {			
@@ -190,8 +196,10 @@ class Cmall_item_model extends CB_Model
 		$this->db->select('count(*) as rownum');
 		$this->db->from($this->_table);
 		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
+			}
 			
-			$this->db->join(element(0,$this->_join),element(1,$this->_join),element(2,$this->_join));
 			
 		}
 		
@@ -213,7 +221,10 @@ class Cmall_item_model extends CB_Model
 		}
 
 		if ($this->where_in) {
-			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+			foreach($this->where_in as $wval){
+				$this->db->where_in(key($wval),$wval[key($wval)]);	
+			}
+			
 		}
 		if ($this->set_where) {			
 			foreach ($this->set_where as $skey => $sval) {
@@ -300,7 +311,7 @@ class Cmall_item_model extends CB_Model
 
 		
 			
-		$this->_join = $join;
+		$this->_join[] = $join;
 			
 		
 	}

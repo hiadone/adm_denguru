@@ -2192,7 +2192,7 @@ class Crawl extends CB_Controller
                 $where = array(
                     'cit_id' => element('cit_id', $val),
                 );
-                if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
+                // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
                 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
@@ -2256,31 +2256,31 @@ class Crawl extends CB_Controller
 
                             foreach($this->tag_word as $word){
                                 foreach ($tag_array as $tval) {
-                                    // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                    $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                     
-                                    // if(count($arr_str) > 2){
-                                    //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                    //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                    //             array_push($translate_text,element('tgw_value',$word));       
-                                    //     }     
-                                    // } else {
-                                    //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                    //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                    //             array_push($translate_text,element('tgw_value',$word));       
-                                    //     }     
-                                    // }
-                                    $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
                                     if(count($arr_str) > 2){
                                         if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                            if(!in_array(strtolower($tval),$translate_text))
-                                                array_push($translate_text,strtolower($tval));       
+                                            if(!in_array(element('tgw_value',$word),$translate_text))
+                                                array_push($translate_text,element('tgw_value',$word));       
                                         }     
                                     } else {
                                         if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                            if(!in_array(strtolower($tval),$translate_text))
-                                                array_push($translate_text,strtolower($tval));
+                                            if(!in_array(element('tgw_value',$word),$translate_text))
+                                                array_push($translate_text,element('tgw_value',$word));       
                                         }     
                                     }
+                                    // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                    // if(count($arr_str) > 2){
+                                    //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                    //         if(!in_array(strtolower($tval),$translate_text))
+                                    //             array_push($translate_text,strtolower($tval));       
+                                    //     }     
+                                    // } else {
+                                    //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                    //         if(!in_array(strtolower($tval),$translate_text))
+                                    //             array_push($translate_text,strtolower($tval));
+                                    //     }     
+                                    // }
                                     
                                     
                                 }
@@ -2327,31 +2327,31 @@ class Crawl extends CB_Controller
 
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
-                                // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                 
-                                // if(count($arr_str) > 2){
-                                //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
-                                //     }     
-                                // } else {
-                                //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
-                                //     }     
-                                // }
-                                $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
                                 if(count($arr_str) > 2){
                                     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));       
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 } else {
                                     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 }
+                                // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                // if(count($arr_str) > 2){
+                                //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                //         if(!in_array(strtolower($tval),$translate_text))
+                                //             array_push($translate_text,strtolower($tval));       
+                                //     }     
+                                // } else {
+                                //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                //         if(!in_array(strtolower($tval),$translate_text))
+                                //             array_push($translate_text,strtolower($tval));
+                                //     }     
+                                // }
                                 
                                 
                             }
@@ -3602,6 +3602,14 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '137'){
+                if(strpos(strtolower($crw_category1),strtolower('cat')) !==false){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
             if($brd_id == '140'){
                 if(strpos($crw_category1,'도매결제') !==false){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
@@ -3976,6 +3984,14 @@ class Crawl extends CB_Controller
 
             if($brd_id == '132'){
                 if(strpos(strtolower($updatedata['crw_category1']),strtolower('PERSONAL')) !==false){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+
+            if($brd_id == '137'){
+                if(strpos(strtolower($updatedata['crw_category1']),strtolower('cat')) !==false){
                     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
                     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                 }

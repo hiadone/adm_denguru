@@ -144,7 +144,7 @@ class Cmallitem extends CB_Controller
             if($this->input->get('cit_price'))
                 $skey_ = $this->input->get('cit_price');
 
-            if($skeyword)
+            if($skeyword && $sfield === 'cit_price')
                 array_push($skey_,$skeyword);
 
 
@@ -164,7 +164,7 @@ class Cmallitem extends CB_Controller
             if($this->input->get('brd_id'))
             	$skey_ = $this->input->get('brd_id');
 
-            if($skeyword)
+            if($skeyword && $sfield === 'brd_id')
                 array_push($skey_,$skeyword);
 
             $brd_id_arr=array();
@@ -183,6 +183,7 @@ class Cmallitem extends CB_Controller
 
                     // $this->db2->group_end();
                 }
+                $brd_id_arr[] = 0;
 
             }
             
@@ -197,7 +198,7 @@ class Cmallitem extends CB_Controller
             if($this->input->get('cbr_id'))
                 $skey_ = $this->input->get('cbr_id');
 
-            if($skeyword)
+            if($skeyword && $sfield === 'cbr_id')
                 array_push($skey_,$skeyword);
 
             $cbr_id_arr=array();
@@ -234,7 +235,7 @@ class Cmallitem extends CB_Controller
             if($this->input->get('cca_id'))
                 $skey_ = $this->input->get('cca_id');
 
-            if($skeyword)
+            if($skeyword && $sfield === 'cca_id')
                 array_push($skey_,$skeyword);
 
 
@@ -419,7 +420,7 @@ class Cmallitem extends CB_Controller
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);
-        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace('page','',$param->replace('warning','',$param->replace('nocategory'))));
+        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace('page','',$param->replace('cit_type','',$param->replace('warning','',$param->replace('nocategory')))));
         $view['view']['write_url'] = admin_url($this->pagedir . '/write');
         $view['view']['list_delete_url'] = admin_url($this->pagedir . '/listdelete/?' . $param->output());
         $view['view']['list_update_url'] = admin_url($this->pagedir . '/listupdate/?' . $param->output());

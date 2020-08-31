@@ -458,7 +458,7 @@ class CB_Model extends CI_Model
 
 		if ($where && is_array($where)) {
 			
-			$this->where_in = array($field_key => $where);
+			$this->where_in[] = array($field_key => $where);
 			
 		}
 	}
