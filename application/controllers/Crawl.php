@@ -1908,7 +1908,7 @@ class Crawl extends CB_Controller
             foreach (element('list', $result) as $key => $val){ 
 
                 // $where = array(
-                //     'cit_id' => element('cit_id', $c_value),
+                //     'cit_id' => element('cit_id', $val),
                 // );
                 // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
 
@@ -2190,7 +2190,7 @@ class Crawl extends CB_Controller
 
                 
                 $where = array(
-                    'cit_id' => element('cit_id', $c_value),
+                    'cit_id' => element('cit_id', $val),
                 );
                 if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
                 
