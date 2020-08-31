@@ -286,14 +286,14 @@ class Cmallitem extends CB_Controller
 
 
         
-        if($sfield === 'search_tag' || $this->input->get('search_tag')){
+        if($sfield === 'cta_id' || $this->input->get('cta_id')){
 
 
         	
 
             $skey_ = array();
-            if($this->input->get('search_tag')){
-                $value = $this->input->get('search_tag');
+            if($this->input->get('cta_id')){
+                $value = $this->input->get('cta_id');
 
                 $skey_ = expode(',',$value);
             }
@@ -309,7 +309,7 @@ class Cmallitem extends CB_Controller
                     $cta_value_arr[] = $value;
                 }
 
-                $this->Cmall_item_model->set_where_in('crawl_tag.cta_value',$cta_value_arr);
+                $this->Cmall_item_model->set_where_in('crawl_tag.cta_tag',$cta_value_arr);
                 $this->Cmall_item_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
 
                 // $this->db2->group_end();

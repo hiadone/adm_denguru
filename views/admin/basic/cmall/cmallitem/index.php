@@ -318,7 +318,7 @@ $("select[name='sfield']").change(function(e){
 
 		if($(this).val() =='cat_id') search_attr();
 
-		if($(this).val() =='cta_id') search_tag();
+		// if($(this).val() =='cta_id') search_tag();
 	    	
 	    });
 
