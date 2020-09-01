@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -2185,6 +2185,8 @@ class Crawl extends CB_Controller
         $result['list'] = $this->Cmall_item_model
                 ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
+        $kind_list = $this->Cmall_kind_model->get_all_kind();
+        
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
@@ -2192,7 +2194,7 @@ class Crawl extends CB_Controller
                 $where = array(
                     'cit_id' => element('cit_id', $val),
                 );
-                // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
+                if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
                 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
@@ -2254,6 +2256,15 @@ class Crawl extends CB_Controller
                                 
                             }
 
+                            foreach($kind_list as $kval){
+                                if(!empty(element('ckd_value_en',$kval))) 
+                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+
+                                if(!empty(element('ckd_value_kr',$kval))) 
+                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                                
+                            }
+                            
                             foreach($this->tag_word as $word){
                                 foreach ($tag_array as $tval) {
                                     $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);

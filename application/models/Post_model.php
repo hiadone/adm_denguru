@@ -17,6 +17,7 @@ class Post_model extends CB_Model
 	 */
 	public $_table = 'post';
 
+	public $_join = array();
 	/**
 	 * 사용되는 테이블의 프라이머리키
 	 */
@@ -280,7 +281,7 @@ class Post_model extends CB_Model
 		if (empty($sfield)) {
 			$sfield = array('post_title', 'cit_name');
 		}
-
+		
 		$search_where = array();
 		$search_like = array();
 		$search_or_like = array();
@@ -329,9 +330,12 @@ class Post_model extends CB_Model
 		}
 
 		// $this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point,sum(IF(cb_cmall_item.cit_status > 0, 0, 1)) as cnt');
-		$this->db->select('post.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point');
+		$this->db->select('post.*');
 		$this->db->from($this->_table);
-		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
+
+		
+
+		// $this->db->join('member', 'post.mem_id = member.mem_id', 'left');
 		// $this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
 
 		
@@ -355,6 +359,11 @@ class Post_model extends CB_Model
 				$this->db->where('cmall_category_rel.cca_id', $category_id);
 				$this->db->or_like('cmall_category_rel.cca_id', $category_id . '.', 'after');
 				$this->db->group_end();
+			}
+		}
+		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
 			}
 		}
 		if ($search_like) {
@@ -384,7 +393,9 @@ class Post_model extends CB_Model
 
 		$this->db->select('count(DISTINCT cb_post.post_id) as rownum');
 		$this->db->from($this->_table);
-		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
+
+		
+		// $this->db->join('member', 'post.mem_id = member.mem_id', 'left');
 		// $this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
 		// $this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
 		// $this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
@@ -407,6 +418,11 @@ class Post_model extends CB_Model
 				$this->db->where('cmall_category_rel.cca_id', $category_id);
 				$this->db->or_like('cmall_category_rel.cca_id', $category_id . '.', 'after');
 				$this->db->group_end();
+			}
+		}
+		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
 			}
 		}
 		if ($search_like) {
@@ -597,11 +613,15 @@ class Post_model extends CB_Model
 			}
 		}
 
-		$this->db->select('post.*, board.brd_key, board.brd_name, board.brd_mobile_name, board.brd_order, board.brd_search,
-			member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point ');
+		$this->db->select('post.*, board.brd_key, board.brd_name, board.brd_mobile_name, board.brd_order, board.brd_search');
 		$this->db->from('post');
-		$this->db->join('board', 'post.brd_id = board.brd_id', 'inner');
-		$this->db->join('member', 'post.mem_id = member.mem_id', 'left');
+		$this->db->join('board', 'post.brd_id = board.brd_id', 'inner');		
+
+		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
+			}
+		}
 
 		if ($where) {
 			$this->db->where($where);
@@ -629,6 +649,7 @@ class Post_model extends CB_Model
 			$this->db->group_end();
 		}
 		$this->db->where( array('brd_search' => 1));
+		$this->db->group_by('post.post_id');
 		$board_id = (int) $board_id;
 		if ($board_id)	{
 			$this->db->where( array('board.brd_id' => $board_id));
@@ -644,6 +665,12 @@ class Post_model extends CB_Model
 		$this->db->select('count(*) cnt, board.brd_id');
 		$this->db->from('post');
 		$this->db->join('board', 'post.brd_id = board.brd_id', 'inner');
+
+		if ($this->_join) {
+			foreach($this->_join as $jval){
+				$this->db->join(element(0,$jval),element(1,$jval),element(2,$jval));	
+			}
+		}
 
 		if ($where) {
 			$this->db->where($where);

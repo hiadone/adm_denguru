@@ -68,12 +68,13 @@
 					<input type="hidden" name="findex" value="<?php echo html_escape($this->input->get('findex')); ?>" />
 					<input type="hidden" name="category_id" value="<?php echo html_escape($this->input->get('category_id')); ?>" />
 					<div class="form-group">
-						<select class="form-control pull-left px100" name="sfield">
-							<option value="post_both" <?php echo ($this->input->get('sfield') === 'post_both') ? ' selected="selected" ' : ''; ?>>제목+내용</option>
+						<select class="form-control pull-left px100" name="sfield">							
 							<option value="post_title" <?php echo ($this->input->get('sfield') === 'post_title') ? ' selected="selected" ' : ''; ?>>제목</option>
-							<option value="post_content" <?php echo ($this->input->get('sfield') === 'post_content') ? ' selected="selected" ' : ''; ?>>내용</option>
-							<option value="post_nickname" <?php echo ($this->input->get('sfield') === 'post_nickname') ? ' selected="selected" ' : ''; ?>>회원명</option>
-							<option value="post_userid" <?php echo ($this->input->get('sfield') === 'post_userid') ? ' selected="selected" ' : ''; ?>>회원아이디</option>
+							<option value="cit_name" <?php echo ($this->input->get('sfield') === 'cit_name') ? ' selected="selected" ' : ''; ?>>상품명</option>							
+							<option value="cca_value" <?php echo ($this->input->get('sfield') === 'cca_value') ? ' selected="selected" ' : ''; ?>>카테고리</option>
+							<option value="cta_tag" <?php echo ($this->input->get('sfield') === 'cta_tag') ? ' selected="selected" ' : ''; ?>>태그</option>
+							<option value="cat_value" <?php echo ($this->input->get('sfield') === 'cat_value') ? ' selected="selected" ' : ''; ?>>특성</option>
+							
 						</select>
 						<input type="text" class="form-control px150" placeholder="Search" name="skeyword" value="<?php echo html_escape($this->input->get('skeyword')); ?>" />
 						<button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i></button>

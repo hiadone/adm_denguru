@@ -1171,8 +1171,8 @@ class Board_post extends CB_Controller
 		$per_page = admin_listnum();
 		$offset = ($page - 1) * $per_page;
 
-		$this->Cmall_item_model->allow_search_field = array('cit_id', 'cit_name'); // 검색이 가능한 필드
-		$this->Cmall_item_model->search_field_equal = array('cit_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Cmall_item_model->allow_search_field = array( 'cit_name','cat_value','cca_value','cta_tag'); // 검색이 가능한 필드
+		$this->Cmall_item_model->search_field_equal = array('cat_value','cca_value','cta_tag'); // 검색중 like 가 아닌 = 검색을 하는 필드
 		$this->Cmall_item_model->allow_order_field = array('cit_order,cit_id'); // 정렬이 가능한 필드
 
 		// 이벤트가 존재하면 실행합니다
@@ -1237,8 +1237,8 @@ class Board_post extends CB_Controller
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
 		$where = array(
-			'brd_id' => $this->board->item_key('brd_id', $brd_key),
-			'post_id' => $post_id,
+			'cmall_item.brd_id' => $this->board->item_key('brd_id', $brd_key),
+			'cmall_item.post_id' => $post_id,
 		);
 		
 		if(!empty($this->input->get('warning'))){
@@ -1269,8 +1269,63 @@ class Board_post extends CB_Controller
 			
 		} 
 
+			if($sfield === 'cit_name'){
+
+		        // $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+			    
+			}
+
+
+			
+
+			if($sfield === 'cta_tag'){
+		        
+		        $this->Cmall_item_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
+
+
+			        // $this->db2->group_end();
+			    
+			    
+			}
+
+			if($sfield === 'cca_value'){
+
+
+				
+
+			    
+				
+		        
+		        $this->Cmall_item_model->set_join(array('cmall_category_rel','cmall_item.cit_id = cmall_category_rel.cit_id','inner'));
+		        $this->Cmall_item_model->set_join(array('cmall_category','cmall_category_rel.cca_id = cmall_category.cca_id','inner'));
+		        
+
+
+			        // $this->db2->group_end();
+			    
+			    
+			}
+
+			if($sfield === 'cat_value'){
+
+
+				
+
+			    
+				
+		        
+
+		        $this->Cmall_item_model->set_join(array('cmall_attr_rel','cmall_item.cit_id = cmall_attr_rel.cit_id','inner'));
+		        $this->Cmall_item_model->set_join(array('cmall_attr','cmall_attr_rel.cat_id = cmall_attr.cat_id','inner'));
+
+
+			        // $this->db2->group_end();
+			    
+			    
+			}
+			
 		$result = $this->Cmall_item_model
-			->get_item_list($per_page, $offset, $where, '', $findex,'desc', $sfield, $skeyword);
+			->get_item_list($per_page, $offset, $where, '', $findex, $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 
 		
@@ -1494,8 +1549,8 @@ class Board_post extends CB_Controller
 		}
 		$offset = ($page - 1) * $per_page;
 
-		$this->Post_model->allow_search_field = array('post_id', 'post_title', 'post_content', 'post_both', 'post_category', 'post_userid', 'post_nickname','cit_name'); // 검색이 가능한 필드
-		$this->Post_model->search_field_equal = array('post_id', 'post_userid', 'post_nickname'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Post_model->allow_search_field = array( 'post_title','cit_name','cat_value','cta_tag'); // 검색이 가능한 필드
+		$this->Post_model->search_field_equal = array('post_userid', 'post_nickname','cat_value','cta_tag'); // 검색중 like 가 아닌 = 검색을 하는 필드
 
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['step1'] = Events::trigger('list_step1', $eventname);
@@ -1683,6 +1738,50 @@ class Board_post extends CB_Controller
 		if (empty($category_id) OR $category_id < 1) {
 			$category_id = '';
 		}
+
+			if($sfield === 'cit_name'){
+
+		        // $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+			    
+			}
+
+
+			
+
+			if($sfield === 'cta_tag'){
+
+
+				
+
+			    
+				if(empty($category_id))
+		        	$this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+		        
+		        $this->Post_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
+
+
+			        // $this->db2->group_end();
+			    
+			    
+			}
+
+			if($sfield === 'cat_value'){
+
+
+				
+
+			    
+				if(empty($category_id))
+		        	$this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+
+		        $this->Post_model->set_join(array('cmall_attr_rel','cmall_item.cit_id = cmall_attr_rel.cit_id','inner'));
+		        $this->Post_model->set_join(array('cmall_attr','cmall_attr_rel.cat_id = cmall_attr.cat_id','inner'));
+
+
+			        // $this->db2->group_end();
+			    
+			    
+			}
 
 		$result= array();
 		$result_c= array();

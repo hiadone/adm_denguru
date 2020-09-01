@@ -109,8 +109,8 @@ class Search extends CB_Controller
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
-		$this->Post_model->allow_search_field = array('post_title', 'post_content', 'post_userid', 'post_nickname', 'brd_name'); // 검색이 가능한 필드
-		$this->Post_model->search_field_equal = array('post_userid'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Post_model->allow_search_field = array('post_title','cit_name','cta_tag', 'brd_name'); // 검색이 가능한 필드
+		$this->Post_model->search_field_equal = array('cta_tag', 'brd_name'); // 검색중 like 가 아닌 = 검색을 하는 필드
 
 		$per_page = 15;
 		$offset = ($page - 1) * $per_page;
@@ -119,6 +119,46 @@ class Search extends CB_Controller
 		$board_id = (int) $this->input->get('board_id') ? (int) $this->input->get('board_id') : '';
 
 		$where = array();
+
+		
+
+
+		
+
+		
+		
+		
+		
+
+		
+		
+
+
+		
+
+
+		if($sfield === 'cit_name'){
+
+	        $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+		    
+		}
+
+		if($sfield === 'cta_tag'){
+
+
+			
+
+		    
+
+	        $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+	        $this->Post_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
+
+		        // $this->db2->group_end();
+		    
+		    
+		}
+
+
 		$boardwhere = array(
 			'brd_search' => 1,
 		);

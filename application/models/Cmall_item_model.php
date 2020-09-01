@@ -303,18 +303,7 @@ class Cmall_item_model extends CB_Model
 	}
 
 
-	public function set_join($join = array())
-	{
-		if (empty($join)) {
-			return false;
-		}
-
-		
-			
-		$this->_join[] = $join;
-			
-		
-	}
+	
 
 	
 }

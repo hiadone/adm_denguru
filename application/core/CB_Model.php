@@ -476,5 +476,18 @@ class CB_Model extends CI_Model
 		
 	}
 
+	public function set_join($join = array())
+	{
+		if (empty($join)) {
+			return false;
+		}
+
+		
+			
+		$this->_join[] = $join;
+			
+		
+	}
+
 	
 }

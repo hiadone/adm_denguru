@@ -21,13 +21,11 @@
 		</div>
 		<div class="col-sm-2">
 			<div class="form-group">
-				<select class="form-control per100" name="sfield">
-					<option value="post_both" <?php echo $this->input->get('sfield') === 'post_both' ? 'selected="selected"' : ''; ?>>스토어명 + 제목</option>
+				<select class="form-control per100" name="sfield">					
 					<option value="brd_name" <?php echo $this->input->get('sfield') === 'brd_name' ? 'selected="selected"' : ''; ?>>스토어명</option>
-					<option value="post_title" <?php echo $this->input->get('sfield') === 'post_title' ? 'selected="selected"' : ''; ?>>제목</option>
-					<option value="post_content" <?php echo $this->input->get('sfield') === 'post_content' ? 'selected="selected"' : ''; ?>>내용</option>
-					<option value="post_userid" <?php echo $this->input->get('sfield') === 'post_userid' ? 'selected="selected"' : ''; ?>>회원아이디</option>
-					<option value="post_nickname" <?php echo $this->input->get('sfield') === 'post_nickname' ? 'selected="selected"' : ''; ?>>회원닉네임</option>
+					<option value="cit_name" <?php echo $this->input->get('sfield') === 'cit_name' ? 'selected="selected"' : ''; ?>>상품명</option>
+					<option value="cta_tag" <?php echo $this->input->get('sfield') === 'cta_tag' ? 'selected="selected"' : ''; ?>>태그명</option>
+					<option value="post_title" <?php echo $this->input->get('sfield') === 'post_title' ? 'selected="selected"' : ''; ?>>제목</option>					
 				</select>
 			</div>
 		</div>
