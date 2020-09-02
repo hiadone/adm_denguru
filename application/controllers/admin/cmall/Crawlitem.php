@@ -39,7 +39,7 @@ class Crawlitem extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Board');
+    protected $models = array('Board','Cmall_item_count_history');
 
     /**
      * 헬퍼를 로딩합니다
@@ -2103,6 +2103,124 @@ class Crawlitem extends CB_Controller
         
         
         // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+    }
+
+    function bbbb()
+    {
+
+        
+
+        $view = array();
+        $view['view'] = array();
+
+        $this->Cmall_item_count_history_model->allow_order_field=array('cit_count','cih_datetime');
+
+        
+        $result = $this->Cmall_item_count_history_model->get_admin_list('','','','','cit_count','asc');
+        $result_2=array();
+        $i=0;
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                
+                
+                // $this->db2->select($select);
+                
+                
+                //     $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_file_1 !=' => '' ));
+                // $result['list'][$key]['a_cnt'] = $this->db2->count_all_results('crawl_detail');
+
+                // $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_content1 !=' => '' ));
+               
+
+
+
+
+                
+                
+
+                         
+
+                
+
+            
+               
+                // }
+               
+                
+
+
+
+                $result_2['cih_datetime'][element('cih_datetime', $val)] = element('cih_datetime', $val);
+
+                if(isset($result_2['cit_count'][element('brd_id', $val)]))
+                    $result_2['cit_count'][element('brd_id', $val)] += element('cit_count', $val);
+                else
+                    $result_2['cit_count'][element('brd_id', $val)] = element('cit_count', $val);
+
+                if(isset($result_2['cit_is_del_count'][element('brd_id', $val)]))
+                    $result_2['cit_is_del_count'][element('brd_id', $val)] += element('cit_is_del_count', $val);
+                else
+                    $result_2['cit_is_del_count'][element('brd_id', $val)] = element('cit_is_del_count', $val);
+
+          
+
+                
+            }
+        }
+
+
+        $this->db->from('cmall_item_count_history');
+        $this->db->select_max('cih_datetime');
+        $result = $this->db->get();
+
+        $cih_datetime = $result->row_array();
+
+
+        $result = $this->Cmall_item_count_history_model->get_admin_list('','',array('cih_datetime' => element('cih_datetime',$cih_datetime,cdate('Y-m-d'))),'','cit_count','asc');
+        
+
+        $i=0;
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                
+           
+
+
+
+
+                $result['list'][$key]['brd_name'] = $this->board->item_id('brd_name',element('brd_id', $val));
+                $result['list'][$key]['brd_key'] = $this->board->item_id('brd_key',element('brd_id', $val));
+
+
+                $result['list'][$key]['cit_count_avg'] = element(element('brd_id', $val),element('cit_count',$result_2)) / count(element('cih_datetime',$result_2));
+                $result['list'][$key]['cit_is_del_count_avg'] = element(element('brd_id', $val),element('cit_is_del_count',$result_2)) / count(element('cih_datetime',$result_2));
+                
+
+                
+            
+
+                
+                
+                $result['list'][$key]['num'] = $i++;
+
+                
+            }
+        }
+
+        $view['view']['data'] = $result;
+
+
+        
+
+        /**
+         * 어드민 레이아웃을 정의합니다
+         */
+        $layoutconfig = array('layout' => 'layout', 'skin' => 'bbbb');
+        $view['layout'] = $this->managelayout->admin($layoutconfig, $this->cbconfig->get_device_view_type());
+        $this->data = $view;
+        $this->layout = element('layout_skin_file', element('layout', $view));
+        $this->view = element('view_skin_file', element('layout', $view));
+        
     }
 }
 

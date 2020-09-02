@@ -97,14 +97,14 @@ class Cmallitem extends CB_Controller
                 'cbr_id' => 0,
             );
             
-            $this->Cmall_item_model->or_where($or_where);
+            $this->Board_model->or_where($or_where);
 
             
         } 
 
         if(!empty($this->input->get('nocategory'))){            
             
-            $this->Cmall_item_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_category_rel B on A.cit_id = B.cit_id )','',false);
+            $this->Board_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_category_rel B on A.cit_id = B.cit_id )','',false);
 
             
         } 
@@ -149,7 +149,7 @@ class Cmallitem extends CB_Controller
 
 
             if($this->input->get('cit_price'))
-                $this->Cmall_item_model->set_where_in('cmall_item.cit_price',$skey_);
+                $this->Board_model->set_where_in('cmall_item.cit_price',$skey_);
             	
             
             
@@ -170,24 +170,16 @@ class Cmallitem extends CB_Controller
             $brd_id_arr=array();
             foreach($skey_ as $val){            
 
-                $res = $this->Board_model->get('','brd_id',array('brd_name' => $val));
+               
                 
-                if($res){
+             
+                        $brd_name_arr[] = $val;
+         
                 
-                    foreach ($res as $key => $value) {
-                        $brd_id_arr[] = element('brd_id',$value);
-                    }
-
-                    
-
-
-                    // $this->db2->group_end();
-                }
-                $brd_id_arr[] = 0;
 
             }
             
-            $this->Cmall_item_model->set_where_in('cmall_item.brd_id',$brd_id_arr);
+            $this->Board_model->set_where_in('brd_name',$brd_name_arr);
 
         } 
         
@@ -222,7 +214,7 @@ class Cmallitem extends CB_Controller
                 // $this->db2->group_end();
             }
 
-            $this->Cmall_item_model->set_where_in('cmall_item.cbr_id',$cbr_id_arr);
+            $this->Board_model->set_where_in('cmall_item.cbr_id',$cbr_id_arr);
 
         }
 
@@ -247,8 +239,8 @@ class Cmallitem extends CB_Controller
                 $cca_id_arr[] = element('cca_id',$this->Cmall_category_model->get_one('','cca_id',array('cca_value' =>$val)));
             }
 
-            $this->Cmall_item_model->set_where_in('cmall_category_rel.cca_id',$cca_id_arr);
-            $this->Cmall_item_model->set_join(array('cmall_category_rel','cmall_item.cit_id = cmall_category_rel.cit_id','inner'));
+            $this->Board_model->set_where_in('cmall_category_rel.cca_id',$cca_id_arr);
+            $this->Board_model->set_join(array('cmall_category_rel','cmall_item.cit_id = cmall_category_rel.cit_id','inner'));
                 
 
                 // $this->db2->group_end();
@@ -280,8 +272,8 @@ class Cmallitem extends CB_Controller
 
             
             }
-            $this->Cmall_item_model->set_where_in('cmall_attr_rel.cat_id',$cat_id_arr);
-            $this->Cmall_item_model->set_join(array('cmall_attr_rel','cmall_item.cit_id = cmall_attr_rel.cit_id','inner'));
+            $this->Board_model->set_where_in('cmall_attr_rel.cat_id',$cat_id_arr);
+            $this->Board_model->set_join(array('cmall_attr_rel','cmall_item.cit_id = cmall_attr_rel.cit_id','inner'));
             
         }
 
@@ -310,8 +302,8 @@ class Cmallitem extends CB_Controller
                     $cta_value_arr[] = $value;
                 }
 
-                $this->Cmall_item_model->set_where_in('crawl_tag.cta_tag',$cta_value_arr);
-                $this->Cmall_item_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
+                $this->Board_model->set_where_in('crawl_tag.cta_tag',$cta_value_arr);
+                $this->Board_model->set_join(array('crawl_tag','cmall_item.cit_id = crawl_tag.cit_id','inner'));
 
                 // $this->db2->group_end();
             }
@@ -327,10 +319,10 @@ class Cmallitem extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{$this->modelname}->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content'); // 검색이 가능한 필드
-        $this->{$this->modelname}->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{$this->modelname}->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
-        $result = $this->{$this->modelname}
+        $this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content'); // 검색이 가능한 필드
+        $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+        $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+        $result = $this->Board_model
             ->get_item_list($per_page, $offset, $where, '',  $forder,$sfield,$skeyword);
 
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
@@ -387,6 +379,21 @@ class Cmallitem extends CB_Controller
                     $result['list'][$key]['display_label'] = implode("\n",$tag_array);
                 }
 
+                
+
+                if(element('cbr_value_kr',$val))
+                    $result['list'][$key]['display_brand'] = element('cbr_value_kr',$val);
+                elseif(element('cbr_value_en',$val))
+                    $result['list'][$key]['display_brand'] = element('cbr_value_en',$val);
+                else
+                    $result['list'][$key]['display_brand'] = '-';
+
+                $result['list'][$key]['display_price'] = element('cit_price', $val) ? number_format(element('cit_price', $val)) : 0 ; 
+
+                if(element('cit_price_sale', $val) && element('cit_price_sale', $val) != element('cit_price', $val))
+                    $result['list'][$key]['display_price'] .= '<br>('.number_format(element('cit_price_sale', $val)).')' ; 
+
+                
                 $result['list'][$key]['num'] = $list_num--;
             }
         }
@@ -532,7 +539,7 @@ class Cmallitem extends CB_Controller
             $getdata['val_tag'] = implode("\n",$tag_array);
         }
         
-        $getdata['boardlist'] = $this->Board_model->get_board_list();
+        // $getdata['boardlist'] = $this->Board_model->get('','','','','','brd_name','desc');
 
         /**
          * Validation 라이브러리를 가져옵니다
@@ -1098,7 +1105,7 @@ class Cmallitem extends CB_Controller
             else
                 $getdata['cit_brand_text']  = '';
 
-            $getdata['boardlist'] = $this->Board_model->get_board_list();
+            $getdata['boardlist'] = $this->Board_model->get('','','','','','brd_name','asc');
 
             $getdata['brand_list'] = $this->Cmall_brand_model->get();
             $view['view']['data'] = $getdata;

@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind','Cmall_item_count_history');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -737,9 +737,15 @@ class Crawl extends CB_Controller
                 }
 
                 if($flag){
-                    echo element('cit_id',$c_value);
-                    echo "<br>";
-                    $this->board->delete_cmall(element('cit_id',$c_value));
+ 
+                    if (( ctimestamp() - strtotime(element('cit_updated_datetime', $item)) > 168 * 3600)) {
+                        echo element('cit_id',$c_value);
+                        echo "<br>";
+                        $this->board->delete_cmall(element('cit_id',$c_value));
+                    }
+
+                    
+                    
                 }
             }
 
@@ -1448,7 +1454,7 @@ class Crawl extends CB_Controller
 
     public function vision_api_label($post_id=0,$brd_id = 0,$cit_id = 0)
     {
-
+        
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -1519,6 +1525,7 @@ class Crawl extends CB_Controller
         $crawl = $this->Cmall_item_model
             ->get('', '', $postwhere, '', '', 'cit_id', 'ASC');
 
+            
         foreach ($crawl as $c_key => $c_value) {
 
             $where = array(
@@ -6123,19 +6130,54 @@ class Crawl extends CB_Controller
        
 
         
-        function getBaseDomain($dom) {
-        
-            $matches = array();
-        
-            preg_match('/[^\.]+\.([^\.]{4}|[^\.]{3}|(co|or|pe|ne|re|go|hs|ms|es|kg|sc|ac)\.[^\.]{2}|[^\.]{2})$/i', $dom, $matches);
-        
-            return $matches[0];
-        
-        }
+    function getBaseDomain($dom) {
+    
+        $matches = array();
+    
+        preg_match('/[^\.]+\.([^\.]{4}|[^\.]{3}|(co|or|pe|ne|re|go|hs|ms|es|kg|sc|ac)\.[^\.]{2}|[^\.]{2})$/i', $dom, $matches);
+    
+        return $matches[0];
+    
+    }
 
 
     
+    function cmall_item_count_history() {    
+        
+        $DB2 = $this->load->database('db2', TRUE);
+        
+        $DB2->select('brd_id,count(*) cnt,sum(IF(cb_crawl_item.is_del > 0, 1, 0)) as delcnt');
+        $DB2->from('crawl_item');
 
+        $DB2->group_by('brd_id');
+        $result = $DB2->get();
+        $crawl_item = $result->result_array();
+
+        $cih_datetime = cdate('Y-m-d 00:00:00');
+
+        if($crawl_item)
+        foreach($crawl_item as $val){
+
+            $updatedata = array(
+                'brd_id' => element('brd_id', $val),                    
+                'cit_count' => element('cnt', $val),                        
+                'cit_is_del_count' => element('delcnt', $val),
+                'cih_datetime' => $cih_datetime,    
+            );
+
+            $countwhere = array(
+                'brd_id' => element('brd_id', $val),                                  
+                'cih_datetime' => $cih_datetime,    
+            );
+            
+            if(!$this->Cmall_item_count_history_model->count_by($countwhere))
+                $cih_id = $this->Cmall_item_count_history_model->insert($updatedata);
+            
+
+            
+
+        }
+    }
 
 
     
