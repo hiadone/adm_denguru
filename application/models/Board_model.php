@@ -193,10 +193,10 @@ class Board_model extends CB_Model
 			}
 		}
 
-		$this->db->select('board.brd_name,cmall_item.*,cmall_brand.cbr_value_kr,cmall_brand.cbr_value_en');
+		$this->db->select('board.brd_name,cmall_item.*');
 		$this->db->from($this->_table);
 		$this->db->join('cmall_item','board.brd_id = cmall_item.brd_id ','inner');
-		$this->db->join('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner');
+		// $this->db->join('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner');
 
 
 		if ($this->_join) {
@@ -271,7 +271,7 @@ class Board_model extends CB_Model
 		$this->db->select('count(*) as rownum');
 		$this->db->from($this->_table);
 		$this->db->join('cmall_item','board.brd_id = cmall_item.brd_id ','inner');
-		$this->db->join('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner');
+		// $this->db->join('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner');
 		
 		if ($this->_join) {
 			foreach($this->_join as $jval){

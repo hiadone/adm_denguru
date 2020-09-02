@@ -84,18 +84,20 @@ class Group extends CB_Controller
 
 		
 
-		$or_where = array(
-				'cit_name' => '',
-				'cit_price' => 0,
-				'cit_post_url' => '',
-				'cit_goods_code' => '',
-				'cit_file_1' => '',
-				'cbr_id' => 0,
-		);
+		// $or_where = array(
+		// 		'cit_name' => '',
+		// 		'cit_price' => 0,
+		// 		'cit_post_url' => '',
+		// 		'cit_goods_code' => '',
+		// 		'cit_file_1' => '',
+		// 		'cbr_id' => 0,
+		// );
 			
-		
+		$set_where = "(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)";
 
-		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','',$or_where);
+		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','',$set_where);
+
+		
 
 		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by();
 

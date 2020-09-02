@@ -1941,9 +1941,9 @@ class Helptool extends CB_Controller
 				'cbr_id' => 0,
 			);
 			
-			$this->Cmall_item_model->or_where($or_where);
+			// $this->Cmall_item_model->or_where($or_where);
 
-			
+			$this->Cmall_item_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
 		} 
 		
 		$per_page = admin_listnum();

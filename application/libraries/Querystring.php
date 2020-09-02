@@ -20,6 +20,7 @@ class Querystring
 	}
 
 
+
 	// 쿼리스트링 수정
 	public function replace($key = '', $val = '', $query_string = '')
 	{
@@ -31,13 +32,21 @@ class Querystring
 		parse_str($query_string, $qr);
 
 		// remove from query string
+		
 		if ($key) {
-			if ($val) {
-				$qr[$key] = $val;
+			if(is_array($key)){
+				
+				foreach($key as $k =>$v)
+					unset($qr[$v]);
 			} else {
-				unset($qr[$key]);
-			}
+				if ($val) {
+					$qr[$key] = $val;
+				} else {
+					unset($qr[$key]);
+				}
+			}	
 		}
+		
 		// return result
 		$return = '';
 		if (count($qr) > 0) {

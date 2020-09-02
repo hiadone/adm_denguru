@@ -3,6 +3,7 @@
 		<ul class="nav nav-tabs">
 			<li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">크롤링 리스트</a></li>
 			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/aaaa'); ?>" onclick="return check_form_changed();">스토어별 리스트 비교</a></li>
+			<li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/bbbb'); ?>" onclick="return check_form_changed();">스토어별 상품 히스토리</a></li>
 			
 		</ul>
 	</div>
@@ -62,7 +63,7 @@
 							<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
 					 
 						
-							<td><?php echo element('crw_goods_code', $result); ?>
+							<td><?php echo cut_str(element('crw_goods_code', $result),10); ?>
 								<br>
 								<br>
 								<?php echo element('crw_id', $result); ?>

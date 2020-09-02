@@ -2,8 +2,8 @@
     <div class="box-header">
         <ul class="nav nav-tabs">
             <li role="presentation" ><a href="<?php echo admin_url($this->pagedir); ?>" onclick="return check_form_changed();">크롤링 리스트</a></li>
-            <li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir . '/aaaa'); ?>" onclick="return check_form_changed();">스토어별 리스트 비교</a></li>
-            <li role="presentation"><a href="<?php echo admin_url($this->pagedir . '/bbbb'); ?>" onclick="return check_form_changed();">스토어별 상품 히스토리</a></li>
+            <li role="presentation" ><a href="<?php echo admin_url($this->pagedir . '/aaaa'); ?>" onclick="return check_form_changed();">스토어별 리스트 비교</a></li>
+            <li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir . '/bbbb'); ?>" onclick="return check_form_changed();">스토어별 상품 히스토리</a></li>
             
         </ul>
     </div>
@@ -16,13 +16,13 @@
                             <th>num</th>
                             <th>스토어 ID</th>
                             <th>스토어명</th>
-                            <th>상품 숫자</th>                            
-                            <th>상품 상세 숫자</th>
-                            <!-- <th>상품 이미지 숫자</th>
-                            <th>상품 텍스트 숫자</th> -->
-                            <th>vision count</th>
-                            <th>비교 </th>
-                            <th>warning_count</th>
+                            <th>최근 상품 숫자</th>                            
+                            <th>최근 상품 삭제 숫자</th>
+                            <th>평균 상품 숫자</th>                            
+                            <th>평균 상품 삭제 숫자</th>
+                            
+                            
+                            <th>비교</th>
                             <th>action</th>
                             <th><input type="checkbox" name="chkall" id="chkall" /></th>
                         </tr>
@@ -33,19 +33,21 @@
                     if (element('list', element('data', $view))) {
                         foreach (element('list', element('data', $view)) as $result) {
                     ?>
-                        <tr class="<?php echo (element('cnt', $result) - element('d_cnt', $result) || element('cnt', $result) - element('v_cnt', $result)) ? 'warning':''; ?> ">
+                        <tr class="<?php echo ((element('cit_count', $result) - element('cit_is_del_count', $result)) < element('cit_count', $result) * 0.3 || (element('cit_count_avg', $result) - element('cit_count', $result)) > element('cit_count_avg', $result) * 0.3) ? 'warning':''; ?> ">
                             <td><?php echo element('num', $result); ?></td>
                             <td><?php echo element('brd_id', $result); ?></td>
-                            <td><a href="<?php echo admin_url($this->pagedir.'?sfield=brd_id2&skeyword='.element('brd_id', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
-                            <td><?php echo element('cnt', $result); ?></td>
-                            <td><?php echo element('d_cnt', $result); ?></td>                          
-                            <td><?php echo element('v_cnt', $result); ?></td>                          
+                            <td><a href="<?php echo board_url(element('brd_key', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
+                            <td><?php echo element('cit_count', $result); ?></td>
+                            <td><?php echo element('cit_is_del_count', $result); ?></td>                          
+                            <td><?php echo element('cit_count_avg', $result); ?></td>                          
+                            <td><?php echo element('cit_is_del_count_avg', $result); ?></td>                          
                             <!-- <td><?php echo element('a_cnt', $result); ?></td>                          
                             <td><?php echo element('b_cnt', $result); ?></td>                           -->
                             
-                            <td><?php echo (element('cnt', $result) - element('d_cnt', $result)); ?></td>
-                            <td><?php echo element('warning_count', $result) ?></td>
-                            <td><?php echo element('crw_is_soldout', $result) ? 'sold out' : '-'; ?></td>
+                            
+                            <td><?php echo (element('cit_count_avg', $result) - element('cit_count', $result)) ?></td>
+                            <td></td>
+                            <td></td>
                             
                         </tr>
                     <?php

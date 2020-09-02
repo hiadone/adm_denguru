@@ -1910,15 +1910,17 @@ class Crawl extends CB_Controller
                 ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
 
-
+        $kind_list = $this->Cmall_kind_model->get_all_kind();
+        
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
 
-                // $where = array(
-                //     'cit_id' => element('cit_id', $val),
-                // );
-                // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
-
+                
+                $where = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+                if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
+                
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
                 
@@ -1928,40 +1930,118 @@ class Crawl extends CB_Controller
                 // $post['category'] = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 $translate_text = array();
                 // echo element('cit_id', $val)."<br>\n";
-                // 
-                if(!empty($cateinfo)){
-                foreach($cateinfo as $value){
-
-                    
-                    if((int) $value['cca_parent'] < 1)
-                        $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
-                    else 
-                        continue;
-
-                    
-
-                    
                 
-                
-                
-        // $all_category = $this->Cmall_category_model->get_all_category();
-        
+                    if(empty(!$cateinfo)){
 
-        
-        
+                    foreach($cateinfo as $value){
+
+                        if((int) $value['cca_parent'] < 1)
+                            $this->tag_word = $this->Tag_word_model->get('','',array('tgw_category' => $value['cca_id'])); 
+                        else 
+                            continue;
+
+                        
+
+                        $all_category=array();
+                
+
+                
+                        if(element('cca_id',$value) =='13'){
+                            foreach(config_item('total_tag_word') as $tval){
+                                if(empty($tval)) continue;
+                                    $this->tag_word[]['tgw_value'] =  $tval;
+                                
+                            }
+                        }
+
+               
+                        $crawlwhere = array(
+                            'cit_id' => element('cit_id', $val),
+                        );
+
+                
+                        $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+
+                        if ($tag && is_array($tag)) {
+                            $tag_array=array();
+                            foreach ($tag as $tvalue) {
+                                if (element('val_tag', $tvalue)) {
+                                    array_push($tag_array,trim(element('val_tag', $tvalue)));
+                                }
+                            }
+                            
+                            
+                            $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+
+                            foreach($cateinfo as $cval){
+                                foreach(explode("/",element('cca_value',$cval)) as $eval){
+                                    if(empty($eval)) continue;
+                                    $this->tag_word[]['tgw_value'] =  $eval;
+                                }
+                                
+                            }
+
+                            foreach($kind_list as $kval){
+                                if(!empty(element('ckd_value_en',$kval))) 
+                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+
+                                if(!empty(element('ckd_value_kr',$kval))) 
+                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                                
+                            }
+                            
+                            foreach($this->tag_word as $word){
+                                foreach ($tag_array as $tval) {
+                                    $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                    
+                                    if(count($arr_str) > 2){
+                                        if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                            if(!in_array(element('tgw_value',$word),$translate_text))
+                                                array_push($translate_text,element('tgw_value',$word));       
+                                        }     
+                                    } else {
+                                        if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                            if(!in_array(element('tgw_value',$word),$translate_text))
+                                                array_push($translate_text,element('tgw_value',$word));       
+                                        }     
+                                    }
+                                    // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
+                                    // if(count($arr_str) > 2){
+                                    //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                    //         if(!in_array(strtolower($tval),$translate_text))
+                                    //             array_push($translate_text,strtolower($tval));       
+                                    //     }     
+                                    // } else {
+                                    //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                    //         if(!in_array(strtolower($tval),$translate_text))
+                                    //             array_push($translate_text,strtolower($tval));
+                                    //     }     
+                                    // }
+                                    
+                                    
+                                }
+                                
+                                
+                            }
+                        }
+                        
+                    }
+                } else {
                     foreach(config_item('total_tag_word') as $tval){
                         if(empty($tval)) continue;
                             $this->tag_word[]['tgw_value'] =  $tval;
                         
                     }
-                    
+
+
                     
                     $crawlwhere = array(
                         'cit_id' => element('cit_id', $val),
                     );
 
-            
+                    
                     $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+
                     if ($tag && is_array($tag)) {
                         $tag_array=array();
                         foreach ($tag as $tvalue) {
@@ -1970,11 +2050,8 @@ class Crawl extends CB_Controller
                             }
                         }
                         
-
                         
-
-                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);
-                        $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
+                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
 
                         foreach($cateinfo as $cval){
                             foreach(explode("/",element('cca_value',$cval)) as $eval){
@@ -1984,108 +2061,48 @@ class Crawl extends CB_Controller
                             
                         }
 
+                        foreach($kind_list as $kval){
+                            if(!empty(element('ckd_value_en',$kval))) 
+                                $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
 
-                        
+                            if(!empty(element('ckd_value_kr',$kval))) 
+                                $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                            
+                        }
+
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
-                                // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
+                                $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                 
-                                // if(count($arr_str) > 2){
-                                //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
-                                //     }     
-                                // } else {
-                                //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
-                                //     }     
-                                // }
-                                $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
                                 if(count($arr_str) > 2){
                                     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));       
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 } else {
                                     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));
+                                        if(!in_array(element('tgw_value',$word),$translate_text))
+                                            array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 }
-                                
-                                
-                            }
-                            
-                            
-                        }
-                        
-                    }
-
-                    print_r2($translate_text);
-                } 
-            }else {
-                    foreach(config_item('total_tag_word') as $tval){
-                        if(empty($tval)) continue;
-                            $this->tag_word[]['tgw_value'] =  $tval;
-                        
-                    }
-                    
-                    
-                    $crawlwhere = array(
-                        'cit_id' => element('cit_id', $val),
-                    );
-
-            
-                    $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-                    if ($tag && is_array($tag)) {
-                        $tag_array=array();
-                        foreach ($tag as $tvalue) {
-                            if (element('val_tag', $tvalue)) {
-                                array_push($tag_array,trim(element('val_tag', $tvalue)));
-                            }
-                        }
-                        
-
-                        
-
-                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);
-
-                        
-                        foreach($this->tag_word as $word){
-                            foreach ($tag_array as $tval) {
-                                // $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
-                                
+                                // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
                                 // if(count($arr_str) > 2){
                                 //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //         if(!in_array(strtolower($tval),$translate_text))
+                                //             array_push($translate_text,strtolower($tval));       
                                 //     }     
                                 // } else {
                                 //     if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                //         if(!in_array(element('tgw_value',$word),$translate_text))
-                                //             array_push($translate_text,element('tgw_value',$word));       
+                                //         if(!in_array(strtolower($tval),$translate_text))
+                                //             array_push($translate_text,strtolower($tval));
                                 //     }     
                                 // }
-                                $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
-                                if(count($arr_str) > 2){
-                                    if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));       
-                                    }     
-                                } else {
-                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
-                                        if(!in_array(strtolower($tval),$translate_text))
-                                            array_push($translate_text,strtolower($tval));
-                                    }     
-                                }
                                 
                                 
                             }
                             
                             
                         }
-                        
                     }
                 }
                     // $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
@@ -2343,6 +2360,15 @@ class Crawl extends CB_Controller
                             
                         }
 
+                        foreach($kind_list as $kval){
+                            if(!empty(element('ckd_value_en',$kval))) 
+                                $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+
+                            if(!empty(element('ckd_value_kr',$kval))) 
+                                $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                            
+                        }
+                        
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
                                 $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
@@ -6169,7 +6195,7 @@ class Crawl extends CB_Controller
                 'brd_id' => element('brd_id', $val),                                  
                 'cih_datetime' => $cih_datetime,    
             );
-            
+
             if(!$this->Cmall_item_count_history_model->count_by($countwhere))
                 $cih_id = $this->Cmall_item_count_history_model->insert($updatedata);
             

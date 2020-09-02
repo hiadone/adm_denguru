@@ -25,7 +25,7 @@ class Cmall_item_model extends CB_Model
 	public $primary_key = 'cit_id'; // 사용되는 테이블의 프라이머리키
 
 	public $allow_order = array('cit_order asc', 'cit_datetime desc', 'cit_datetime asc', 'cit_hit desc', 'cit_hit asc', 'cit_review_count desc',
-		'cit_review_count asc', 'cit_review_average desc', 'cit_review_average asc', 'cit_price desc', 'cit_price asc', 'cit_sell_count desc');
+		'cit_review_count asc', 'cit_review_average desc', 'cit_review_average asc', 'cit_price desc', 'cit_price asc', 'cit_sell_count desc','cit_order asc ,cit_id desc');
 
 	function __construct()
 	{
@@ -70,6 +70,7 @@ class Cmall_item_model extends CB_Model
 		if ( ! in_array(strtolower($orderby), $this->allow_order)) {
 			$orderby = 'cit_order asc';
 		}
+
 		$sop = (strtoupper($sop) === 'AND') ? 'AND' : 'OR';
 		if (empty($sfield)) {
 			$sfield = array('cit_name', 'cit_content');
@@ -272,7 +273,7 @@ class Cmall_item_model extends CB_Model
 		return $result;
 	}
 
-	public function total_count_by($where = '', $like = '',$or_where = '')
+	public function total_count_by($where = '', $like = '',$set_where = '')
 	{
 		
 		
@@ -289,12 +290,17 @@ class Cmall_item_model extends CB_Model
 		if ($like) {
 			$this->db->like($like);
 		}
-		if ($or_where) {
-			$this->db->group_start();
-			$this->db->or_where($or_where);
-			$this->db->group_end();
-		}
+		// if ($or_where) {
+		// 	$this->db->group_start();
+		// 	$this->db->or_where($or_where);
+		// 	$this->db->group_end();
+		// }
 
+		if ($set_where) {			
+			
+				$this->db->where($set_where, '',false);				
+			
+		}
 		
 		$this->db->from($this->_table);
 		$qry = $this->db->get();

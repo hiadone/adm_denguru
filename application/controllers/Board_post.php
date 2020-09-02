@@ -1154,7 +1154,7 @@ class Board_post extends CB_Controller
 		$page = (((int) $this->input->get('page_sub')) > 0) ? ((int) $this->input->get('page_sub')) : 1;
 		
 
-		$order_by_field = 'cit_order,cit_id';
+		$order_by_field = 'cit_order asc ,cit_id desc';
 		$findex = $this->input->get('findex', null, $order_by_field);
 		$sfield = $sfieldchk = $this->input->get('sfield', null, '');
 		
@@ -1242,17 +1242,18 @@ class Board_post extends CB_Controller
 		);
 		
 		if(!empty($this->input->get('warning'))){
-			$or_where = array(
-				'cit_name' => '',
-				'cit_price' => 0,
-				'cit_post_url' => '',
-				'cit_goods_code' => '',
-				'cit_file_1' => '',
-				'cbr_id' => 0,
-			);
+			// $or_where = array(
+			// 	'cit_name' => '',
+			// 	'cit_price' => 0,
+			// 	'cit_post_url' => '',
+			// 	'cit_goods_code' => '',
+			// 	'cit_file_1' => '',
+			// 	'cbr_id' => 0,
+			// );
 			
-			$this->Cmall_item_model->or_where($or_where);
+			// $this->Cmall_item_model->or_where($or_where);
 
+			$this->Cmall_item_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
 			
 		} 
 
@@ -1792,16 +1793,20 @@ class Board_post extends CB_Controller
 					'brd_id' => element('brd_id', $board),
 				);
 
-		$or_where = array(
-				'cit_name' => '',
-				'cit_price' => 0,
-				'cit_post_url' => '',
-				'cit_goods_code' => '',
-				'cit_file_1' => '',
-				'cbr_id' => 0,
-		);
+		// $or_where = array(
+		// 		'cit_name' => '',
+		// 		'cit_price' => 0,
+		// 		'cit_post_url' => '',
+		// 		'cit_goods_code' => '',
+		// 		'cit_file_1' => '',
+		// 		'cbr_id' => 0,
+		// );
 
-		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'',$or_where);
+		$set_where = "(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)";
+
+		
+
+		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'',$set_where);
 		$result['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere);
 
 		$result['category'] = $this->Cmall_category_model->get_brdcategory(element('brd_id', $board));

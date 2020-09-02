@@ -88,16 +88,19 @@ class Cmallitem extends CB_Controller
         $where = array();
 
         if(!empty($this->input->get('warning'))){
-            $or_where = array(
-                'cit_name' => '',
-                'cit_price' => 0,
-                'cit_post_url' => '',
-                'cit_goods_code' => '',
-                'cit_file_1' => '',
-                'cbr_id' => 0,
-            );
+            // $or_where = array(
+            //     'cit_name' => '',
+            //     'cit_price' => 0,
+            //     'cit_post_url' => '',
+            //     'cit_goods_code' => '',
+            //     'cit_file_1' => '',
+            //     'cmall_item.cbr_id' => 0,
+            // );
             
-            $this->Board_model->or_where($or_where);
+            // $this->Board_model->or_where($or_where);
+
+            $this->Board_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
+
 
             
         } 
@@ -215,7 +218,7 @@ class Cmallitem extends CB_Controller
             }
 
             $this->Board_model->set_where_in('cmall_item.cbr_id',$cbr_id_arr);
-
+            $this->Board_model->set_join(array('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner'));
         }
 
         
@@ -380,20 +383,23 @@ class Cmallitem extends CB_Controller
                 }
 
                 
+                if(element('cbr_id', $val)){
+                    $cmall_brand = $this->Cmall_brand_model->get_one(element('cbr_id', $val));
+                
 
-                if(element('cbr_value_kr',$val))
-                    $result['list'][$key]['display_brand'] = element('cbr_value_kr',$val);
-                elseif(element('cbr_value_en',$val))
-                    $result['list'][$key]['display_brand'] = element('cbr_value_en',$val);
+                if(element('cbr_value_kr',$cmall_brand))
+                    $result['list'][$key]['display_brand'] = element('cbr_value_kr',$cmall_brand);
+                elseif(element('cbr_value_en',$cmall_brand))
+                    $result['list'][$key]['display_brand'] = element('cbr_value_en',$cmall_brand);
                 else
                     $result['list'][$key]['display_brand'] = '-';
-
+                }
                 $result['list'][$key]['display_price'] = element('cit_price', $val) ? number_format(element('cit_price', $val)) : 0 ; 
 
                 if(element('cit_price_sale', $val) && element('cit_price_sale', $val) != element('cit_price', $val))
                     $result['list'][$key]['display_price'] .= '<br>('.number_format(element('cit_price_sale', $val)).')' ; 
 
-                
+
                 $result['list'][$key]['num'] = $list_num--;
             }
         }
@@ -420,6 +426,8 @@ class Cmallitem extends CB_Controller
         $view['view']['page'] = $page;
 
         
+        
+        
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
@@ -427,7 +435,7 @@ class Cmallitem extends CB_Controller
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);
-        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace('page','',$param->replace('cit_type','',$param->replace('warning','',$param->replace('nocategory')))));
+        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace(array('page','warning','nocategory','cit_type')));
         $view['view']['write_url'] = admin_url($this->pagedir . '/write');
         $view['view']['list_delete_url'] = admin_url($this->pagedir . '/listdelete/?' . $param->output());
         $view['view']['list_update_url'] = admin_url($this->pagedir . '/listupdate/?' . $param->output());

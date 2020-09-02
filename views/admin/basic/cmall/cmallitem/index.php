@@ -188,13 +188,13 @@
 					<thead>
 						<tr>
 							<th>상품코드</th>
-							<th>카테고리</th>
+							<th style="width:130px;">카테고리</th>
 							<th>이미지</th>
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
 							<!-- <th>Vision API label</th> -->
                     		<th>태그</th>
-							<th><a href="<?php echo element('cit_price_sale', element('sort', $view)); ?>">할인가격</a></th>
+							<th style="width:130px;">특성</th>
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
 							<th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
 							<th><a href="<?php echo element('cit_hit', element('sort', $view)); ?>">조회수</a></th>
@@ -216,7 +216,7 @@
 								<?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
 								<?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
 							</td>
-							<td style="width:130px;">
+							<td >
 								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
 								
 							</td>
@@ -229,18 +229,24 @@
 							</td>
 							<td>
 							<?php 
-                            if(element('display_store_name', $result))
-                                echo '<div>브랜드 : <label class="label label-default">'.element('display_store_name', $result).'</label></div>';
+                            
+                                echo '<div><label class="label label-default">'.element('brd_name', $result).'</label></div>';
                         	?>
 								
 								<?php echo html_escape(element('cit_name', $result)); ?>
 									
 							<?php 
                             if(element('display_brand', $result))
-                                echo '<div>브랜드 : <label class="label label-default">'.element('display_brand', $result).'</label></div>';
+                                echo '<div><label class="label label-primary">'.element('display_brand', $result).'</label></div>';
                         	?>
 							</td>
-							<td><?php echo number_format(element('cit_price', $result)); ?></td>
+							<td><?php echo element('display_price', $result); ?>
+								
+								<?php 
+								    if(element('cit_is_soldout', $result))
+								        echo '<div><button class="btn btn-danger btn-xs" type="button">Sold out</button></div>';
+								?>
+							</td>
 							
 							<!-- <td>
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
@@ -249,7 +255,13 @@
 		                       <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
 		                    </td>
 							
-							<td><?php echo number_format(element('cit_price_sale', $result)); ?></td>
+							<td>
+								<?php foreach (element('attr', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';} 
+								?>
+
+								<?php foreach (element('kind', $result) as $cv) { echo '<label class="label label-danger">' . html_escape(element('ckd_value_kr', $cv)) . '</label> ';} 
+								?>
+							</td>
 							<td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
@@ -492,7 +504,7 @@ var searchbrand_list = [
 var searchboard_list = [
 	<?php
 	if (element('board_list', $view)) {
-	    foreach (element('board_list', $view) as $result) {
+	    foreach (element('board_list', $view) as $result) {	    	
 	 		echo '"'.element('brd_name',$result).'",';
 		}
 	}
@@ -537,7 +549,7 @@ function board_list(flag){
 	    }
 	})
 	.autocomplete({  //오토 컴플릿트 시작
-	    source : searchbrand_list,    // source 는 자동 완성 대상
+	    source : searchboard_list,    // source 는 자동 완성 대상
 	    select: function(event, ui) {
 	        this.value = "";
 	        this.value = ui.item.value;
