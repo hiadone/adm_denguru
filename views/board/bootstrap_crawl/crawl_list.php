@@ -167,9 +167,21 @@
                         
                     </td>
                     <td style="width:130px;">
-                                <?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
-                                
-                            </td>
+                        <?php 
+                            if(element('category', $result)){
+                                echo '<div>';
+                                foreach (element(0,element('category', $result)) as $cv) { 
+                                    
+                                    echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';
+                                    echo "<br>";
+                                    foreach (element(element('cca_id', $cv),element('category', $result)) as $cv_) {
+                                        echo '<label class="label label-primary">' . html_escape(element('cca_value', $cv_)) . '</label> ';                                                                     
+                                    } 
+                                } 
+                                echo '</div>';
+                            }
+                        ?>
+                    </td>
                     <td ><?php echo element('cit_goods_code', $result); ?><br>
                         <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
                                 <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
@@ -191,9 +203,13 @@
                         <?php 
                             if(element('attr', $result)){
                                 echo '<div>';
-                                foreach (element('attr', $result) as $cv) { 
-                                    if(element('cat_parent', $cv) ==0 ) echo "<br>";
-                                    echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv)) . '</label> ';
+                                foreach (element(0,element('attr', $result)) as $cv) { 
+                                    
+                                    echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';
+                                    echo "<br>";
+                                    foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
+                                        echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv_)) . '</label> ';                                                                     
+                                    } 
                                 } 
                                 echo '</div>';
                             }
@@ -282,6 +298,8 @@
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_update', '선택하신 항목을 item tag update ?');"><i class="fa fa-trash-o"></i>item tag update</div>
                     
                     <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'category_update', '선택하신 항목을 item category update ?');"><i class="fa fa-trash-o"></i>item category update</div>
+
+                    <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'attr_update', '선택하신 항목을 item attr update ?');"><i class="fa fa-trash-o"></i>item attr update</div>
                     
                     <a href="<?php echo element('list_url', element('list', $view)); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
                     

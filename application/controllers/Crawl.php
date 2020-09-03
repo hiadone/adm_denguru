@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind','Cmall_item_count_history');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind','Cmall_kind_rel','Cmall_item_count_history');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -1645,10 +1645,8 @@ class Crawl extends CB_Controller
     }
     
 
-    public function crawling_category_update($post_id=0,$brd_id = 0)
+    public function crawling_attr_update($post_id=0,$brd_id = 0,$cit_id = 0)
     {
-
-
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -1656,18 +1654,26 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
-        if(empty($is_admin)) exit;
+        // if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
+        $cit_id = (int) $cit_id;
         if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
             show_404();
         }
+
+        
+
+
+
+        
 
         // $crawlwhere = array(
         //     'brd_id' => $brd_id,
         // );
 
+        $where = array();
         $board = $this->board->item_all($brd_id);
         if ( ! element('brd_id', $board)) {
             show_404();
@@ -1675,43 +1681,24 @@ class Crawl extends CB_Controller
 
         
         if($post_id){
-            $postwhere = array(
-                'post_id' => $post_id,
-            );
-            
-
-
-
-            $result['list'] = $this->Cmall_item_model
-                ->get('', '', $postwhere);
-
-
+            $where['post_id'] = $post_id;
            
         } 
 
-        if(empty($post_id)){
-            if($brd_id){
-                $brdwhere = array(
-                    'brd_id' => $brd_id,
-                );
-                
+        
+        if($brd_id){
+            $where['brd_id'] = $brd_id;
+        } 
+        
 
-
-
-                $result['list'] = $this->Cmall_item_model
-                ->get('', '', $brdwhere);
-
-
-                
-
-            } 
+        if($cit_id){
+            $where['cit_id'] = $cit_id;
+            
         }
 
-       
+        $result['list'] = $this->Cmall_item_model
+                ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
-        $board = $this->board->item_all($brd_id);
-
-        
         
         
         
@@ -1722,133 +1709,214 @@ class Crawl extends CB_Controller
             foreach (element('list', $result) as $key => $val){ 
                 
 
-                $c_category=array();
-                $category='';
-                $all_category=array();
+                
                 $all_attr=array();
+                $all_kind=array();
 
                 $post = $this->Post_model->get_one(element('post_id',$val));
 
-                $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                // $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 
-                if($category)
-                    $c_category[] = $category['bca_value'];
-                if(element('bca_parent', $category)){
-                    $category = $this->Board_group_category_model->get_category_info(1, element('bca_parent', $category));    
-                    $c_category[] = $category['bca_value'];
-                }
+                // if($category)
+                //     $c_category[] = $category['bca_value'];
+                // if(element('bca_parent', $category)){
+                //     $category = $this->Board_group_category_model->get_category_info(1, element('bca_parent', $category));    
+                //     $c_category[] = $category['bca_value'];
+                // }
                 
                 
-                $all_category = $this->Cmall_category_model->get_all_category();
+                
                 $all_attr = $this->Cmall_attr_model->get_all_attr();
+                $all_kind = $this->Cmall_kind_model->get_all_kind();
 
                 
+                $crawlwhere = array(
+                    'cit_id' => element('cit_id', $val),
+                );
 
-                $cmall_category=array();
-                $cmall_attr=array();
-                $crawl_tag_arr=array();            
+        
+                $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+
+                if ($tag && is_array($tag)) {
+                    $tag_array=array();
+                    foreach ($tag as $tvalue) {
+                        if (element('val_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('val_tag', $tvalue)));
+                        }
+                    }
+                }
+                array_push($tag_array,trim(element('cit_name', $val)));
+
+                $cmall_attr= $cmall_kind =array();
+                
                 $crawl_tag_text=array();
 
 
-                $crawl_tag_arr = $this->Crawl_tag_model->get('','',array('cit_id' => element('cit_id',$val)));
+                $updatedata = array();
+                $is_cate = true;
 
-                foreach($crawl_tag_arr as $t_value){
+                $i = 0;
+                foreach($all_kind as $a_cvalue){
                     
-                    array_push($crawl_tag_text,element('cta_tag',$t_value));
+                    
+                        
+                        
+                        $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
+
+                
+
+                                         
+                        foreach ($tag_array as $tval) {
+                            $i++;
+                            if(element('ckd_text',$a_cvalue)){
+                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,3)){
+                                    $cmall_kind[element('ckd_id',$a_cvalue)] = element('ckd_id',$a_cvalue);
+
+                                    
+                                    
+
+
+                                 
+
+                                    
+
+                                    
+                                }
+                            } 
+                        }
+                 
+                                            
+                    
+                    
+                    
                 }
 
+                if(!empty($cmall_kind)){
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' =>0
+                    );
 
-               
+                    $this->Cmall_kind_rel_model->delete_where($deletewhere);   
 
-                
-
-                // $deletewhere = array(
-                //     'cit_id' => element('cit_id',$val),
-                // );
-
-                // $this->Cmall_category_rel_model->delete_where($deletewhere);   
-
-                // foreach($all_category as $a_cvalue){
+                    $manualwhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' => 1,
+                    );
+                    if($this->Cmall_kind_rel_model->count_by($manualwhere)) continue;        
                     
-                //     foreach($a_cvalue as $a_cvalue_){
-                        
-                        
-                //         if(empty(element('cca_text',$a_cvalue_))) continue; 
+                    $this->Cmall_kind_rel_model->save_kind(element('cit_id',$val), $cmall_kind);    
 
-                //         if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),$crawl_tag_text)){
-                //             $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
-
-                //             if(element('cca_parent',$a_cvalue_)){
-                //                 $cmall_category[element('cca_parent',$a_cvalue_)] = element('cca_parent',$a_cvalue_);
-                //                 $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue_)));
-                //             }
-
-                            
-                //         }
-                                            
-                //     }
                     
-                    
-                // }
-                // if($cmall_category){                                      
-                //     $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);    
-
-                // }
-                
+                }
                 
 
-                
-                
-                // foreach($all_category as $a_cvalue2){
-                //     foreach($a_cvalue2 as $a_cvalue2_){
-                //         if($this->category_check(element('cca_value',$a_cvalue2_),$c_category)){
-                //             $cmall_category[element('cca_id',$a_cvalue2_)] = element('cca_id',$a_cvalue2_);
-                //             if(element('cca_parent',$a_cvalue2_)){
-                //                 $cmall_category[element('cca_parent',$a_cvalue2_)] = element('cca_parent',$a_cvalue2_);
-                //                 $cmall_category[element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)))] = element('cca_id',$this->Cmall_category_model->get_category_info(element('cca_parent',$a_cvalue2_)));
-                //             }
-                //         }
-                //     }
-                // }
-
-                // if($cmall_category)
-                //     $this->Cmall_category_rel_model->save_category(element('cit_id',$val), $cmall_category);
-
-
-                $deletewhere = array(
-                    'cit_id' => element('cit_id',$val),
-                );
-
-                $this->Cmall_attr_rel_model->delete_where($deletewhere);   
 
                 foreach($all_attr as $a_cvalue){
                     
                     foreach($a_cvalue as $a_cvalue_){
                         
                         
-                        if(empty(element('cat_text',$a_cvalue_))) continue; 
+                        $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);
 
-                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$crawl_tag_text)){
-                            $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+                
 
-                            if(element('cat_parent',$a_cvalue_)){
-                                $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
-                                $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
-                            }
+                                         
+                        foreach ($tag_array as $tval) {
+                            $i++;
+                            if(element('cat_text',$a_cvalue_)){
+                                if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
+                                    $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
 
-                            
+                                    
+                                    
+
+
+                                 
+
+                                    
+
+                                    
+                                }
+                            } 
                         }
-                                            
-                    }
+                 
+                    }                                            
+                    
                     
                     
                 }
-                if($cmall_attr){                                      
+
+                if(!empty($cmall_attr)){
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' =>0
+                    );
+
+                    $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+
+                    $manualwhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' => 1,
+                    );
+                    if($this->Cmall_attr_rel_model->count_by($manualwhere)) continue;        
+                    
                     $this->Cmall_attr_rel_model->save_attr(element('cit_id',$val), $cmall_attr);    
 
+                    
                 }
-            }
 
+// print_r2($cmall_kind);
+                // $crawl_tag_arr = $this->Crawl_tag_model->get('','',array('cit_id' => element('cit_id',$val)));
+
+                // foreach($crawl_tag_arr as $t_value){
+                    
+                //     array_push($crawl_tag_text,element('cta_tag',$t_value));
+                // }
+
+
+               
+
+                
+
+                
+
+
+                // $deletewhere = array(
+                //     'cit_id' => element('cit_id',$val),
+                // );
+
+                // $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+
+                // foreach($all_attr as $a_cvalue){
+                    
+                //     foreach($a_cvalue as $a_cvalue_){
+                        
+                        
+                //         if(empty(element('cat_text',$a_cvalue_))) continue; 
+
+                //         if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$crawl_tag_text)){
+                //             $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+
+                //             if(element('cat_parent',$a_cvalue_)){
+                //                 $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                //                 $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
+                //             }
+
+                            
+                //         }
+                                            
+                //     }
+                    
+                    
+                // }
+                // if($cmall_attr){                                      
+                //     $this->Cmall_attr_rel_model->save_attr(element('cit_id',$val), $cmall_attr);    
+
+                // }
+                
+
+            }
         }
 
     }
@@ -1971,8 +2039,8 @@ class Crawl extends CB_Controller
                             }
                             
                             
-                            $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
-
+                            // $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+                            array_push($tag_array,trim(element('cit_name', $val)));
                             foreach($cateinfo as $cval){
                                 foreach(explode("/",element('cca_value',$cval)) as $eval){
                                     if(empty($eval)) continue;
@@ -2051,8 +2119,8 @@ class Crawl extends CB_Controller
                         }
                         
                         
-                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
-
+                        // $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+                        array_push($tag_array,trim(element('cit_name', $val)));
                         foreach($cateinfo as $cval){
                             foreach(explode("/",element('cca_value',$cval)) as $eval){
                                 if(empty($eval)) continue;
@@ -2270,8 +2338,8 @@ class Crawl extends CB_Controller
                             }
                             
                             
-                            $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
-
+                            // $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+                            array_push($tag_array,trim(element('val_tag', $tvalue)));
                             foreach($cateinfo as $cval){
                                 foreach(explode("/",element('cca_value',$cval)) as $eval){
                                     if(empty($eval)) continue;
@@ -2350,8 +2418,8 @@ class Crawl extends CB_Controller
                         }
                         
                         
-                        $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
-
+                        // $this->tag_word[]['tgw_value'] = element('cit_name', $val);                        
+                        array_push($tag_array,trim(element('cit_name', $val)));
                         foreach($cateinfo as $cval){
                             foreach(explode("/",element('cca_value',$cval)) as $eval){
                                 if(empty($eval)) continue;
@@ -2926,8 +2994,8 @@ class Crawl extends CB_Controller
                         
                         $this->vision_api_label(element('post_id', $post),element('brd_id', $post));
                     }
-                    if($crawl_type==='category_update'){
-                        $this->crawling_category_update(element('post_id', $post),element('brd_id', $post));
+                    if($crawl_type==='attr_update'){
+                        $this->crawling_attr_update(element('post_id', $post),element('brd_id', $post));
                     }
                 
         }elseif($crawl_mode === 'item'){
@@ -2955,8 +3023,8 @@ class Crawl extends CB_Controller
                         
                         $this->vision_api_label(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
                     }
-                    if($crawl_type==='category_update'){
-                        $this->crawling_category_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                    if($crawl_type==='attr_update'){
+                        $this->crawling_attr_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
                     }
         } else {
 
@@ -2967,7 +3035,7 @@ class Crawl extends CB_Controller
 
                     if($crawl_type==='update'){
                         $this->crawling_update(0,element('brd_id', $val));
-                        $this->crawling_category_update2(0,element('brd_id', $val));
+                        $this->crawling_category_update(0,element('brd_id', $val));
                     } 
 
                     if($crawl_type==='overwrite'){
@@ -2985,11 +3053,11 @@ class Crawl extends CB_Controller
                         
                         $this->vision_api_label(0,element('brd_id', $val));
                     }
+                    if($crawl_type==='attr_update'){
+                        $this->crawling_attr_update(0,element('brd_id', $val));
+                    }
                     if($crawl_type==='category_update'){
                         $this->crawling_category_update(0,element('brd_id', $val));
-                    }
-                    if($crawl_type==='category_update2'){
-                        $this->crawling_category_update2(0,element('brd_id', $val));
                     }
 
                     if($crawl_type==='brand_update'){
@@ -3017,34 +3085,9 @@ class Crawl extends CB_Controller
 
     }
 
-    function crawl_tag_to_category($cca_text,$crawl_tag_text)
-    {   
-        $cca_text_arr = explode(',',$cca_text);
+    
 
-
-        foreach($cca_text_arr as $c_value){
-
-            
-            if ( ! is_array($crawl_tag_text))
-            {
-                $crawl_tag_text = array($crawl_tag_text);
-            }
-
-            foreach($crawl_tag_text as $t_value){
-
-                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
-                
-                
-                
-                if(strtolower($c_value) === strtolower($t_value))
-                    return true;
-            }
-        }
-        
-
-    }
-
-    function crawl_tag_to_category2($cca_text,$crawl_tag_text,$flag = false)
+    function crawl_tag_to_category($cca_text,$crawl_tag_text,$flag = false)
     {   
         $cca_text_arr = explode(',',$cca_text);
 
@@ -3073,11 +3116,14 @@ class Crawl extends CB_Controller
                     
                 } else {
 
-                    // echo $t_value."//".$c_value;
-                    // echo "<br>";
+                    
 
-                    if(strpos(strtolower($t_value),strtolower($c_value)) !==false)
-                         return true;
+                    if(strpos(strtolower($t_value),strtolower($c_value)) !==false){
+                        echo $t_value."//".$c_value;
+                    echo "<br>";
+                        return true;
+                    }
+                         
                 }
                 
                 // $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
@@ -3089,20 +3135,55 @@ class Crawl extends CB_Controller
         }
     }
 
-    function crawl_tag_to_attr($cat_text,$crawl_tag_text)
+    function crawl_tag_to_attr($cat_text,$crawl_tag_text,$flag=2)
     {   
         $cat_text_arr = explode(',',$cat_text);
 
+
         foreach($cat_text_arr as $c_value){
+
+            if(empty($c_value)) continue;
+            if($c_value==='전체') continue;
+            if ( ! is_array($crawl_tag_text))
+            {
+                $crawl_tag_text = array($crawl_tag_text);
+            }
 
             foreach($crawl_tag_text as $t_value){
 
-                $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
+                
+
+                    $arr_str_kr = preg_split("//u", $c_value, -1, PREG_SPLIT_NO_EMPTY);
+
+                    if(count($arr_str_kr) > $flag){
+                        // echo $t_value."//".$c_value;
+                        // echo "<br>";
+                        if(strpos(strtolower(str_replace(" ","",$t_value)),strtolower(str_replace(" ","",$c_value))) !==false){
+
+                            return true;
+                        }
+                    } else {
+                        // echo $t_value."//".$c_value;
+                        // echo "<br>";
+                        if(strtolower(str_replace(" ","",$t_value)) === strtolower(str_replace(" ","",$c_value))){
+                                
+                             return true;
+                        }
+                    }
+                    
+            
+
+                 
+
+                    
+                         
+             
+                
+                // $cta_tag = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
                 
                 
-                
-                if(strtolower($c_value) === strtolower($t_value))
-                    return true;
+                // if(strtolower($c_value) === strtolower($t_value))
+                    // return true;
             }
         }
         
@@ -5793,7 +5874,7 @@ class Crawl extends CB_Controller
     }
 
 
-    public function crawling_category_update2($post_id=0,$brd_id = 0)
+    public function crawling_category_update($post_id=0,$brd_id = 0)
     {
 
 
@@ -5882,7 +5963,7 @@ class Crawl extends CB_Controller
 
                          // if(element('cca_text',$a_cvalue_)){
 
-                         //    if($this->crawl_tag_to_category2(element('cca_text',$a_cvalue_),element('cit_name',$val))){
+                         //    if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),element('cit_name',$val))){
                          //        $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
 
                                 
@@ -5909,7 +5990,7 @@ class Crawl extends CB_Controller
                              
                             
                             if(element('cca_text',$a_cvalue_)){
-                                if($this->crawl_tag_to_category2(element('cca_text',$a_cvalue_),element('post_title',$post))){
+                                if($this->crawl_tag_to_category(element('cca_text',$a_cvalue_),element('post_title',$post))){
                                     $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
 
                                     
@@ -5933,7 +6014,7 @@ class Crawl extends CB_Controller
                         // }
                          // else {
 
-                        //     if($this->crawl_tag_to_category2(element('cca_value',$a_cvalue_),element('post_title',$post))){
+                        //     if($this->crawl_tag_to_category(element('cca_value',$a_cvalue_),element('post_title',$post))){
                         //         $cmall_category[element('cca_id',$a_cvalue_)] = element('cca_id',$a_cvalue_);
 
                                 

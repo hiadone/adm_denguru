@@ -299,9 +299,9 @@
 			</div>
 		<?php } ?>
 
-		<?php if (element('crawl_category_update', element('list', $view))) { ?>
+		<?php if (element('crawl_attr_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 상품 카테고리 및 제품특성 update</a>
+				<a href="<?php echo element('crawl_attr_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 상품 제품특성 update</a>
 			</div>
 		<?php } ?>
 
@@ -322,9 +322,9 @@
 				<a href="<?php echo element('vision_api_label', element('list', $view)); ?>" class="btn btn-warning btn-sm">vision_api_label update</a>
 			</div>
 		<?php } ?>	
-		<?php if (element('crawl_category_update2', element('list', $view))) { ?>
+		<?php if (element('crawl_category_update', element('list', $view))) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update2', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 </a>
+				<a href="<?php echo element('crawl_category_update', element('list', $view)); ?>" class="btn btn-warning btn-sm">게시글 전체 카테고리 </a>
 			</div>
 		<?php } ?>
 

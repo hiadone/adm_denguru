@@ -110,9 +110,9 @@ echo display_html_content(element('footercontent', element('group', $view)));
 
 ?>
 
-	<?php if (element('crawl_category_update', element('group', $view))) { ?>
+	<?php if (element('crawl_attr_update', element('group', $view))) { ?>
 			<div class="pull-right pr10">
-				<a href="<?php echo element('crawl_category_update', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 제품특성 update</a>
+				<a href="<?php echo element('crawl_attr_update', element('group', $view)); ?>" class="btn btn-warning btn-sm">group 제품특성 update</a>
 			</div>
 		<?php } ?>
 

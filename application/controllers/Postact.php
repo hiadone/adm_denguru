@@ -3716,7 +3716,7 @@ class Postact extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
 
-		$success = ($flag) ? '이 항목을 블라인드 처리하였습니다' : '이 항목을 블라인드 해제하셨습니다';
+		$success = ($flag) ? '이 항목을 블라인드 해제하셨습니다' : '이 항목을 블라인드 처리하였습니다' ;
 		$result = array('success' => $success);
 		exit(json_encode($result));
 
