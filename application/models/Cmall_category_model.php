@@ -81,7 +81,7 @@ class Cmall_category_model extends CB_Model
 		return $result;
 	}
 
-	public function get_brdcategory($brd_id = 0)
+	public function get_brdcategory($where = array(),$group_by = 'cmall_item.brd_id',$select = 'count(DISTINCT cb_cmall_category_rel.cit_id) as cnt,brd_id,cca_parent')
 	{
 		// $post_id = (int) $post_id;
 		// if (empty($post_id) OR $post_id < 1) {
@@ -89,19 +89,20 @@ class Cmall_category_model extends CB_Model
 		// }
 
 		
-		if (!empty($brd_id)) 
-			$this->db->select('count(*) as cnt,cmall_category_rel.cit_id,post_id,cca_value,cca_parent');
-		else
-			$this->db->select('count(DISTINCT cb_cmall_category_rel.cit_id) as cnt,brd_id,cca_parent');
-			
+		// if (!empty($brd_id)) 
+		// 	$this->db->select('count(*) as cnt,cmall_category_rel.cit_id,post_id,cca_value,cca_parent');
+		// else
+		// 	$this->db->select('count(DISTINCT cb_cmall_category_rel.cit_id) as cnt,brd_id,cca_parent');
+		
+		$this->db->select($select);
 
 		$this->db->join('cmall_category_rel', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'inner');
 		$this->db->join('cmall_item', 'cmall_item.cit_id = cmall_category_rel.cit_id', 'inner');
 		// if (!empty($post_id)) 
 		// 	$this->db->where(array('cmall_item.post_id' => $post_id));
 
-		if (!empty($brd_id)) 
-			$this->db->where(array('cmall_item.brd_id' => $brd_id));
+		if (!empty($where)) 
+			$this->db->where($where);
 
 		// $this->db->where(array('cmall_category.cca_parent' => 0));
 		// $this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
@@ -109,10 +110,11 @@ class Cmall_category_model extends CB_Model
 		$this->db->order_by('cca_order', 'asc');
 		// $this->db->order_by('cmall_category.cca_id', 'desc');
 
-		if (!empty($brd_id)) 
-			$this->db->group_by('cmall_category_rel.cca_id,cmall_category_rel.cit_id');
-		else
-			$this->db->group_by('cmall_item.brd_id');
+		// if (!empty($brd_id)) 
+		// 	$this->db->group_by('cmall_category_rel.cca_id,cmall_category_rel.cit_id');
+		// else
+		// 	$this->db->group_by('cmall_item.brd_id');
+		$this->db->group_by($group_by);
 			
 		$qry = $this->db->get($this->_table);
 		$result = $qry->result_array();

@@ -51,10 +51,9 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">펫 체형</label>
 					<div class="col-sm-10">
-						<div class="input-group">
-						
-						<?php foreach(config_item('pet_form') as $key => $val){ ?>
-							<input type="radio" name="pet_form" value="<?php echo $key ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == $key ? true : false)); ?> /> <?php echo $val ?>
+						<div class="input-group">						
+						<?php foreach(element('pet_form',element('config',$view)) as $key => $val){ ?>
+							<input type="radio" name="pet_form" value="<?php echo element('pat_id',$val) ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == $key ? true : false)); ?> /> <?php echo element('pat_value',$val) ?>
 						<?php } ?>
 						
 						</div>
@@ -75,8 +74,8 @@
 					<div class="input-group">
 					<?php 
 					
-					foreach(config_item('pet_attr') as $key => $val){
-						echo '<div class="col-sm-2"><input type="checkbox" name="pet_attr[]" value="'.$key.'" '.set_checkbox('pet_attr', $key, (in_array($key,explode(',',element('pet_attr', element('data', $view)))) ? true : false)).' /> '.$val .'</div>';
+					foreach(element('pet_attr',element('config',$view)) as $key => $val){ 
+						echo '<div class="col-sm-2"><input type="checkbox" name="pet_attr[]" value="'.element('pat_id',$val).'" '.set_checkbox('pet_attr', $key, (in_array($key,explode(',',element('pet_attr', element('data', $view)))) ? true : false)).' /> '.element('pat_value',$val) .'</div>';
 					}
 					?>
 					
@@ -116,7 +115,7 @@
 					<?php
 					if (element('pet_photo', element('data', $view))) {
 					?>
-						<img src="<?php echo thumb_url('member_photo',element('pet_photo', element('data', $view))); ?>" alt="회원 사진" title="회원 사진" />
+						<img src="<?php echo cdn_url('member_photo',element('pet_photo', element('data', $view))); ?>" alt="회원 사진" title="회원 사진" />
 						<label for="pet_photo_del">
 							<input type="checkbox" name="pet_photo_del" id="pet_photo_del" value="1" <?php echo set_checkbox('pet_photo_del', '1'); ?> /> 삭제
 						</label>

@@ -3119,8 +3119,8 @@ class Crawl extends CB_Controller
                     
 
                     if(strpos(strtolower($t_value),strtolower($c_value)) !==false){
-                        echo $t_value."//".$c_value;
-                    echo "<br>";
+                    //     echo $t_value."//".$c_value;
+                    // echo "<br>";
                         return true;
                     }
                          

@@ -273,23 +273,19 @@ class Cmall_item_model extends CB_Model
 		return $result;
 	}
 
-	public function total_count_by($where = '', $like = '',$set_where = '')
+	public function total_count_by($where = '', $group_by = 'brd_id',$set_where = '')
 	{
 		
 		
 
-		if ($where) {
-			$this->db->select('post_id,count(*) as rownum');
-			$this->db->where($where);
-			$this->db->group_by('post_id');
-		} else {
-			$this->db->group_by('brd_id');
-			$this->db->select('brd_id,count(*) as rownum');
-		}
+		if ($where) {			
+			$this->db->where($where);			
+		} 
+		$this->db->group_by($group_by);
+		$this->db->select($group_by.',count(*) as rownum');
+		
 
-		if ($like) {
-			$this->db->like($like);
-		}
+		
 		// if ($or_where) {
 		// 	$this->db->group_start();
 		// 	$this->db->or_where($or_where);

@@ -100,6 +100,11 @@ class Post_model extends CB_Model
 		if ($search_where) {
 			$this->db->where($search_where);
 		}
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
+			}
+		}
 		if ($category_id) {
 			if (strpos($category_id, '.')) {
 				$this->db->like('post_category', $category_id . '', 'after');
@@ -142,6 +147,11 @@ class Post_model extends CB_Model
 		}
 		if ($search_where) {
 			$this->db->where($search_where);
+		}
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
+			}
 		}
 		if ($category_id) {
 			if (strpos($category_id, '.')) {
@@ -347,6 +357,12 @@ class Post_model extends CB_Model
 		if ($search_where) {
 			$this->db->where($search_where);
 		}
+
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
+			}
+		}
 		if ($category_id) {
 
 			$this->db->join('cmall_item', 'post.post_id = cmall_item.post_id', 'inner');
@@ -405,6 +421,11 @@ class Post_model extends CB_Model
 		}
 		if ($search_where) {
 			$this->db->where($search_where);
+		}
+		if ($this->set_where) {			
+			foreach ($this->set_where as $skey => $sval) {
+				$this->db->where($skey, $sval,false);				
+			}
 		}
 		if ($category_id) {
 

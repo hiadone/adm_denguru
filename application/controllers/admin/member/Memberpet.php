@@ -24,7 +24,7 @@ class Memberpet extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Member_meta', 'Member_group', 'Member_pet');
+    protected $models = array('Member_meta', 'Member_group', 'Member_pet','Pet_allergy', 'Pet_attr', 'Cmall_kind','Pet_allergy_rel','Pet_attr_rel');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
@@ -73,7 +73,7 @@ class Memberpet extends CB_Controller
             'pet_name' => $param->sort('pet_name', 'asc'),
             
         );
-        $findex = $this->input->get('findex', null, 'pet_name');
+        $findex = $this->input->get('findex', null, 'pet_id');
         $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
@@ -101,8 +101,8 @@ class Memberpet extends CB_Controller
                 
                 
                 if (element('pet_photo', $val)) {
-                    $result['list'][$key]['thumb_url'] = thumb_url('member_photo', element('pet_photo', $val), '80');
-                    // $result['list'][$key]['thumb_url'] = cdn_url('member_photo', element('pet_photo', $val));
+                    // $result['list'][$key]['thumb_url'] = thumb_url('member_photo', element('pet_photo', $val), '80');
+                    $result['list'][$key]['thumb_url'] = cdn_url('member_photo', element('pet_photo', $val));
                     
                 }
 
@@ -363,7 +363,17 @@ class Memberpet extends CB_Controller
 
             $view['view']['data'] = $getdata;
 
+            $pet_attr = $this->Pet_attr_model->get_all_attr();
             
+            
+
+            
+            $view['view']['config']['pet_form'] = element(2,$pet_attr);
+            $view['view']['config']['pet_kind'] = $this->Cmall_kind_model->get_all_kind();
+            $view['view']['config']['pet_attr'] = element(1,$pet_attr);
+            $view['view']['config']['pet_age'] = element(3,$pet_attr);;
+            
+            $view['view']['config']['pet_allergy_rel'] = $this->Pet_allergy_model->get_all_allergy();
 
             /**
              * primary key 정보를 저장합니다

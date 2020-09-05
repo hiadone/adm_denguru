@@ -42,9 +42,9 @@ foreach (element('notcategory_count', $view) as $val)
 ?>
 <div class="board">
 	<h3>
-		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</button>
-		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</button>
-		<button class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total -$notcategory_total); ?> 개</button>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>' class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</a>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?warning=1' class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</a>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?notcategory=1' class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total -$notcategory_total); ?> 개</a>
 	</h3>
 </div>
 <?php

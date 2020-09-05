@@ -24,7 +24,7 @@ class Post extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Post', 'Board', 'Post_file', 'Post_meta', 'Board_category' , 'Board_group_category');
+	protected $models = array('Post', 'Board', 'Post_file', 'Post_meta', 'Board_category' , 'Board_group_category','Cmall_item');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -83,11 +83,16 @@ class Post extends CB_Controller
 		$where = array(
 			'post_del <>' => 2,
 		);
+
+		if($this->input->get('warning'))
+			$this->{$this->modelname}->set_where("post_id not in(select post_id from cb_cmall_item group by post_id)",'',false);
+
+
 		if ($brdid = (int) $this->input->get('brd_id')) {
 			$where['brd_id'] = $brdid;
 		}
 		$result = $this->{$this->modelname}
-			->get_admin_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
+			->get_post_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 		if (element('list', $result)) {
 			foreach (element('list', $result) as $key => $val) {
@@ -117,6 +122,8 @@ class Post extends CB_Controller
 				} else {
 					$result['list'][$key]['thumb_url'] = get_post_image_url(element('post_content', $val), 80);
 				}
+
+				$result['list'][$key]['cmall_item_count'] = $this->Cmall_item_model->count_by(array('post_id' => element('post_id', $val)));
 			}
 		}
 		$view['view']['data'] = $result;

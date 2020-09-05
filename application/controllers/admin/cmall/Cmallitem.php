@@ -239,9 +239,9 @@ class Cmallitem extends CB_Controller
 
             $cbr_id_arr=array();
             foreach($skey_ as $val){
-                $cca_id_arr[] = element('cca_id',$this->Cmall_category_model->get_one('','cca_id',array('cca_value' =>$val)));
+                $cca_id_arr[] = element('cca_id',$this->Cmall_category_model->get_one('','cca_id',array('cca_value' =>$val)),0);
             }
-
+            
             $this->Board_model->set_where_in('cmall_category_rel.cca_id',$cca_id_arr);
             $this->Board_model->set_join(array('cmall_category_rel','cmall_item.cit_id = cmall_category_rel.cit_id','inner'));
                 

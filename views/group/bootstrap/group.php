@@ -10,7 +10,7 @@ $cmall_total = 0;
 
 foreach (element('cmall_count', $view) as $val) 
 {
-	foreach(element('board_list', $view) as $gval){
+	foreach(element('search_list', $view) as $gval){
 		if(element('brd_id',$gval) === element('brd_id',$val)){
 			$cmall_count[element('brd_id',$val)] = element('rownum',$val);
 			$cmall_total +=element('rownum',$val); 
@@ -30,7 +30,7 @@ $warning_total = 0;
 
 foreach (element('warning_count', $view) as $val) 
 {	
-	foreach(element('board_list', $view) as $gval){
+	foreach(element('search_list', $view) as $gval){
 		if(element('brd_id',$gval) === element('brd_id',$val)){
 			$warning_count[element('brd_id',$val)] = element('rownum',$val);
 
@@ -50,7 +50,7 @@ $notcategory_total = 0;
 
 foreach (element('notcategory_count', $view) as $val) 
 {
-	foreach(element('board_list', $view) as $gval){
+	foreach(element('search_list', $view) as $gval){
 		if(element('brd_id',$gval) === element('brd_id',$val)){
 			$notcategory_count[element('brd_id',$val)] = element('cnt',$val);
 
@@ -64,9 +64,13 @@ foreach (element('notcategory_count', $view) as $val)
 ?>
 <div class="board">
 	<h3><?php echo html_escape(element('bgr_name', element('group', $view))); ?>
-		<button class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</button>
-		<button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</button>
-		<button class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total - $notcategory_total); ?> 개</button>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>' class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</a>
+
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?warning=1' class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</a>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?notcategory=1' class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total -$notcategory_total); ?> 개</a>
+
+		<!-- <button class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</button>
+		<button class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total - $notcategory_total); ?> 개</button> -->
 	</h3>
 </div>
 

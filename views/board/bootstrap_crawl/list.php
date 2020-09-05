@@ -1,9 +1,62 @@
 <?php $this->managelayout->add_css(element('view_skin_url', $layout) . '/css/style.css'); ?>
 
-<?php echo element('headercontent', element('board', element('list', $view))); ?>
+<?php 
+echo element('headercontent', element('board', element('list', $view))); 
+
+
+$cmall_count =array();
+
+$cmall_total = 0;
+
+foreach (element('cmall_count', $view) as $val) 
+{
+
+	$cmall_total +=element('rownum',$val); 
+}
+
+
+
+
+$warning_count =array();
+
+$warning_total = 0;
+
+
+foreach (element('warning_count', $view) as $val) 
+{	
+	
+
+	$warning_total +=element('rownum',$val); 
+	
+}
+
+
+
+
+$notcategory_count =array();
+
+$notcategory_total = 0;
+
+
+foreach (element('notcategory_count', $view) as $val) 
+{
+	
+	$notcategory_total +=element('cnt',$val); 
+	
+}
+
+
+?>
+
+
+?>
 
 <div class="board">
-	<h3><a href="<?php echo admin_url('board/boards/write/'.element('brd_id', element('board', element('list', $view)))); ?>"><span class="glyphicon glyphicon-new-window"></span></a><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?><?php echo element('brd_comment', element('board_crawl', element('list', $view))) ? '('.element('brd_comment', element('board_crawl', element('list', $view))).')' : '' ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', element('list', $view))); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', element('list', $view))); ?></a></span></h3>
+	<h3><a href="<?php echo admin_url('board/boards/write/'.element('brd_id', element('board', element('list', $view)))); ?>"><span class="glyphicon glyphicon-new-window"></span></a><?php echo html_escape(element('board_name', element('board', element('list', $view)))); ?><?php echo element('brd_comment', element('board_crawl', element('list', $view))) ? '('.element('brd_comment', element('board_crawl', element('list', $view))).')' : '' ?><span class="ml20" style="font-size:14px;"><i class="fa fa-link"></i><a href="<?php echo element('brd_url', element('board_crawl', element('list', $view))); ?>" target="_blank"><?php echo element('brd_url', element('board_crawl', element('list', $view))); ?></a></span>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>' class="btn btn-info btn-xs">총 상품 <?php echo number_format($cmall_total); ?> 개</a>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?warning=1' class="btn btn-warning btn-xs">총 warning 상품 <?php echo number_format($warning_total); ?> 개</a>
+		<a href='<?php  echo site_url($this->uri->uri_string())?>?notcategory=1' class="btn btn-warning btn-xs">카테고리 없는 총 상품 <?php echo number_format($cmall_total - $notcategory_total); ?> 개</a>
+	</h3>
 	<div class="row mb20">
 		<div class="col-xs-6 form-inline">
 			<?php if ( ! element('access_list', element('board', element('list', $view))) && element('use_rss_feed', element('board', element('list', $view)))) { ?>
@@ -359,7 +412,7 @@ $('#fboardlist').highlight([<?php echo element('highlight_keyword', element('lis
 
 <script>
 
-$('.btn-warning').click(function(){	
+$('button.btn-warning').click(function(){	
 	if ( ! confirm('정말 실행 하겠습니까?')) 
 		{ event.preventDefault() ;return false; }
 });

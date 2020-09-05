@@ -54,6 +54,23 @@ class Main extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
+
+		$set_where = "(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)";
+
+		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','brd_id',$set_where);
+
+		
+		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by('','brd_id');
+
+
+
+		
+
+
+		// if(!empty($view['view']['cmall_count'] - $a_t))
+		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_brdcategory();
+
+
 		$where = array(
 			'brd_search' => 1,
 		);
@@ -61,9 +78,56 @@ class Main extends CB_Controller
 		$board_list = array();
 		if ($board_id && is_array($board_id)) {
 			foreach ($board_id as $key => $val) {
-				$board_list[] = $this->board->item_all(element('brd_id', $val));
+				if($this->input->get('warning')){
+
+					foreach ($view['view']['warning_count'] as $wval) 
+					{	
+
+						if(element('brd_id', $val) == element('brd_id',$wval)){		
+
+							$board_list[] = $this->board->item_all(element('brd_id', $wval));
+							break;
+						}
+						
+					}
+
+					
+				}
+				elseif($this->input->get('notcategory')){
+					$nocate_flag=false;
+					foreach ($view['view']['notcategory_count'] as $nval) 
+					{	
+
+						if( element('brd_id', $val) == element('brd_id',$nval)){			
+							foreach($view['view']['cmall_count'] as $cval){
+								if( element('brd_id', $cval) == element('brd_id',$nval)){			
+
+									if(element('rownum',$cval) - element('cnt',$nval)){
+										$nocate_flag= true;
+										
+										break;
+									}
+								}
+							}
+							
+						}
+
+						if($nocate_flag){
+							$board_list[] = $this->board->item_all(element('brd_id', $val));
+							break;
+						}
+						
+					}
+					
+				}
+				else
+					$board_list[] = $this->board->item_all(element('brd_id', $val));
+
+				$search_list[] = $this->board->item_all(element('brd_id', $val));
 			}
 		}
+
+		$view['view']['search_list'] = $search_list;
 		$view['view']['board_list'] = $board_list;
 		$view['view']['canonical'] = site_url();
 
@@ -77,20 +141,7 @@ class Main extends CB_Controller
 		// );
 			
 		
-		$set_where = "(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)";
-
-		$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by('','',$set_where);
-
 		
-		$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by();
-
-
-
-		
-
-
-		// if(!empty($view['view']['cmall_count'] - $a_t))
-		$view['view']['notcategory_count'] = $this->Cmall_category_model->get_brdcategory();
 		
 
 

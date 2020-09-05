@@ -18,7 +18,7 @@ class Board_post extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Post', 'Post_meta', 'Post_extra_vars','Crawl_tag','Vision_api_label','Post_link','Cmall_item','Board_crawl');
+	protected $models = array('Post', 'Post_meta', 'Post_extra_vars','Crawl_tag','Vision_api_label','Post_link','Cmall_item','Board_crawl','Cmall_category');
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -50,6 +50,8 @@ class Board_post extends CB_Controller
 		}
 
 
+		
+		
 
 		$view = array();
 		$view['view'] = array();
@@ -59,12 +61,94 @@ class Board_post extends CB_Controller
 
 		$bgr_id = $this->board->item_key('bgr_id',$brd_key);
 
+
+		
+
 		if($bgr_id == '4'){
-			$view['view']['list'] = $list = $this->_get_list_other($brd_key);	
+			$list = $this->_get_list_other($brd_key);	
 		} else {
-			$view['view']['list'] = $list = $this->_get_list($brd_key);	
+
+
+			$itemwhere = array(
+						'brd_id' => $this->board->item_key('brd_id',$brd_key),
+					);
+
+
+			$set_where = "(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)";
+
+			$view['view']['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'post_id',$set_where);
+
+			// print_r2($view['view']['warning_count']);
+
+			$view['view']['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'post_id');
+
+			// print_r2($view['view']['cmall_count']);
+
+			$view['view']['notcategory_count'] = $this->Cmall_category_model->get_brdcategory($itemwhere,'cmall_item.post_id','count(DISTINCT cb_cmall_category_rel.cit_id) as cnt,post_id,cca_parent');
+
+			// print_r2($view['view']['notcategory_count']);
+
+
+			$list = $this->_get_list($brd_key);	
+			$list_ = array();
+			if (element('list', element('data', $list))) {
+				foreach (element('list', element('data', $list)) as $lkey => $lresult) {
+					if($this->input->get('warning')){
+						$warning_flag=true;
+
+						foreach ($view['view']['warning_count'] as $wval) 
+						{	
+							if(element('post_id', $lresult) == element('post_id',$wval)){		
+
+								$warning_flag= false;								
+								break;
+							}
+							
+						}
+
+						if($warning_flag)							
+							unset($list['data']['list'][$lkey]);
+						
+						
+					}
+					elseif($this->input->get('notcategory')){
+						$nocate_flag=true;
+						foreach ($view['view']['notcategory_count'] as $nval) 
+						{	
+
+							if(element('post_id', $lresult) == element('post_id',$nval)){		
+
+								foreach($view['view']['cmall_count'] as $cval){
+									if( element('post_id', $cval) == element('post_id',$nval)){			
+
+										if(element('rownum',$cval) - element('cnt',$nval)){											
+											$nocate_flag= false;
+											
+											break;
+										}
+									}
+								}
+								
+							}
+						}
+
+						if($nocate_flag){
+								unset($list['data']['list'][$lkey]);
+								
+							}
+						
+					}
+				}
+			}
+
 		}
 		
+
+		
+		
+
+		$view['view']['list'] = $list;
+
 		$view['view']['board_key'] = element('brd_key', element('board', $list));
 
 		// stat_count_board ++
@@ -1260,7 +1344,7 @@ class Board_post extends CB_Controller
 		
 
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_category_model','Cmall_attr_model','Cmall_brand_model','Cmall_kind_model'));
+		$this->load->model(array('Cmall_wishlist_model','Cmall_attr_model','Cmall_brand_model','Cmall_kind_model'));
 		
 
 		if(!empty($this->input->get('nocategory'))){			
@@ -1622,7 +1706,7 @@ class Board_post extends CB_Controller
 		}
 
 		if (element('use_category', $board)) {
-			$this->load->model(array('Cmall_category_model'));			
+			
 			
 			$board['category'] = $this->Cmall_category_model->get_all_category();
 			$cca_id_arr = array();
@@ -1821,10 +1905,10 @@ class Board_post extends CB_Controller
 
 		
 
-		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'',$set_where);
-		$result['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere);
+		$result['warning_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'post_id',$set_where);
+		$result['cmall_count'] = $this->Cmall_item_model->total_count_by($itemwhere,'post_id');
 
-		$result['category'] = $this->Cmall_category_model->get_brdcategory(element('brd_id', $board));
+		$result['category'] = $this->Cmall_category_model->get_brdcategory($itemwhere,'cmall_category_rel.cca_id,cmall_category_rel.cit_id','count(*) as cnt,cmall_category_rel.cit_id,post_id,cca_value,cca_parent');
 
 		if($result['warning_count'])
 			foreach($result['warning_count'] as $val){				

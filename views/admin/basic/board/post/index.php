@@ -11,6 +11,7 @@
 			?>
 				<div class="btn-group pull-right" role="group" aria-label="...">
 					<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+					<a href="<?php echo element('listall_url', $view); ?>?warning=1" class="btn btn-warning btn-sm">warning 목록</a>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-trash btn-list-selected disabled" data-list-trash-url = "<?php echo element('list_trash_url', $view); ?>" >휴지통</button>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 				</div>
@@ -44,6 +45,7 @@
 							<th>날짜</th>
 							<th>IP 주소</th>
 							<th>상태</th>
+							<th>연결된상품수</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
 					</thead>
@@ -52,7 +54,7 @@
 					if (element('list', element('data', $view))) {
 						foreach (element('list', element('data', $view)) as $result) {
 					?>
-						<tr>
+						<tr class="<?php echo element('cmall_item_count', $result) ? '':'warning'; ?> ">
 							<td><?php echo number_format(element('num', $result)); ?></td>
 							<td><a href="?brd_id=<?php echo element('brd_id', $result); ?>"><?php echo html_escape(element('brd_name', element('board', $result))); ?></a> <a href="<?php echo goto_url(element('boardurl', $result)); ?>" target="_blank"><span class="fa fa-external-link"></span></a></td>
 							<td>
@@ -72,6 +74,7 @@
 							<td><?php echo display_datetime(element('post_datetime', $result), 'full'); ?></td>
 							<td><a href="?sfield=post_ip&amp;skeyword=<?php echo display_admin_ip(element('post_ip', $result)); ?>"><?php echo display_admin_ip(element('post_ip', $result)); ?></a></td>
 							<td><?php echo element('post_secret', $result) === '1' ? '비밀' : '공개'; ?></td>
+							<td><?php echo element('cmall_item_count', $result)?></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>
 					<?php
