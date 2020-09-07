@@ -566,12 +566,12 @@ class Cmallcategory extends CB_Controller
 				array(
                     'field' => 'ckd_value_kr',
                     'label' => '한글 견종명',
-                    'rules' => 'trim|required|is_unique[cmall_kind.ckd_value_kr]',
+                    'rules' => 'trim|required',
                 ),
                 array(
                     'field' => 'ckd_value_en',
                     'label' => '영문 견종명 ',
-                    'rules' => 'trim|required|is_unique[cmall_kind.ckd_value_en]',
+                    'rules' => 'trim|required',
                 ),
 				array(
 					'field' => 'ckd_text',
@@ -581,7 +581,7 @@ class Cmallcategory extends CB_Controller
 				array(
 					'field' => 'ckd_size',
 					'label' => '견종크기',
-					'rules' => 'trim|callback__ckd_size',
+					'rules' => 'trim|required|callback__ckd_size',
 				),
 			);
 		} else {
@@ -594,12 +594,12 @@ class Cmallcategory extends CB_Controller
 				array(
                     'field' => 'ckd_value_kr',
                     'label' => '한글 브랜드명',
-                    'rules' => 'trim|is_unique[cmall_kind.ckd_value_kr.ckd_id.' . $this->input->post('ckd_id') . ']',
+                    'rules' => 'trim|required',
                 ),
                 array(
                     'field' => 'ckd_value_en',
                     'label' => '영문 브랜드명 ',
-                    'rules' => 'trim|is_unique[cmall_kind.ckd_value_en.ckd_id.' . $this->input->post('ckd_id') . ']',
+                    'rules' => 'trim|required',
                 ),
 				array(
 					'field' => 'ckd_text',
@@ -609,7 +609,7 @@ class Cmallcategory extends CB_Controller
 				array(
 					'field' => 'ckd_size',
 					'label' => '견종크기',
-					'rules' => 'trim|required',
+					'rules' => 'trim|required|callback__ckd_size',
 				),
 			);
 		}
@@ -811,6 +811,55 @@ class Cmallcategory extends CB_Controller
         		return false;
         	
         }
+        
+        
+
+        return true;
+    }
+
+    public function _ckd_value_kr($str,$param)
+    {   
+    	
+    	
+		
+
+    	$countwhere = array(
+    				'ckd_value_kr' => $str,
+    	);
+		if($str) $countwhere['ckd_id !='] = $param;
+
+    	$row = $this->Cmall_kind_model->count_by($countwhere);
+
+		if ($row > 0) {
+			$this->form_validation->set_message(
+				'_ckd_value_kr',
+				$str . ' 는 중복된 견종 이름입니다.'
+			);
+			return false;
+		}
+        
+        
+
+        return true;
+    }
+
+    public function _ckd_value_en($str)
+    {   
+    	
+    	
+    	$countwhere = array(
+    				'ckd_value_en' => $str,
+    	);
+    	if($str) $countwhere['ckd_id !='] = $str;
+    	$row = $this->Cmall_kind_model->count_by($countwhere);
+
+		if ($row > 0) {
+			$this->form_validation->set_message(
+				'_ckd_value_en',
+				$str . ' 는 중복된 견종 이름입니다.'
+			);
+			return false;
+		}
         
         
 
