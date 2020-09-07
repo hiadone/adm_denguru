@@ -174,6 +174,7 @@
                                     
                                     echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';
                                     echo "<br>";
+                                    if(!empty(element(element('cca_id', $cv),element('category', $result))))
                                     foreach (element(element('cca_id', $cv),element('category', $result)) as $cv_) {
                                         echo '<label class="label label-primary">' . html_escape(element('cca_value', $cv_)) . '</label> ';                                                                     
                                     } 
@@ -182,7 +183,7 @@
                             }
                         ?>
                     </td>
-                    <td ><?php echo element('cit_goods_code', $result); ?><br>
+                    <td ><?php echo cut_str(element('cit_goods_code', $result),20); ?><br>
                         <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
                                 <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
                                 <?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>

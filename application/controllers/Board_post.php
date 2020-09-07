@@ -1647,6 +1647,12 @@ class Board_post extends CB_Controller
 			$per_page = element('list_count', $board)
 				? (int) element('list_count', $board) : 20;
 		}
+
+
+		if($this->uri->segment(1) ==='board' && ($this->input->get('warning') || $this->input->get('no'))){
+			$per_page=9999;
+			$offset = 0;
+		}
 		$offset = ($page - 1) * $per_page;
 
 		$this->Post_model->allow_search_field = array( 'post_title','cit_name','cat_value','cta_tag'); // 검색이 가능한 필드

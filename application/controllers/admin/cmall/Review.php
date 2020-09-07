@@ -24,7 +24,7 @@ class Review extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Cmall_review');
+	protected $models = array('Cmall_review','Review_file','Cmall_item');
 
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
@@ -176,7 +176,33 @@ class Review extends CB_Controller
 		$getdata = array();
 		if ($pid) {
 			$getdata = $this->{$this->modelname}->get_one($pid);
+			$getdata['cit_name'] = element('cit_name',$this->Cmall_item_model->get_one(element('cit_id',$getdata),'cit_name'),'없는 상품입니다.');
+
+			$file = $this->Review_file_model
+				->get('', '', array('cre_id' => element('cre_id',$getdata)), '', '', 'pfi_id', 'ASC');
+			
+			$view['view']['file_image'] = array();
+
+			$play_extension = array('acc', 'flv', 'f4a', 'f4v', 'mov', 'mp3', 'mp4', 'm4a', 'm4v', 'oga', 'ogg', 'rss', 'webm');
+
+			if ($file && is_array($file)) {
+				foreach ($file as $key => $value) {
+					if (element('pfi_is_image', $value)) {
+						$value['origin_image_url'] = site_url(config_item('uploads_dir') . '/post/' . element('pfi_filename', $value));
+						$value['thumb_image_url'] = thumb_url('post', element('pfi_filename', $value), $image_width);
+						$view['view']['file_image'][] = $value;
+					} else {
+						$value['download_link'] = site_url('postact/download/' . element('pfi_id', $value));
+						$view['view']['file_download'][] = $value;
+						if (element('use_autoplay', $board) && in_array(element('pfi_type', $value), $play_extension)) {
+							$file_player .= $this->videoplayer->get_jwplayer(site_url(config_item('uploads_dir') . '/post/' . element('pfi_filename', $value)), $image_width);
+						}
+					}
+				}
+			}
 		}
+
+
 
 		/**
 		 * Validation 라이브러리를 가져옵니다

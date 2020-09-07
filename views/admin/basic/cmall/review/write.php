@@ -7,6 +7,22 @@
 		?>
 			<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
 			<div class="form-group">
+				<label class="col-sm-2 control-label">상품명</label>
+				<div class="col-sm-10">
+					<?php 
+						echo element('cit_name', element('data', $view));
+					 ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">이미지</label>
+				<div class="col-sm-10">
+					<?php 
+						echo element('cit_name', element('data', $view));
+					 ?>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">후기제목</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="cre_title" value="<?php echo set_value('cre_title', element('cre_title', element('data', $view))); ?>" />
