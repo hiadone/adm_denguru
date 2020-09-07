@@ -102,7 +102,7 @@ class Event extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 if (element('eve_image', $val)) {
-                    $result['list'][$key]['cdn_url'] = cdn_url('event', element('eve_image', $val), '80');
+                    $result['list'][$key]['cdn_url'] = cdn_url('event', element('eve_image', $val));
                 }
                 if (empty($val['eve_start_date']) OR $val['eve_start_date'] === '0000-00-00') {
                     $result['list'][$key]['eve_start_date'] = '미지정';
@@ -356,6 +356,8 @@ class Event extends CB_Controller
 
             $event_rel = $where_in = array();
             $event_rel = $this->Event_model->get_event($pid);
+
+
             if($event_rel)
             foreach($event_rel as $eveval)
                 array_push($where_in,element('cit_id',$eveval));
@@ -367,7 +369,7 @@ class Event extends CB_Controller
             if(empty($where_in))
                 $cresult = array();
             else 
-                $cresult = $this->Cmall_item_model->get_admin_list('','', '', '', $findex, $forder, $sfield, $skeyword);
+                $cresult = $this->Cmall_item_model->get_item_list('','', '', '', $findex, $forder, $sfield, $skeyword);
 
             $list_num = element('total_rows', $cresult) ? element('total_rows', $cresult) : 0;
             if (element('list', $cresult)) {
