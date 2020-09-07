@@ -581,7 +581,7 @@ class Cmallcategory extends CB_Controller
 				array(
 					'field' => 'ckd_size',
 					'label' => '견종크기',
-					'rules' => 'trim|required',
+					'rules' => 'trim|callback__ckd_size',
 				),
 			);
 		} else {
@@ -666,6 +666,7 @@ class Cmallcategory extends CB_Controller
 				$insertdata = array(
 					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
                     'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),
+                    'ckd_parent' => $this->input->post('ckd_parent', null, 0),
 					'ckd_text' => $ckd_text_,
 					'ckd_size' => $ckd_size,
 				);
@@ -716,6 +717,7 @@ class Cmallcategory extends CB_Controller
 				$updatedata = array(
 					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
                     'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),
+                    'ckd_parent' => $this->input->post('ckd_parent', null, 0),
 					'ckd_text' => $ckd_text_,
 					'ckd_size' => $ckd_size,
 				);
@@ -795,4 +797,23 @@ class Cmallcategory extends CB_Controller
 
 		redirect($redirecturl);
 	}
+
+	public function _ckd_size($str)
+    {   
+    	
+    	
+    	if($this->input->post('ckd_size') !== '소형견' && $this->input->post('ckd_size') !== '중형견' && $this->input->post('ckd_size') !== '대형견'){
+        	
+        		$this->form_validation->set_message(
+        		    '_ckd_size',
+        		    '견종 크기는 소형견,중형견,대형견 중 하나를 입력해 주세요.'
+        		);
+        		return false;
+        	
+        }
+        
+        
+
+        return true;
+    }
 }

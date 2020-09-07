@@ -61,6 +61,7 @@
                 }
                 return $return;
             }
+            
             echo cmall_ca_list(element(0, $data), $data, 0);
             ?>
         </ul>
