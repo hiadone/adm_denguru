@@ -8,6 +8,54 @@
         </ul>
     </div>
     <div class="box-table">
+        <div class="box-table">
+            <?php
+            $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
+            echo form_open(current_full_url(), $attributes);
+            ?>
+                <input type="hidden" name="is_submit" value="1" />
+                <input type="hidden" name="type" value="add" />
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">견종 추가</label>
+                    <div class="col-sm-11 form-inline">
+                        <select name="ckd_parent" class="form-control">
+                            <option value="0">최상위견종</option>
+                            <?php
+                            $data = element('data', $view);
+
+                            function cmall_ca_select($p, $data,$len)
+                            {
+                                $return = '';
+                                $nextlen = $len + 1;
+                                if ($p && is_array($p)) {
+                                    foreach ($p as $result) {
+                                        $margin='';
+                                        if ($len) {
+
+                                            for($i=0;$len > $i;$i++)
+                                                $margin .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        }
+
+                                        $return .= '<option value="' . html_escape(element('ckd_id', $result)) . '"> ' . $margin .html_escape(element('ckd_value_kr', $result)) . '의 하위순위견종</option>';
+                                        $parent = element('ckd_id', $result);
+                                        $return .= cmall_ca_select(element($parent, $data), $data,$nextlen);
+                                    }
+                                }
+                                return $return;
+                            }
+                            echo cmall_ca_select(element(0, $data), $data,0);
+                            ?>
+                        </select>
+                        <input type="text" name="ckd_value_kr" class="form-control" value="" placeholder="한글 견종 입력" />
+                        <input type="text" name="ckd_value_en" class="form-control" value="" placeholder="영문 견종 입력" />
+                        <input type="text" name="ckd_size" class="form-control" value="" placeholder="견종 크기 입력" />
+
+                        <textarea class="form-control" style="width:300px;" name="ckd_text" id="ckd_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"><?php echo set_value('ckd_text', element('ckd_text', element('data', $view))); ?></textarea>
+                        <button type="submit" class="btn btn-success btn-sm">추가하기</button>
+                    </div>
+                </div>
+            <?php echo form_close(); ?>
+        </div>
         <?php
         
         echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
@@ -93,26 +141,7 @@
                             <?php
                             $data = element('data', $view);
 
-                            function cmall_ca_select($p, $data,$len)
-                            {
-                                $return = '';
-                                $nextlen = $len + 1;
-                                if ($p && is_array($p)) {
-                                    foreach ($p as $result) {
-                                        $margin='';
-                                        if ($len) {
-
-                                            for($i=0;$len > $i;$i++)
-                                                $margin .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                                        }
-
-                                        $return .= '<option value="' . html_escape(element('ckd_id', $result)) . '"> ' . $margin .html_escape(element('ckd_value_kr', $result)) . '의 하위순위견종</option>';
-                                        $parent = element('ckd_id', $result);
-                                        $return .= cmall_ca_select(element($parent, $data), $data,$nextlen);
-                                    }
-                                }
-                                return $return;
-                            }
+                            
                             echo cmall_ca_select(element(0, $data), $data,0);
                             ?>
                         </select>
