@@ -8,6 +8,55 @@
 		</ul>
 	</div>
 	<div class="box-table">
+
+		<div class="box-table">
+			<?php
+			$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
+			echo form_open(current_full_url(), $attributes);
+			?>
+				<input type="hidden" name="is_submit" value="1" />
+				<input type="hidden" name="type" value="add" />
+				<div class="form-group">
+					<label class="col-sm-1 control-label"> 추가</label>
+					<div class="col-sm-11 form-inline">
+						<select name="cca_parent" class="form-control">
+							<option value="0">최상위카테고리</option>
+							<?php
+							$data = element('data', $view);
+							function cmall_ca_select($p, $data,$len)
+							{
+								$return = '';
+								$nextlen = $len + 1;
+								if ($p && is_array($p)) {
+									foreach ($p as $result) {
+
+										$margin='';
+                                        if ($len) {
+
+                                            for($i=0;$len > $i;$i++)
+                                                $margin .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        }
+
+
+										$return .= '<option value="' . html_escape(element('cca_id', $result)) . '">' . $margin.html_escape(element('cca_value', $result)) . '의 하위카테고리</option>';
+										$parent = element('cca_id', $result);
+										$return .= cmall_ca_select(element($parent, $data), $data,$nextlen);
+									}
+								}
+								return $return;
+							}
+							echo cmall_ca_select(element(0, $data), $data,0);
+							?>
+						</select>
+						<input type="text" name="cca_value" class="form-control" value="" placeholder="카테고리명 입력" />
+						<textarea class="form-control" style="width:300px;" name="cca_text" id="cca_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"><?php echo set_value('cca_text', element('cca_text', element('data', $view))); ?></textarea>
+						<input type="number" name="cca_order" class="form-control" value="0" />
+						<button type="submit" class="btn btn-success btn-sm">추가하기</button>
+					</div>
+				</div>
+			<?php echo form_close(); ?>
+		</div>
+		
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
 		// echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
@@ -80,19 +129,8 @@
 							<option value="0">최상위카테고리</option>
 							<?php
 							$data = element('data', $view);
-							function cmall_ca_select($p, $data)
-							{
-								$return = '';
-								if ($p && is_array($p)) {
-									foreach ($p as $result) {
-										$return .= '<option value="' . html_escape(element('cca_id', $result)) . '">' . html_escape(element('cca_value', $result)) . '의 하위카테고리</option>';
-										$parent = element('cca_id', $result);
-										$return .= cmall_ca_select(element($parent, $data), $data);
-									}
-								}
-								return $return;
-							}
-							echo cmall_ca_select(element(0, $data), $data);
+							
+							echo cmall_ca_select(element(0, $data), $data,0);
 							?>
 						</select>
 						<input type="text" name="cca_value" class="form-control" value="" placeholder="카테고리명 입력" />

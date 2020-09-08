@@ -10,6 +10,8 @@
     <div class="box-table">
         <div class="box-table">
             <?php
+
+
             $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
             echo form_open(current_full_url(), $attributes);
             ?>
@@ -157,7 +159,8 @@
         </div>
     </div>
 </div>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -179,5 +182,93 @@ function ckd_cancel(ckd_id) {
     $('.cat-ckd-id-' + ckd_id).show();
     $('.mod-ckd-id-' + ckd_id).hide();
 }
+
+
+var ckd_value_kr_list = [
+    <?php
+    if (element(0, element('data', $view))) {
+        foreach (element(0, element('data', $view)) as $result) {
+            echo '"'.element('ckd_value_kr',$result).'",';
+        }
+    }
+            
+    ?>
+    "========" 
+]; // 배열 형태로 
+
+
+var ckd_value_en_list = [
+    <?php
+    if (element(0, element('data', $view))) {
+        foreach (element(0, element('data', $view)) as $result) {
+            echo '"'.element('ckd_value_en',$result).'",';
+        }
+    }
+            
+    ?>
+    "========" 
+]; // 배열 형태로 
+
+
+$("input[name='ckd_value_kr']")
+    .on("keydown", function( event ) {
+        if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {            
+            event.preventDefault();
+        }
+    })
+    .autocomplete({  //오토 컴플릿트 시작
+        source : ckd_value_kr_list,    // source 는 자동 완성 대상
+        select: function(event, ui) {
+            this.value = "";
+            this.value = ui.item.value;
+
+            return false;
+        },
+        focus : function(event, ui) {    //포커스 가면
+            return false;//한글 에러 잡기용도로 사용됨
+        },
+        minLength: 1,// 최소 글자수
+        autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+        classes: {    //잘 모르겠음
+            "ui-autocomplete": "highlight"
+        },
+        delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+               // disabled: flag, //자동완성 기능 끄기
+        position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+        close : function(event){    //자동완성창 닫아질때 호출
+            console.log(1);
+        }
+    });
+
+
+$("input[name='ckd_value_en']")
+    .on("keydown", function( event ) {
+        if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {            
+            event.preventDefault();
+        }
+    })
+    .autocomplete({  //오토 컴플릿트 시작
+        source : ckd_value_en_list,    // source 는 자동 완성 대상
+        select: function(event, ui) {
+            this.value = "";
+            this.value = ui.item.value;
+
+            return false;
+        },
+        focus : function(event, ui) {    //포커스 가면
+            return false;//한글 에러 잡기용도로 사용됨
+        },
+        minLength: 1,// 최소 글자수
+        autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+        classes: {    //잘 모르겠음
+            "ui-autocomplete": "highlight"
+        },
+        delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+               // disabled: flag, //자동완성 기능 끄기
+        position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+        close : function(event){    //자동완성창 닫아질때 호출
+            console.log(1);
+        }
+    });
 //]]>
 </script>
