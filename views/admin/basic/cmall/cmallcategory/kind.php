@@ -92,19 +92,28 @@
                             <option value="0">최상위견종</option>
                             <?php
                             $data = element('data', $view);
-                            function cmall_ca_select($p, $data)
+
+                            function cmall_ca_select($p, $data,$len)
                             {
                                 $return = '';
+                                $nextlen = $len + 1;
                                 if ($p && is_array($p)) {
                                     foreach ($p as $result) {
-                                        $return .= '<option value="' . html_escape(element('ckd_id', $result)) . '">' . html_escape(element('ckd_value_kr', $result)) . '의 하위순위견종</option>';
+                                        $margin='';
+                                        if ($len) {
+
+                                            for($i=0;$len > $i;$i++)
+                                                $margin .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        }
+
+                                        $return .= '<option value="' . html_escape(element('ckd_id', $result)) . '"> ' . $margin .html_escape(element('ckd_value_kr', $result)) . '의 하위순위견종</option>';
                                         $parent = element('ckd_id', $result);
-                                        $return .= cmall_ca_select(element($parent, $data), $data);
+                                        $return .= cmall_ca_select(element($parent, $data), $data,$nextlen);
                                     }
                                 }
                                 return $return;
                             }
-                            echo cmall_ca_select(element(0, $data), $data);
+                            echo cmall_ca_select(element(0, $data), $data,0);
                             ?>
                         </select>
                         <input type="text" name="ckd_value_kr" class="form-control" value="" placeholder="한글 견종 입력" />
