@@ -2998,7 +2998,7 @@ class Helptool extends CB_Controller
 						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);		            			
-						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
+						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $tagdata);
 						            		} else {
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $Cmall_item),
@@ -3462,7 +3462,7 @@ class Helptool extends CB_Controller
 						            			    'cta_tag' => $value,
 						            			    'is_manual' => 1,
 						            			);		            			
-						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $updatedata);
+						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $tagdata);
 						            		} else {
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $Cmall_item),
