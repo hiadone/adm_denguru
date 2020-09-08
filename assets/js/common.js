@@ -941,7 +941,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 		}
 	}
 
-	function post_action_crawl(action_type, action_id,flag, input_key) {
+	function post_action_crawl(action_type, action_id, input_key) {
         var href;
         if ( action_type == '') {
             return false;
@@ -954,7 +954,7 @@ if (typeof(COMMON_JS) === 'undefined') {
         
 
         
-        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : flag;
+        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : input_key;
         
         
         href = cb_url + '/postact/' + action_type + '/' + action_id + '/' + encodeURIComponent(t);
@@ -1044,9 +1044,9 @@ if (typeof(COMMON_JS) === 'undefined') {
 				} else if (data.success) {
 					alert(data.success);
 					if (data.url) {
-						// document.location.href=data.url;
-					} else {
-						// document.location.reload();
+						document.location.href=data.url;
+					} else {						
+						document.location.reload();
 					}
 				}
 			}
@@ -1069,10 +1069,9 @@ if (typeof(COMMON_JS) === 'undefined') {
 	}
 
 	function post_multi_change_brand() {
-
 		var f = document.fboardlist;
 		var sub_win = window.open('', 'change_brand', 'left=100, top=100, width=620, height=500, scrollbars=1');
-		
+
 		f.target = 'change_brand';
 		f.method = 'post';
 		f.action = cb_url + '/helptool/post_change_brand';
@@ -1102,19 +1101,9 @@ if (typeof(COMMON_JS) === 'undefined') {
 	function all_postlist_checked(flag) {
 		var f = document.fboardlist;
 		for (var i = 0; i < f.length; i++) {
-			if (f.elements[i].name === 'chk[]') {
+			if (f.elements[i].name === 'chk_cit_id[]') {
 				f.elements[i].checked = flag;
 			}
 		}
-	}
-
-	function post_multi_change_attr() {
-		var f = document.fboardlist;
-		var sub_win = window.open('', 'change_attr', 'left=100, top=100, width=620, height=500, scrollbars=1');
-
-		f.target = 'change_attr';
-		f.method = 'post';
-		f.action = cb_url + '/helptool/post_change_attr';
-		f.submit();
 	}
 }

@@ -192,6 +192,7 @@ $config['brand_auto']  = array(12,
 338);
 
 
+
 $config['str_2']  = array(
             '우프',
             '베럴즈',
@@ -6157,4 +6158,10 @@ $config['total_tag_word']  = array('어바웃밀',
 '해리어',
 '믹스',
 '파라오 하운드','풍산개',
+);
+
+
+$config['str_tag_2']  = array(
+      '치약',
+      '칫솔',
 );

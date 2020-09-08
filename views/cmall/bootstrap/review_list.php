@@ -7,7 +7,12 @@ if (element('list', element('data', $view))) {
 ?>
 	<div class="product-feedback">
 		<div class="review-wr">
-			<p class="item_review_title col-lg-8" onclick="return review_open(this);"><i class="fa fa-comments-o"></i> <?php echo html_escape(element('cre_title', $result)); ?></p>
+			<p class="item_review_title col-lg-8" onclick="return review_open(this);"><i class="fa fa-comments-o"></i> 
+				
+				좋은점 : <?php echo element('cre_good', $result); ?><br>
+				아쉬운점 : <?php echo element('cre_bad', $result); ?><br>
+				나만의 팁 : <?php echo element('cre_tip', $result); ?>
+			</p>
 			<ul class="col-lg-4 review-info">
 				<li><span class="sd-only">작성자</span> <?php echo element('display_name', $result); ?></li>
 				<li><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo element('display_datetime', $result); ?></li>
@@ -17,13 +22,48 @@ if (element('list', element('data', $view))) {
 			</ul>
 		</div>
 		<div class="feedback-box review-content">
-			<?php echo element('content', $result); ?>
+			
+			<?php 
+			
+
+			if (element('file', $result)) {
+				foreach (element('file', $result) as $fkey => $res) {			
+
+				$rfi_is_image = element('rfi_is_image', $res);
+				$download_link = element('download_link', $res);
+				
+			?>
+				<div class="contents-view-img">
+					<label >파일 #<?php echo $fkey+1; ?></label>
+							
+						<?php if ($download_link) { ?>
+							<?php if ($rfi_is_image) { ?>
+							<div>
+							<img src="<?php echo element('image_url', element($fkey, element('file', $result))); ?>" alt=" 이미지" title="이미지" />
+							</div>
+							
+							<?php } else {?>
+								<?php echo element('file_player', element($fkey, element('file', $result))); ?>
+
+							<?php } ?>
+							
+						<?php } ?>
+					
+				</div>
+			<?php
+				}
+			}
+			
+			?>
+
+			
 			<?php if (element('can_update', $result)) { ?>
 				<a href="javascript:;" class="btn btn-xs btn-default" onClick="window.open('<?php echo site_url('cmall/review_write/' . element('cit_id', $view) . '/' . element('cre_id', $result) . '?page=' . $this->input->get('page')); ?>', 'review_popup', 'width=750,height=770,scrollbars=1'); return false;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</a>
 			<?php } ?>
 			<?php if (element('can_delete', $result)) { ?>
 				<a href="javascript:;" class="btn btn-xs btn-default" onClick="delete_cmall_review('<?php echo element('cre_id', $result); ?>', '<?php echo element('cit_id', $result); ?>', '<?php echo element('page', $view); ?>');"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</a>
 			<?php } ?>
+			
 		</div>
 	</div>
 <?php

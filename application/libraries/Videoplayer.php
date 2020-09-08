@@ -105,7 +105,7 @@ class Videoplayer extends CI_Controller
 								width: "100%"
 							});
 						</script>' . PHP_EOL;
-			$jwplayer = '<div class="autowrap" style="max-width:' . $max_width . 'px;"><div class="autosize" style="padding-bottom: 75%;">' . $jwplayer . '</div></div>' . PHP_EOL;
+			$jwplayer = '<div class="autowrap" style="max-width:' . $max_width . 'px;"><div class="autosize" style="padding-bottom: 0%;">' . $jwplayer . '</div></div>' . PHP_EOL;
 		}
 
 		return $jwplayer;

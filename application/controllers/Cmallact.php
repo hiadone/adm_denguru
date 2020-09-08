@@ -368,6 +368,7 @@ class Cmallact extends CB_Controller
 		}
 
 		$this->Cmall_review_model->delete($cre_id);
+		$this->cmalllib->_review_delete($cre_id);
 		$cntresult = $this->cmalllib->update_review_count(element('cit_id', $review));
 		$jresult = json_decode($cntresult, true);
 		$cnt = element('cit_review_count', $jresult);

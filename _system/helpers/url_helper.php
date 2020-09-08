@@ -573,6 +573,10 @@ if ( ! function_exists('cdn_url')) {
 	function cdn_url($type = '',$uri = '', $protocol = 'http://')
 	{	
 		
-		return get_instance()->config->cdn_url($type."/".$uri, $protocol);
+
+		if (get_instance()->aws_s3->is_file(get_instance()->config->cdn_url($type."/".$uri, $protocol)))
+			return get_instance()->config->cdn_url($type."/".$uri, $protocol);
+		else 
+			return thumb_url();
 	}
 }

@@ -9,18 +9,59 @@
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
 		echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fwrite', 'id' => 'fwrite');
-		echo form_open(current_full_url(), $attributes);
+		echo form_open_multipart(current_full_url(), $attributes);
 		?>
+			<?php 
+			
+
+			$file_count = 10;
+			for ($i = 0; $i < $file_count; $i++) {
+
+				$rfi_is_image = element('rfi_is_image', element($i, element('file', $view)));
+				$download_link = html_escape(element('download_link', element($i, element('file', $view))));
+				$file_column = $download_link ? 'cre_file_update[' . element('rfi_id', element($i, element('file', $view))) . ']' : 'cre_file[' . $i . ']';
+				$del_column = $download_link ? 'cre_file_del[' . element('rfi_id', element($i, element('file', $view))) . ']' : '';
+			?>
+				<div class="form-group">
+					<label for="<?php echo $file_column; ?>" class="col-sm-2 control-label">파일 #<?php echo $i+1; ?></label>
+					<div class="col-sm-10">
+						<input type="file" class="form-control" name="<?php echo $file_column; ?>" id="<?php echo $file_column; ?>" />
+						<?php if ($download_link) { ?>
+							<?php if ($rfi_is_image) { ?>
+
+							<img src="<?php echo element('image_url', element($i, element('file', $view))); ?>" alt=" 이미지" title="이미지" />
+
+							
+							<?php } else {?>
+								<?php echo element('file_player', element($i, element('file', $view))); ?>
+
+							<?php } ?>
+							<label for="<?php echo $del_column; ?>">
+								<input type="checkbox" name="<?php echo $del_column; ?>" id="<?php echo $del_column; ?>" value="1" <?php echo set_checkbox($del_column, '1'); ?> /> 삭제
+							</label>
+						<?php } ?>
+					</div>
+				</div>
+			<?php
+			}
+			
+			?>
 			<div class="form-group">
-				<label for="cre_title" class="col-sm-2 control-label">제목</label>
+				<label class="col-sm-2 control-label">좋은점</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" name="cre_title" id="cre_title" value="<?php echo set_value('cre_title', element('cre_title', element('data', $view))); ?>" placeholder="제목을 입력해주세요" />
+					<input type="text" class="form-control" name="cre_good" value="<?php echo set_value('cre_good', element('cre_good', element('data', $view))); ?>" />
 				</div>
 			</div>
-			<div class="form-group mt20">
-				<label for="cre_content" class="col-sm-2 control-label">내용</label>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">아쉬운점</label>
 				<div class="col-sm-10">
-					<?php echo display_dhtml_editor('cre_content', set_value('cre_content', element('cre_content', element('data', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = $this->cbconfig->item('use_cmall_product_review_dhtml'), $editor_type = $this->cbconfig->item('cmall_product_review_editor_type')); ?>
+					<input type="text" class="form-control" name="cre_bad" value="<?php echo set_value('cre_bad', element('cre_bad', element('data', $view))); ?>" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">나만의 TIP</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="cre_tip" value="<?php echo set_value('cre_tip', element('cre_tip', element('data', $view))); ?>" />
 				</div>
 			</div>
 			<div class="form-group mt20">

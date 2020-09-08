@@ -26,7 +26,8 @@
 						<tr>
 							<th><a href="<?php echo element('cre_id', element('sort', $view)); ?>">번호</a></th>
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
-							<th><a href="<?php echo element('cre_title', element('sort', $view)); ?>">후기제목</a></th>
+							<th><a href="<?php echo element('cre_good', element('sort', $view)); ?>">좋았던점</a></th>
+							<th><a href="<?php echo element('cre_bad', element('sort', $view)); ?>">아쉬운점</a></th>
 							<th>작성자</th>
 							<th>일시</th>
 							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">평점</a></th>
@@ -43,7 +44,8 @@
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
 							<td><a href="<?php echo goto_url(cmall_item_url(element('cit_key', $result))); ?>" target="_blank"><?php echo html_escape(element('cit_name', $result)); ?></a></td>
-							<td><?php echo html_escape(element('cre_title', $result)); ?></td>
+							<td><?php echo html_escape(element('cre_good', $result)); ?></td>
+							<td><?php echo html_escape(element('cre_bad', $result)); ?></td>
 							<td><?php echo element('display_name', $result); ?> <?php if (element('mem_userid', $result)) { ?> ( <a href="?sfield=cmall_review.mem_id&amp;skeyword=<?php echo element('mem_id', $result); ?>"><?php echo html_escape(element('mem_userid', $result)); ?></a> ) <?php } ?></td>
 							<td><?php echo display_datetime(element('cre_datetime', $result), 'full'); ?></td>
 							<td><?php echo str_repeat('&#9733;', element('cre_score', $result)); ?></td>

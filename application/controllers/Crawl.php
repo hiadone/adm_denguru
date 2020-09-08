@@ -2062,7 +2062,18 @@ class Crawl extends CB_Controller
                                 foreach ($tag_array as $tval) {
                                     $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                     
-                                    if(count($arr_str) > 2){
+
+                                    $s2flag=false;
+                                    foreach(config_item('str_tag_2') as $s2val){
+                                        if(strtolower($s2val) === strtolower(element('tgw_value',$word))){
+                                            $s2flag = true;
+                                            break;
+                                        }
+
+                                    }
+
+
+                                    if(count($arr_str) > 2 || $s2flag){
                                         if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
                                             if(!in_array(element('tgw_value',$word),$translate_text))
                                                 array_push($translate_text,element('tgw_value',$word));       
@@ -2142,7 +2153,17 @@ class Crawl extends CB_Controller
                             foreach ($tag_array as $tval) {
                                 $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                 
-                                if(count($arr_str) > 2){
+
+                                $s2flag=false;
+                                foreach(config_item('str_tag_2') as $s2val){
+                                    if(strtolower($s2val) === strtolower(element('tgw_value',$word))){
+                                        $s2flag = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if(count($arr_str) > 2 || $s2flag){
                                     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
                                         if(!in_array(element('tgw_value',$word),$translate_text))
                                             array_push($translate_text,element('tgw_value',$word));       
@@ -2286,7 +2307,7 @@ class Crawl extends CB_Controller
                 $where = array(
                     'cit_id' => element('cit_id', $val),
                 );
-                if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
+                // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
                 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
@@ -2361,7 +2382,18 @@ class Crawl extends CB_Controller
                                 foreach ($tag_array as $tval) {
                                     $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                     
-                                    if(count($arr_str) > 2){
+
+                                    $s2flag=false;
+                                    foreach(config_item('str_tag_2') as $s2val){
+                                        if(strtolower($s2val) === strtolower(element('tgw_value',$word))){
+                                            $s2flag = true;
+                                            break;
+                                        }
+
+                                    }
+                                    
+                                    if(count($arr_str) > 2 || $s2flag){
+                                    
                                         if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
                                             if(!in_array(element('tgw_value',$word),$translate_text))
                                                 array_push($translate_text,element('tgw_value',$word));       
@@ -2441,7 +2473,17 @@ class Crawl extends CB_Controller
                             foreach ($tag_array as $tval) {
                                 $arr_str = preg_split("//u", element('tgw_value',$word), -1, PREG_SPLIT_NO_EMPTY);
                                 
-                                if(count($arr_str) > 2){
+                                $s2flag=false;
+                                foreach(config_item('str_tag_2') as $s2val){
+                                    if(strtolower($s2val) === strtolower(element('tgw_value',$word))){
+                                        $s2flag = true;
+                                        break;
+                                    }
+
+                                }
+                                
+                                if(count($arr_str) > 2 || $s2flag){                                    
+                                
                                     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
                                         if(!in_array(element('tgw_value',$word),$translate_text))
                                             array_push($translate_text,element('tgw_value',$word));       

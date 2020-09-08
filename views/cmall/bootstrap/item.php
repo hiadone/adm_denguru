@@ -18,7 +18,7 @@
 								continue;
 							}
 						?>
-							<div><img src="<?php echo thumb_url('cmallitem', element('cit_file_' . $i, element('data', $view)), 450, 450); ?>" alt="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" title="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" onClick="window.open('<?php echo site_url('cmall/itemimage/' . html_escape(element('cit_key', element('data', $view)))); ?>', 'win_image', 'left=100,top=100,width=730,height=700,scrollbars=1');" /></div>
+							<div><img src="<?php echo cdn_url('cmallitem', element('cit_file_' . $i, element('data', $view))); ?>" alt="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" title="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" onClick="window.open('<?php echo site_url('cmall/itemimage/' . html_escape(element('cit_key', element('data', $view)))); ?>', 'win_image', 'left=100,top=100,width=730,height=700,scrollbars=1');" /></div>
 						<?php } ?>
 					</div>
 					<span class="prev" id="slider-prev"></span>
@@ -56,10 +56,10 @@
 									}
 								}
 							?>
-							<tr>
+							<!-- <tr>
 								<td>다운로드 가능기간</td>
 								<td><?php echo (element('cit_download_days', element('data', $view))) ? '구매후 ' . element('cit_download_days', element('data', $view)) . '일 동안 언제든지 다운로드 가능' : '구매후 기간제한없이 언제나 가능'; ?></td>
-							</tr>
+							</tr> -->
 						</tbody>
 					</table>
 				</div>
