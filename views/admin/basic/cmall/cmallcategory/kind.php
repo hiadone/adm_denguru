@@ -87,20 +87,25 @@
                         elseif(element('ckd_size', $result) === "6") $ckd_size =  "대형견";
 
                         $attributes = array('class' => 'form-inline', 'name' => 'fbrand');
-                        $return .= '<li class="list-group-item">
-                                            <div class="form-horizontal">
-                                                <div class="form-group" style="margin-bottom:0;">';
+                        
                         
                         if ($len) {
+                            $return .= '<li class="list-group-item">
+                                            <div class="form-horizontal">
+                                                <div class="form-group" style="margin-bottom:0;">';
                             $return .= '<div style="width:10px;float:left;margin-left:' . $margin . 'px;margin-right:10px;"><span class="fa fa-arrow-right"></span></div>';
+                        } else {
+                            $return .= '<li class="list-group-item" style="background-color:#e5e5e5">
+                                            <div class="form-horizontal">
+                                                <div class="form-group" style="margin-bottom:0;">';
                         }
-                        $return .= '<div class="pl10">
+                        $return .= '<div class="pl10 ">
                             <div class="cat-ckd-id-' . element('ckd_id', $result) . '">
                                 ' . html_escape(element('ckd_value_kr', $result)) . ' (' . html_escape(element('ckd_value_en', $result)) . ')'.'<button class="btn btn-info btn-xs">'.$ckd_size.'</button>
                                 <button class="btn btn-primary btn-xs" onClick="ckd_modify(\'' . element('ckd_id', $result) . '\')"><span class="glyphicon glyphicon-edit"></span></button>';
                         
                         $return .= '                    <button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/kind_delete/' . element('ckd_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
-                        $return .= '<button class="ckd_text">'.html_escape(element('ckd_text', $result)).'</button>';
+                        $return .= '<button class="ckd_text" style="display:none;">'.html_escape(element('ckd_text', $result)).'</button>';
                         $return .= '    </div><div class="form-inline mod-ckd-id-' . element('ckd_id', $result) . '" style="display:none;">';
                         $return .= form_open(current_full_url(), $attributes);
                         $return .= '<input type="hidden" name="ckd_id"  value="' . element('ckd_id', $result) . '" />

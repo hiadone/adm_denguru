@@ -72,12 +72,20 @@
                     foreach ($p as $result) {
                         $margin = 20 * $len;
                         $attributes = array('class' => 'form-inline', 'name' => 'fcategory');
-                        $return .= '<li class="list-group-item">
+
+
+                        if ($len) {
+                            $return .= '<li class="list-group-item">
                                             <div class="form-horizontal">
                                                 <div class="form-group" style="margin-bottom:0;">';
-                        if ($len) {
                             $return .= '<div style="width:10px;float:left;margin-left:' . $margin . 'px;margin-right:10px;"><span class="fa fa-arrow-right"></span></div>';
+                        } else {
+                            $return .= '<li class="list-group-item" style="background-color:#e5e5e5">
+                                            <div class="form-horizontal">
+                                                <div class="form-group" style="margin-bottom:0;">';
                         }
+
+                        
                         $return .= '<div class="pl10">
                             <div class="cat-cat-id-' . element('cat_id', $result) . '">
                                 ' . html_escape(element('cat_value', $result)) . ' 
@@ -85,7 +93,7 @@
                         if ( ! element(element('cat_id', $result), $data)) {
                             $return .= '                    <button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/attr_delete/' . element('cat_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
                         }
-                        $return .= '<button class="ckd_text">'.html_escape(element('cat_text', $result)).'</button>';
+                        $return .= '<button class="ckd_text" style="display:none;">'.html_escape(element('cat_text', $result)).'</button>';
                         $return .= '    </div><div class="form-inline mod-cat-id-' . element('cat_id', $result) . '" style="display:none;">';
                         $return .= form_open(current_full_url(), $attributes);
                         $return .= '<input type="hidden" name="cat_id"  value="' . element('cat_id', $result) . '" />
