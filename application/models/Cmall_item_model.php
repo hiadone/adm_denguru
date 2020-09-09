@@ -68,7 +68,7 @@ class Cmall_item_model extends CB_Model
 	{
 
 		if ( ! in_array(strtolower($orderby), $this->allow_order)) {
-			$orderby = 'cit_order asc';
+			$orderby = 'cit_id desc';
 		}
 
 		$sop = (strtoupper($sop) === 'AND') ? 'AND' : 'OR';
