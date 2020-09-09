@@ -702,19 +702,20 @@ class Cmallcategory extends CB_Controller
 				
                 
 
-     //            if(count($ckd_text_arr)){
+                if(count($ckd_text_arr)){
                     
-     //                if ($ckd_text_arr && is_array($ckd_text_arr)) {
-     //                    $text_array=array();
-     //                    foreach ($ckd_text_arr as  $value) {
-     //                        $value = trim($value);
-     //                        if ($value) 
-     //                        	array_push($text_array,$value);
-     //                    }
-     //                }
-     //                if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
-     //            }
-
+                    if ($ckd_text_arr && is_array($ckd_text_arr)) {
+                        $text_array=array();
+                        foreach ($ckd_text_arr as  $value) {
+                            $value = trim($value);
+                            if ($value) 
+                            	array_push($text_array,$value);
+                        }
+                    }
+                    if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
+                }
+                
+                // exit;
      //            $this->db->from('cmall_kind');                
                 
      //            $this->db->where('REPLACE(ckd_value_kr," ","") ="'.str_replace(" ","",$this->input->post('ckd_value_kr', null, '')).'"','',false);               
@@ -761,7 +762,7 @@ class Cmallcategory extends CB_Controller
  			// 				'ckd_size' => element('ckd_size',$val),
  			// 				);   
 
- 		                	
+
  			// 				$this->Cmall_kind_model->update(element('ckd_id',$kval), $updatedata);        
 		  //            	}
     //                  }
