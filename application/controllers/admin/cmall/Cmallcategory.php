@@ -737,6 +737,41 @@ class Cmallcategory extends CB_Controller
                 // }
 				
 				$this->Cmall_kind_model->update($this->input->post('ckd_id'), $updatedata);
+
+				// $data = $this->Cmall_kind_model->get_all_kind();
+
+				// foreach (element(0, $data) as $val) {	     
+
+
+				// 	 $this->db->from('cmall_kind');                
+				//      $this->db->where('REPLACE(ckd_value_kr," ","") ="'.str_replace(" ","",element('ckd_value_kr',$val)).'"','',false);               
+
+				//      $this->db->where(array('ckd_parent !=' => 0));               
+				     
+				//      $res = $this->db->get()->result_array();     
+
+
+    //                  if(!empty($res)){
+    //                  	foreach($res as $kval){
+                     		
+
+ 		 //                	$updatedata = array(
+ 			// 				'ckd_value_kr' => element('ckd_value_kr',$val),
+ 		 //                    'ckd_value_en' => element('ckd_value_en',$val),					
+ 			// 				'ckd_size' => element('ckd_size',$val),
+ 			// 				);   
+
+ 		                	
+ 			// 				$this->Cmall_kind_model->update(element('ckd_id',$kval), $updatedata);        
+		  //            	}
+    //                  }
+          
+				// }
+				
+                
+                
+
+     
 				$this->cache->delete('cmall-kind-all');
 				$this->cache->delete('cmall-kind-detail');
 
