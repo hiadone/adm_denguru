@@ -23,7 +23,8 @@ $config['admin_page_menu']['page'] =
 			'banner'				=> array('배너관리', ''),
 			'bannerclick'			=> array('배너클릭로그', ''),
 			'notice'                          => array('공지관리', ''),
-			'event'                          => array('이벤트관리', ''),
+			'eventgroup'                          => array('이벤트관리', ''),
+			'event'                          => array('이벤트 세부내용', '','hide'),
 			'theme'					=> array('테마관리', ''),
 		),
 	);

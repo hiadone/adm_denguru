@@ -105,11 +105,13 @@
                     <th>IMG</th>
                     <th>제목</th>
                     <th>카테고리</th>
-                    <th>상품코드</th>
+                    
                     <th>가격</th>
                     <th>제품특성</th>
                     <th>Vision API label</th>
-                    <th>태그</th>
+                    <th>자동태그</th>
+                    <th>수동태그</th>
+                    <th>삭제태그</th>
                     <th>날짜</th>
                     <th>판매여부</th>
                     <th>판매량</th>
@@ -127,7 +129,12 @@
             ?>
                 <tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
                     <?php if (element('is_admin', $view)) { ?><th scope="row" class="text-center"><input type="checkbox" name="chk[]" value="<?php echo element('cit_id', $result); ?>" /></th><?php } ?>
-                    <td ><?php echo element('num', $result); ?></td>
+                    <td ><?php echo element('num', $result); ?>
+                        <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
+                                <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
+                                <?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
+                                <?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
+                    </td>
                     <td>
                         <a href="<?php echo element('cit_post_url', $result); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank"><img src="<?php echo element('origin_image_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" target="_blank" class="thumbnail img-responsive" style="width:<?php echo element('gallery_image_width', element('board', $view)); ?>px;height:<?php echo element('gallery_image_height', element('board', $view)); ?>px;" /></a>
                     </td>
@@ -182,14 +189,11 @@
                                 echo '</div>';
                             }
                         ?>
-                    </td>
-                    <td ><?php echo cut_str(element('cit_goods_code', $result),20); ?><br>
-                        <?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
-                                <?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
-                                <?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
-                                <?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
+                    </td>       
+
+                    
                         
-                    </td>
+                    
                     <td ><?php echo element('display_price', $result); ?>
                         
                         <?php 
@@ -197,6 +201,7 @@
                                 echo '<div><button class="btn btn-danger btn-xs" type="button">Sold out</button></div>';
                         ?>
                         
+
                         
                     </td>
                     <td style="width:130px;">
@@ -235,6 +240,12 @@
                         </td>
                     <td>
                         <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
+                        </td>
+                    <td>
+                        <textarea name="cmt_tag[<?php echo element('cit_id', $result); ?>]" id="cmt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_manualtag', $result)); ?></textarea>
+                        </td>
+                    <td>
+                        <textarea name="cdt_tag[<?php echo element('cit_id', $result); ?>]" id="cdt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_deletetag', $result)); ?></textarea>
                         </td>
                     <td><?php echo element('display_datetime', $result); ?></td>
                     <td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
@@ -337,6 +348,18 @@ $(document).on('change', 'textarea[name^=cta_tag]', function() {
 
 
     post_action_crawl('cta_tag_update', $(this).data('cit_id'),'','cta_tag_');
+});
+
+$(document).on('change', 'textarea[name^=cmt_tag]', function() {
+
+
+    post_action_crawl('cmt_tag_update', $(this).data('cit_id'),'','cmt_tag_');
+});
+
+$(document).on('change', 'textarea[name^=cdt_tag]', function() {
+
+
+    post_action_crawl('cdt_tag_update', $(this).data('cit_id'),'','cdt_tag_');
 });
 
 

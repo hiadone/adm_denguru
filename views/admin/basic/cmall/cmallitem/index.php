@@ -193,7 +193,9 @@
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
 							<!-- <th>Vision API label</th> -->
-                    		<th>태그</th>
+                    		<th>자동태그</th>
+		                    <th>수동태그</th>
+		                    <th>삭제태그</th>
 							<th style="width:130px;">특성</th>
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
 							<th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
@@ -251,9 +253,16 @@
 							<!-- <td>
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
 		                    </td> -->
+		                    
 		                    <td>
-		                       <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
-		                    </td>
+		                        <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
+		                        </td>
+		                    <td>
+		                        <textarea name="cmt_tag[<?php echo element('cit_id', $result); ?>]" id="cmt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_manualtag', $result)); ?></textarea>
+		                        </td>
+		                    <td>
+		                        <textarea name="cdt_tag[<?php echo element('cit_id', $result); ?>]" id="cdt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_deletetag', $result)); ?></textarea>
+		                        </td>
 							
 							<td>
 								<?php foreach (element('attr', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';} 
@@ -487,6 +496,17 @@ $(document).on('change', 'textarea[name^=cta_tag]', function() {
     post_action_crawl('cta_tag_update', $(this).data('cit_id'),'','cta_tag_');
 });
 
+$(document).on('change', 'textarea[name^=cmt_tag]', function() {
+
+
+    post_action_crawl('cmt_tag_update', $(this).data('cit_id'),'','cmt_tag_');
+});
+
+$(document).on('change', 'textarea[name^=cdt_tag]', function() {
+
+
+    post_action_crawl('cdt_tag_update', $(this).data('cit_id'),'','cdt_tag_');
+});
 
 var searchbrand_list = [
 	<?php

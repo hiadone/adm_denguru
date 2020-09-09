@@ -389,9 +389,22 @@
 						<textarea class="form-control" name="val_tag" id="val_tag" rows="5"><?php echo set_value('val_tag', element('val_tag', element('data', $view))); ?></textarea>
 						<div class="help-block">이미지 분석 라벨입니다(수정 불가)</div>
 					</div>
-					<label class="col-sm-2 control-label">태그</label>
+					<label class="col-sm-2 control-label">자동태그</label>
 					<div class="col-sm-4">
 						<textarea class="form-control" name="cta_tag" id="cta_tag" rows="5"><?php echo set_value('cta_tag', element('cta_tag', element('data', $view))); ?></textarea>
+						<div class="help-block">태그 입력(엔터로 구분하여 입력)</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">수동 태그</label>
+					<div class="col-sm-4">
+						<textarea class="form-control" name="cmt_tag" id="cmt_tag" rows="5"><?php echo set_value('cmt_tag', element('cmt_tag', element('data', $view))); ?></textarea>
+						<div class="help-block">태그 입력(엔터로 구분하여 입력)</div>
+					</div>
+					<label class="col-sm-2 control-label">삭제 태그</label>
+					<div class="col-sm-4">
+						<textarea class="form-control" name="cdt_tag" id="cdt_tag" rows="5"><?php echo set_value('cdt_tag', element('cdt_tag', element('data', $view))); ?></textarea>
 						<div class="help-block">태그 입력(엔터로 구분하여 입력)</div>
 					</div>
 				</div>
@@ -550,9 +563,7 @@ jQuery(function($) {
 			cit_key: {required:true, minlength:3, maxlength:50, alpha_dash : true},
 			cit_name: 'required',
 			cit_order: 'required',
-			cit_price: { required:true, number:true },
-			cit_content : {<?php echo ($this->cbconfig->item('use_cmall_product_dhtml')) ? 'valid_' . $this->cbconfig->item('cmall_product_editor_type') : ''; ?> : true },
-			cit_mobile_content : {<?php echo ($this->cbconfig->item('use_cmall_product_dhtml')) ? 'valid_' . $this->cbconfig->item('cmall_product_editor_type') : ''; ?> : true },
+			cit_price: { required:true, number:true },			
 			header_content : { valid_<?php echo $this->cbconfig->item('cmall_product_editor_type'); ?> : true },
 			footer_content : { valid_<?php echo $this->cbconfig->item('cmall_product_editor_type'); ?> : true },
 			mobile_header_content : { valid_<?php echo $this->cbconfig->item('cmall_product_editor_type'); ?> : true },

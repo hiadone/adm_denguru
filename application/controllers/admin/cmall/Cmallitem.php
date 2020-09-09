@@ -24,7 +24,7 @@ class Cmallitem extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Vision_api_label','Board','Post','Cmall_brand', 'Cmall_attr', 'Cmall_attr_rel','Cmall_kind','Cmall_kind_rel');
+    protected $models = array('Cmall_item', 'Cmall_item_meta', 'Cmall_item_detail', 'Cmall_category', 'Cmall_category_rel','Crawl_tag','Crawl_manual_tag','Crawl_delete_tag','Vision_api_label','Board','Post','Cmall_brand', 'Cmall_attr', 'Cmall_attr_rel','Cmall_kind','Cmall_kind_rel');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
@@ -353,6 +353,8 @@ class Cmallitem extends CB_Controller
 
 
                 $result['list'][$key]['display_tag'] = '';
+                $result['list'][$key]['display_manualtag'] = '';
+                $result['list'][$key]['display_deletetag'] = '';
                 $crawlwhere = array(
                     'cit_id' => element('cit_id', $val),
                 );
@@ -365,6 +367,28 @@ class Cmallitem extends CB_Controller
                         }
                     }
                     $result['list'][$key]['display_tag'] = implode("\n",$tag_array);
+                }
+
+                $manualtag = $this->Crawl_manual_tag_model->get('', '', $crawlwhere, '', '', 'cmt_id', 'ASC');
+                if ($manualtag && is_array($manualtag)) {
+                    $tag_array=array();
+                    foreach ($manualtag as $tvalue) {
+                        if (element('cmt_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('cmt_tag', $tvalue)));
+                        }
+                    }
+                    $result['list'][$key]['display_manualtag'] = implode("\n",$tag_array);
+                }
+
+                $deletetag = $this->Crawl_delete_tag_model->get('', '', $crawlwhere, '', '', 'cdt_id', 'ASC');
+                if ($deletetag && is_array($deletetag)) {
+                    $tag_array=array();
+                    foreach ($deletetag as $tvalue) {
+                        if (element('cdt_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('cdt_tag', $tvalue)));
+                        }
+                    }
+                    $result['list'][$key]['display_deletetag'] = implode("\n",$tag_array);
                 }
 
                 $result['list'][$key]['display_label'] = '';
@@ -507,6 +531,78 @@ class Cmallitem extends CB_Controller
                     $getdata['kind'][] = $kval['ckd_id'];
                 }
             }
+
+            $where = array(
+                'cit_id' => element('cit_id', $getdata),
+            );
+            $getdata['item_detail'] = $this->Cmall_item_detail_model->get('', '', $where, '', '', 'cde_id', 'ASC');
+
+            $getdata['cta_tag'] = '';
+            $getdata['cmt_tag'] = '';
+            $getdata['cdt_tag'] = '';
+            $crawlwhere = array(
+                'cit_id' => element('cit_id', $getdata),
+            );
+            $tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+            if ($tag && is_array($tag)) {
+                $tag_array=array();
+                foreach ($tag as $tvalue) {
+                    if (element('cta_tag', $tvalue)) {
+                        array_push($tag_array,trim(element('cta_tag', $tvalue)));
+                    }
+                }
+                $getdata['cta_tag'] = implode("\n",$tag_array);
+            }
+            
+            $manualtag = $this->Crawl_manual_tag_model->get('', '', $crawlwhere, '', '', 'cmt_id', 'ASC');
+            if ($manualtag && is_array($manualtag)) {
+                $tag_array=array();
+                foreach ($manualtag as $tvalue) {
+                    if (element('cmt_tag', $tvalue)) {
+                        array_push($tag_array,trim(element('cmt_tag', $tvalue)));
+                    }
+                }
+                $getdata['cmt_tag'] = implode("\n",$tag_array);
+            }
+
+            $deletetag = $this->Crawl_delete_tag_model->get('', '', $crawlwhere, '', '', 'cdt_id', 'ASC');
+
+            if ($deletetag && is_array($deletetag)) {
+                $tag_array=array();
+                foreach ($deletetag as $tvalue) {
+                    if (element('cdt_tag', $tvalue)) {
+                        array_push($tag_array,trim(element('cdt_tag', $tvalue)));
+                    }
+                }
+                $getdata['cdt_tag'] = implode("\n",$tag_array);
+            }
+
+            $getdata['val_tag'] = '';
+            $crawlwhere = array(
+                'cit_id' => element('cit_id', $getdata),
+            );
+            $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+            if ($tag && is_array($tag)) {
+                $tag_array=array();
+                foreach ($tag as $tvalue) {
+                    if (element('val_tag', $tvalue)) {
+                        array_push($tag_array,trim(element('val_tag', $tvalue)));
+                    }
+                }
+                $getdata['val_tag'] = implode("\n",$tag_array);
+            }
+
+            $getdata['postlist'] = $this->Post_model->get_post_list('','',array('brd_id' => element('brd_id',$getdata)));
+
+            if(element('cbr_id', $getdata))
+                $brand_text = $this->Cmall_brand_model->get_one(element('cbr_id', $getdata));
+
+            if(element('cbr_value_kr',$brand_text))
+                $getdata['cit_brand_text']  = element('cbr_value_kr',$brand_text);
+            elseif(element('cbr_value_kr',$brand_text))
+                $getdata['cit_brand_text']  = element('cbr_value_en',$brand_text);
+            else
+                $getdata['cit_brand_text']  = '';
         } else {
             // 기본값 설정
             $getdata['cit_key'] = time();
@@ -515,39 +611,11 @@ class Cmallitem extends CB_Controller
 
         
         
-        $getdata['cta_tag'] = '';
-        $crawlwhere = array(
-            'cit_id' => element('cit_id', $getdata),
-        );
-        $tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
-        if ($tag && is_array($tag)) {
-            $tag_array=array();
-            foreach ($tag as $tvalue) {
-                if (element('cta_tag', $tvalue)) {
-                    array_push($tag_array,trim(element('cta_tag', $tvalue)));
-                }
-            }
-            $getdata['cta_tag'] = implode("\n",$tag_array);
-        }
-        
-        
+        $getdata['boardlist'] = $this->Board_model->get('','','','','','brd_name','asc');
 
-        $getdata['val_tag'] = '';
-        $crawlwhere = array(
-            'cit_id' => element('cit_id', $getdata),
-        );
-        $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-        if ($tag && is_array($tag)) {
-            $tag_array=array();
-            foreach ($tag as $tvalue) {
-                if (element('val_tag', $tvalue)) {
-                    array_push($tag_array,trim(element('val_tag', $tvalue)));
-                }
-            }
-            $getdata['val_tag'] = implode("\n",$tag_array);
-        }
+        $getdata['brand_list'] = $this->Cmall_brand_model->get();
         
-        // $getdata['boardlist'] = $this->Board_model->get('','','','','','brd_name','desc');
+        
 
         /**
          * Validation 라이브러리를 가져옵니다
@@ -1036,86 +1104,7 @@ class Cmallitem extends CB_Controller
                 $view['view']['message'] = $file_error;
             }
 
-            $getdata = array();
-            $brand_text = '';
-            $getdata['cit_status'] = '1';
-            if ($pid) {
-                $getdata = $this->{$this->modelname}->get_one($pid);
-                $cmall_item_meta = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $getdata));
-                if (is_array($cmall_item_meta)) {
-                    $getdata = array_merge($getdata, $cmall_item_meta);
-                }
-                $cat = $this->Cmall_category_model->get_category(element('cit_id', $getdata));
-                if ($cat) {
-                    foreach ($cat as $ck => $cv) {
-                        $getdata['category'][] = $cv['cca_id'];
-                    }
-                }
-                $cattr = $this->Cmall_attr_model->get_attr(element('cit_id', $getdata));
-                if ($cattr) {
-                    foreach ($cattr as $ctk => $ctv) {
-                        $getdata['attr'][] = $ctv['cat_id'];
-                    }
-                }
-                $kind = $this->Cmall_kind_model->get_kind(element('cit_id', $getdata));
-                if ($kind) {
-                    foreach ($kind as $kkey => $kval) {
-                        $getdata['kind'][] = $kval['ckd_id'];
-                    }
-                }               
-                $where = array(
-                    'cit_id' => element('cit_id', $getdata),
-                );
-                $getdata['item_detail'] = $this->Cmall_item_detail_model->get('', '', $where, '', '', 'cde_id', 'ASC');
-
-                $getdata['cta_tag'] = '';
-                $crawlwhere = array(
-                    'cit_id' => $pid,
-                );
-                $tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
-                if ($tag && is_array($tag)) {
-                    $tag_array=array();
-                    foreach ($tag as $tvalue) {
-                        if (element('cta_tag', $tvalue)) {
-                            array_push($tag_array,trim(element('cta_tag', $tvalue)));
-                        }
-                    }
-                    $getdata['cta_tag'] = implode("\n",$tag_array);
-                }
-
-                
-                
-                $getdata['val_tag'] = '';
-                $crawlwhere = array(
-                    'cit_id' => $pid,
-                );
-                $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-                if ($tag && is_array($tag)) {
-                    $tag_array=array();
-                    foreach ($tag as $tvalue) {
-                        if (element('val_tag', $tvalue)) {
-                            array_push($tag_array,trim(element('val_tag', $tvalue)));
-                        }
-                    }
-                    $getdata['val_tag'] = implode("\n",$tag_array);
-                }
-
-                
-                $getdata['postlist'] = $this->Post_model->get_post_list('','',array('brd_id' => element('brd_id',$getdata)));
-            }
-            if(element('cbr_id', $getdata))
-                $brand_text = $this->Cmall_brand_model->get_one(element('cbr_id', $getdata));
-
-            if(element('cbr_value_kr',$brand_text))
-                $getdata['cit_brand_text']  = element('cbr_value_kr',$brand_text);
-            elseif(element('cbr_value_kr',$brand_text))
-                $getdata['cit_brand_text']  = element('cbr_value_en',$brand_text);
-            else
-                $getdata['cit_brand_text']  = '';
-
-            $getdata['boardlist'] = $this->Board_model->get('','','','','','brd_name','asc');
-
-            $getdata['brand_list'] = $this->Cmall_brand_model->get();
+            
             $view['view']['data'] = $getdata;
             $view['view']['data']['item_layout_option'] = get_skin_name(
                 '_layout',
@@ -1193,6 +1182,8 @@ class Cmallitem extends CB_Controller
             $cit_price_sale = $this->input->post('cit_price_sale') ? $this->input->post('cit_price_sale') : 0;
             $cit_download_days = $this->input->post('cit_download_days') ? $this->input->post('cit_download_days') : 0;
             $cta_tag = $this->input->post('cta_tag') ? $this->input->post('cta_tag') : '';
+            $cmt_tag = $this->input->post('cmt_tag') ? $this->input->post('cmt_tag') : '';
+            $cdt_tag = $this->input->post('cdt_tag') ? $this->input->post('cdt_tag') : '';
 
 
             $updatedata = array(
@@ -1318,7 +1309,7 @@ class Cmallitem extends CB_Controller
                                 'cit_id' => $pid,
                                 'brd_id' => $this->input->post('brd_id', null, ''),
                                 'cta_tag' => $value,
-                                'is_manual' => 1,
+                                // 'is_manual' => 1,
                             );
                             $this->Crawl_tag_model->insert($tagdata);
                         }
@@ -1327,7 +1318,59 @@ class Cmallitem extends CB_Controller
                 
             }
 
+            $cmt_tag_text=array();
             
+            $cmt_tag_text = explode("\n",urldecode($cmt_tag));
+
+            if(count($cmt_tag_text)){
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                );
+                $this->Crawl_manual_tag_model->delete_where($deletewhere);            
+                if ($cmt_tag_text && is_array($cmt_tag_text)) {
+                    foreach ($cmt_tag_text as $key => $value) {
+                        $value = trim($value);
+                        if ($value) {
+                            $tagdata = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cmt_tag' => $value,
+                                // 'is_manual' => 1,
+                            );
+                            $this->Crawl_manual_tag_model->insert($tagdata);
+                        }
+                    }
+                }
+                
+            }
+
+            $cdt_tag_text=array();
+            
+            $cdt_tag_text = explode("\n",urldecode($cdt_tag));
+
+            if(count($cdt_tag_text)){
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                );
+                $this->Crawl_delete_tag_model->delete_where($deletewhere);            
+                if ($cdt_tag_text && is_array($cdt_tag_text)) {
+                    foreach ($cdt_tag_text as $key => $value) {
+                        $value = trim($value);
+                        if ($value) {
+                            $tagdata = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cdt_tag' => $value,
+                                // 'is_manual' => 1,
+                            );
+                            $this->Crawl_delete_tag_model->insert($tagdata);
+                        }
+                    }
+                }
+                
+            }
 
 
             $this->load->model('Cmall_item_history_model');
@@ -1481,7 +1524,7 @@ class Cmallitem extends CB_Controller
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
-        // redirect($redirecturl);
+        redirect($redirecturl);
     }
 
     /**

@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Event class
+ * Eventgroup class
  *
  * Copyright (c) CIBoard <www.ciboard.co.kr>
  *
@@ -12,14 +12,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 관리자>페이지설정>EVENT관리 controller 입니다.
  */
-class Event extends CB_Controller
+class Eventgroup extends CB_Controller
 {
 
     /**
      * 관리자 페이지 상의 현재 디렉토리입니다
      * 페이지 이동시 필요한 정보입니다
      */
-    public $pagedir = 'page/event';
+    public $pagedir = 'page/eventgroup';
 
     /**
      * 모델을 로딩합니다
@@ -29,12 +29,12 @@ class Event extends CB_Controller
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
      */
-    protected $modelname = 'Event_model';
+    protected $modelname = 'Event_group_model';
 
     /**
      * 헬퍼를 로딩합니다
      */
-    protected $helpers = array('form', 'array', 'dhtml_editor');
+    protected $helpers = array('form', 'array');
 
     function __construct()
     {
@@ -52,7 +52,7 @@ class Event extends CB_Controller
     public function index()
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_event_index';
+        $eventname = 'event_admin_page_eventgroup_index';
         $this->load->event($eventname);
 
         $view = array();
@@ -67,33 +67,32 @@ class Event extends CB_Controller
         $param =& $this->querystring;
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
         $view['view']['sort'] = array(
-            'eve_id' => $param->sort('eve_id', 'asc'),
-            'eve_title' => $param->sort('eve_title', 'asc'),
-            'eve_order' => $param->sort('eve_order', 'asc'),
-            'eve_datetime' => $param->sort('eve_datetime', 'asc'),
+            'egr_id' => $param->sort('egr_id', 'asc'),
+            'egr_title' => $param->sort('egr_title', 'asc'),
+            'egr_key' => $param->sort('egr_key', 'asc'),
+            'egr_layout' => $param->sort('egr_layout', 'asc'),
+            'egr_mobile_layout' => $param->sort('egr_mobile_layout', 'asc'),
+            'egr_skin' => $param->sort('egr_skin', 'asc'),
+            'egr_mobile_skin' => $param->sort('egr_mobile_skin', 'asc'),
+            'egr_datetime' => $param->sort('egr_datetime', 'asc'),
         );
-        $findex = $this->input->get('findex', null, 'eve_order');
-        $forder = $this->input->get('forder', null, 'asc');
+        $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
+        $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
-        $egr_id = $this->input->get('egr_id', null, '');
 
         $per_page = admin_listnum();
         $offset = ($page - 1) * $per_page;
 
-        $where = array();
-        if ($egr_id) {
-            $where = array('egr_id' => $egr_id);
-        }
-
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{$this->modelname}->allow_search_field = array('eve_id', 'egr_id', 'eve_title', 'eve_content', 'eve_mobile_content', 'eve_datetime', 'event.mem_id'); // 검색이 가능한 필드
-        $this->{$this->modelname}->search_field_equal = array('eve_id', 'egr_id', 'event.mem_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{$this->modelname}->allow_order_field = array('eve_id', 'eve_title', 'eve_order', 'eve_datetime'); // 정렬이 가능한 필드
+        $this->{$this->modelname}->allow_search_field = array('egr_id', 'egr_key', 'egr_layout', 'sfield', 'egr_skin', 'egr_mobile_skin', 'event_group.mem_id', 'egr_title'); // 검색이 가능한 필드
+        $this->{$this->modelname}->search_field_equal = array('egr_id', 'event_group.mem_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
+        $this->{$this->modelname}->allow_order_field = array('egr_id', 'egr_key', 'egr_layout', 'egr_mobile_layout', 'egr_skin', 'egr_mobile_skin', 'egr_datetime'); // 정렬이 가능한 필드
         $result = $this->{$this->modelname}
-            ->get_admin_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
+            ->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
+        $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 $result['list'][$key]['display_name'] = display_username(
@@ -101,7 +100,11 @@ class Event extends CB_Controller
                     element('mem_nickname', $val),
                     element('mem_icon', $val)
                 );
-                $result['list'][$key]['eventgroup'] = $this->Event_group_model->get_one(element('egr_id', $val));
+                $countwhere = array(
+                    'egr_id' => element('egr_id', $val),
+                );
+                $result['list'][$key]['eventcount'] = $this->Event_model->count_by($countwhere);
+                $result['list'][$key]['num'] = $list_num--;
             }
         }
 
@@ -125,11 +128,11 @@ class Event extends CB_Controller
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
-        $search_option = array('eve_title' => '제목', 'eve_content' => '내용', 'eve_mobile_content' => '모바일내용', 'eve_datetime' => '날짜');
+        $search_option = array('egr_title' => '제목', 'egr_datetime' => '날짜');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
-        $view['view']['listall_url'] = admin_url('page/eventgroup');
-        $view['view']['write_url'] = admin_url($this->pagedir . '/write?egr_id=' . $egr_id);
+        $view['view']['listall_url'] = admin_url($this->pagedir);
+        $view['view']['write_url'] = admin_url($this->pagedir . '/write');
         $view['view']['list_delete_url'] = admin_url($this->pagedir . '/listdelete/?' . $param->output());
 
         // 이벤트가 존재하면 실행합니다
@@ -151,7 +154,7 @@ class Event extends CB_Controller
     public function write($pid = 0)
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_eve_write';
+        $eventname = 'event_admin_page_eventgroup_write';
         $this->load->event($eventname);
 
         $view = array();
@@ -169,16 +172,12 @@ class Event extends CB_Controller
                 show_404();
             }
         }
-
-        $egr_id = (int) $this->input->get('egr_id');
-        if (empty($egr_id) OR $egr_id < 1) {
-            show_404();
-        }
         $primary_key = $this->{$this->modelname}->primary_key;
 
         /**
          * 수정 페이지일 경우 기존 데이터를 가져옵니다
          */
+        $getdata = array();
         if ($pid) {
             $getdata = $this->{$this->modelname}->get_one($pid);
         }
@@ -193,31 +192,54 @@ class Event extends CB_Controller
          */
         $config = array(
             array(
-                'field' => 'egr_id',
-                'label' => 'EVENT그룹',
-                'rules' => 'trim|required|numeric',
-            ),
-            array(
-                'field' => 'eve_order',
-                'label' => '정렬순서',
-                'rules' => 'trim|required|numeric',
-            ),
-            array(
-                'field' => 'eve_title',
-                'label' => '질문',
+                'field' => 'egr_title',
+                'label' => '제목',
                 'rules' => 'trim|required',
             ),
             array(
-                'field' => 'eve_content',
-                'label' => '답변',
-                'rules' => 'trim|required',
+                'field' => 'egr_layout',
+                'label' => '레이아웃',
+                'rules' => 'trim',
             ),
             array(
-                'field' => 'eve_mobile_content',
-                'label' => '모바일답변',
+                'field' => 'egr_sidebar',
+                'label' => '사이드바 사용',
+                'rules' => 'trim',
+            ),
+            array(
+                'field' => 'egr_skin',
+                'label' => '스킨',
+                'rules' => 'trim',
+            ),
+            array(
+                'field' => 'egr_mobile_layout',
+                'label' => '모바일레이아웃',
+                'rules' => 'trim',
+            ),
+            array(
+                'field' => 'egr_mobile_sidebar',
+                'label' => '모바일사이드바사용',
+                'rules' => 'trim',
+            ),
+            array(
+                'field' => 'egr_mobile_skin',
+                'label' => '모바일스킨',
                 'rules' => 'trim',
             ),
         );
+        if ($this->input->post($primary_key)) {
+            $config[] = array(
+                'field' => 'egr_key',
+                'label' => 'EVENT 주소',
+                'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[event_group.egr_key.egr_id.' . $getdata['egr_id'] . ']',
+            );
+        } else {
+            $config[] = array(
+                'field' => 'egr_key',
+                'label' => 'EVENT 주소',
+                'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[event_group.egr_key]',
+            );
+        }
 
         $this->form_validation->set_rules($config);
 
@@ -231,10 +253,27 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
 
-            if ($pid) {
-                $view['view']['data'] = $getdata;
-            }
-            $view['view']['data']['eventgroup'] = $this->Event_group_model->get_one($egr_id);
+            $view['view']['data'] = $getdata;
+            $view['view']['data']['egr_layout_option'] = get_skin_name(
+                '_layout',
+                set_value('egr_layout', element('egr_layout', $getdata)),
+                '기본설정따름'
+            );
+            $view['view']['data']['egr_mobile_layout_option'] = get_skin_name(
+                '_layout',
+                set_value('egr_mobile_layout', element('egr_mobile_layout', $getdata)),
+                '기본설정따름'
+            );
+            $view['view']['data']['egr_skin_option'] = get_skin_name(
+                'event',
+                set_value('egr_skin', element('egr_skin', $getdata)),
+                '기본설정따름'
+            );
+            $view['view']['data']['egr_mobile_skin_option'] = get_skin_name(
+                'event',
+                set_value('egr_mobile_skin', element('egr_mobile_skin', $getdata)),
+                '기본설정따름'
+            );
 
             /**
              * primary key 정보를 저장합니다
@@ -262,16 +301,17 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-            $content_type = $this->cbconfig->item('use_eve_dhtml') ? 1 : 0;
-            $eve_order = $this->input->post('eve_order') ? $this->input->post('eve_order') : 0;
-
+            $egr_sidebar = $this->input->post('egr_sidebar') ? $this->input->post('egr_sidebar') : 0;
+            $egr_mobile_sidebar = $this->input->post('egr_mobile_sidebar') ? $this->input->post('egr_mobile_sidebar') : 0;
             $updatedata = array(
-                'egr_id' => $this->input->post('egr_id', null, 0),
-                'eve_title' => $this->input->post('eve_title', null, ''),
-                'eve_content' => $this->input->post('eve_content', null, ''),
-                'eve_mobile_content' => $this->input->post('eve_mobile_content', null, ''),
-                'eve_content_html_type' => $content_type,
-                'eve_order' => $eve_order,
+                'egr_title' => $this->input->post('egr_title', null, ''),
+                'egr_key' => $this->input->post('egr_key', null, ''),
+                'egr_layout' => $this->input->post('egr_layout', null, ''),
+                'egr_mobile_layout' => $this->input->post('egr_mobile_layout', null, ''),
+                'egr_sidebar' => $egr_sidebar,
+                'egr_mobile_sidebar' => $egr_mobile_sidebar,
+                'egr_skin' => $this->input->post('egr_skin', null, ''),
+                'egr_mobile_skin' => $this->input->post('egr_mobile_skin', null, ''),
             );
 
             /**
@@ -287,8 +327,8 @@ class Event extends CB_Controller
                 /**
                  * 게시물을 새로 입력하는 경우입니다
                  */
-                $updatedata['eve_datetime'] = cdate('Y-m-d H:i:s');
-                $updatedata['eve_ip'] = $this->input->ip_address();
+                $updatedata['egr_datetime'] = cdate('Y-m-d H:i:s');
+                $updatedata['egr_ip'] = $this->input->ip_address();
                 $updatedata['mem_id'] = $this->member->item('mem_id');
                 $this->{$this->modelname}->insert($updatedata);
                 $this->session->set_flashdata(
@@ -315,7 +355,7 @@ class Event extends CB_Controller
     public function listdelete()
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_page_eve_listdelete';
+        $eventname = 'event_admin_page_eventgroup_listdelete';
         $this->load->event($eventname);
 
         // 이벤트가 존재하면 실행합니다
@@ -328,6 +368,10 @@ class Event extends CB_Controller
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
                     $this->{$this->modelname}->delete($val);
+                    $deletewhere = array(
+                        'egr_id' => $val,
+                    );
+                    $this->Event_model->delete_where($deletewhere);
                 }
             }
         }

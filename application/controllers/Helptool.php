@@ -2587,7 +2587,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Crawl_tag_model','Crawl_tag_delete_model','Cmall_item_model','Vision_api_label_model'));
+		$this->load->model(array('Crawl_tag_model','Crawl_manual_tag_model','Crawl_delete_tag_model','Cmall_item_model','Vision_api_label_model'));
 
 		$post_id_list = '';
 		if ($this->input->post('chk_post_id')) {
@@ -2657,7 +2657,7 @@ class Helptool extends CB_Controller
 				$arr = explode(',', $post_id_list);
 				if ($arr) {
 
-					$getdata['cta_tag'] = '';
+					$getdata['cdt_tag'] = '';
 					$getdata['val_tag'] = '';
 					$tag_array=array();
 					$label_array=array();
@@ -2695,13 +2695,13 @@ class Helptool extends CB_Controller
 							$crawlwhere = array(
 								'cit_id' => element('cit_id',$c_value),
 							);
-							$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+							$tag = $this->Crawl_delete_tag_model->get('', '', $crawlwhere, '', '', 'cdt_id', 'ASC');
 							if ($tag && is_array($tag)) {
 								
 								foreach ($tag as $tvalue) {
-									if (element('cta_tag', $tvalue)) {
-										if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
-										array_push($tag_array,trim(element('cta_tag', $tvalue)));
+									if (element('cdt_tag', $tvalue)) {
+										if(!in_array(trim(element('cdt_tag', $tvalue)),$tag_array))
+										array_push($tag_array,trim(element('cdt_tag', $tvalue)));
 									}
 								}
 								
@@ -2731,7 +2731,7 @@ class Helptool extends CB_Controller
 					}
 
 					$getdata['val_tag'] = implode("\n",$label_array);
-					$getdata['cta_tag'] = implode("\n",$tag_array);
+					$getdata['cdt_tag'] = implode("\n",$tag_array);
 				}
 			}
 
@@ -2739,7 +2739,7 @@ class Helptool extends CB_Controller
 			if ($cit_id_list) {
 				$arr = explode(',', $cit_id_list);
 
-				$getdata['cta_tag'] = '';
+				$getdata['cdt_tag'] = '';
 				$getdata['val_tag'] = '';
 				$tag_array=array();
 				$label_array=array();
@@ -2758,13 +2758,13 @@ class Helptool extends CB_Controller
 						$crawlwhere = array(
 							'cit_id' => $val,
 						);
-						$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+						$tag = $this->Crawl_delete_tag_model->get('', '', $crawlwhere, '', '', 'cdt_tag', 'ASC');
 						if ($tag && is_array($tag)) {
 							
 							foreach ($tag as $tvalue) {
-								if (element('cta_tag', $tvalue)) {
-									if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
-									array_push($tag_array,trim(element('cta_tag', $tvalue)));
+								if (element('cdt_tag', $tvalue)) {
+									if(!in_array(trim(element('cdt_tag', $tvalue)),$tag_array))
+									array_push($tag_array,trim(element('cdt_tag', $tvalue)));
 								}
 							}
 							
@@ -2798,7 +2798,7 @@ class Helptool extends CB_Controller
 
 				
 				$getdata['val_tag'] = implode("\n",$label_array);
-				$getdata['cta_tag'] = implode("\n",$tag_array);
+				$getdata['cdt_tag'] = implode("\n",$tag_array);
 					
 				}
 			}
@@ -2809,7 +2809,7 @@ class Helptool extends CB_Controller
 			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 
 			$view['view']['data']['val_tag'] = element('val_tag', $getdata);
-			$view['view']['data']['cta_tag1'] = element('cta_tag', $getdata);
+			$view['view']['data']['cta_tag1'] = element('cdt_tag', $getdata);
 
 			/**
 			 * 레이아웃을 정의합니다
@@ -2899,28 +2899,19 @@ class Helptool extends CB_Controller
 						            	            'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
 						            	            'brd_id' => element('brd_id', $c_value),
-						            	            'cta_tag' => $value,
+						            	            'cdt_tag' => $value,
 						            	        );
-						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
-						            		if(element('cta_id',$tag)){
-
+						            		$tag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+						            		if(!element('cdt_id',$tag)){
+						            			
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $c_value),
 						            			    'cit_id' => element('cit_id', $c_value),
 						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
-						            			);		            			
-						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $updatedata);
-						            		} else {
-						            			$tagdata = array(
-						            			    'post_id' => element('post_id', $c_value),
-						            			    'cit_id' => element('cit_id', $c_value),
-						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
+						            			    'cdt_tag' => $value,
+						            			    // 'is_manual' => 1,
 						            			);
-						            			$this->Crawl_tag_delete_model->insert($tagdata);
+						            			$this->Crawl_delete_tag_model->insert($tagdata);
 						            		}
 
 							                
@@ -2985,29 +2976,20 @@ class Helptool extends CB_Controller
 						            	            'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => $val,
 						            	            'brd_id' => element('brd_id', $Cmall_item),
-						            	            'cta_tag' => $value,
+						            	            'cdt_tag' => $value,
 						            	        );
 
-						            		$tag = $this->Crawl_tag_delete_model->get_one('','',$countwhere);
-						            		if(element('cta_id',$tag)){						            		
-
+						            		$tag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+						            		if(!element('cdt_id',$tag)){						            		
+						            			
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $Cmall_item),
 						            			    'cit_id' => $val,
 						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
-						            			);		            			
-						            			$this->Crawl_tag_delete_model->update(element('cta_id',$tag), $tagdata);
-						            		} else {
-						            			$tagdata = array(
-						            			    'post_id' => element('post_id', $Cmall_item),
-						            			    'cit_id' => $val,
-						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
+						            			    'cdt_tag' => $value,
+						            			    // 'is_manual' => 1,
 						            			);
-						            			$this->Crawl_tag_delete_model->insert($tagdata);
+						            			$this->Crawl_delete_tag_model->insert($tagdata);
 						            		}
 
 							                
@@ -3046,7 +3028,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Crawl_tag_model','Cmall_item_model','Crawl_tag_delete_model','Vision_api_label_model'));
+		$this->load->model(array('Crawl_tag_model','Crawl_manual_tag_model','Cmall_item_model','Crawl_delete_tag_model','Vision_api_label_model'));
 
 		$post_id_list = '';
 		if ($this->input->post('chk_post_id')) {
@@ -3120,7 +3102,7 @@ class Helptool extends CB_Controller
 				$arr = explode(',', $post_id_list);
 				if ($arr) {
 
-					$getdata['cta_tag'] = '';
+					$getdata['cmt_tag'] = '';
 					$getdata['val_tag'] = '';
 					$tag_array=array();
 					$label_array=array();
@@ -3158,13 +3140,13 @@ class Helptool extends CB_Controller
 							$crawlwhere = array(
 								'cit_id' => element('cit_id',$c_value),
 							);
-							$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+							$tag = $this->Crawl_manual_tag_model->get('', '', $crawlwhere, '', '', 'cmt_id', 'ASC');
 							if ($tag && is_array($tag)) {
 								
 								foreach ($tag as $tvalue) {
-									if (element('cta_tag', $tvalue)) {
-										if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
-										array_push($tag_array,trim(element('cta_tag', $tvalue)));
+									if (element('cmt_tag', $tvalue)) {
+										if(!in_array(trim(element('cmt_tag', $tvalue)),$tag_array))
+										array_push($tag_array,trim(element('cmt_tag', $tvalue)));
 									}
 								}
 								
@@ -3194,7 +3176,7 @@ class Helptool extends CB_Controller
 					}
 
 					$getdata['val_tag'] = implode("\n",$label_array);
-					$getdata['cta_tag'] = implode("\n",$tag_array);
+					$getdata['cmt_tag'] = implode("\n",$tag_array);
 				}
 			}
 
@@ -3202,7 +3184,7 @@ class Helptool extends CB_Controller
 			if ($cit_id_list) {
 				$arr = explode(',', $cit_id_list);
 
-				$getdata['cta_tag'] = '';
+				$getdata['cmt_tag'] = '';
 				$getdata['val_tag'] = '';
 				$tag_array=array();
 				$label_array=array();
@@ -3221,13 +3203,13 @@ class Helptool extends CB_Controller
 						$crawlwhere = array(
 							'cit_id' => $val,
 						);
-						$tag = $this->Crawl_tag_model->get('', '', $crawlwhere, '', '', 'cta_id', 'ASC');
+						$tag = $this->Crawl_manual_tag_model->get('', '', $crawlwhere, '', '', 'cmt_id', 'ASC');
 						if ($tag && is_array($tag)) {
 							
 							foreach ($tag as $tvalue) {
-								if (element('cta_tag', $tvalue)) {
-									if(!in_array(trim(element('cta_tag', $tvalue)),$tag_array))
-									array_push($tag_array,trim(element('cta_tag', $tvalue)));
+								if (element('cmt_tag', $tvalue)) {
+									if(!in_array(trim(element('cmt_tag', $tvalue)),$tag_array))
+									array_push($tag_array,trim(element('cmt_tag', $tvalue)));
 								}
 							}
 							
@@ -3261,7 +3243,7 @@ class Helptool extends CB_Controller
 
 				
 				$getdata['val_tag'] = implode("\n",$label_array);
-				$getdata['cta_tag'] = implode("\n",$tag_array);
+				$getdata['cmt_tag'] = implode("\n",$tag_array);
 					
 				}
 			}
@@ -3272,7 +3254,7 @@ class Helptool extends CB_Controller
 			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 
 			$view['view']['data']['val_tag'] = element('val_tag', $getdata);
-			$view['view']['data']['cta_tag1'] = element('cta_tag', $getdata);
+			$view['view']['data']['cta_tag1'] = element('cmt_tag', $getdata);
 
 			/**
 			 * 레이아웃을 정의합니다
@@ -3349,41 +3331,62 @@ class Helptool extends CB_Controller
 							            $value = trim($value);
 							            if ($value) {
 
-							            	$deletewhere = array(
-	            						        'post_id' => element('post_id', $c_value),
-					            	            'cit_id' => element('cit_id', $c_value),
-					            	            'brd_id' => element('brd_id', $c_value),
-	            	            	            'cta_tag' => $value,
+							            	$countwhere = array(
+						            	            'post_id' => element('post_id', $c_value),
+						            	            'cit_id' => element('cit_id', $c_value),
+						            	            'brd_id' => element('brd_id', $c_value),
+						            	            'cdt_tag' => $value,
+						            	        );
+						            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+						            		if(!element('cdt_id',$dtag)){
+
+
+								            	$countwhere = array(
+							            	            'post_id' => element('post_id', $c_value),
+							            	            'cit_id' => element('cit_id', $c_value),
+							            	            'brd_id' => element('brd_id', $c_value),
+							            	            'cta_tag' => $value,
+							            	        );
+							            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+							            		if(!element('cta_id',$tag)){
+							            			
+							            			$tagdata = array(
+							            			    'post_id' => element('post_id', $c_value),
+							            			    'cit_id' => element('cit_id', $c_value),
+							            			    'brd_id' => element('brd_id', $c_value),
+							            			    'cta_tag' => $value,
+							            			    // 'is_manual' => 1,
+							            			);
+							            			$this->Crawl_tag_model->insert($tagdata);
+							            		}
+							            	}
+							            	// $deletewhere = array(
+	            						 //        'post_id' => element('post_id', $c_value),
+					            	  //           'cit_id' => element('cit_id', $c_value),
+					            	  //           'brd_id' => element('brd_id', $c_value),
+	            	      //       	            'cta_tag' => $value,
 	            						        
-	            						    );
-	            						    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
+	            						 //    );
+	            						 //    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
 
 						            		$countwhere = array(
 						            	            'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
 						            	            'brd_id' => element('brd_id', $c_value),
-						            	            'cta_tag' => $value,
+						            	            'cmt_tag' => $value,
 						            	        );
-						            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
-						            		if(element('cta_id',$tag)){
-
+						            		$tag = $this->Crawl_manual_tag_model->get_one('','',$countwhere);
+						            		if(!element('cmt_id',$tag)){
+						            			
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $c_value),
 						            			    'cit_id' => element('cit_id', $c_value),
 						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
-						            			);		            			
-						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $updatedata);
-						            		} else {
-						            			$tagdata = array(
-						            			    'post_id' => element('post_id', $c_value),
-						            			    'cit_id' => element('cit_id', $c_value),
-						            			    'brd_id' => element('brd_id', $c_value),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
+						            			    'cmt_tag' => $value,
+						            			    // 'is_manual' => 1,
 						            			);
-						            			$this->Crawl_tag_model->insert($tagdata);
+						            			$this->Crawl_manual_tag_model->insert($tagdata);
 						            		}
 
 							                
@@ -3436,42 +3439,64 @@ class Helptool extends CB_Controller
 							            $value = trim($value);
 							            if ($value) {
 
-							            	$deletewhere = array(
-	            						        'post_id' => element('post_id', $Cmall_item),
-					            	            'cit_id' => $val,
-					            	            'brd_id' => element('brd_id', $Cmall_item),
-	            	            	            'cta_tag' => $value,
+							            	$countwhere = array(
+						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            'cit_id' => element('cit_id', $Cmall_item),
+						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            'cdt_tag' => $value,
+						            	        );
+						            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+						            		if(!element('cdt_id',$dtag)){
+
+								            	$countwhere = array(
+							            	            'post_id' => element('post_id', $Cmall_item),
+							            	            'cit_id' => element('cit_id', $Cmall_item),
+							            	            'brd_id' => element('brd_id', $Cmall_item),
+							            	            'cta_tag' => $value,
+							            	        );
+							            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+
+							            		if(!element('cta_id',$tag)){
+							            			
+							            			$tagdata = array(
+							            			    'post_id' => element('post_id', $Cmall_item),
+							            			    'cit_id' => element('cit_id', $Cmall_item),
+							            			    'brd_id' => element('brd_id', $Cmall_item),
+							            			    'cta_tag' => $value,
+							            			    // 'is_manual' => 1,
+							            			);
+							            			$this->Crawl_tag_model->insert($tagdata);
+							            		}
+						            		}
+							            	// $deletewhere = array(
+	            						 //        'post_id' => element('post_id', $Cmall_item),
+					            	  //           'cit_id' => $val,
+					            	  //           'brd_id' => element('brd_id', $Cmall_item),
+	            	      //       	            'cta_tag' => $value,
 	            						        
-	            						    );
-	            						    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
+	            						 //    );
+	            						 //    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
 	            						    
+
 						            		$countwhere = array(
 						            	            'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => $val,
 						            	            'brd_id' => element('brd_id', $Cmall_item),
-						            	            'cta_tag' => $value,
+						            	            'cmt_tag' => $value,
 						            	        );
 
-						            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
-						            		if(element('cta_id',$tag)){						            		
-
+						            		$tag = $this->Crawl_manual_tag_model->get_one('','',$countwhere);
+						            		if(!element('cmt_id',$tag)){						            		
+						            			
 						            			$tagdata = array(
 						            			    'post_id' => element('post_id', $Cmall_item),
 						            			    'cit_id' => $val,
 						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
-						            			);		            			
-						            			$this->Crawl_tag_model->update(element('cta_id',$tag), $tagdata);
-						            		} else {
-						            			$tagdata = array(
-						            			    'post_id' => element('post_id', $Cmall_item),
-						            			    'cit_id' => $val,
-						            			    'brd_id' => element('brd_id', $Cmall_item),
-						            			    'cta_tag' => $value,
-						            			    'is_manual' => 1,
+						            			    'cmt_tag' => $value,
+						            			    // 'is_manual' => 1,
 						            			);
-						            			$this->Crawl_tag_model->insert($tagdata);
+						            			$this->Crawl_manual_tag_model->insert($tagdata);
 						            		}
 
 							                

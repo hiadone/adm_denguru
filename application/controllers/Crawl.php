@@ -31,7 +31,7 @@ class Crawl extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_tag_delete','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind','Cmall_kind_rel','Cmall_item_count_history');
+    protected $models = array('Post','Post_link','Post_extra_vars','Post_meta','Crawl','Crawl_link', 'Crawl_file','Crawl_tag','Crawl_manual_tag','Crawl_delete_tag','Vision_api_label','Board_crawl','Cmall_item','Cmall_category', 'Cmall_category_rel','Board_category','Board_group_category','Cmall_brand','Cmall_attr', 'Cmall_attr_rel','Tag_word','Cmall_kind','Cmall_kind_rel','Cmall_item_count_history');
 
     protected $imageAnnotator = null;
     protected $translate = null;
@@ -2219,7 +2219,15 @@ class Crawl extends CB_Controller
                                         'brd_id' => element('brd_id', $val),
                                         'cta_tag' => $text,
                                     );
-                                if(!$this->Crawl_tag_model->count_by($where) && !$this->Crawl_tag_delete_model->count_by($where)) {
+
+                                $deletewhere = array(
+                                        'post_id' => element('post_id', $val),
+                                        'cit_id' => element('cit_id', $val),
+                                        'brd_id' => element('brd_id', $val),
+                                        'cdt_tag' => $text,
+                                    );
+
+                                if(!$this->Crawl_tag_model->count_by($where) && !$this->Crawl_delete_tag_model->count_by($deletewhere)) {
                                     
                                     $tagdata = array(
                                         'post_id' => element('post_id', $val),
@@ -2232,6 +2240,51 @@ class Crawl extends CB_Controller
                             }
                         }
                     }                  
+                }
+
+                $where = array(
+                            'cit_id' => element('cit_id',$val),                            
+                        );
+
+                $mres = $this->Crawl_manual_tag_model->get('','',$where);
+
+                
+                if ($mres && is_array($mres)) {
+                    $tag_array=array();
+                    foreach ($mres as $mvalue) {
+                        if (element('cmt_tag', $mvalue)) {
+
+                            $where = array(
+                                        'post_id' => element('post_id', $mvalue),
+                                        'cit_id' => element('cit_id', $mvalue),
+                                        'brd_id' => element('brd_id', $mvalue),
+                                        'cta_tag' => element('cmt_tag', $mvalue),
+                                    );
+
+                            $deletewhere = array(
+                                    'post_id' => element('post_id', $mvalue),
+                                    'cit_id' => element('cit_id', $mvalue),
+                                    'brd_id' => element('brd_id', $mvalue),
+                                    'cdt_tag' => element('cmt_tag', $mvalue),
+                                );
+
+                            if(!$this->Crawl_tag_model->count_by($where) && !$this->Crawl_delete_tag_model->count_by($deletewhere)) {
+                                
+                                $tagdata = array(
+                                    'post_id' => element('post_id', $mvalue),
+                                    'cit_id' => element('cit_id', $mvalue),
+                                    'brd_id' => element('brd_id', $mvalue),
+                                    'cta_tag' => element('cmt_tag', $mvalue),
+                                );
+                                
+
+                                $this->Crawl_tag_model->insert($tagdata);
+                            }
+
+                            
+                        }
+                    }
+
                 } 
                 
             }     
@@ -2307,7 +2360,7 @@ class Crawl extends CB_Controller
                 $where = array(
                     'cit_id' => element('cit_id', $val),
                 );
-                // if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
+                if (empty($cit_id) && $this->Crawl_tag_model->count_by($where)) continue;        
                 
                 $cateinfo = $this->Cmall_category_model->get_category(element('cit_id',$val));
                 
@@ -2521,7 +2574,7 @@ class Crawl extends CB_Controller
                     
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
-                        'is_manual' => 0,
+                        // 'is_manual' => 0,
                     );
                     $this->Crawl_tag_model->delete_where($deletewhere);            
                     if ($translate_text && is_array($translate_text)) {
@@ -2533,16 +2586,16 @@ class Crawl extends CB_Controller
                                             'post_id' => element('post_id', $val),
                                             'cit_id' => element('cit_id', $val),
                                             'brd_id' => element('brd_id', $val),
-                                            'cta_tag' => $text,
+                                            'cdt_tag' => $text,
                                         );
-                                if(!$this->Crawl_tag_delete_model->count_by($where)) {
+                                if(!$this->Crawl_delete_tag_model->count_by($where)) {
 
                                     $tagdata = array(
                                         'post_id' => element('post_id', $val),
                                         'cit_id' => element('cit_id', $val),
                                         'brd_id' => element('brd_id', $val),
                                         'cta_tag' => $text,
-                                        'is_manual' => 0,
+                                        // 'is_manual' => 0,
                                     );
                                     $this->Crawl_tag_model->insert($tagdata);
                                 }
@@ -2552,11 +2605,48 @@ class Crawl extends CB_Controller
                 } 
                 
      
-            
+                $where = array(
+                            'cit_id' => element('cit_id',$val),                            
+                        );
 
-                
+                $mres = $this->Crawl_manual_tag_model->get('','',$where);
 
-                
+                if ($mres && is_array($mres)) {
+                    $tag_array=array();
+                    foreach ($mres as $mvalue) {
+                        if (element('cmt_tag', $mvalue)) {
+
+                            $where = array(
+                                        'post_id' => element('post_id', $mvalue),
+                                        'cit_id' => element('cit_id', $mvalue),
+                                        'brd_id' => element('brd_id', $mvalue),
+                                        'cta_tag' => element('cmt_tag', $mvalue),
+                                    );
+
+                            $deletewhere = array(
+                                    'post_id' => element('post_id', $mvalue),
+                                    'cit_id' => element('cit_id', $mvalue),
+                                    'brd_id' => element('brd_id', $mvalue),
+                                    'cdt_tag' => element('cmt_tag', $mvalue),
+                                );
+
+                            if(!$this->Crawl_tag_model->count_by($where) && !$this->Crawl_delete_tag_model->count_by($deletewhere)) {
+                                
+                                $tagdata = array(
+                                    'post_id' => element('post_id', $mvalue),
+                                    'cit_id' => element('cit_id', $mvalue),
+                                    'brd_id' => element('brd_id', $mvalue),
+                                    'cta_tag' => element('cmt_tag', $mvalue),
+                                );
+                                
+                                $this->Crawl_tag_model->insert($tagdata);
+                            }
+
+                            
+                        }
+                    }
+
+                }
             }
         }   
 

@@ -18,7 +18,7 @@ class Board_post extends CB_Controller
 	/**
 	 * 모델을 로딩합니다
 	 */
-	protected $models = array('Post', 'Post_meta', 'Post_extra_vars','Crawl_tag','Vision_api_label','Post_link','Cmall_item','Board_crawl','Cmall_category');
+	protected $models = array('Post', 'Post_meta', 'Post_extra_vars','Crawl_tag','Crawl_manual_tag','Crawl_delete_tag','Vision_api_label','Post_link','Cmall_item','Board_crawl','Cmall_category');
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -1458,6 +1458,12 @@ class Board_post extends CB_Controller
 				else 
 					$result['list'][$key]['warning'] = '' ; 
 				$result['list'][$key]['display_datetime'] = display_datetime(
+					element('cit_datetime', $val),
+					$list_date_style,
+					$list_date_style_manual
+				);
+
+				$result['list'][$key]['display_datetime'] .= '<br>'.display_datetime(
 					element('cit_updated_datetime', $val),
 					$list_date_style,
 					$list_date_style_manual
@@ -1505,6 +1511,8 @@ class Board_post extends CB_Controller
 				$result['list'][$key]['display_color'] =  element('cit_color', $val);
 
 				$result['list'][$key]['display_tag'] = '';
+				$result['list'][$key]['display_manualtag'] = '';
+				$result['list'][$key]['display_deletetag'] = '';
 				$crawlwhere = array(
 					'cit_id' => element('cit_id', $val),
 				);
@@ -1517,6 +1525,28 @@ class Board_post extends CB_Controller
 						}
 					}
 					$result['list'][$key]['display_tag'] = implode("\n",$tag_array);
+				}
+
+				$manualtag = $this->Crawl_manual_tag_model->get('', '', $crawlwhere, '', '', 'cmt_id', 'ASC');
+				if ($manualtag && is_array($manualtag)) {
+					$tag_array=array();
+					foreach ($manualtag as $tvalue) {
+						if (element('cmt_tag', $tvalue)) {
+							array_push($tag_array,trim(element('cmt_tag', $tvalue)));
+						}
+					}
+					$result['list'][$key]['display_manualtag'] = implode("\n",$tag_array);
+				}
+
+				$deletetag = $this->Crawl_delete_tag_model->get('', '', $crawlwhere, '', '', 'cdt_id', 'ASC');
+				if ($deletetag && is_array($deletetag)) {
+					$tag_array=array();
+					foreach ($deletetag as $tvalue) {
+						if (element('cdt_tag', $tvalue)) {
+							array_push($tag_array,trim(element('cdt_tag', $tvalue)));
+						}
+					}
+					$result['list'][$key]['display_deletetag'] = implode("\n",$tag_array);
 				}
 
 				$result['list'][$key]['display_label'] = '';
