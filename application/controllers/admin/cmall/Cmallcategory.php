@@ -714,10 +714,20 @@ class Cmallcategory extends CB_Controller
                     if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
                 }
 
+                // $this->db->from('Cmall_kind');
+                
+                
+                // $this->db->where('REPLACE(ckd_value_kr," ","")');
+                
+                
+                // $result = $this->db->get();
+
+                // $res = $this->Cmall_kind_model->get_one('','',array('REPLACE(ckd_value_kr," ","") = aaaa' => ));
+
+                // print_r2($res);
 				$updatedata = array(
 					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
-                    'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),
-                    'ckd_parent' => $this->input->post('ckd_parent', null, 0),
+                    'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),                    
 					'ckd_text' => $ckd_text_,
 					'ckd_size' => $ckd_size,
 				);
@@ -732,7 +742,7 @@ class Cmallcategory extends CB_Controller
                     '정상적으로 수정되었습니다'
                 );
 
-				redirect(admin_url($this->pagedir.'/kind'), 'refresh');
+				// redirect(admin_url($this->pagedir.'/kind'), 'refresh');
 
 			}
 		}
