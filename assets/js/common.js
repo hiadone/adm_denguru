@@ -1101,7 +1101,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 	function all_postlist_checked(flag) {
 		var f = document.fboardlist;
 		for (var i = 0; i < f.length; i++) {
-			if (f.elements[i].name === 'chk_cit_id[]') {
+			if (f.elements[i].name === 'chk[]') {
 				f.elements[i].checked = flag;
 			}
 		}
