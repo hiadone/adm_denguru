@@ -941,7 +941,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 		}
 	}
 
-	function post_action_crawl(action_type, action_id, input_key) {
+	function post_action_crawl(action_type, action_id, flag,input_key) {
         var href;
         if ( action_type == '') {
             return false;
@@ -954,7 +954,7 @@ if (typeof(COMMON_JS) === 'undefined') {
         
 
         
-        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : input_key;
+        var t = $('#'+input_key+action_id).val() ? $('#'+input_key+action_id).val().replace(regExp, "") : flag;
         
         
         href = cb_url + '/postact/' + action_type + '/' + action_id + '/' + encodeURIComponent(t);
