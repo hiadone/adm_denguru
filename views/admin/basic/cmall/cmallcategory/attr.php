@@ -8,7 +8,7 @@
         </ul>
     </div>
     <div class="box-table">
-
+        <button type="button" class="btn btn-success btn-sm" onClick="javascript:$('.ckd_text').toggle();">태그사전 감추기</button
         <div class="box-table">
             <?php
             $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
@@ -85,7 +85,7 @@
                         if ( ! element(element('cat_id', $result), $data)) {
                             $return .= '                    <button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/attr_delete/' . element('cat_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
                         }
-                        $return .= '<button>'.html_escape(element('cat_text', $result)).'</button>';
+                        $return .= '<button class="ckd_text">'.html_escape(element('cat_text', $result)).'</button>';
                         $return .= '    </div><div class="form-inline mod-cat-id-' . element('cat_id', $result) . '" style="display:none;">';
                         $return .= form_open(current_full_url(), $attributes);
                         $return .= '<input type="hidden" name="cat_id"  value="' . element('cat_id', $result) . '" />

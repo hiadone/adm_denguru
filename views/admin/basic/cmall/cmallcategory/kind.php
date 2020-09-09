@@ -6,8 +6,11 @@
             <li role="presentation" class="active"><a href="<?php echo admin_url($this->pagedir . '/kind'); ?>" onclick="return check_form_changed();">견종 관리</a></li>
             
         </ul>
+
     </div>
+
     <div class="box-table">
+        <button type="button" class="btn btn-success btn-sm" onClick="javascript:$('.ckd_text').toggle();">태그사전 감추기</button>
         <div class="box-table">
             <?php
 
@@ -33,7 +36,7 @@
                                     foreach ($p as $result) {
                                         $margin='';
                                         if ($len) {
-
+                                            
                                             for($i=0;$len > $i;$i++)
                                                 $margin .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                                         }
@@ -52,7 +55,7 @@
                         <input type="text" name="ckd_value_en" class="form-control" value="" placeholder="영문 견종 입력" />
                         <input type="text" name="ckd_size" class="form-control" value="" placeholder="견종 크기 입력" />
 
-                        <textarea class="form-control" style="width:300px;" name="ckd_text" id="ckd_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"><?php echo set_value('ckd_text', element('ckd_text', element('data', $view))); ?></textarea>
+                        <textarea class="form-control" style="width:300px;" name="ckd_text" id="ckd_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"></textarea>
                         <button type="submit" class="btn btn-success btn-sm">추가하기</button>
                     </div>
                 </div>
@@ -97,7 +100,7 @@
                                 <button class="btn btn-primary btn-xs" onClick="ckd_modify(\'' . element('ckd_id', $result) . '\')"><span class="glyphicon glyphicon-edit"></span></button>';
                         
                         $return .= '                    <button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/kind_delete/' . element('ckd_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
-                        $return .= '<button>'.html_escape(element('ckd_text', $result)).'</button>';
+                        $return .= '<button class="ckd_text">'.html_escape(element('ckd_text', $result)).'</button>';
                         $return .= '    </div><div class="form-inline mod-ckd-id-' . element('ckd_id', $result) . '" style="display:none;">';
                         $return .= form_open(current_full_url(), $attributes);
                         $return .= '<input type="hidden" name="ckd_id"  value="' . element('ckd_id', $result) . '" />
@@ -151,7 +154,7 @@
                         <input type="text" name="ckd_value_en" class="form-control" value="" placeholder="영문 견종 입력" />
                         <input type="text" name="ckd_size" class="form-control" value="" placeholder="견종 크기 입력" />
 
-                        <textarea class="form-control" style="width:300px;" name="ckd_text" id="ckd_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"><?php echo set_value('ckd_text', element('ckd_text', element('data', $view))); ?></textarea>
+                        <textarea class="form-control" style="width:300px;" name="ckd_text" id="ckd_text" rows="1" placeholder="사전 (콤마로 구분하여 입력)"></textarea>
                         <button type="submit" class="btn btn-success btn-sm">추가하기</button>
                     </div>
                 </div>

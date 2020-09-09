@@ -714,23 +714,27 @@ class Cmallcategory extends CB_Controller
                     if($text_array && is_array($text_array)) $ckd_text_ = implode(",",$text_array);
                 }
 
-                // $this->db->from('Cmall_kind');
+                $this->db->from('cmall_kind');                
                 
+                $this->db->where('REPLACE(ckd_value_kr," ","") ="'.str_replace(" ","",$this->input->post('ckd_value_kr', null, '')).'"','',false);               
                 
-                // $this->db->where('REPLACE(ckd_value_kr," ","")');
-                
-                
-                // $result = $this->db->get();
+                $res = $this->db->get()->row_array();                
 
-                // $res = $this->Cmall_kind_model->get_one('','',array('REPLACE(ckd_value_kr," ","") = aaaa' => ));
-
-                // print_r2($res);
-				$updatedata = array(
+                if(!empty($res)){
+                	$updatedata = array(
+					'ckd_value_kr' => element('ckd_value_kr',$res),
+                    'ckd_value_en' => element('ckd_value_en',$res),					
+					'ckd_size' => element('ckd_size',$res),
+					);
+                } else {
+                	$updatedata = array(
 					'ckd_value_kr' => $this->input->post('ckd_value_kr', null, ''),
                     'ckd_value_en' => $this->input->post('ckd_value_en', null, ''),                    
 					'ckd_text' => $ckd_text_,
 					'ckd_size' => $ckd_size,
-				);
+					);
+                }
+				
 				$this->Cmall_kind_model->update($this->input->post('ckd_id'), $updatedata);
 				$this->cache->delete('cmall-kind-all');
 				$this->cache->delete('cmall-kind-detail');
