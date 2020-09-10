@@ -34,7 +34,7 @@ class Eventgroup extends CB_Controller
     /**
      * 헬퍼를 로딩합니다
      */
-    protected $helpers = array('form', 'array');
+    protected $helpers = array('form', 'array','dhtml_editor');
 
     function __construct()
     {
@@ -197,83 +197,114 @@ class Eventgroup extends CB_Controller
                 'rules' => 'trim|required',
             ),
             array(
-                'field' => 'egr_layout',
-                'label' => '레이아웃',
+                'field' => 'egr_start_date',
+                'label' => '시작일',
                 'rules' => 'trim',
             ),
             array(
-                'field' => 'egr_sidebar',
-                'label' => '사이드바 사용',
+                'field' => 'egr_end_date',
+                'label' => '종료일',
                 'rules' => 'trim',
             ),
             array(
-                'field' => 'egr_skin',
-                'label' => '스킨',
+                'field' => 'egr_order',
+                'label' => '정렬순서',
                 'rules' => 'trim',
             ),
             array(
-                'field' => 'egr_mobile_layout',
-                'label' => '모바일레이아웃',
+                'field' => 'egr_activated',
+                'label' => '이벤트활성화',
                 'rules' => 'trim',
             ),
             array(
-                'field' => 'egr_mobile_sidebar',
-                'label' => '모바일사이드바사용',
+                'field' => 'egr_content',
+                'label' => '내용',
                 'rules' => 'trim',
-            ),
-            array(
-                'field' => 'egr_mobile_skin',
-                'label' => '모바일스킨',
-                'rules' => 'trim',
-            ),
+            ),            
         );
-        if ($this->input->post($primary_key)) {
-            $config[] = array(
-                'field' => 'egr_key',
-                'label' => 'EVENT 주소',
-                'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[event_group.egr_key.egr_id.' . $getdata['egr_id'] . ']',
-            );
-        } else {
-            $config[] = array(
-                'field' => 'egr_key',
-                'label' => 'EVENT 주소',
-                'rules' => 'trim|required|alpha_dash|min_length[3]|max_length[50]|is_unique[event_group.egr_key]',
-            );
-        }
+        
 
         $this->form_validation->set_rules($config);
+        $form_validation = $this->form_validation->run();
+        $file_error = '';
+        $updatephoto = '';
 
+        if ($form_validation) {
+            $this->load->library('upload');
+            $this->load->library('aws_s3');
+            if (isset($_FILES) && isset($_FILES['egr_image']) && isset($_FILES['egr_image']['name']) && $_FILES['egr_image']['name']) {
+                $upload_path = config_item('uploads_dir') . '/banner/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('Y') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('m') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+
+                $uploadconfig = array();
+                $uploadconfig['upload_path'] = $upload_path;
+                $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+                $uploadconfig['max_size'] = 10 * 1024;
+                $uploadconfig['max_width'] = '2000';
+                $uploadconfig['max_height'] = '1000';
+                $uploadconfig['encrypt_name'] = true;
+
+                $this->upload->initialize($uploadconfig);
+
+                if ($this->upload->do_upload('egr_image')) {
+                    $img = $this->upload->data();
+                    $updatephoto = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+
+                    $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+                } else {
+                    $file_error = $this->upload->display_errors();
+                }
+            }
+        }
 
         /**
          * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
          * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
          */
-        if ($this->form_validation->run() === false) {
+        if ($form_validation === false OR $file_error !== '') {
 
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+            $view['view']['message'] = $file_error;
 
-            $view['view']['data'] = $getdata;
-            $view['view']['data']['egr_layout_option'] = get_skin_name(
-                '_layout',
-                set_value('egr_layout', element('egr_layout', $getdata)),
-                '기본설정따름'
-            );
-            $view['view']['data']['egr_mobile_layout_option'] = get_skin_name(
-                '_layout',
-                set_value('egr_mobile_layout', element('egr_mobile_layout', $getdata)),
-                '기본설정따름'
-            );
-            $view['view']['data']['egr_skin_option'] = get_skin_name(
-                'event',
-                set_value('egr_skin', element('egr_skin', $getdata)),
-                '기본설정따름'
-            );
-            $view['view']['data']['egr_mobile_skin_option'] = get_skin_name(
-                'event',
-                set_value('egr_mobile_skin', element('egr_mobile_skin', $getdata)),
-                '기본설정따름'
-            );
+            if ($pid) {
+                if (empty($getdata['egr_start_date']) OR $getdata['egr_start_date'] === '0000-00-00') {
+                    $getdata['egr_start_date'] = '';
+                }
+                if (empty($getdata['egr_end_date']) OR $getdata['egr_end_date'] === '0000-00-00') {
+                    $getdata['egr_end_date'] = '';
+                }
+                $view['view']['data'] = $getdata;
+            }
+
+
+            
+            
 
             /**
              * primary key 정보를 저장합니다

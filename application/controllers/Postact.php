@@ -3542,7 +3542,7 @@ class Postact extends CB_Controller
 
 
         
-        $this->load->model(array('Crawl_manual_tag_model','Cmall_item_model'));
+        $this->load->model(array('Crawl_manual_tag_model','Crawl_tag_model','Crawl_delete_tag_model','Cmall_item_model'));
 
         $crawltagwhere = array(
 			'cit_id' => $cit_id,
@@ -3587,6 +3587,41 @@ class Postact extends CB_Controller
                             // 'is_manual' => 1,
                         );
                         $this->Crawl_manual_tag_model->insert($tagdata);
+
+
+
+		            	$countwhere = array(
+	            	            'post_id' => element('post_id', $cmail_item),
+	            	            'cit_id' => element('cit_id', $cmail_item),
+	            	            'brd_id' => element('brd_id', $cmail_item),
+	            	            'cdt_tag' => $value,
+	            	        );
+	            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+	            		if(!element('cdt_id',$dtag)){
+
+			            	$countwhere = array(
+		            	            'post_id' => element('post_id', $cmail_item),
+		            	            'cit_id' => element('cit_id', $cmail_item),
+		            	            'brd_id' => element('brd_id', $cmail_item),
+		            	            'cta_tag' => $value,
+		            	        );
+		            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+
+		            		if(!element('cta_id',$tag)){
+		            			
+		            			$tagdata = array(
+		            			    'post_id' => element('post_id', $cmail_item),
+		            			    'cit_id' => element('cit_id', $cmail_item),
+		            			    'brd_id' => element('brd_id', $cmail_item),
+		            			    'cta_tag' => $value,
+		            			    // 'is_manual' => 1,
+		            			);
+		            			$this->Crawl_tag_model->insert($tagdata);
+		            		}
+	            		}
+		            		                
+							            
                     }
                 }
             }
@@ -3623,7 +3658,7 @@ class Postact extends CB_Controller
 
 
         
-        $this->load->model(array('Crawl_delete_tag_model','Cmall_item_model'));
+        $this->load->model(array('Crawl_delete_tag_model','Crawl_tag_model','Cmall_item_model'));
 
         $crawltagwhere = array(
 			'cit_id' => $cit_id,
@@ -3668,6 +3703,18 @@ class Postact extends CB_Controller
                             // 'is_manual' => 1,
                         );
                         $this->Crawl_delete_tag_model->insert($tagdata);
+
+
+					    $deletewhere = array(
+					        'post_id' => element('post_id', $cmail_item),
+            	            'cit_id' => element('cit_id', $cmail_item),
+            	            'brd_id' => element('brd_id', $cmail_item),
+            	            'cta_tag' => $value,
+					        
+					    );
+					    $this->Crawl_tag_model->delete_where($deletewhere);            
+
+	            		
                     }
                 }
             }

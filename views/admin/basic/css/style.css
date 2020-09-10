@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {font-family: inherit;margi
 li{list-style:none;}
 .table>tbody>tr>td{vertical-align:middle;}
 .table>tbody>tr>th{vertical-align:middle;}
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{padding:8px 20px;}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{padding:8px 10px;}
 
 textarea.dhtmleditor {width:90%;height:350px;}
 select.select-wide {min-width:200px}

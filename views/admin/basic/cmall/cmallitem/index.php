@@ -188,15 +188,15 @@
 					<thead>
 						<tr>
 							<th>상품코드</th>
-							<th style="width:130px;">카테고리</th>
+							<th >카테고리</th>
 							<th>이미지</th>
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
 							<!-- <th>Vision API label</th> -->
-                    		<th>자동태그</th>
-		                    <th>수동태그</th>
-		                    <th>삭제태그</th>
-							<th style="width:130px;">특성</th>
+                    		<th >자동태그</th>
+		                    <th >수동태그</th>
+		                    <th >삭제태그</th>
+							<th >특성</th>
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
 							<th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
 							<th><a href="<?php echo element('cit_hit', element('sort', $view)); ?>">조회수</a></th>
@@ -219,7 +219,23 @@
 								<?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>
 							</td>
 							<td >
-								<?php foreach (element('category', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';} ?>
+								<?php 
+								    if(element('category', $result)){
+								        echo '<div>';
+								        foreach (element(0,element('category', $result)) as $cv) { 
+								            
+								            echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';
+								            echo "<br>";
+								            if(!empty(element(element('cca_id', $cv),element('category', $result))))
+								            foreach (element(element('cca_id', $cv),element('category', $result)) as $cv_) {
+								                echo '<label class="label label-primary">' . html_escape(element('cca_value', $cv_)) . '</label> ';                                                                     
+								            } 
+								        } 
+								        echo '</div>';
+								    }
+								?>
+
+								
 								
 							</td>
 							<td>
@@ -254,22 +270,44 @@
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
 		                    </td> -->
 		                    
-		                    <td>
-		                        <textarea name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
+		                    <td >
+		                        <textarea  name="cta_tag[<?php echo element('cit_id', $result); ?>]" id="cta_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;width:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_tag', $result)); ?></textarea>
 		                        </td>
 		                    <td>
-		                        <textarea name="cmt_tag[<?php echo element('cit_id', $result); ?>]" id="cmt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_manualtag', $result)); ?></textarea>
+		                        <textarea name="cmt_tag[<?php echo element('cit_id', $result); ?>]" id="cmt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;width:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_manualtag', $result)); ?></textarea>
 		                        </td>
 		                    <td>
-		                        <textarea name="cdt_tag[<?php echo element('cit_id', $result); ?>]" id="cdt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_deletetag', $result)); ?></textarea>
+		                        <textarea name="cdt_tag[<?php echo element('cit_id', $result); ?>]" id="cdt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;width:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_deletetag', $result)); ?></textarea>
 		                        </td>
 							
 							<td>
-								<?php foreach (element('attr', $result) as $cv) { echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';} 
+								<?php 
+								    if(element('attr', $result)){
+								        echo '<div>';
+								        foreach (element(0,element('attr', $result)) as $cv) { 
+								            
+								            echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';
+								            echo "<br>";
+								            if(!empty(element(element('cat_id', $cv),element('attr', $result))))
+								            foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
+								                echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv_)) . '</label> ';                                                                     
+								            } 
+								        } 
+								        echo '</div>';
+								    }
 								?>
 
-								<?php foreach (element('kind', $result) as $cv) { echo '<label class="label label-danger">' . html_escape(element('ckd_value_kr', $cv)) . '</label> ';} 
+								 <?php 
+								    if(element('kind', $result)){
+								        echo '<div>';
+								        foreach (element('kind', $result) as $cv) { 
+								            
+								            echo '<label class="label label-danger">' . html_escape(element('ckd_value_kr', $cv)) . '</label> ';
+								        } 
+								        echo '</div>';
+								    }
 								?>
+
 							</td>
 							<td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>

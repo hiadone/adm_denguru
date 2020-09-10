@@ -332,9 +332,31 @@ class Cmallitem extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
-                $result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
-                $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+
+
+                $category = $this->Cmall_category_model->get_category(element('cit_id', $val));
+
+                
+
+                if($category){
+                    foreach($category as $aval){
+                        $result['list'][$key]['category'][element('cca_parent',$aval)][]=array('cca_id' => element('cca_id',$aval),'cca_value'=>element('cca_value',$aval));
+                    }
+                    
+                }
+
+                $attr = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+
+                if($attr){
+                    foreach($attr as $aval){
+                        $result['list'][$key]['attr'][element('cat_parent',$aval)][]=array('cat_id' => element('cat_id',$aval),'cat_value'=>element('cat_value',$aval));
+                    }
+                    
+                }
+
                 $result['list'][$key]['kind'] = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
+
+                
                 
 
                 $cmall_wishlist_where = array(
@@ -1318,32 +1340,7 @@ class Cmallitem extends CB_Controller
                 
             }
 
-            $cmt_tag_text=array();
             
-            $cmt_tag_text = explode("\n",urldecode($cmt_tag));
-
-            if(count($cmt_tag_text)){
-                $deletewhere = array(
-                    'cit_id' => $pid,
-                );
-                $this->Crawl_manual_tag_model->delete_where($deletewhere);            
-                if ($cmt_tag_text && is_array($cmt_tag_text)) {
-                    foreach ($cmt_tag_text as $key => $value) {
-                        $value = trim($value);
-                        if ($value) {
-                            $tagdata = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
-                                'cmt_tag' => $value,
-                                // 'is_manual' => 1,
-                            );
-                            $this->Crawl_manual_tag_model->insert($tagdata);
-                        }
-                    }
-                }
-                
-            }
 
             $cdt_tag_text=array();
             
@@ -1366,12 +1363,78 @@ class Cmallitem extends CB_Controller
                                 // 'is_manual' => 1,
                             );
                             $this->Crawl_delete_tag_model->insert($tagdata);
+
+                            $deletewhere = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cta_tag' => $value,
+                                
+                            );
+                            $this->Crawl_tag_model->delete_where($deletewhere);            
                         }
                     }
                 }
                 
             }
 
+            $cmt_tag_text=array();
+            
+            $cmt_tag_text = explode("\n",urldecode($cmt_tag));
+
+            if(count($cmt_tag_text)){
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                );
+                $this->Crawl_manual_tag_model->delete_where($deletewhere);            
+                if ($cmt_tag_text && is_array($cmt_tag_text)) {
+                    foreach ($cmt_tag_text as $key => $value) {
+                        $value = trim($value);
+                        if ($value) {
+                            $tagdata = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cmt_tag' => $value,
+                                // 'is_manual' => 1,
+                            );
+                            $this->Crawl_manual_tag_model->insert($tagdata);
+
+                            $countwhere = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cdt_tag' => $value,
+                            );
+                            $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+                            if(!element('cdt_id',$dtag)){
+
+                                $countwhere = array(
+                                        'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cta_tag' => $value,
+                                    );
+                                $tag = $this->Crawl_tag_model->get_one('','',$countwhere);
+
+                                if(!element('cta_id',$tag)){
+                                    
+                                    $tagdata = array(
+                                        'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cta_tag' => $value,
+                                        // 'is_manual' => 1,
+                                    );
+                                    $this->Crawl_tag_model->insert($tagdata);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
 
             $this->load->model('Cmall_item_history_model');
             $historydata = array(
