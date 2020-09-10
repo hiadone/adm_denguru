@@ -1017,7 +1017,14 @@ if (typeof(COMMON_JS) === 'undefined') {
         $("input[type=file]").change(function(e){
             if($('#'+$(this).attr('name')+'_del').length > 0){
                 $('#'+$(this).attr('name')+'_del').prop("checked", true);
+            } 
+
+            if($(this).parent().find('label > input[type="checkbox"]').length > 0){
+                
+                $(this).parent().find('label > input[type="checkbox"]').prop("checked", true);
             }
+            
+
         });
     });
 

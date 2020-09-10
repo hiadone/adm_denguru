@@ -24,7 +24,7 @@ $config['admin_page_menu']['page'] =
 			'bannerclick'			=> array('배너클릭로그', ''),
 			'notice'                          => array('공지관리', ''),
 			'eventgroup'                          => array('이벤트관리', ''),
-			'event'                          => array('이벤트 세부내용', '','hide'),
+			'event'                          => array('색션관리', '','hide'),
 			'theme'					=> array('테마관리', ''),
 		),
 	);

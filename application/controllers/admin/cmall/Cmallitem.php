@@ -1386,7 +1386,13 @@ class Cmallitem extends CB_Controller
                 $deletewhere = array(
                     'cit_id' => $pid,
                 );
-                $this->Crawl_manual_tag_model->delete_where($deletewhere);            
+                $this->Crawl_manual_tag_model->delete_where($deletewhere);
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                    'is_manual' => 1,
+                );
+                $this->Crawl_tag_model->delete_where($deletewhere);
+
                 if ($cmt_tag_text && is_array($cmt_tag_text)) {
                     foreach ($cmt_tag_text as $key => $value) {
                         $value = trim($value);
@@ -1410,15 +1416,7 @@ class Cmallitem extends CB_Controller
 
                             if(!element('cdt_id',$dtag)){
 
-                                $countwhere = array(
-                                        'post_id' => $this->input->post('post_id', null, ''),
-                                        'cit_id' => $pid,
-                                        'brd_id' => $this->input->post('brd_id', null, ''),
-                                        'cta_tag' => $value,
-                                    );
-                                $tag = $this->Crawl_tag_model->get_one('','',$countwhere);
-
-                                if(!element('cta_id',$tag)){
+                                
                                     
                                     $tagdata = array(
                                         'post_id' => $this->input->post('post_id', null, ''),
@@ -1428,7 +1426,7 @@ class Cmallitem extends CB_Controller
                                         // 'is_manual' => 1,
                                     );
                                     $this->Crawl_tag_model->insert($tagdata);
-                                }
+                                
                             }
                         }
                     }

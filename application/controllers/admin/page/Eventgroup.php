@@ -24,7 +24,7 @@ class Eventgroup extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Event', 'Event_group');
+    protected $models = array('Event', 'Event_group','Event_rel');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
@@ -69,11 +69,7 @@ class Eventgroup extends CB_Controller
         $view['view']['sort'] = array(
             'egr_id' => $param->sort('egr_id', 'asc'),
             'egr_title' => $param->sort('egr_title', 'asc'),
-            'egr_key' => $param->sort('egr_key', 'asc'),
-            'egr_layout' => $param->sort('egr_layout', 'asc'),
-            'egr_mobile_layout' => $param->sort('egr_mobile_layout', 'asc'),
-            'egr_skin' => $param->sort('egr_skin', 'asc'),
-            'egr_mobile_skin' => $param->sort('egr_mobile_skin', 'asc'),
+            'egr_key' => $param->sort('egr_key', 'asc'),            
             'egr_datetime' => $param->sort('egr_datetime', 'asc'),
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
@@ -87,9 +83,9 @@ class Eventgroup extends CB_Controller
         /**
          * 게시판 목록에 필요한 정보를 가져옵니다.
          */
-        $this->{$this->modelname}->allow_search_field = array('egr_id', 'egr_key', 'egr_layout', 'sfield', 'egr_skin', 'egr_mobile_skin', 'event_group.mem_id', 'egr_title'); // 검색이 가능한 필드
+        $this->{$this->modelname}->allow_search_field = array('egr_id', 'egr_key',  'sfield', 'event_group.mem_id', 'egr_title'); // 검색이 가능한 필드
         $this->{$this->modelname}->search_field_equal = array('egr_id', 'event_group.mem_id'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->{$this->modelname}->allow_order_field = array('egr_id', 'egr_key', 'egr_layout', 'egr_mobile_layout', 'egr_skin', 'egr_mobile_skin', 'egr_datetime'); // 정렬이 가능한 필드
+        $this->{$this->modelname}->allow_order_field = array('egr_id', 'egr_key',  'egr_datetime'); // 정렬이 가능한 필드
         $result = $this->{$this->modelname}
             ->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
@@ -103,6 +99,12 @@ class Eventgroup extends CB_Controller
                 $countwhere = array(
                     'egr_id' => element('egr_id', $val),
                 );
+
+                if (element('egr_image', $val)) {
+                    $result['list'][$key]['cdn_url'] = cdn_url('eventgroup', element('egr_image', $val));
+
+                }
+
                 $result['list'][$key]['eventcount'] = $this->Event_model->count_by($countwhere);
                 $result['list'][$key]['num'] = $list_num--;
             }
@@ -199,22 +201,22 @@ class Eventgroup extends CB_Controller
             array(
                 'field' => 'egr_start_date',
                 'label' => '시작일',
-                'rules' => 'trim',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             array(
                 'field' => 'egr_end_date',
                 'label' => '종료일',
-                'rules' => 'trim',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             array(
                 'field' => 'egr_order',
                 'label' => '정렬순서',
-                'rules' => 'trim',
+                'rules' => 'trim|required|numeric|is_natural',
             ),
             array(
                 'field' => 'egr_activated',
                 'label' => '이벤트활성화',
-                'rules' => 'trim',
+                'rules' => 'trim|required|numeric',
             ),
             array(
                 'field' => 'egr_content',
@@ -233,7 +235,7 @@ class Eventgroup extends CB_Controller
             $this->load->library('upload');
             $this->load->library('aws_s3');
             if (isset($_FILES) && isset($_FILES['egr_image']) && isset($_FILES['egr_image']['name']) && $_FILES['egr_image']['name']) {
-                $upload_path = config_item('uploads_dir') . '/banner/';
+                $upload_path = config_item('uploads_dir') . '/eventgroup/';
                 if (is_dir($upload_path) === false) {
                     mkdir($upload_path, 0707);
                     $file = $upload_path . 'index.php';
@@ -266,7 +268,7 @@ class Eventgroup extends CB_Controller
                 $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
                 $uploadconfig['max_size'] = 10 * 1024;
                 $uploadconfig['max_width'] = '2000';
-                $uploadconfig['max_height'] = '1000';
+                $uploadconfig['max_height'] = '2000';
                 $uploadconfig['encrypt_name'] = true;
 
                 $this->upload->initialize($uploadconfig);
@@ -332,23 +334,43 @@ class Eventgroup extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-            $egr_sidebar = $this->input->post('egr_sidebar') ? $this->input->post('egr_sidebar') : 0;
-            $egr_mobile_sidebar = $this->input->post('egr_mobile_sidebar') ? $this->input->post('egr_mobile_sidebar') : 0;
+            $egr_start_date = $this->input->post('egr_start_date') ? $this->input->post('egr_start_date') : null;
+            $egr_end_date = $this->input->post('egr_end_date') ? $this->input->post('egr_end_date') : null;            
+            $egr_activated = $this->input->post('egr_activated') ? $this->input->post('egr_activated') : 0;
+            $egr_order = $this->input->post('egr_order') ? $this->input->post('egr_order') : 0;
+            $egr_content = $this->input->post('egr_content') ? $this->input->post('egr_content') : '';
+
+            
+
             $updatedata = array(
                 'egr_title' => $this->input->post('egr_title', null, ''),
-                'egr_key' => $this->input->post('egr_key', null, ''),
-                'egr_layout' => $this->input->post('egr_layout', null, ''),
-                'egr_mobile_layout' => $this->input->post('egr_mobile_layout', null, ''),
-                'egr_sidebar' => $egr_sidebar,
-                'egr_mobile_sidebar' => $egr_mobile_sidebar,
-                'egr_skin' => $this->input->post('egr_skin', null, ''),
-                'egr_mobile_skin' => $this->input->post('egr_mobile_skin', null, ''),
+                'egr_start_date' => $egr_start_date,
+                'egr_end_date' => $egr_end_date,
+                'egr_activated' => $egr_activated,
+                'egr_order' => $egr_order,
+                'egr_content' => $egr_content,
             );
+
+            
 
             /**
              * 게시물을 수정하는 경우입니다
              */
             if ($this->input->post($primary_key)) {
+
+                if ($this->input->post('egr_image_del')) {
+                    $updatedata['egr_image'] = '';
+                } 
+                if ($updatephoto) {
+                    $updatedata['egr_image'] = $updatephoto;
+                }
+                if (element('egr_image', $getdata) && ($this->input->post('egr_image_del') OR $updatephoto)) {
+                    // 기존 파일 삭제
+                    @unlink(config_item('uploads_dir') . '/eventgroup/' . element('egr_image', $getdata));
+
+                    $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_image', $getdata));
+                }
+
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -361,7 +383,12 @@ class Eventgroup extends CB_Controller
                 $updatedata['egr_datetime'] = cdate('Y-m-d H:i:s');
                 $updatedata['egr_ip'] = $this->input->ip_address();
                 $updatedata['mem_id'] = $this->member->item('mem_id');
-                $this->{$this->modelname}->insert($updatedata);
+                $egr_id = $this->{$this->modelname}->insert($updatedata);
+
+
+                $updatedata['egr_key'] = 'e_'.$egr_id;
+
+                $this->{$this->modelname}->update($egr_id, $updatedata);
                 $this->session->set_flashdata(
                     'message',
                     '정상적으로 입력되었습니다'
@@ -398,14 +425,39 @@ class Eventgroup extends CB_Controller
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
-                    $this->{$this->modelname}->delete($val);
-                    $deletewhere = array(
+
+                    $getdata = $this->{$this->modelname}->get_one($val);
+
+                    if(element('egr_image', $getdata))
+                        $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_image', $getdata));
+
+                    
+                    $where = array(
                         'egr_id' => $val,
                     );
-                    $this->Event_model->delete_where($deletewhere);
+
+                    $res = $this->Event_model->get('','',$where);
+
+                    if ($res && is_array($res)) {                        
+                        foreach ($res as $evalue) {
+                            if (element('eve_id', $evalue)) {
+
+                                $this->Event_rel_model->delete_where(array('eve_id' => element('eve_id', $evalue)));
+                                
+                                $this->Event_model->delete(element('eve_id', $evalue));
+                            }
+                        }
+                    }
+
+                    $this->{$this->modelname}->delete($val);
+                    
                 }
             }
         }
+
+
+
+
 
         // 이벤트가 존재하면 실행합니다
         Events::trigger('after', $eventname);

@@ -8,6 +8,7 @@
         echo form_open_multipart(current_full_url(), $attributes);
         ?>
             <input type="hidden" name="<?php echo element('primary_key', $view); ?>"    value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
+            <input type="hidden" name="egr_id"  value="<?php echo element('egr_id', element('eventgroup', element('data', $view))); ?>" />
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">이미지 업로드</label>
@@ -27,7 +28,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">제목</label>
+                    <label class="col-sm-2 control-label">색션제목</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="eve_title" value="<?php echo set_value('eve_title', element('eve_title', element('data', $view))); ?>" />
                     </div>
@@ -124,10 +125,14 @@
                     </div>
                 </div>
                 
+                <?php if(element(element('primary_key', $view), element('data', $view))){?>
 
-                <div class="pull-left mr10">
-                    <button type="button" class="btn btn-default btn-sm admin-manage-list" onClick="event_in_cmall_item(<?php echo element(element('primary_key', $view), element('data', $view)); ?>);" >이벤트에 상품 종속 시키기</button>
-                </div>
+                    <div class="pull-left mr10">
+                        <button type="button" class="btn btn-default btn-sm admin-manage-list" onClick="event_in_cmall_item(<?php echo element(element('primary_key', $view), element('data', $view)); ?>);" >이벤트에 상품 종속 시키기</button>
+                    </div>
+                 <?php } ?>
+                
+
 
                 <div class="btn-group pull-right" role="group" aria-label="...">
                     <button type="button" class="btn btn-default btn-sm btn-history-back" >취소하기</button>
@@ -175,7 +180,7 @@
                     ob_end_flush();
                     ?>
                 </div>
-                <div class="row">전체 : <?php echo element('total_rows', element('data', $view), 0); ?>건</div>
+                <div class="row">전체 : <?php echo element('total_rows', element('cdata', $view), 0); ?>건</div>
                 <div class="table-responsive">
                     <table class="table table-hover table-striped table-bordered">
                         <thead>
@@ -220,7 +225,14 @@
                                         </a>
                                     <?php } ?>
                                 </td>
-                                <td><?php echo html_escape(element('cit_name', $result)); ?></td>
+                                <td>
+                                    <?php 
+                            
+                                        echo '<div><label class="label label-default">'.element('brd_name', $result).'</label></div>';
+                                    ?>
+                                    <?php echo html_escape(element('cit_name', $result)); ?>
+                                        
+                                </td>
                                 <td><?php echo html_escape(element('cit_price', $result)); ?></td>
                                 
                                 <!-- <td>

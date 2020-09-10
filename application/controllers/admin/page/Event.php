@@ -24,7 +24,7 @@ class Event extends CB_Controller
     /**
      * 모델을 로딩합니다
      */
-    protected $models = array('Event', 'Event_group');
+    protected $models = array('Event', 'Event_group','Event_rel','Cmall_item','Cmall_category','Board');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
@@ -94,14 +94,22 @@ class Event extends CB_Controller
         $this->{$this->modelname}->allow_order_field = array('eve_id', 'eve_title', 'eve_order', 'eve_datetime'); // 정렬이 가능한 필드
         $result = $this->{$this->modelname}
             ->get_admin_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
+        $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 $result['list'][$key]['display_name'] = display_username(
-                    element('mem_userid', $val),
+                element('mem_userid', $val),
                     element('mem_nickname', $val),
                     element('mem_icon', $val)
                 );
                 $result['list'][$key]['eventgroup'] = $this->Event_group_model->get_one(element('egr_id', $val));
+
+                $countwhere = array(
+                    'eve_id' => element('eve_id', $val),
+                );
+
+                $result['list'][$key]['eventcount'] = $this->Event_rel_model->count_by($countwhere);
+                $result['list'][$key]['num'] = $list_num--;
             }
         }
 
@@ -204,19 +212,29 @@ class Event extends CB_Controller
             ),
             array(
                 'field' => 'eve_title',
-                'label' => '질문',
+                'label' => '색션제목',
                 'rules' => 'trim|required',
+            ),
+            array(
+                'field' => 'eve_start_date',
+                'label' => '이벤트시작일',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
+            ),
+            array(
+                'field' => 'eve_end_date',
+                'label' => '이벤트종료일',
+                'rules' => 'trim|alpha_dash|exact_length[10]',
+            ),
+            array(
+                'field' => 'eve_activated',
+                'label' => '이벤트활성화',
+                'rules' => 'trim|required|numeric',
             ),
             array(
                 'field' => 'eve_content',
-                'label' => '답변',
-                'rules' => 'trim|required',
-            ),
-            array(
-                'field' => 'eve_mobile_content',
-                'label' => '모바일답변',
+                'label' => '내용',
                 'rules' => 'trim',
-            ),
+            ),            
         );
 
         $this->form_validation->set_rules($config);
@@ -236,6 +254,66 @@ class Event extends CB_Controller
             }
             $view['view']['data']['eventgroup'] = $this->Event_group_model->get_one($egr_id);
 
+            $param =& $this->querystring;
+            $findex = $this->input->get('findex') ? $this->input->get('findex') : 'cit_id';
+            $forder = $this->input->get('forder', null, 'desc');
+            $sfield = $this->input->get('sfield', null, '');
+            $skeyword = $this->input->get('skeyword', null, '');
+
+            $event_rel = $where_in = array();
+            $event_rel = $this->Event_model->get_event($pid);
+            if($event_rel)
+            foreach($event_rel as $eveval)
+                array_push($where_in,element('cit_id',$eveval));
+
+            $this->Board_model->set_where_in('cit_id',$where_in);
+            $this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
+            $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+            $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+            if(empty($where_in))
+                $cresult = array();
+            else 
+                $cresult = $this->Board_model->get_item_list('','', '', '', $findex, $forder, $sfield, $skeyword);
+
+            $list_num = element('total_rows', $cresult) ? element('total_rows', $cresult) : 0;
+            if (element('list', $cresult)) {
+            foreach (element('list', $cresult) as $key => $val) {
+                // $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
+                $cresult['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
+                // $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+                
+                
+                $cmall_wishlist_where = array(
+                    'cit_id' => element('cit_id', $val),
+                    
+                );
+                
+
+                
+
+                if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
+                    $cresult['list'][$key]['warning'] = 1 ; 
+                else 
+                    $cresult['list'][$key]['warning'] = '' ; 
+
+
+                $cresult['list'][$key]['display_tag'] = '';
+                $crawlwhere = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+                
+
+                $cresult['list'][$key]['display_label'] = '';
+                $crawlwhere = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+                
+
+                $cresult['list'][$key]['num'] = $list_num--;
+                }
+            }
+
+            $view['view']['cdata'] = $cresult;
             /**
              * primary key 정보를 저장합니다
              */
@@ -244,6 +322,7 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
 
+            $view['view']['list_delete_url'] = admin_url($this->pagedir.'/event_in_listdelete/'.$pid.'?' . $param->output());
             /**
              * 어드민 레이아웃을 정의합니다
              */
@@ -262,16 +341,22 @@ class Event extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
 
-            $content_type = $this->cbconfig->item('use_eve_dhtml') ? 1 : 0;
+            $eve_start_date = $this->input->post('eve_start_date') ? $this->input->post('eve_start_date') : null;
+            $eve_end_date = $this->input->post('eve_end_date') ? $this->input->post('eve_end_date') : null;            
+            $eve_activated = $this->input->post('eve_activated') ? $this->input->post('eve_activated') : 0;
             $eve_order = $this->input->post('eve_order') ? $this->input->post('eve_order') : 0;
+            $eve_content = $this->input->post('eve_content') ? $this->input->post('eve_content') : '';
+
+            
 
             $updatedata = array(
                 'egr_id' => $this->input->post('egr_id', null, 0),
                 'eve_title' => $this->input->post('eve_title', null, ''),
-                'eve_content' => $this->input->post('eve_content', null, ''),
-                'eve_mobile_content' => $this->input->post('eve_mobile_content', null, ''),
-                'eve_content_html_type' => $content_type,
+                'eve_start_date' => $eve_start_date,
+                'eve_end_date' => $eve_end_date,
+                'eve_activated' => $eve_activated,
                 'eve_order' => $eve_order,
+                'eve_content' => $eve_content,
             );
 
             /**
@@ -328,6 +413,8 @@ class Event extends CB_Controller
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
                     $this->{$this->modelname}->delete($val);
+
+                    $this->Event_rel_model->delete_where(array('eve_id' => $val));
                 }
             }
         }
@@ -344,6 +431,47 @@ class Event extends CB_Controller
         );
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
+        redirect($redirecturl);
+    }
+
+    public function event_in_listdelete($eve_id)
+    {
+        
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_admin_cmall_cmallitem_listupdate';
+        $this->load->event($eventname);
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('before', $eventname);
+
+        if (empty($eve_id)) {
+            show_404();
+        }
+        /**
+         * 체크한 게시물의 업데이트를 실행합니다
+         */
+        
+        $this->load->model(array('Event_rel_model'));
+
+        if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+            
+            $this->Event_rel_model->delete_event($eve_id, $this->input->post('chk'));    
+            
+        }
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('after', $eventname);
+
+        /**
+         * 업데이트가 끝난 후 목록페이지로 이동합니다
+         */
+        $this->session->set_flashdata(
+            'message',
+            '정상적으로 삭제 되었습니다'
+        );
+        $param =& $this->querystring;
+        $redirecturl = admin_url($this->pagedir.'/write/' . $eve_id. '?' . $param->output());
+
         redirect($redirecturl);
     }
 }

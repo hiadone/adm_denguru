@@ -1907,7 +1907,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_item_model','Cmall_category_model','Event_model'));
+		$this->load->model(array('Cmall_wishlist_model','Cmall_item_model','Cmall_category_model','Event_model','Board_model'));
 
 		/**
 		 * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
@@ -1943,7 +1943,7 @@ class Helptool extends CB_Controller
 			
 			// $this->Cmall_item_model->or_where($or_where);
 
-			$this->Cmall_item_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
+			$this->Board_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
 		} 
 		
 		$per_page = admin_listnum();
@@ -1954,11 +1954,11 @@ class Helptool extends CB_Controller
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
-		$this->Cmall_item_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
-		$this->Cmall_item_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-		$this->Cmall_item_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
-		$result = $this->Cmall_item_model
-			->get_admin_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
+		$this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
+		$this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+		$result = $this->Board_model
+			->get_item_list($per_page, $offset, '', '', $findex, $forder, $sfield, $skeyword);
 
 		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
 		if (element('list', $result)) {
@@ -3464,7 +3464,7 @@ class Helptool extends CB_Controller
 							            			    'cit_id' => element('cit_id', $Cmall_item),
 							            			    'brd_id' => element('brd_id', $Cmall_item),
 							            			    'cta_tag' => $value,
-							            			    // 'is_manual' => 1,
+							            			    'is_manual' => 1,
 							            			);
 							            			$this->Crawl_tag_model->insert($tagdata);
 							            		}

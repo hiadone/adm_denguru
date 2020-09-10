@@ -396,7 +396,8 @@ class Banner extends CB_Controller
 			);
 			if ($this->input->post('ban_image_del')) {
 				$updatedata['ban_image'] = '';
-			} elseif ($updatephoto) {
+			} 
+			if ($updatephoto) {
 				$updatedata['ban_image'] = $updatephoto;
 			}
 			if (element('ban_image', $getdata) && ($this->input->post('ban_image_del') OR $updatephoto)) {
@@ -608,6 +609,13 @@ class Banner extends CB_Controller
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			foreach ($this->input->post('chk') as $val) {
 				if ($val) {
+
+					 $getdata = $this->{$this->modelname}->get_one($val);
+                    
+                    if(element('ban_image', $getdata))
+                        $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/banner/' . element('ban_image', $getdata));
+
+
 					$this->Banner_group_model->delete($val);
 				}
 			}

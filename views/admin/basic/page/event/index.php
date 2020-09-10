@@ -7,7 +7,7 @@
         ?>
             <div class="box-table-header">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="?" class="btn btn-sm <?php echo ($this->input->get('eve_activated') !== 'Y' && $this->input->get('eve_activated') !== 'N') ? 'btn-success' : 'btn-default'; ?>">전체이벤트</a>
+                    <a href="?" class="btn btn-sm <?php echo ($this->input->get('eve_activated') !== 'Y' && $this->input->get('eve_activated') !== 'N') ? 'btn-success' : 'btn-default'; ?>">전체색션</a>
                     <a href="?eve_activated=Y" class="btn btn-sm <?php echo ($this->input->get('eve_activated') === 'Y') ? 'btn-success' : 'btn-default'; ?>">활성</a>
                     <a href="?eve_activated=N" class="btn btn-sm <?php echo ($this->input->get('eve_activated') === 'N') ? 'btn-success' : 'btn-default'; ?>">비활성</a>
                 </div>
@@ -15,9 +15,9 @@
                 ob_start();
                 ?>
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+                        <a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">이벤트 목록</a>
                         <button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
-                        <a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">이벤트추가</a>
+                        <a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">색션 추가</a>
                     </div>
                 <?php
                 $buttons = ob_get_contents();
@@ -39,6 +39,7 @@
                             <th>가운데정렬</th> -->
                             <th class="px100"><a href="<?php echo element('noti_order', element('sort', $view)); ?>">정렬순서</a></th>
                             <th><a href="<?php echo element('eve_activated', element('sort', $view)); ?>">활성여부</a></th>
+                            <th>상품 수</th>
                             <th>수정</th>
                             <th><input type="checkbox" name="chkall" id="chkall" /></th>
                         </tr>
@@ -59,6 +60,7 @@
                             <td><?php echo element('eve_is_center', $result) ? '가운데정렬' : ''; ?></td> -->
                             <td><?php echo element('eve_order', $result); ?></td>
                             <td><?php echo element('eve_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
+                            <td><?php echo element('eventcount', $result); ?></td>
                             <td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
                             <td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
                         </tr>

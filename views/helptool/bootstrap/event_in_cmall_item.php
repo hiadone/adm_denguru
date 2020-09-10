@@ -80,7 +80,13 @@
                                         </a>
                                     <?php } ?>
                                 </td>
-                                <td><?php echo html_escape(element('cit_name', $result)); ?></td>
+                                <td>
+                                    <?php 
+                                    
+                                        echo '<div><label class="label label-default">'.element('brd_name', $result).'</label></div>';
+                                    ?>
+                                    <?php echo html_escape(element('cit_name', $result)); ?>                                    
+                                </td>
                                 <td><?php echo html_escape(element('cit_price', $result)); ?></td>
                                 
                                 <!-- <td>

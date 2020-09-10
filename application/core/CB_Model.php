@@ -230,7 +230,10 @@ class CB_Model extends CI_Model
 		}
 
 		if ($this->where_in) {
-			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+			foreach($this->where_in as $wval){
+				$this->db->where_in(key($wval),$wval[key($wval)]);	
+			}
+			
 		}
 		if ($search_where) {
 			$this->db->where($search_where);
@@ -304,7 +307,10 @@ class CB_Model extends CI_Model
 			$this->db->like($like);
 		}
 		if ($this->where_in) {
-			$this->db->where_in(key($this->where_in),$this->where_in[key($this->where_in)]);
+			foreach($this->where_in as $wval){
+				$this->db->where_in(key($wval),$wval[key($wval)]);	
+			}
+			
 		}
 		if ($search_like) {
 			foreach ($search_like as $item) {
