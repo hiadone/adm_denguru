@@ -2275,6 +2275,7 @@ class Crawl extends CB_Controller
                                     'cit_id' => element('cit_id', $mvalue),
                                     'brd_id' => element('brd_id', $mvalue),
                                     'cta_tag' => element('cmt_tag', $mvalue),
+                                    'is_manual' => 1,
                                 );
                                 
 
@@ -2637,6 +2638,7 @@ class Crawl extends CB_Controller
                                     'cit_id' => element('cit_id', $mvalue),
                                     'brd_id' => element('brd_id', $mvalue),
                                     'cta_tag' => element('cmt_tag', $mvalue),
+                                    'is_manual' => 1,
                                 );
                                 
                                 $this->Crawl_tag_model->insert($tagdata);
