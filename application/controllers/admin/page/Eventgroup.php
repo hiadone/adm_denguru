@@ -380,6 +380,10 @@ class Eventgroup extends CB_Controller
                 /**
                  * 게시물을 새로 입력하는 경우입니다
                  */
+                
+                if ($updatephoto) {
+                    $updatedata['egr_image'] = $updatephoto;
+                }
                 $updatedata['egr_datetime'] = cdate('Y-m-d H:i:s');
                 $updatedata['egr_ip'] = $this->input->ip_address();
                 $updatedata['mem_id'] = $this->member->item('mem_id');
