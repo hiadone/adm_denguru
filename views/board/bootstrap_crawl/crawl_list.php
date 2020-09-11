@@ -181,10 +181,12 @@
                                     
                                     echo '<label class="label label-info">' . html_escape(element('cca_value', $cv)) . '</label> ';
                                     echo "<br>";
-                                    if(!empty(element(element('cca_id', $cv),element('category', $result))))
-                                    foreach (element(element('cca_id', $cv),element('category', $result)) as $cv_) {
-                                        echo '<label class="label label-primary">' . html_escape(element('cca_value', $cv_)) . '</label> ';                                                                     
-                                    } 
+                                    if(!empty(element(element('cca_id', $cv),element('category', $result)))){
+                                        foreach (element(element('cca_id', $cv),element('category', $result)) as $cv_) {
+                                            echo '<label class="label label-primary">' . html_escape(element('cca_value', $cv_)) . '</label> ';                                                                     
+                                        } 
+                                        echo "<br>";
+                                    }
                                 } 
                                 echo '</div>';
                             }
@@ -213,10 +215,12 @@
                                     
                                     echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';
                                     echo "<br>";
-                                    if(!empty(element(element('cat_id', $cv),element('attr', $result))))
-                                    foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
-                                        echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv_)) . '</label> ';                                                                     
-                                    } 
+                                    if(!empty(element(element('cat_id', $cv),element('attr', $result)))){
+                                        foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
+                                            echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv_)) . '</label> ';                                                                     
+                                        }
+                                        echo "<br>"; 
+                                    }
                                 } 
                                 echo '</div>';
                             }

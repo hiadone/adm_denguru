@@ -5,7 +5,7 @@
 denguru_uploads/
 dev_denguru_uploads/
 
-
+application/cache
 application/cache/*
 !application/cache/index.html
 !application/cache/.htaccess

@@ -105,6 +105,20 @@ class Cmallitem extends CB_Controller
             
         } 
 
+        if(!empty($this->input->get('noattr'))){            
+            
+            $this->Board_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_attr_rel B on A.cit_id = B.cit_id )','',false);
+
+            
+        } 
+
+        if(!empty($this->input->get('notag'))){            
+            
+            $this->Board_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_crawl_tag B on A.cit_id = B.cit_id )','',false);
+
+            
+        } 
+
         if(!empty($this->input->get('nocategory'))){            
             
             $this->Board_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_cmall_category_rel B on A.cit_id = B.cit_id )','',false);
@@ -221,7 +235,41 @@ class Cmallitem extends CB_Controller
             $this->Board_model->set_join(array('cmall_brand','cmall_item.cbr_id = cmall_brand.cbr_id ','inner'));
         }
 
-        
+        if($sfield === 'ckd_id' || $this->input->get('ckd_id')){
+
+
+            $skey_ = array();
+            if($this->input->get('ckd_id'))
+                $skey_ = $this->input->get('ckd_id');
+
+            if($skeyword && $sfield === 'ckd_id')
+                array_push($skey_,$skeyword);
+
+            $cbr_id_arr=array();
+            foreach($skey_ as $val){                    
+            
+                $this->db->select('ckd_id');            
+                $this->db->from('cmall_kind');
+                $this->db->where('ckd_value_kr', $val);
+                $this->db->or_where('ckd_value_en', $val);
+                $result = $this->db->get();
+                $cit_kind = $result->row_array();
+
+                $ckd_id = empty($cit_kind) ? 0 : element('ckd_id',$cit_kind);
+
+                $ckd_id_arr[] = $ckd_id;
+                
+
+                
+
+
+                // $this->db2->group_end();
+            }
+
+            $this->Board_model->set_where_in('cmall_kind_rel.ckd_id',$ckd_id_arr);
+            $this->Board_model->set_join(array('cmall_kind_rel','cmall_item.cit_id = cmall_kind_rel.cit_id ','inner'));
+        }
+
         if($sfield === 'cca_id' || $this->input->get('cca_id')){            
 
             
@@ -477,11 +525,11 @@ class Cmallitem extends CB_Controller
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
-        $search_option = array('brd_id' => '스토어 명', 'cit_name' => '상품명', 'cit_price' => '판매가격', 'cbr_id' => '브랜드', 'cca_id' => '카테고리', 'cat_id' => '특성', 'cta_id' => '태그');
+        $search_option = array('brd_id' => '스토어 명', 'cit_name' => '상품명', 'cit_price' => '판매가격', 'cbr_id' => '브랜드', 'cca_id' => '카테고리', 'cat_id' => '특성', 'cta_id' => '태그', 'ckd_id' => '견종');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);
-        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace(array('page','warning','nocategory','cit_type')));
+        $view['view']['search_url'] = admin_url($this->pagedir.'?' . $param->replace(array('page','warning','nocategory','cit_type','notag')));
         $view['view']['write_url'] = admin_url($this->pagedir . '/write');
         $view['view']['list_delete_url'] = admin_url($this->pagedir . '/listdelete/?' . $param->output());
         $view['view']['list_update_url'] = admin_url($this->pagedir . '/listupdate/?' . $param->output());

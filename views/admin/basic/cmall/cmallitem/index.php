@@ -101,6 +101,22 @@
 				
 			}
 
+			if($this->input->get('ckd_id')) {
+
+
+				$res = $this->input->get('ckd_id');
+				
+				if($res){
+				    $cat_id_arr=array();
+				    foreach ($res as $key => $value) {
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='ckd_id[]' value='".$value."'>'".$value."'</button>";
+				    }
+
+				    
+				}
+				
+			}
+
 
 			if($this->input->get('search_tag')) {
 
@@ -162,17 +178,31 @@
                     <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
                
                 </div>
-            </div>
-					<div class="btn-group pull-right" role="group" aria-label="...">
+
+                <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'vision_api_label', '선택하신 항목을 vision_api_label update ?');">vision_api_label update</div> -->
+                    <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');"><i class="fa fa-trash-o"></i>item tag overwrite</div> -->
+                    <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_update', '선택하신 항목을 item tag update ?');">tag update</div>
+                    
+                    <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'category_update', '선택하신 항목을 item category update ?');">category update</div> -->
+
+                    <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'attr_update', '선택하신 항목을 item attr update ?');">attr update</div>
+            </div>	
+
+            
+                
+            
+					<div class="pull-right">
 
 
 						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
 
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-warning btn-sm">베스트상품 목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-warning btn-sm">인기상품  목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-warning btn-sm">신상품 목록</a>						
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-primary btn-sm">베스트상품 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-primary btn-sm">인기상품  목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-primary btn-sm">신상품 목록</a>						
 						<a href="<?php echo element('search_url', $view); ?>&warning=1" class="btn btn-warning btn-sm">warning 목록</a>
 						<a href="<?php echo element('search_url', $view); ?>&nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&notag=1" class="btn btn-warning btn-sm">no 태그 목록</a>
+						<a href="<?php echo element('search_url', $view); ?>&noattr=1" class="btn btn-warning btn-sm">no 특성 목록</a>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택수정</button>
 						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
@@ -447,6 +477,21 @@
 				
 			}
 
+			if($this->input->get('ckd_id')) {
+
+
+				$res = $this->input->get('ckd_id');
+				
+				if($res){
+				    $cat_id_arr=array();
+				    foreach ($res as $key => $value) {
+				        $html .= "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='ckd_id[]' value='".$value."'>'".$value."'</button>";
+				    }
+
+				    
+				}
+				
+			}
 
 			if($this->input->get('search_tag')) {
 
@@ -505,7 +550,7 @@ $(document).on('click', 'button.where-btn', function() {
 
 $(document).on('click', '#addsearch', function() {
 
-	if($("select[name='sfield']").val() =='brd_id' ||  $("select[name='sfield']").val() =='cit_price' ||  $("select[name='sfield']").val() =='cbr_id'){
+	if($("select[name='sfield']").val() =='brd_id' ||  $("select[name='sfield']").val() =='cit_price' ||  $("select[name='sfield']").val() =='cbr_id' ||  $("select[name='sfield']").val() =='ckd_id'){
 
 		var input = "<button type='button' class='btn btn-default btn-xs where-btn'><input type='hidden' name='"+$("select[name='sfield']").val()+"[]' value='"+$("input[name='skeyword']").val()+"'>'"+$("input[name='skeyword']").val()+"'</button>";
 		
@@ -517,16 +562,17 @@ $("select[name='sfield']").change(function(e){
 	
 			board_list(1);			
 			brand_list(1);
+			kind_list(1);
 
-		if($(this).val() =='brd_id') board_list();
+		if($(this).val() =='brd_id') board_list(0);
 
-		if($(this).val() =='cbr_id') brand_list();
+		if($(this).val() =='cbr_id') brand_list(0);
 
 		if($(this).val() =='cca_id') search_category();
 
 		if($(this).val() =='cat_id') search_attr();
 
-		// if($(this).val() =='cta_id') search_tag();
+		if($(this).val() =='ckd_id') kind_list(0);
 	    	
 	    });
 
@@ -564,6 +610,18 @@ var searchboard_list = [
 	if (element('board_list', $view)) {
 	    foreach (element('board_list', $view) as $result) {	    	
 	 		echo '"'.element('brd_name',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
+
+var searchkind_list = [
+	<?php
+	if (element(0,element('kind_list', $view))) {
+	    foreach (element(0,element('kind_list', $view)) as $result) {	    	
+	 		echo '"'.element('ckd_value_kr',$result).'","'.element('ckd_value_en',$result).'",';
 		}
 	}
 	        
@@ -663,7 +721,39 @@ function brand_list(flag){
 	});
 }
 
-if($("select[name='sfield']").val() =='brd_id') board_list();
+function kind_list(flag){
+	$("input[name='skeyword']")
+	.on("keydown", function( event ) {
+	    if(event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+	        event.preventDefault();
+	    }
+	})
+	.autocomplete({  //오토 컴플릿트 시작
+	    source : searchkind_list,    // source 는 자동 완성 대상
+	    select: function(event, ui) {
+	        this.value = "";
+	        this.value = ui.item.value;
+
+	        return false;
+	    },
+	    focus : function(event, ui) {    //포커스 가면
+	        return false;//한글 에러 잡기용도로 사용됨
+	    },
+	    minLength: 1,// 최소 글자수
+	    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+	    classes: {    //잘 모르겠음
+	        "ui-autocomplete": "highlight"
+	    },
+	    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+	    disabled: flag, //자동완성 기능 끄기
+	    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+	    close : function(event){    //자동완성창 닫아질때 호출
+	        console.log(1);
+	    }
+	});
+}
+
+if($("select[name='sfield']").val() =='brd_id') board_list(0);
 
 //]]>
 </script>

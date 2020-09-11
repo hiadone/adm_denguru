@@ -163,7 +163,7 @@
 					<div class="col-sm-10">
 						<?php
 						$open = false;
-						$kind = element('all_kind', element('data', $view));
+						$kind = element(0,element('all_kind', element('data', $view)));
 						$item_kind = element('kind', element('data', $view));
 						if ($kind) {
 							$i = 0;

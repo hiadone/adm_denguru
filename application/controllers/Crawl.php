@@ -1654,6 +1654,7 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
+        if($this->input->ip_address() !== '182.162.170.75') exit;
         // if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
@@ -1713,7 +1714,13 @@ class Crawl extends CB_Controller
                 $all_attr=array();
                 $all_kind=array();
 
-                $post = $this->Post_model->get_one(element('post_id',$val));
+                $where = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+
+                if (empty($cit_id) && $this->Cmall_attr_rel_model->count_by($where)) continue;        
+
+                // $post = $this->Post_model->get_one(element('post_id',$val));
 
                 // $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
                 
@@ -1729,19 +1736,19 @@ class Crawl extends CB_Controller
                 $all_attr = $this->Cmall_attr_model->get_all_attr();
                 $all_kind = $this->Cmall_kind_model->get_all_kind();
 
-                
+
                 $crawlwhere = array(
                     'cit_id' => element('cit_id', $val),
                 );
 
         
-                $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+                $tag = $this->Crawl_tag_model->get('', '', $crawlwhere);
 
                 if ($tag && is_array($tag)) {
                     $tag_array=array();
                     foreach ($tag as $tvalue) {
-                        if (element('val_tag', $tvalue)) {
-                            array_push($tag_array,trim(element('val_tag', $tvalue)));
+                        if (element('cta_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('cta_tag', $tvalue)));
                         }
                     }
                 }
@@ -1756,7 +1763,7 @@ class Crawl extends CB_Controller
                 $is_cate = true;
 
                 $i = 0;
-                foreach($all_kind as $a_cvalue){
+                foreach(element(0,$all_kind) as $a_cvalue){
                     
                     
                         
@@ -1828,16 +1835,18 @@ class Crawl extends CB_Controller
                                 if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
                                     $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
 
-                                    
-                                    
 
+                                    if(element('cat_parent',$a_cvalue_)){
 
-                                 
+                                        $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                                        $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
 
-                                    
-
+                                        
+                                        
+                                    }
                                     
                                 }
+
                             } 
                         }
                  
@@ -1978,7 +1987,7 @@ class Crawl extends CB_Controller
                 ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
 
-        $kind_list = $this->Cmall_kind_model->get_all_kind();
+        // $kind_list = $this->Cmall_kind_model->get_all_kind();
         
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
@@ -2049,14 +2058,14 @@ class Crawl extends CB_Controller
                                 
                             }
 
-                            foreach($kind_list as $kval){
-                                if(!empty(element('ckd_value_en',$kval))) 
-                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+                            // foreach($kind_list as $kval){
+                            //     if(!empty(element('ckd_value_en',$kval))) 
+                            //         $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
 
-                                if(!empty(element('ckd_value_kr',$kval))) 
-                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                            //     if(!empty(element('ckd_value_kr',$kval))) 
+                            //         $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
                                 
-                            }
+                            // }
                             
                             foreach($this->tag_word as $word){
                                 foreach ($tag_array as $tval) {
@@ -2140,14 +2149,14 @@ class Crawl extends CB_Controller
                             
                         }
 
-                        foreach($kind_list as $kval){
-                            if(!empty(element('ckd_value_en',$kval))) 
-                                $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+                        // foreach($kind_list as $kval){
+                        //     if(!empty(element('ckd_value_en',$kval))) 
+                        //         $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
 
-                            if(!empty(element('ckd_value_kr',$kval))) 
-                                $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                        //     if(!empty(element('ckd_value_kr',$kval))) 
+                        //         $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
                             
-                        }
+                        // }
 
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {
@@ -2352,7 +2361,7 @@ class Crawl extends CB_Controller
         $result['list'] = $this->Cmall_item_model
                 ->get('', '', $where, '', '', 'cit_id', 'ASC');
 
-        $kind_list = $this->Cmall_kind_model->get_all_kind();
+        // $kind_list = $this->Cmall_kind_model->get_all_kind();
         
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val){ 
@@ -2423,14 +2432,14 @@ class Crawl extends CB_Controller
                                 
                             }
 
-                            foreach($kind_list as $kval){
-                                if(!empty(element('ckd_value_en',$kval))) 
-                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+                            // foreach($kind_list as $kval){
+                            //     if(!empty(element('ckd_value_en',$kval))) 
+                            //         $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
 
-                                if(!empty(element('ckd_value_kr',$kval))) 
-                                    $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                            //     if(!empty(element('ckd_value_kr',$kval))) 
+                            //         $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
                                 
-                            }
+                            // }
                             
                             foreach($this->tag_word as $word){
                                 foreach ($tag_array as $tval) {
@@ -2514,14 +2523,14 @@ class Crawl extends CB_Controller
                             
                         }
 
-                        foreach($kind_list as $kval){
-                            if(!empty(element('ckd_value_en',$kval))) 
-                                $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
+                        // foreach($kind_list as $kval){
+                        //     if(!empty(element('ckd_value_en',$kval))) 
+                        //         $this->tag_word[]['tgw_value'] =  element('ckd_value_en',$kval);
 
-                            if(!empty(element('ckd_value_kr',$kval))) 
-                                $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
+                        //     if(!empty(element('ckd_value_kr',$kval))) 
+                        //         $this->tag_word[]['tgw_value'] =  element('ckd_value_kr',$kval);
                             
-                        }
+                        // }
                         
                         foreach($this->tag_word as $word){
                             foreach ($tag_array as $tval) {

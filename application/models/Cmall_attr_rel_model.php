@@ -36,6 +36,7 @@ class Cmall_attr_rel_model extends CB_Model
         }
         $deletewhere = array(
             'cit_id' => $cit_id,
+            // 'is_manual' => 0,
         );
         $this->delete_where($deletewhere);
 
