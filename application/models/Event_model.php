@@ -22,6 +22,10 @@ class Event_model extends CB_Model
      */
     public $primary_key = 'eve_id'; // 사용되는 테이블의 프라이머리키
 
+    public $_select = 'eve_id,eve_start_date,eve_end_date,eve_title,eve_datetime,eve_image,eve_content,eve_activated'; // 사용되는 테이블의 프라이머리키
+
+    public $cache_prefix = 'event/event-model-get-'; // 캐시 사용시 프리픽스
+
     public $cache_time = 86400; // 캐시 저장시간
 
     function __construct()
@@ -39,13 +43,23 @@ class Event_model extends CB_Model
     }
 
 
-    public function get_today_list()
+    public function get_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
+    {   
+        // $select = $this->_select;
+        $result = $this->_get_list_common($select='', $join = '', $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop);
+        return $result;
+    }
+
+
+    public function get_today_list($egr_id)
     {
-        $cachename = 'event/event-info-' . cdate('Y-m-d');
+        $cachename = 'event/event-info-'.$egr_id.'-'. cdate('Y-m-d');
         $data = array();
         if ( ! $data = $this->cache->get($cachename)) {
+            // $this->db->select($this->_select);
             $this->db->from($this->_table);
             $this->db->where('eve_activated', 1);
+            $this->db->where('egr_id',$egr_id);
             $this->db->group_start();
             $this->db->where(array('eve_start_date <=' => cdate('Y-m-d')));
             $this->db->or_where(array('eve_start_date' => null));
@@ -124,9 +138,9 @@ class Event_model extends CB_Model
             }
         }
 
-        $this->db->select('event.*, member.mem_id, member.mem_userid, member.mem_nickname, member.mem_icon, member.mem_photo, member.mem_point');
+        // $this->db->select($this->_select);
         $this->db->from($this->_table);
-        $this->db->join('member', 'event.mem_id = member.mem_id', 'left');
+        // $this->db->join('member', 'event.mem_id = member.mem_id', 'left');
 
         if ($type === 'next') {
             $where['eve_id >'] = $post_id;
@@ -169,6 +183,43 @@ class Event_model extends CB_Model
         return $result;
     }
 
+
+    public function delete($primary_value = '', $where = '')
+    {
+        $result = parent::delete($primary_value, $where);
+        $this->cache->delete($this->cache_prefix . $primary_value);
+
+        return $result;
+    }
+
+
+    public function update($primary_value = '', $updatedata = '', $where = '')
+    {
+        $result = parent::update($primary_value, $updatedata);
+        $this->cache->delete($this->cache_prefix . $primary_value);
+
+        return $result;
+    }
+
+    public function get_one($primary_value = '', $select = '', $where = '')
+    {
+        $use_cache = false;
+        // if ($primary_value && empty($select) && empty($where)) {
+        //     $use_cache = true;
+        // }
+
+        if ($use_cache) {
+            $cachename = $this->cache_prefix . $primary_value;
+            if ( ! $result = $this->cache->get($cachename)) {
+                $result = parent::get_one($primary_value);
+                $this->cache->save($cachename, $result, $this->cache_time);
+            }
+        } else {
+            $result = parent::get_one($primary_value, $select, $where);
+        }
+        return $result;
+    }
+
     public function get_event($eve_id = 0)
     {
         $eve_id = (int) $eve_id;
@@ -181,23 +232,6 @@ class Event_model extends CB_Model
         $this->db->where(array('event_rel.eve_id' => $eve_id));
         $qry = $this->db->get($this->_table);
         $result = $qry->result_array();
-
-        return $result;
-    }
-
-    public function delete($primary_value = '', $where = '')
-    {
-        $result = parent::delete($primary_value, $where);
-        $this->cache->delete('event/event-info-' . cdate('Y-m-d'));
-
-        return $result;
-    }
-
-
-    public function update($primary_value = '', $updatedata = '', $where = '')
-    {
-        $result = parent::update($primary_value, $updatedata);
-        $this->cache->delete('event/event-info-' . cdate('Y-m-d'));
 
         return $result;
     }

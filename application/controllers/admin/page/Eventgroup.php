@@ -96,14 +96,16 @@ class Eventgroup extends CB_Controller
                     element('mem_nickname', $val),
                     element('mem_icon', $val)
                 );
-                $countwhere = array(
-                    'egr_id' => element('egr_id', $val),
-                );
+                
 
                 if (element('egr_image', $val)) {
                     $result['list'][$key]['cdn_url'] = cdn_url('eventgroup', element('egr_image', $val));
 
                 }
+
+                $countwhere = array(
+                    'egr_id' => element('egr_id', $val),
+                );
 
                 $result['list'][$key]['eventcount'] = $this->Event_model->count_by($countwhere);
                 $result['list'][$key]['num'] = $list_num--;
@@ -229,11 +231,13 @@ class Eventgroup extends CB_Controller
         $this->form_validation->set_rules($config);
         $form_validation = $this->form_validation->run();
         $file_error = '';
+        $file_error2 = '';
         $updatephoto = '';
+        $updatephoto2 = '';
 
         if ($form_validation) {
             $this->load->library('upload');
-            $this->load->library('aws_s3');
+            
             if (isset($_FILES) && isset($_FILES['egr_image']) && isset($_FILES['egr_image']['name']) && $_FILES['egr_image']['name']) {
                 $upload_path = config_item('uploads_dir') . '/eventgroup/';
                 if (is_dir($upload_path) === false) {
@@ -282,17 +286,66 @@ class Eventgroup extends CB_Controller
                     $file_error = $this->upload->display_errors();
                 }
             }
+
+            if (isset($_FILES) && isset($_FILES['egr_detail_image']) && isset($_FILES['egr_detail_image']['name']) && $_FILES['egr_detail_image']['name']) {
+                $upload_path = config_item('uploads_dir') . '/eventgroup/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('Y') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+                $upload_path .= cdate('m') . '/';
+                if (is_dir($upload_path) === false) {
+                    mkdir($upload_path, 0707);
+                    $file = $upload_path . 'index.php';
+                    $f = @fopen($file, 'w');
+                    @fwrite($f, '');
+                    @fclose($f);
+                    @chmod($file, 0644);
+                }
+
+                $uploadconfig = array();
+                $uploadconfig['upload_path'] = $upload_path;
+                $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+                $uploadconfig['max_size'] = 20 * 1024;
+                $uploadconfig['max_width'] = '2000';
+                $uploadconfig['max_height'] = '4000';
+                $uploadconfig['encrypt_name'] = true;
+
+                $this->upload->initialize($uploadconfig);
+
+                if ($this->upload->do_upload('egr_detail_image')) {
+                    $img = $this->upload->data();
+                    $updatephoto2 = cdate('Y') . '/' . cdate('m') . '/' . element('file_name', $img);
+
+                    $upload2 = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);                
+                } else {
+                    $file_error2 = $this->upload->display_errors();
+                }
+            }
         }
 
         /**
          * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
          * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
          */
-        if ($form_validation === false OR $file_error !== '') {
+        if ($form_validation === false OR $file_error !== '' OR $file_error2 !== '') {
 
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
-            $view['view']['message'] = $file_error;
+            $view['view']['message'] = $file_error . $file_error2;
 
             if ($pid) {
                 if (empty($getdata['egr_start_date']) OR $getdata['egr_start_date'] === '0000-00-00') {
@@ -371,6 +424,19 @@ class Eventgroup extends CB_Controller
                     $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_image', $getdata));
                 }
 
+                if ($this->input->post('egr_detail_image_del')) {
+                    $updatedata['egr_detail_image'] = '';
+                } 
+                if ($updatephoto2) {
+                    $updatedata['egr_detail_image'] = $updatephoto2;
+                }
+                if (element('egr_detail_image', $getdata) && ($this->input->post('egr_detail_image_del') OR $updatephoto2)) {
+                    // 기존 파일 삭제
+                    @unlink(config_item('uploads_dir') . '/eventgroup/' . element('egr_detail_image', $getdata));
+
+                    $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_detail_image', $getdata));
+                }
+
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -383,6 +449,10 @@ class Eventgroup extends CB_Controller
                 
                 if ($updatephoto) {
                     $updatedata['egr_image'] = $updatephoto;
+                }
+
+                if ($updatephoto2) {
+                    $updatedata['egr_detail_image'] = $updatephoto2;
                 }
                 $updatedata['egr_datetime'] = cdate('Y-m-d H:i:s');
                 $updatedata['egr_ip'] = $this->input->ip_address();
@@ -434,6 +504,9 @@ class Eventgroup extends CB_Controller
 
                     if(element('egr_image', $getdata))
                         $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_image', $getdata));
+
+                    if(element('egr_detail_image', $getdata))
+                        $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_detail_image', $getdata));
 
                     
                     $where = array(

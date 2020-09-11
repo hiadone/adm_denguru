@@ -303,8 +303,8 @@ $(function() {
             // eve_page: 'required',
             // eve_disable_hours: { required:true, number:true },
             eve_activated: 'required',
-            eve_order: { number:true },
-            eve_content : {<?php echo ($this->cbconfig->item('use_popup_dhtml')) ? 'required_' . $this->cbconfig->item('popup_editor_type') : 'required'; ?> : true }
+            eve_order: { number:true }
+            
         }
     });
 });

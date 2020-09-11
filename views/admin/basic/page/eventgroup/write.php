@@ -29,6 +29,24 @@
 			    </div>
 			</div>
 
+            <div class="form-group">
+                <label class="col-sm-2 control-label">상세 이미지 업로드</label>
+                <div class="col-sm-10">
+                    <?php
+                    if (element('egr_detail_image', element('data', $view))) {
+                    ?>
+                        <img src="<?php echo cdn_url('eventgroup',element('egr_detail_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
+                        <label for="egr_image_del">
+                            <input type="checkbox" name="egr_detail_image_del" id="egr_detail_image_del" value="1" <?php echo set_checkbox('egr_image_del', '0'); ?> /> 삭제
+                        </label>
+                    <?php
+                    }
+                    ?>
+                    <input type="file" name="egr_detail_image" id="egr_detail_image" />
+                    <p class="help-block">gif, jpg, png 파일 업로드가 가능합니다</p>
+                </div>
+            </div>
+
 			<div class="form-group">
 				<label class="col-sm-2 control-label">제목</label>
 				<div class="col-sm-10">

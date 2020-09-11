@@ -363,7 +363,7 @@ class Event extends CB_Controller
              * 게시물을 수정하는 경우입니다
              */
             if ($this->input->post($primary_key)) {
-                $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
+                $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata,'',$this->input->post('egr_id', null, 0));
                 $this->session->set_flashdata(
                     'message',
                     '정상적으로 수정되었습니다'
@@ -412,9 +412,13 @@ class Event extends CB_Controller
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
-                    $this->{$this->modelname}->delete($val);
 
-                    $this->Event_rel_model->delete_where(array('eve_id' => $val));
+                    $getdata = $this->{$this->modelname}->get_one($val);
+                    if(element('eve_id',$getdata)){
+                        $this->{$this->modelname}->delete($val,'',element('egr_id',$getdata));
+
+                        $this->Event_rel_model->delete_where(array('eve_id' => $val));
+                    }
                 }
             }
         }
