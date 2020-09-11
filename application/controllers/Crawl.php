@@ -50,6 +50,11 @@ class Crawl extends CB_Controller
     {
         parent::__construct();
 
+        ini_set('memory_limit','-1');
+
+        ini_set('max_execution_time','86400');
+        ini_set('max_input_time','86400');
+
         /**
          * 라이브러리를 로딩합니다
          */
