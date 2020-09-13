@@ -1748,9 +1748,9 @@ class Crawl extends CB_Controller
 
         
                 $tag = $this->Crawl_tag_model->get('', '', $crawlwhere);
-
+                $tag_array=array();
                 if ($tag && is_array($tag)) {
-                    $tag_array=array();
+                    
                     foreach ($tag as $tvalue) {
                         if (element('cta_tag', $tvalue)) {
                             array_push($tag_array,trim(element('cta_tag', $tvalue)));

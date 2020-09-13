@@ -42,7 +42,7 @@ class Make_cache extends CB_Controller
      */
     
 
-    public function lists_get()
+    public function lists()
     {   
         $this->make_brd_tags_cache();
         $this->make_brd_attr_cache();
