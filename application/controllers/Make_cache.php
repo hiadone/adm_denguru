@@ -171,6 +171,7 @@ class Make_cache extends CB_Controller
         $this->db->order_by('cit_order', 'asc');
         $qry = $this->db->get('board');
         $result = $qry->result_array();
+        check_cache_dir('cmall');
         $this->cache->save($cachename, $result, $cache_minute);
         
         return $result;
