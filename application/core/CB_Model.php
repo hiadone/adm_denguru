@@ -158,8 +158,8 @@ class CB_Model extends CI_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						// $swordarray = explode(' ', $skeyword);
-						$swordarray[] = $skeyword;
+						$swordarray = explode('abcdef', $skeyword);
+						
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -179,8 +179,8 @@ class CB_Model extends CI_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					// $swordarray = explode(' ', $skeyword);
-					$swordarray[] = $skeyword;
+					$swordarray = explode('abcdef', $skeyword);
+					
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;

@@ -1215,7 +1215,7 @@ class Crawl extends CB_Controller
         $eventname = 'event_crawl_index';
         $this->load->event($eventname);
 
-        if($this->input->ip_address() !== '182.162.170.75') exit;
+        if(empty($cit_id) && $this->input->ip_address() !== '182.162.170.75') exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;
@@ -1650,8 +1650,9 @@ class Crawl extends CB_Controller
     }
     
 
-    public function crawling_attr_update($post_id=0,$brd_id = 0,$cit_id = 0)
+    public function crawling_attr_update_bak($post_id=0,$brd_id = 0,$cit_id = 0)
     {
+
 
         // 이벤트 라이브러리를 로딩합니다
         $eventname = 'event_crawl_index';
@@ -1659,7 +1660,7 @@ class Crawl extends CB_Controller
 
         $is_admin = $this->member->is_admin();
 
-        if($this->input->ip_address() !== '182.162.170.75') exit;
+        if(empty($cit_id) && $this->input->ip_address() !== '182.162.170.75') exit;
         // if(empty($is_admin)) exit;
 
         $post_id = (int) $post_id;
@@ -1861,6 +1862,288 @@ class Crawl extends CB_Controller
                     
                 }
 
+                if(!empty($cmall_attr)){
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' =>0
+                    );
+
+                    $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+
+                    $manualwhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' => 1,
+                    );
+                    if($this->Cmall_attr_rel_model->count_by($manualwhere)) continue;        
+                    
+                    $this->Cmall_attr_rel_model->save_attr(element('cit_id',$val), $cmall_attr);    
+
+                    
+                }
+
+// print_r2($cmall_kind);
+                // $crawl_tag_arr = $this->Crawl_tag_model->get('','',array('cit_id' => element('cit_id',$val)));
+
+                // foreach($crawl_tag_arr as $t_value){
+                    
+                //     array_push($crawl_tag_text,element('cta_tag',$t_value));
+                // }
+
+
+               
+
+                
+
+                
+
+
+                // $deletewhere = array(
+                //     'cit_id' => element('cit_id',$val),
+                // );
+
+                // $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+
+                // foreach($all_attr as $a_cvalue){
+                    
+                //     foreach($a_cvalue as $a_cvalue_){
+                        
+                        
+                //         if(empty(element('cat_text',$a_cvalue_))) continue; 
+
+                //         if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$crawl_tag_text)){
+                //             $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+
+                //             if(element('cat_parent',$a_cvalue_)){
+                //                 $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                //                 $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
+                //             }
+
+                            
+                //         }
+                                            
+                //     }
+                    
+                    
+                // }
+                // if($cmall_attr){                                      
+                //     $this->Cmall_attr_rel_model->save_attr(element('cit_id',$val), $cmall_attr);    
+
+                // }
+                
+
+            }
+        }
+
+    
+    }
+
+    public function crawling_attr_update($post_id=0,$brd_id = 0,$cit_id = 0)
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_crawl_index';
+        $this->load->event($eventname);
+
+        $is_admin = $this->member->is_admin();
+
+        if(empty($cit_id) && $this->input->ip_address() !== '182.162.170.75') exit;
+        // if(empty($is_admin)) exit;
+
+        $post_id = (int) $post_id;
+        $brd_id = (int) $brd_id;
+        $cit_id = (int) $cit_id;
+        if ((empty($post_id) OR $post_id < 1) && (empty($brd_id) OR $brd_id < 1)) {
+            show_404();
+        }
+
+        
+
+
+
+        
+
+        // $crawlwhere = array(
+        //     'brd_id' => $brd_id,
+        // );
+
+        $where = array();
+        $board = $this->board->item_all($brd_id);
+        if ( ! element('brd_id', $board)) {
+            show_404();
+        }
+
+        
+        if($post_id){
+            $where['post_id'] = $post_id;
+           
+        } 
+
+        
+        if($brd_id){
+            $where['brd_id'] = $brd_id;
+        } 
+        
+
+        if($cit_id){
+            $where['cit_id'] = $cit_id;
+            
+        }
+
+        $result['list'] = $this->Cmall_item_model
+                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+
+        
+        
+        
+
+        
+
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val){ 
+                
+
+                
+                $all_attr=array();
+                $all_kind=array();
+
+                $where = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+
+                if (empty($cit_id) && $this->Cmall_attr_rel_model->count_by($where)) continue;        
+
+                // $post = $this->Post_model->get_one(element('post_id',$val));
+
+                // $category = $this->Board_group_category_model->get_category_info(1, element('post_category', $post));
+                
+                // if($category)
+                //     $c_category[] = $category['bca_value'];
+                // if(element('bca_parent', $category)){
+                //     $category = $this->Board_group_category_model->get_category_info(1, element('bca_parent', $category));    
+                //     $c_category[] = $category['bca_value'];
+                // }
+                
+                
+                
+                $all_attr = $this->Cmall_attr_model->get_all_attr();
+                $all_kind = $this->Cmall_kind_model->get_all_kind();
+
+
+                $crawlwhere = array(
+                    'cit_id' => element('cit_id', $val),
+                );
+
+        
+                
+                $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
+                $tag_array=array();
+                $tag_array2=array();
+                if ($tag && is_array($tag)) {
+                    
+                    foreach ($tag as $tvalue) {
+                        if (element('val_tag', $tvalue)) {
+                            array_push($tag_array,trim(element('val_tag', $tvalue)));
+                        }
+                    }
+                }
+                array_push($tag_array2,trim(element('cit_name', $val)));
+
+                $cmall_attr= $cmall_kind =array();
+                
+                $crawl_tag_text=array();
+
+
+                $updatedata = array();
+                $is_cate = true;
+
+                $i = 0;
+                foreach(element(0,$all_kind) as $a_cvalue){
+                    
+                    
+                        
+                        
+                        $a_cvalue['ckd_text'] = element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
+
+                
+
+                                         
+                        foreach ($tag_array as $tval) {
+                            $i++;
+                            if(element('ckd_text',$a_cvalue)){
+                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,3)){
+
+                        //             if(element('ckd_size', $a_cvalue) === "4") $ckd_size = "소형견";
+                        // elseif(element('ckd_size', $a_cvalue) === "5") $ckd_size = "중형견";
+                        // elseif(element('ckd_size', $a_cvalue) === "6") $ckd_size =  "대형견";
+                                    $cmall_attr[element('ckd_size', $a_cvalue)] = element('ckd_size', $a_cvalue);
+                                    $cmall_attr[1] = 1;
+
+                                    
+                                    
+                                    
+
+                                    
+
+                                    
+                                }
+                            } 
+                        }
+                 
+                                            
+                    
+                    
+                    
+                }
+
+                
+
+
+                
+                foreach(element(1,$all_attr) as $a_cvalue_){
+                    
+                    
+                        if(element('cat_value',$a_cvalue_) == '전체') continue;
+                        
+                        $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);
+
+                        // if(!empty($cmall_kind))
+                        //     $a_cvalue_['cat_text'] .=','.implode(',',$cmall_kind);
+
+
+
+                                         
+                        foreach ($tag_array2 as $tval) {
+                            $i++;
+                            if(element('cat_text',$a_cvalue_)){
+                                if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
+                                    // echo element('cat_text',$a_cvalue_) ."//".$tval;
+                                    // echo "<br>";
+                                    // echo element('cat_id',$a_cvalue_);
+                                    // echo "<br>";
+                                    $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+
+
+                                    if(element('cat_parent',$a_cvalue_)){
+
+                                        $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                                        $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
+
+                                        
+                                        
+                                    }
+                                    
+                                }
+
+                            } 
+                        
+                 
+                    }                                            
+                    
+                    
+                    
+                }
+
+// print_r2($cmall_attr);
                 if(!empty($cmall_attr)){
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
@@ -2321,7 +2604,7 @@ class Crawl extends CB_Controller
         $is_admin = $this->member->is_admin();
 
 
-        if($this->input->ip_address() !== '182.162.170.75') exit;
+        if(empty($cit_id) && $this->input->ip_address() !== '182.162.170.75') exit;
 
         $post_id = (int) $post_id;
         $brd_id = (int) $brd_id;

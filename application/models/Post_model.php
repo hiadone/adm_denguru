@@ -55,7 +55,7 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						$swordarray = explode(' ', $skeyword);
+						$swordarray = explode('abcdef', $skeyword);
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -75,7 +75,7 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					$swordarray = explode(' ', $skeyword);
+					$swordarray = explode('abcdef', $skeyword);
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;
@@ -209,7 +209,7 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						$swordarray = explode(' ', $skeyword);
+						$swordarray = explode('abcdef', $skeyword);
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -229,7 +229,7 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					$swordarray = explode(' ', $skeyword);
+					$swordarray = explode('abcdef', $skeyword);
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;
@@ -302,7 +302,7 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						// $swordarray = explode(' ', $skeyword);
+						// $swordarray = explode('abcdef', $skeyword);
 						$swordarray[] = $skeyword;
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
@@ -323,7 +323,7 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					// $swordarray = explode(' ', $skeyword);
+					// $swordarray = explode('abcdef', $skeyword);
 					$swordarray[] = $skeyword;
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
@@ -495,7 +495,7 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						$swordarray = explode(' ', $skeyword);
+						$swordarray = explode('abcdef', $skeyword);
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -515,7 +515,7 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					$swordarray = explode(' ', $skeyword);
+					$swordarray = explode('abcdef', $skeyword);
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;
@@ -599,7 +599,7 @@ class Post_model extends CB_Model
 					if (in_array($ssf, $this->search_field_equal)) {
 						$search_where[$ssf] = $skeyword;
 					} else {
-						$swordarray = explode(' ', $skeyword);
+						$swordarray = explode('abcdef', $skeyword);
 						foreach ($swordarray as $str) {
 							if (empty($ssf)) {
 								continue;
@@ -619,7 +619,7 @@ class Post_model extends CB_Model
 				if (in_array($ssf, $this->search_field_equal)) {
 					$search_where[$ssf] = $skeyword;
 				} else {
-					$swordarray = explode(' ', $skeyword);
+					$swordarray = explode('abcdef', $skeyword);
 					foreach ($swordarray as $str) {
 						if (empty($ssf)) {
 							continue;

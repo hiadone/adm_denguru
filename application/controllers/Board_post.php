@@ -1356,8 +1356,9 @@ class Board_post extends CB_Controller
 
 			if($sfield === 'cit_name'){
 
-		        // $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+		        // $this->Cmall_item_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
 			    
+
 			}
 
 
@@ -1879,11 +1880,12 @@ class Board_post extends CB_Controller
 
 			if($sfield === 'cit_name'){
 
-		        // $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+		        $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
 			    
 			}
 
 
+			
 			
 
 			if($sfield === 'cta_tag'){

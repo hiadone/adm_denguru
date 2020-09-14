@@ -124,7 +124,7 @@ foreach (element('notcategory_count', $view) as $val)
 						<select class="form-control pull-left px100" name="sfield">							
 							<option value="post_title" <?php echo ($this->input->get('sfield') === 'post_title') ? ' selected="selected" ' : ''; ?>>제목</option>
 							<option value="cit_name" <?php echo ($this->input->get('sfield') === 'cit_name') ? ' selected="selected" ' : ''; ?>>상품명</option>							
-							<option value="cca_value" <?php echo ($this->input->get('sfield') === 'cca_value') ? ' selected="selected" ' : ''; ?>>카테고리</option>
+							<!-- <option value="cca_value" <?php echo ($this->input->get('sfield') === 'cca_value') ? ' selected="selected" ' : ''; ?>>카테고리</option> -->
 							<option value="cta_tag" <?php echo ($this->input->get('sfield') === 'cta_tag') ? ' selected="selected" ' : ''; ?>>태그</option>
 							<option value="cat_value" <?php echo ($this->input->get('sfield') === 'cat_value') ? ' selected="selected" ' : ''; ?>>특성</option>
 							
