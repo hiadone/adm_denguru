@@ -3356,7 +3356,7 @@ class Helptool extends CB_Controller
 							            			    'cit_id' => element('cit_id', $c_value),
 							            			    'brd_id' => element('brd_id', $c_value),
 							            			    'cta_tag' => $value,
-							            			    // 'is_manual' => 1,
+							            			    'is_manual' => 1,
 							            			);
 							            			$this->Crawl_tag_model->insert($tagdata);
 							            		}

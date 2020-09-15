@@ -1471,7 +1471,7 @@ class Cmallitem extends CB_Controller
                                         'cit_id' => $pid,
                                         'brd_id' => $this->input->post('brd_id', null, ''),
                                         'cta_tag' => $value,
-                                        // 'is_manual' => 1,
+                                        'is_manual' => 1,
                                     );
                                     $this->Crawl_tag_model->insert($tagdata);
                                 
