@@ -3716,6 +3716,12 @@ class Postact extends CB_Controller
             
         }
         
+        $deletewhere = array(
+            'cit_id' => element('cit_id', $cmail_item),
+            'is_manual' => 1,
+        );
+        $this->Crawl_tag_model->delete_where($deletewhere);
+        
         $where = array(
             'cit_id' => element('cit_id', $cmail_item),
         );
