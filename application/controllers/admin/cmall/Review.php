@@ -600,7 +600,7 @@ class Review extends CB_Controller
 			$param =& $this->querystring;
 			$redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
-			// redirect($redirecturl);
+			redirect($redirecturl);
 		}
 	}
 

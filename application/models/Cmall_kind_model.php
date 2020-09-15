@@ -32,7 +32,7 @@ class Cmall_kind_model extends CB_Model
     {
         $cachename = 'cmall-kind-all';
         if ( ! $result = $this->cache->get($cachename)) {
-            $return = $this->get($primary_value = '', $select = '', $where = '', $limit = '', $offset = 0, $findex = 'ckd_order', $forder = 'asc');
+            $return = $this->get($primary_value = '', $select = '', $where = '', $limit = '', $offset = 0, $findex = 'ckd_id', $forder = 'asc');
             if ($return) {
                 foreach ($return as $key => $value) {
                     $result[$value['ckd_parent']][] = $value;

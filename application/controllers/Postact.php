@@ -3653,7 +3653,7 @@ class Postact extends CB_Controller
 
 
         
-        $this->load->model(array('Crawl_delete_tag_model','Crawl_tag_model','Cmall_item_model'));
+        $this->load->model(array('Crawl_delete_tag_model','Crawl_tag_model','Cmall_item_model','Crawl_manual_tag_model'));
 
         $crawltagwhere = array(
 			'cit_id' => $cit_id,
@@ -3716,8 +3716,38 @@ class Postact extends CB_Controller
             
         }
         
-        
+        $where = array(
+            'cit_id' => element('cit_id', $cmail_item),
+        );
+        $manual_tag = $this->Crawl_manual_tag_model->get('','',$where);     
        	
+       	foreach($manual_tag as $tval){
+       		$value = trim(element('cmt_tag',$tval));
+       		if ($value) {
+       		    
+
+       		    $countwhere = array(
+       		        'post_id' => element('post_id',$tval),
+       		        'cit_id' => element('cit_id',$tval),
+       		        'brd_id' => element('brd_id',$tval),
+       		        'cdt_tag' => $value,
+       		    );
+       		    $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+       		    if(!element('cdt_id',$dtag)){       		        
+       		            
+       		            $tagdata = array(
+       		                'post_id' => element('post_id',$tval),
+       		                'cit_id' => element('cit_id',$tval),
+       		                'brd_id' => element('brd_id',$tval),
+       		                'cta_tag' => $value,
+       		                // 'is_manual' => 1,
+       		            );
+       		            $this->Crawl_tag_model->insert($tagdata);
+       		        
+       		    }
+       		}
+       	}
         
         $result = array('success' => '저장되었습니다');
                 exit(json_encode($result));
