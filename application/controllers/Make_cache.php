@@ -90,8 +90,8 @@ class Make_cache extends CB_Controller
                 $cachetime = 86400;
                 $data = array();
 
-                $this->load->model(array('Crawl_tag_model'));
-                $result = $this->Crawl_tag_model->get_popular_tags(element('brd_id',$val), 10);
+                $this->load->model(array('Cmall_item_model'));
+                $result = $this->Cmall_item_model->get_popular_tags(element('brd_id',$val), 10);
 
                 $data['result'] = $result;
                 $data['cached'] = '1';
@@ -123,8 +123,8 @@ class Make_cache extends CB_Controller
                 $cachetime = 86400;
                 $data = array();
 
-                $this->load->model(array('Cmall_attr_model'));
-                $result = $this->Cmall_attr_model->get_popular_attr(element('brd_id',$val), 10);
+                $this->load->model(array('Cmall_item_model'));
+                $result = $this->Cmall_item_model->get_popular_attr(element('brd_id',$val), 10);
 
                 $data['result'] = $result;
                 $data['cached'] = '1';
