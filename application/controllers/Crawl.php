@@ -3467,6 +3467,7 @@ class Crawl extends CB_Controller
                     if($crawl_type==='update'){
                         $this->crawling_update(0,element('brd_id', $val));
                         $this->crawling_category_update(0,element('brd_id', $val));
+                        $this->crawling_tag_overwrite(0,element('brd_id', $val));
                     } 
 
                     if($crawl_type==='overwrite'){

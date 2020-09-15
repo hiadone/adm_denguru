@@ -56,7 +56,7 @@ class Make_cache extends CB_Controller
         $this->make_cit_latest_cache($config);
 
         $config = array(
-            'cit_type2' => '2',
+            'cit_type2' => '1',
             'limit' => '20',
             'cache_minute' => 86400,
             // 'select' => $select,
@@ -158,12 +158,11 @@ class Make_cache extends CB_Controller
             $where['cit_type4'] = 1;
         }
         $limit = element('limit', $config) ? element('limit', $config) : 4;
-        $select = element('select', $config) ? element('select', $config) : $this->Board_model->_select;
 
-        $cachename = 'cmall/main-' . element('cit_type1', $config) . '-' . $limit . '-' . cdate('Y-m-d');
+        $cachename = 'latest/cit-' . element('cit_type1', $config).element('cit_type2', $config).element('cit_type3', $config).element('cit_type4', $config) . '-' . $limit . '-' . cdate('Y-m-d');
 
         
-        $this->db->select($select);
+        
         $this->db->join('cmall_item', 'board.brd_id = cmall_item.brd_id', 'inner');
         $this->db->join('cmall_brand', 'cmall_item.cbr_id = cmall_brand.cbr_id', 'inner');
         $this->db->where($where);
