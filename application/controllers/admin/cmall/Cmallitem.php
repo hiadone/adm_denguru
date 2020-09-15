@@ -664,6 +664,7 @@ class Cmallitem extends CB_Controller
 
             $getdata['postlist'] = $this->Post_model->get_post_list('','',array('brd_id' => element('brd_id',$getdata)));
 
+            $brand_text = array();
             if(element('cbr_id', $getdata))
                 $brand_text = $this->Cmall_brand_model->get_one(element('cbr_id', $getdata));
 
