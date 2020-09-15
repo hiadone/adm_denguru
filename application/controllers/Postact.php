@@ -3741,7 +3741,7 @@ class Postact extends CB_Controller
        		                'cit_id' => element('cit_id',$tval),
        		                'brd_id' => element('brd_id',$tval),
        		                'cta_tag' => $value,
-       		                // 'is_manual' => 1,
+       		                'is_manual' => 1,
        		            );
        		            $this->Crawl_tag_model->insert($tagdata);
        		        
