@@ -1635,4 +1635,14 @@ if ( ! function_exists('event_image_url')) {
     }
 }
 
-
+if (!function_exists('unicode_encode')) {
+    function unicode_encode($str) {
+        return substr(json_encode($str), 1, -1);
+    }
+}
+ 
+if (!function_exists('unicode_decode')) {
+    function unicode_decode($str) {
+        return json_decode(sprintf('"%s"', $str));
+    }
+}

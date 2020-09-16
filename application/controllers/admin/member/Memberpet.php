@@ -191,9 +191,36 @@ class Memberpet extends CB_Controller
             $getdata = $this->{$this->modelname}->get_one($pid);
             $where = array(
                 'pet_id' => $pid,
-            );            
+            );   
+            $getdata['mem_userid'] = element('mem_userid',$this->Member_model->get_by_memid(element('mem_id',$getdata),'mem_userid'));
+
+            $pet_kind_text = array();
+            if(element('pet_kind', $getdata))
+                $pet_kind_text = $this->Cmall_kind_model->get_kind_info(element('pet_kind', $getdata));
+
+            
+            if(element('ckd_value_kr',$pet_kind_text))
+                $getdata['pet_kind_text']  = element('ckd_value_kr',$pet_kind_text);
+            else            
+                $getdata['pet_kind_text']  = '';  
+
+            $pet_attr = $this->Pet_attr_model->get_attr(element('pet_id',$getdata));            
+            
+            if ($pet_attr) {
+                foreach ($pet_attr as $akey => $aval) {
+                    $getdata['pet_attr'][] = $aval['pat_id'];
+                }
+            }
+            
+            $pet_allergy_rel = $this->Pet_allergy_model->get_allergy(element('pet_id',$getdata));       
+
+            if ($pet_allergy_rel) {
+                foreach ($pet_allergy_rel as $akey => $aval) {
+                    $getdata['pet_allergy_rel'][] = $aval['pag_id'];
+                }
+            }
         }
-        $getdata['mem_userid'] = element('mem_userid',$this->Member_model->get_by_memid(element('mem_id',$getdata),'mem_userid'));
+        
 
         
         /**
@@ -212,7 +239,7 @@ class Memberpet extends CB_Controller
             array(
                 'field' => 'mem_userid',
                 'label' => '회원아이디',
-                'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[20]|is_checked[member_userid.mem_userid]',
+                'rules' => 'trim|required|min_length[3]|max_length[20]|is_checked[member_userid.mem_userid]',
             ),
             array(
                 'field' => 'pet_name',
@@ -369,7 +396,7 @@ class Memberpet extends CB_Controller
 
             
             $view['view']['config']['pet_form'] = element(2,$pet_attr);
-            $view['view']['config']['pet_kind'] = $this->Cmall_kind_model->get_all_kind();
+            $view['view']['config']['pet_kind'] = element(0,$this->Cmall_kind_model->get_all_kind());
             $view['view']['config']['pet_attr'] = element(1,$pet_attr);
             $view['view']['config']['pet_age'] = element(3,$pet_attr);;
             
@@ -410,9 +437,23 @@ class Memberpet extends CB_Controller
             $pet_sex = $this->input->post('pet_sex') ? $this->input->post('pet_sex') : 0;
             $pet_neutral = $this->input->post('pet_neutral') ? $this->input->post('pet_neutral') : 0;
             $pet_weight = $this->input->post('pet_weight') ? $this->input->post('pet_weight') : 0;
+            $pet_attr = $this->input->post('pet_attr', null, '');
             $pet_form = $this->input->post('pet_form') ? $this->input->post('pet_form') : 0;
-            $pet_attr = $this->input->post('pet_attr') ? implode(",",$this->input->post('pet_attr')) : '';
-            $pet_allergy = $this->input->post('pet_allergy') ? $this->input->post('pet_allergy') : 0;
+            $pet_allergy = $this->input->post('pet_allergy') ? $this->input->post('pet_allergy') : 0;            
+            $pet_allergy_rel = $this->input->post('pet_allergy_rel', null, '');
+
+            
+
+            if($this->input->post('pet_kind_text',null,'')){
+                $this->db->select('ckd_id');            
+                $this->db->from('cmall_kind');
+                $this->db->where('ckd_value_kr', $this->input->post('pet_kind_text',null,''));
+                $this->db->or_where('ckd_value_en', $this->input->post('pet_kind_text',null,''));
+                $result = $this->db->get();
+                $cmall_kind = $result->row_array();
+            }
+
+            $pet_kind = empty($cmall_kind) ? 0 : element('ckd_id',$cmall_kind);
 
             $updatedata = array(
                 'mem_id' => $mem_id,
@@ -421,10 +462,9 @@ class Memberpet extends CB_Controller
                 'pet_sex' => $pet_sex,
                 'pet_neutral' => $pet_neutral,
                 'pet_weight' => $pet_weight,                
-                'pet_form' => $pet_form,                
-                'pet_attr' => $pet_attr,
                 'pet_allergy' => $pet_allergy,
-                'pet_profile_content' => $this->input->post('pet_profile_content', null, ''),
+                'pet_form' => $pet_form,
+                'pet_kind' => $pet_kind,
                 
             );
 
@@ -467,6 +507,8 @@ class Memberpet extends CB_Controller
                 $pet_id = $this->input->post($primary_key);
                 $this->{$this->modelname}->update($pet_id, $updatedata);
                 
+                $this->Pet_allergy_rel_model->save_attr($pet_id, $pet_allergy_rel);
+                $this->Pet_attr_rel_model->save_attr($pet_id, $pet_attr);
 
                 $this->session->set_flashdata(
                     'message',
@@ -479,6 +521,9 @@ class Memberpet extends CB_Controller
                 $updatedata['pet_register_datetime'] = cdate('Y-m-d H:i:s');
 
                 $pet_id = $this->{$this->modelname}->insert($updatedata);
+
+                $this->Pet_allergy_rel_model->save_attr($pet_id, $pet_allergy_rel);
+                $this->Pet_attr_rel_model->save_attr($pet_id, $pet_attr);
 
                 $this->session->set_flashdata(
                     'message',

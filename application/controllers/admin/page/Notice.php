@@ -579,7 +579,10 @@ class Notice extends CB_Controller
             }
         }
 
-        
+        $this->session->set_flashdata(
+            'message',
+            '정상적으로 발송되었습니다'
+        );
 
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());

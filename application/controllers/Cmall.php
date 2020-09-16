@@ -287,6 +287,10 @@ class Cmall extends CB_Controller
 			alert('이 상품은 현재 판매하지 않습니다');
 		}
 
+		if (element('cit_is_del', $data)) {
+			alert('이 상품은 trash 상태입니다.');
+		}
+
 		$data['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $data));
 		$data['detail'] = $this->Cmall_item_detail_model->get_all_detail(element('cit_id', $data));
 		
@@ -1873,6 +1877,10 @@ class Cmall extends CB_Controller
 			alert_close('존재하지 않는 상품입니다');
 		}
 
+		if (element('cit_is_del', $item)) {
+			alert('이 상품은 trash 상태입니다.');
+		}
+
 		/**
 		 * 수정 페이지일 경우 기존 데이터를 가져옵니다
 		 */
@@ -2637,6 +2645,10 @@ class Cmall extends CB_Controller
 		$item = $this->Cmall_item_model->get_one($cit_id);
 		if ( ! element('cit_id', $item) OR ! element('cit_status', $item)) {
 			alert_close('존재하지 않는 상품입니다');
+		}
+
+		if (element('cit_is_del', $item)) {
+			alert('이 상품은 trash 상태입니다.');
 		}
 
 		/**

@@ -478,7 +478,7 @@ class Cmallitem extends CB_Controller
 
                 
                 if(element('cbr_id', $val)){
-                    $cmall_brand = $this->Cmall_brand_model->get_one(element('cbr_id', $val));
+                    $cmall_brand = $this->Cmall_brand_model->get_brand_info(element('cbr_id', $val));
                 
 
                 if(element('cbr_value_kr',$cmall_brand))
@@ -1557,13 +1557,13 @@ class Cmallitem extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
 
-            if ($this->input->post($primary_key)) {
-                redirect(current_url(), 'refresh');
-            } else {
+            // if ($this->input->post($primary_key)) {
+            //     redirect(current_url(), 'refresh');
+            // } else {
                 $param =& $this->querystring;
                 $redirecturl = admin_url($this->pagedir . '?' . $param->output());
                 redirect($redirecturl);
-            }
+            // }
         }
     }
 

@@ -52,8 +52,10 @@
 					<label class="col-sm-2 control-label">펫 체형</label>
 					<div class="col-sm-10">
 						<div class="input-group">						
-						<?php foreach(element('pet_form',element('config',$view)) as $key => $val){ ?>
-							<input type="radio" name="pet_form" value="<?php echo element('pat_id',$val) ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == $key ? true : false)); ?> /> <?php echo element('pat_value',$val) ?>
+						<?php foreach(element('pet_form',element('config',$view)) as $key => $val){ 
+
+							?>
+							<input type="radio" name="pet_form" value="<?php echo element('pat_id',$val) ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == element('pat_id',$val) ? true : false)); ?> /> <?php echo element('pat_value',$val) ?>
 						<?php } ?>
 						
 						</div>
@@ -64,24 +66,85 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label">펫 품종</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" name="pet_kind" value="<?php echo set_value('pet_kind', element('pet_kind', element('data', $view))); ?>" />
+					<input type="text" class="form-control" name="pet_kind_text" value="<?php echo set_value('pet_kind_text', element('pet_kind_text', element('data', $view))); ?>" />
+
+					
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="col-sm-2 control-label">펫 특징</label>
 				<div class="col-sm-10">
-					<div class="input-group">
-					<?php 
+					<?php
+					$open = false;
+					$attr = element('pet_attr',element('config',$view));
+
 					
-					foreach(element('pet_attr',element('config',$view)) as $key => $val){ 
-						echo '<div class="col-sm-2"><input type="checkbox" name="pet_attr[]" value="'.element('pat_id',$val).'" '.set_checkbox('pet_attr', $key, (in_array($key,explode(',',element('pet_attr', element('data', $view)))) ? true : false)).' /> '.element('pat_value',$val) .'</div>';
+
+					$item_attr = element('pet_attr', element('data', $view));
+
+					if ($attr) {
+						$i = 0;
+						foreach ($attr as $key => $val) {
+							$display = (is_array($item_attr) && in_array(element('pat_id', $val), $item_attr)) ? "block" : 'none';
+							if ($i%5== 0) {
+								echo '<div>';
+								$open = true;
+							}
+							echo '<div class="checkbox checkbox-inline" style="vertical-align:top;">';
+							$pat_checked = (is_array($item_attr) && in_array(element('pat_id', $val), $item_attr)) ? 'checked="checked"' : '';
+							echo '<label for="pat_id_' . element('pat_id', $val) . '"><input type="checkbox" name="pet_attr[]" value="' . element('pat_id', $val) . '" ' . $pat_checked . ' id="pat_id_' . element('pat_id', $val) . '" onclick="display_pet_attr(this.checked,\'cattrwrap_' . element('pat_id', $val) . '\');" />' . element('pat_value', $val) . '</label> ';
+							// echo get_subattr($attr, $item_attr, element('pat_id', $val), $display);
+							echo '</div>';
+							if ($i%5== 4) {
+								echo '</div>';
+								$open = false;
+							}
+							$i++;
+						}
+						if ($open) {
+							echo '</div>';
+							$open = false;
+						}
 					}
+					function get_subattr($attr, $item_attr, $key, $display)
+					{
+
+						$subcat = element($key, $attr);
+						$html = '';
+						if ($subcat) {
+							$html .= '<div class="form-group" id="cattrwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
+							foreach ($subcat as $skey => $sval) {
+								$display = (is_array($item_attr) && in_array(element('pat_id', $sval), $item_attr)) ? 'block' : 'none';
+								$pat_checked = (is_array($item_attr) && in_array(element('pat_id', $sval), $item_attr)) ? 'checked="checked"' : '';
+								$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
+								$html .= '<label for="pat_id_' . element('pat_id', $sval) . '"><input type="checkbox" name="pet_attr[]" value="' . element('pat_id', $sval) . '" ' . $pat_checked . ' id="pat_id_' . element('pat_id', $sval) . '" onclick="display_pet_attr(this.checked,\'cattrwrap_' . element('pat_id', $sval) . '\');" /> ' . element('pat_value', $sval) . '</label>';
+								$html .= get_subattr($attr, $item_attr, element('pat_id', $sval), $display);
+								$html .= '</div>';
+							}
+							$html .= '</div>';
+						}
+						return $html;
+					}
+
 					?>
-					
-					</div>
+					<script type="text/javascript">
+					//<![CDATA[
+					function display_pet_attr(check, idname) {
+						// if (check === true) {
+						// 	$('#' + idname).show();
+						// } else {
+						// 	$('#' + idname).hide();
+						// 	$('#' + idname).find('input:checkbox').attr('checked', false);
+						// }
+					}
+					//]]>
+					</script>
 				</div>
 			</div>
+			
+
+			
 			
 			<div class="form-group">
 				
@@ -98,6 +161,75 @@
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">펫 알레르기 세부사항</label>
+				<div class="col-sm-10">
+					<?php
+					$open = false;
+					$allergy = element('pet_allergy_rel',element('config',$view));
+
+					
+
+					$item_allergy = element('pet_allergy_rel', element('data', $view));
+					if (element(0, $allergy)) {
+						$i = 0;
+						foreach (element(0, $allergy) as $key => $val) {
+							$display = (is_array($item_allergy) && in_array(element('pag_id', $val), $item_allergy)) ? "block" : 'none';
+							if ($i%3== 0) {
+								echo '<div>';
+								$open = true;
+							}
+							echo '<div class="checkbox " style="vertical-align:top;">';
+							$pag_checked = (is_array($item_allergy) && in_array(element('pag_id', $val), $item_allergy)) ? 'checked="checked"' : '';
+							echo '<label for="pag_id_' . element('pag_id', $val) . '"><input type="checkbox" name="pet_allergy_rel[]" value="' . element('pag_id', $val) . '" ' . $pag_checked . ' id="pag_id_' . element('pag_id', $val) . '" onclick="display_pet_allergy(this.checked,\'callergywrap_' . element('pag_id', $val) . '\');" />' . element('pag_value', $val) . '</label> ';
+							echo get_suballergy($allergy, $item_allergy, element('pag_id', $val), $display);
+							echo '</div>';
+							if ($i%3== 2) {
+								echo '</div>';
+								$open = false;
+							}
+							$i++;
+						}
+						if ($open) {
+							echo '</div>';
+							$open = false;
+						}
+					}
+					function get_suballergy($allergy, $item_allergy, $key, $display)
+					{
+
+						$subcat = element($key, $allergy);
+						$html = '';
+						if ($subcat) {
+							$html .= '<div class="form-group" id="callergywrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
+							foreach ($subcat as $skey => $sval) {
+								$display = (is_array($item_allergy) && in_array(element('pag_id', $sval), $item_allergy)) ? 'block' : 'none';
+								$pag_checked = (is_array($item_allergy) && in_array(element('pag_id', $sval), $item_allergy)) ? 'checked="checked"' : '';
+								$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
+								$html .= '<label for="pag_id_' . element('pag_id', $sval) . '"><input type="checkbox" name="pet_allergy_rel[]" value="' . element('pag_id', $sval) . '" ' . $pag_checked . ' id="pag_id_' . element('pag_id', $sval) . '" onclick="display_pet_allergy(this.checked,\'callergywrap_' . element('pag_id', $sval) . '\');" /> ' . element('pag_value', $sval) . '</label>';
+								$html .= get_suballergy($allergy, $item_allergy, element('pag_id', $sval), $display);
+								$html .= '</div>';
+							}
+							$html .= '</div>';
+						}
+						return $html;
+					}
+
+					?>
+					<script type="text/javascript">
+					//<![CDATA[
+					function display_pet_allergy(check, idname) {
+						if (check === true) {
+							$('#' + idname).show();
+						} else {
+							$('#' + idname).hide();
+							$('#' + idname).find('input:checkbox').attr('checked', false);
+						}
+					}
+					//]]>
+					</script>
+				</div>
+			</div>
 			
 			<div class="form-group">
 					<label class="col-sm-2 control-label">메인 펫 </label>
@@ -162,7 +294,9 @@
 		<?php echo form_close(); ?>
 	</div>
 </div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
@@ -174,5 +308,52 @@ $(function() {
 		}
 	});
 });
+
+
+var searchSource = [
+	<?php
+	if (element('pet_kind',element('config',$view))) {
+	    foreach (element('pet_kind', element('config', $view)) as $result) {
+	 		echo '"'.element('ckd_value_kr',$result).'","'.element('ckd_value_en',$result).'",';
+		}
+	}
+	        
+	?>
+	"========" 
+]; // 배열 형태로 
+
+
+$("input[name='pet_kind_text']")
+.on("keydown", function( event ) {	
+    if((event.keyCode === $.ui.keyCode.ENTER || event.keyCode === $.ui.keyCode.TAB) && $(this).autocomplete("instance").menu.active) {
+        event.preventDefault();
+    }
+})
+.autocomplete({  //오토 컴플릿트 시작
+    source : searchSource,    // source 는 자동 완성 대상
+    select: function(event, ui) {
+        this.value = "";
+        this.value = ui.item.value;
+
+        return false;
+    },
+    focus : function(event, ui) {    //포커스 가면
+        return false;//한글 에러 잡기용도로 사용됨
+    },
+    minLength: 1,// 최소 글자수
+    autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+    classes: {    //잘 모르겠음
+        "ui-autocomplete": "highlight"
+    },
+    delay: 100,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//            disabled: true, //자동완성 기능 끄기
+    position: { my : "right top", at: "right bottom" },    //잘 모르겠음
+    close : function(event){    //자동완성창 닫아질때 호출
+        console.log(1);
+    }
+});
+        
+    
+
 //]]>
 </script>

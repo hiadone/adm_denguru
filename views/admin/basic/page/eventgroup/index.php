@@ -35,6 +35,7 @@
 							<th>작성일</a></th>
 							<th>이벤트 상세 색션 수</th>
 							<th>이벤트 색션 추가</th>
+							<th>알림발송</th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
@@ -57,6 +58,7 @@
 							<td><?php echo display_datetime(element('egr_datetime', $result), 'full'); ?></td>
 							<td><?php echo (int) element('faqcount', $result); ?></td>
 							<td><a href="<?php echo admin_url('page/event'); ?>/write/?egr_id=<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-primary btn-xs">색션 추가</a></td>
+							<td><a href="<?php echo admin_url($this->pagedir); ?>/notification_send/<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-danger btn-xs">발송</a></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>

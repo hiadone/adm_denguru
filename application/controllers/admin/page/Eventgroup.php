@@ -550,4 +550,82 @@ class Eventgroup extends CB_Controller
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
         redirect($redirecturl);
     }
+
+    public function notification_send($pid)
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_admin_page_notice_write';
+        $this->load->event($eventname);
+
+        $view = array();
+        $view['view'] = array();
+
+        // 이벤트가 존재하면 실행합니다
+        $view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+        /**
+         * 프라이머리키에 숫자형이 입력되지 않으면 에러처리합니다
+         */
+        
+        $pid = (int) $pid;
+        if (empty($pid) OR $pid < 1) {
+            show_404();
+        }
+        
+        
+
+        /**
+         * 수정 페이지일 경우 기존 데이터를 가져옵니다
+         */
+        
+        
+        $getdata = $this->{$this->modelname}->get_one($pid);
+     
+        $this->load->library('notificationlib');
+        $this->load->model('member_model','Notification_model');
+
+        $result = $this->Member_model   
+            ->get_admin_list();
+        if (element('list', $result)) {
+            foreach (element('list', $result) as $key => $val) {
+                $countwhere = array(
+                    'target_mem_id' => element('mem_id', $val),
+                    'not_type' => 'event',
+                    'not_content_id' => element('egr_id',$getdata),
+                    
+                );
+                if($this->Notification_model->count_by($countwhere)) continue;
+
+                $egr_file ='';
+                if(element('is_image',$getdata))
+                    $egr_file =  cdn_url('eventgroup', element('egr_image', $getdata));
+
+                $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+                $not_url = $protocol.'://api.denguru.kr/event/post/'.element('egr_id', $getdata); 
+
+                $this->notificationlib->set_noti(
+                    1,
+                    element('mem_id', $val),
+                    'event',
+                    element('egr_id',$getdata),
+                    element('egr_content',$getdata),
+                    $not_url,
+                    $egr_file,
+                );
+            }
+        }
+
+        $this->session->set_flashdata(
+            'message',
+            '정상적으로 발송되었습니다'
+        );
+
+        $param =& $this->querystring;
+        $redirecturl = admin_url($this->pagedir . '?' . $param->output());
+        
+        redirect($redirecturl);
+        
+        
+    }
 }

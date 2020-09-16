@@ -104,6 +104,8 @@ class Cmall_category_model extends CB_Model
 		if (!empty($where)) 
 			$this->db->where($where);
 
+		$this->db->where(array('cit_is_del' =>0));				
+		
 		// $this->db->where(array('cmall_category.cca_parent' => 0));
 		// $this->db->where_in('cmall_category_rel.cca_id' , array(6,7,8,9,10,11,12,13));
 		

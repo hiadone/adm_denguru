@@ -36,6 +36,7 @@ class Cmall_item_model extends CB_Model
 	public function get_latest($config)
 	{
 		$where['cit_status'] = 1;
+		$where['cit_is_del'] = 0;
 		if (element('cit_type1', $config)) {
 			$where['cit_type1'] = 1;
 		}
@@ -286,7 +287,7 @@ class Cmall_item_model extends CB_Model
 		$this->db->group_by($group_by);
 		$this->db->select($group_by.',count(*) as rownum');
 		
-
+		$this->db->where(array('cit_is_del' =>0));				
 		
 		// if ($or_where) {
 		// 	$this->db->group_start();
@@ -317,6 +318,7 @@ class Cmall_item_model extends CB_Model
         if($brd_id)
             $this->db->where('cmall_item.brd_id', $brd_id);
         $this->db->where('cit_status', 1);
+        $this->db->where('cit_is_del', 0);
         $this->db->group_by('cta_tag');
         $this->db->order_by('cnt', 'desc');
         if ($limit) {
@@ -339,6 +341,7 @@ class Cmall_item_model extends CB_Model
         if($brd_id)
             $this->db->where('cmall_item.brd_id', $brd_id);
         $this->db->where('cit_status', 1);
+        $this->db->where('cit_is_del', 0);
         $this->db->group_by('cat_value');
         $this->db->order_by('cnt', 'desc');
         if ($limit) {
