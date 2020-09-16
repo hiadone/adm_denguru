@@ -4083,7 +4083,8 @@ class Crawl extends CB_Controller
             preg_match_all($pattern, $str, $match);
             $crw_category1 = implode('', $match[0]);
             
-            $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
+            // $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
+            $crw_category1 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
 
             $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
 
@@ -4093,7 +4094,8 @@ class Crawl extends CB_Controller
             preg_match_all($pattern, $str, $match);
             $crw_category2 = implode('', $match[0]);
             
-            $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
+            // $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
+            $crw_category2 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
 
             $str='';
             $str = $this->input->post('crw_category2');
@@ -4101,7 +4103,8 @@ class Crawl extends CB_Controller
             preg_match_all($pattern, $str, $match);
             $crw_category3 = implode('', $match[0]);
             
-            $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
+            // $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
+            $crw_category3 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
 
 
             
@@ -4398,7 +4401,7 @@ class Crawl extends CB_Controller
                     // preg_match_all($pattern, $str, $match);
 
                     $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
-                    $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                    $updatedata['crw_category' . $k] = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
                     // $updatedata['crw_category' . $k] = implode('', $match[0]);
                     
                 }
@@ -4479,7 +4482,7 @@ class Crawl extends CB_Controller
                         // preg_match_all($pattern, $str, $match);
                         $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
 
-                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                        $updatedata['crw_category' . $k] = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
                     // }
                 }
            
