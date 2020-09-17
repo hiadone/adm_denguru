@@ -95,7 +95,7 @@
 							$return .= '					<button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/delete/' . element('cca_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
 						}
 
-						$return .= '<button class="ckd_text" style="display:none;">'.html_escape(element('cca_text', $result)).'</button>';
+						$return .= '<button class="ckd_text" >'.html_escape(element('cca_text', $result)).'</button>';
 						$return .= '	</div><div class="form-inline mod-cca-id-' . element('cca_id', $result) . '" style="display:none;">';
 						$return .= form_open(current_full_url(), $attributes);
 						$return .= '<input type="hidden" name="cca_id"	value="' . element('cca_id', $result) . '" />

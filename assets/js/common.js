@@ -1051,9 +1051,9 @@ if (typeof(COMMON_JS) === 'undefined') {
                 } else if (data.success) {
                     alert(data.success);
                     if (data.url) {
-                        // document.location.href=data.url;
+                        document.location.href=data.url;
                     } else {
-                        // document.location.reload();
+                        document.location.reload();
                     }
                 }
             }

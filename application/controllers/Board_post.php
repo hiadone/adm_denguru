@@ -872,7 +872,7 @@ class Board_post extends CB_Controller
 				$view['view']['crawl_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/update');
 				// $view['view']['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/overwrite');
 				$view['view']['crawl_attr_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/attr_update');
-				$view['view']['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_update');
+				$view['view']['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_overwrite');
 				// $view['view']['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/tag_overwrite');
 				$view['view']['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('post_id', $post).'/post/vision_api_label');
 
@@ -1323,6 +1323,7 @@ class Board_post extends CB_Controller
 		$where = array(
 			'cmall_item.brd_id' => $this->board->item_key('brd_id', $brd_key),
 			'cmall_item.post_id' => $post_id,
+			'cmall_item.cit_is_del' => 0,
 		);
 		
 		if(!empty($this->input->get('warning'))){
@@ -2356,7 +2357,7 @@ class Board_post extends CB_Controller
 				$return['crawl_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/update');
 				// $return['crawl_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/overwrite');
 				$return['crawl_attr_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/attr_update');
-				$return['crawl_tag_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_update');
+				$return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
 				// $return['crawl_tag_overwrite'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/tag_overwrite');
 				$return['vision_api_label'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/vision_api_label');
 				$return['crawl_category_update'] = base_url('crawl/crawling_item_update/'.element('brd_id', $board).'/board/category_update');

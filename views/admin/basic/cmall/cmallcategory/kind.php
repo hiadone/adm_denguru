@@ -105,7 +105,7 @@
                                 <button class="btn btn-primary btn-xs" onClick="ckd_modify(\'' . element('ckd_id', $result) . '\')"><span class="glyphicon glyphicon-edit"></span></button>';
                         
                         $return .= '                    <button class="btn btn-danger btn-xs btn-one-delete" data-one-delete-url = "' . admin_url('cmall/cmallcategory/kind_delete/' . element('ckd_id', $result)) . '"><span class="glyphicon glyphicon-trash"></span></button>';
-                        $return .= '<button class="ckd_text" style="display:none;">'.html_escape(element('ckd_text', $result)).'</button>';
+                        $return .= '<button class="ckd_text" >'.html_escape(element('ckd_text', $result)).'</button>';
                         $return .= '    </div><div class="form-inline mod-ckd-id-' . element('ckd_id', $result) . '" style="display:none;">';
                         $return .= form_open(current_full_url(), $attributes);
                         $return .= '<input type="hidden" name="ckd_id"  value="' . element('ckd_id', $result) . '" />
