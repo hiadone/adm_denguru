@@ -1840,10 +1840,11 @@ class Crawl extends CB_Controller
                     
                 }
 
+                
                 foreach(element(0,$all_kind) as $a_cvalue){
                     
-                    
-                        
+
+                        if(!in_array(element('ckd_size',$a_cvalue),$cmall_attr)) continue;
                         
                         $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
 
@@ -1874,7 +1875,7 @@ class Crawl extends CB_Controller
                     
                     
                 }
-
+                
                 if(!empty($cmall_kind)){
                     $deletewhere = array(
                         'cit_id' => element('cit_id',$val),
@@ -2762,7 +2763,7 @@ class Crawl extends CB_Controller
                                                 array_push($translate_text,element('tgw_value',$word));       
                                         }     
                                     } else {
-                                        if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
+                                        if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?\-?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
                                             if(!in_array(element('tgw_value',$word),$translate_text))
                                                 array_push($translate_text,element('tgw_value',$word));       
                                         }     
@@ -2853,7 +2854,7 @@ class Crawl extends CB_Controller
                                             array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 } else {
-                                    if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
+                                    if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?\-?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
                                         if(!in_array(element('tgw_value',$word),$translate_text))
                                             array_push($translate_text,element('tgw_value',$word));       
                                     }     
@@ -3556,7 +3557,7 @@ class Crawl extends CB_Controller
                         if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value))
                             return true;
                     } else {
-                        if($c_value === $t_value || preg_match("/[\s?\[?]".preg_quote($c_value,'/')."[\]?\s?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?]".preg_quote($c_value,'/')."$/i",$t_value))
+                        if($c_value === $t_value || preg_match("/[\s?\[?\-?]".preg_quote($c_value,'/')."[\]?\s?\-?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?\-?]".preg_quote($c_value,'/')."$/i",$t_value))
                          return true;
                     }
                     
@@ -3611,7 +3612,7 @@ class Crawl extends CB_Controller
                         // echo $t_value."//".$c_value;
                         // echo "<br>";
                         
-                        if($c_value === $t_value || preg_match("/[\s?\[?]".preg_quote($c_value,'/')."[\]?\s?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?]".preg_quote($c_value,'/')."$/i",$t_value)){
+                        if($c_value === $t_value || preg_match("/[\s?\[?\-?]".preg_quote($c_value,'/')."[\]?\s?\-?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?\-?]".preg_quote($c_value,'/')."$/i",$t_value)){
                              return true;
                         }
                     }
@@ -3707,7 +3708,7 @@ class Crawl extends CB_Controller
 
 
 
-                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
+                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?\-?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?\-?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
@@ -3741,7 +3742,7 @@ class Crawl extends CB_Controller
                         // if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
 
-                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
+                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?\-?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?\-?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
@@ -3805,7 +3806,7 @@ class Crawl extends CB_Controller
                         
                     } else {
                         
-                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
+                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?\-?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?\-?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
                         // return element('cbr_id',$value);
@@ -3834,7 +3835,7 @@ class Crawl extends CB_Controller
                         
                     } else {
                         
-                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
+                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?\-?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?\-?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
                         // return element('cbr_id',$value);
