@@ -368,7 +368,7 @@ class CB_Model extends CI_Model
 
 	public function update($primary_value = '', $updatedata = '', $where = '')
 	{
-		if ( ! empty($updatedata)) {
+		if ( ! empty($updatedata) && (!empty($primary_value) || !empty($where))) {
 			if ( ! empty($primary_value)) {
 				$this->db->where($this->primary_key, $primary_value);
 			}

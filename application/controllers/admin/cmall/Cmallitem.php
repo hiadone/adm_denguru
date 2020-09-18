@@ -1414,9 +1414,9 @@ class Cmallitem extends CB_Controller
                             $this->Crawl_delete_tag_model->insert($tagdata);
 
                             $deletewhere = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
+                                // 'post_id' => $this->input->post('post_id', null, ''),
                                 'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                // 'brd_id' => $this->input->post('brd_id', null, ''),
                                 'cta_tag' => $value,
                                 
                             );

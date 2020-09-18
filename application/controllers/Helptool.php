@@ -2887,9 +2887,9 @@ class Helptool extends CB_Controller
 							            if ($value) {
 
 							            	$deletewhere = array(
-	            						        'post_id' => element('post_id', $c_value),
+	            						        // 'post_id' => element('post_id', $c_value),
 	            	            	            'cit_id' => element('cit_id', $c_value),
-	            	            	            'brd_id' => element('brd_id', $c_value),
+	            	            	            // 'brd_id' => element('brd_id', $c_value),
 	            	            	            'cta_tag' => $value,
 	            						        
 	            						    );
@@ -2964,9 +2964,9 @@ class Helptool extends CB_Controller
 							            if ($value) {
 
 	            						    $deletewhere = array(
-	            						        'post_id' => element('post_id', $Cmall_item),
+	            						        // 'post_id' => element('post_id', $Cmall_item),
 	            	            	            'cit_id' => $val,
-	            	            	            'brd_id' => element('brd_id', $Cmall_item),
+	            	            	            // 'brd_id' => element('brd_id', $Cmall_item),
 	            	            	            'cta_tag' => $value,
 	            						        
 	            						    );
