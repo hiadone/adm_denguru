@@ -173,7 +173,7 @@
                     <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
                     <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
                     <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
-                    
+                    <div class="item" onClick="post_multi_change_attr();"><i class="fa fa-tags"></i> 특성변경</div>
                     <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
                     <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
                
@@ -309,36 +309,38 @@
 		                    <td>
 		                        <textarea name="cdt_tag[<?php echo element('cit_id', $result); ?>]" id="cdt_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;width:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_deletetag', $result)); ?></textarea>
 		                        </td>
-							
-							<td>
+							<td style="width:130px;">
 								<?php 
 								    if(element('attr', $result)){
-								        echo '<div>';
+								        echo '<div style="overflow:auto; height:150px;">';
 								        foreach (element(0,element('attr', $result)) as $cv) { 
 								            
 								            echo '<label class="label label-info">' . html_escape(element('cat_value', $cv)) . '</label> ';
 								            echo "<br>";
 								            if(!empty(element(element('cat_id', $cv),element('attr', $result))))
 								            foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
-								                echo '<label class="label label-primary">' . html_escape(element('cat_value', $cv_)) . '</label> ';                                                                     
+								            	$label_primary = 'label-primary';
+								            	if(element('cat_id', $cv_) ==='4') $label_primary = 'label-danger';
+								            	if(element('cat_id', $cv_) ==='5') $label_primary = 'label-warning';
+								            	if(element('cat_id', $cv_) ==='6') $label_primary = 'label-success';
+								                echo '<label class="label '.$label_primary.'">' . html_escape(element('cat_value', $cv_)) . '</label> ';
+								                if(element(element('cat_id', $cv_),element('kind', $result))){
+								                	echo "<br>";
+									                foreach (element(element('cat_id', $cv_),element('kind', $result)) as $kv) {
+									                	echo '<label class="label '.$label_primary.'">' . html_escape(element('ckd_value_kr', $kv)) . '</label> ';
+									                }
+									                echo "<br>";
+								            	}
+								                
+
 								            } 
+								            echo "<br>";
 								        } 
 								        echo '</div>';
 								    }
 								?>
-
-								 <?php 
-								    if(element('kind', $result)){
-								        echo '<div>';
-								        foreach (element('kind', $result) as $cv) { 
-								            
-								            echo '<label class="label label-danger">' . html_escape(element('ckd_value_kr', $cv)) . '</label> ';
-								        } 
-								        echo '</div>';
-								    }
-								?>
-
 							</td>
+							
 							<td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>

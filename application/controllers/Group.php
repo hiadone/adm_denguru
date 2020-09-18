@@ -80,7 +80,7 @@ class Group extends CB_Controller
 			'brd_search' => 1,
 		);
 		$board_id = $this->Board_model->get_board_list($where);
-		$board_list = array();
+		$board_list = $search_list = array();
 		if ($board_id && is_array($board_id)) {
 			foreach ($board_id as $key => $val) {
 

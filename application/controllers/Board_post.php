@@ -1445,8 +1445,16 @@ class Board_post extends CB_Controller
 					
 				}
 
-				$result['list'][$key]['kind'] = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
+				
 
+				$kind = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
+                
+                if($kind){
+                    foreach($kind as $kval){
+                        $result['list'][$key]['kind'][element('ckd_size',$kval)][]=array('ckd_id' => element('ckd_id',$kval),'ckd_value_kr'=>element('ckd_value_kr',$kval));
+                    }
+                }
+                
 				if(element('cbr_id', $val))
 					$cmall_brand = $this->Cmall_brand_model->get_one(element('cbr_id', $val));
 
@@ -1683,7 +1691,7 @@ class Board_post extends CB_Controller
 		}
 
 
-		if($this->uri->segment(1) ==='board' && ($this->input->get('warning') || $this->input->get('no'))){
+		if($this->uri->segment(1) ==='board' && ($this->input->get('warning') || $this->input->get('notcategory'))){
 			$per_page=9999;
 			$offset = 0;
 		}

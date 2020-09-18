@@ -3702,6 +3702,191 @@ class Helptool extends CB_Controller
 		}
 	}
 
+	public function post_change_kind($post_id = '')
+	{
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_helptool_post_change_category';
+		$this->load->event($eventname);
+
+		$is_admin = $this->member->is_admin();
+
+		if ($is_admin === false) {
+			alert('접근권한이 없습니다');
+			return false;
+		}
+
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_attr_model','Cmall_attr_rel_model','Cmall_item_model'));
+
+		$post_id_list = '';
+		if ($this->input->post('chk_post_id')) {
+			$post_id_list = '';
+			$chk_post_id = $this->input->post('chk_post_id');
+			foreach ($chk_post_id as $val) {
+				if (empty($post_id)) {
+					$post_id = $val;
+				}
+				$post_id_list .= $val . ',';
+			}
+		} elseif ($post_id) {
+			$post_id_list = $post_id;
+		}
+		if ($this->input->post('post_id_list')) {
+			$post_id_list = $this->input->post('post_id_list');
+		}
+		$view['view']['post_id_list'] = $post_id_list;
+
+		$cit_id_list = '';
+		if ($this->input->post('chk')) {
+			$cit_id_list = '';
+			$chk_cit_id = $this->input->post('chk');
+			foreach ($chk_cit_id as $val) {
+				if (empty($cit_id)) {
+					$cit_id = $val;
+				}
+				$cit_id_list .= $val . ',';
+			}
+		}
+		if ($this->input->post('cit_id_list')) {
+			$cit_id_list = $this->input->post('cit_id_list');
+		}
+
+
+		$view['view']['cit_id_list'] = $cit_id_list;
+
+
+		$post = $this->Post_model->get_one($post_id);
+		$board = $this->board->item_all(element('brd_id', $post));
+
+		$view['view']['post'] = $post;
+		$view['view']['board'] = $board;
+
+		$config = array(
+			array(
+				'field' => 'is_submit',
+				'label' => '체크',
+				'rules' => 'trim',
+			),
+		);
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules($config);
+		$form_validation = $this->form_validation->run();
+
+		/**
+		 * 유효성 검사를 하지 않는 경우, 또는 유효성 검사에 실패한 경우입니다.
+		 * 즉 글쓰기나 수정 페이지를 보고 있는 경우입니다
+		 */
+		if ($form_validation === false OR ! $this->input->post('is_submit')) {
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
+
+			
+			
+			
+			$view['view']['data']['all_attr'] = $this->Cmall_attr_model->get_all_attr();
+
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+			/**
+			 * 레이아웃을 정의합니다
+			 */
+			$page_title = element('brd_name', $board) . ' > 특성 변경';
+			$layoutconfig = array(
+				'path' => 'helptool',
+				'layout' => 'layout_popup',
+				'skin' => 'post_change_attr',
+				'layout_dir' => $this->cbconfig->item('layout_helptool'),
+				'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+				'skin_dir' => $this->cbconfig->item('skin_helptool'),
+				'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+				'page_title' => $page_title,
+			);
+			$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+			$this->data = $view;
+			$this->layout = element('layout_skin_file', element('layout', $view));
+			$this->view = element('view_skin_file', element('layout', $view));
+
+		} else {
+			
+			// 이벤트가 존재하면 실행합니다
+			$view['view']['event']['formruntrue'] = Events::trigger('formruntrue', $eventname);
+			$cmall_attr = $this->input->post('cmall_attr', null, '');
+			if ($post_id_list) {
+				$arr = explode(',', $post_id_list);
+				if ($arr) {
+					$arrsize = count($arr);
+					for ($k= $arrsize-1; $k>= 0; $k--) {
+						$post_id = element($k, $arr);
+						if (empty($post_id)) {
+							continue;
+						}
+						
+						
+						$postwhere['post_id'] = $post_id;
+						
+
+
+						
+						
+
+
+						
+
+
+
+						$Cmall_item = $this->Cmall_item_model
+						    ->get('', 'cit_id', $postwhere, '', '');
+
+						foreach ($Cmall_item as $c_key => $c_value) {
+
+						    $this->Cmall_attr_rel_model->save_attr(element('cit_id', $c_value), $cmall_attr,1);
+						}
+						
+
+						
+
+						// $post = $this->Post_model->get_one($post_id);
+						// $board = $this->board->item_all(element('brd_id', $post));
+
+
+						// $chk_post_attr = $this->input->post('chk_post_attr', null, '');
+
+						// $postupdate = array(
+						// 	'post_attr' => $chk_post_attr,
+						// );
+						// $this->Post_model->update($post_id, $postupdate);
+					}
+				}
+			}
+
+			if ($cit_id_list) {
+				$arr = explode(',', $cit_id_list);
+				if ($arr) {					
+					
+					foreach($arr as $val){
+					
+						if (empty($val)) {
+							continue;
+						}
+						
+
+
+						$this->Cmall_attr_rel_model->save_attr($val, $cmall_attr,1);
+						
+					}
+				
+				}
+			}
+			alert_refresh_close('특성이 변경되었습니다');
+		}
+	}
 
 	public function search_category($post_id = '')
 	{

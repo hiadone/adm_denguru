@@ -1124,4 +1124,14 @@ if (typeof(COMMON_JS) === 'undefined') {
         f.action = cb_url + '/helptool/post_change_attr';
         f.submit();
     }
+
+    function post_multi_change_kind() {
+        var f = document.fboardlist;
+        var sub_win = window.open('', 'change_kind', 'left=100, top=100, width=620, height=500, scrollbars=1');
+
+        f.target = 'change_kind';
+        f.method = 'post';
+        f.action = cb_url + '/helptool/post_change_kind';
+        f.submit();
+    }
 }

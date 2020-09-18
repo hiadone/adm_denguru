@@ -402,8 +402,13 @@ class Cmallitem extends CB_Controller
                     
                 }
 
-                $result['list'][$key]['kind'] = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
-
+                $kind = $this->Cmall_kind_model->get_kind(element('cit_id', $val));
+                
+                if($kind){
+                    foreach($kind as $kval){
+                        $result['list'][$key]['kind'][element('ckd_size',$kval)][]=array('ckd_id' => element('ckd_id',$kval),'ckd_value_kr'=>element('ckd_value_kr',$kval));
+                    }
+                }
                 
                 
 
