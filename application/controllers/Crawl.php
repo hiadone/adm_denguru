@@ -132,7 +132,7 @@ class Crawl extends CB_Controller
 
         $brdwhere = array(
                 'crawl_item.brd_id' => $brd_id,
-                
+                // 'crawl_item.crw_goods_code' => '1000002185',
         );
 
         if(!empty($post_id)) $brdwhere['crawl_item.post_id'] = $post_id ;
@@ -705,10 +705,21 @@ class Crawl extends CB_Controller
                 }
 
                 if($flag){
-                    echo element('cit_id',$c_value);
-                    echo "<br>";
-                    $this->board->delete_cmall(element('cit_id',$c_value));
+
+                    if(element('cit_updated_datetime', $c_value)){
+                        if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
+                            echo element('cit_id',$c_value);
+                            echo "<br>";
+                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                            // $this->board->delete_cmall(element('cit_id',$c_value));
+                        }
+                    }
+                    
+                    
+                
                 }
+
+                
                 
             }
         } elseif($brd_id){
@@ -742,15 +753,18 @@ class Crawl extends CB_Controller
                 }
 
                 if($flag){
- 
-                    if (( ctimestamp() - strtotime(element('cit_updated_datetime', $item)) > 168 * 3600)) {
-                        echo element('cit_id',$c_value);
-                        echo "<br>";
-                        $this->board->delete_cmall(element('cit_id',$c_value));
-                    }
 
+                    if(element('cit_updated_datetime', $c_value)){
+                        if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
+                            echo element('cit_id',$c_value);
+                            echo "<br>";
+                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                            // $this->board->delete_cmall(element('cit_id',$c_value));
+                        }
+                    }
                     
                     
+                
                 }
             }
 
@@ -1650,7 +1664,7 @@ class Crawl extends CB_Controller
     }
     
 
-    public function crawling_attr_update_bak($post_id=0,$brd_id = 0,$cit_id = 0)
+    public function crawling_attr_update($post_id=0,$brd_id = 0,$cit_id = 0)
     {
 
 
@@ -1769,61 +1783,6 @@ class Crawl extends CB_Controller
                 $is_cate = true;
 
                 $i = 0;
-                foreach(element(0,$all_kind) as $a_cvalue){
-                    
-                    
-                        
-                        
-                        $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
-
-                
-
-                                         
-                        foreach ($tag_array as $tval) {
-                            $i++;
-                            if(element('ckd_text',$a_cvalue)){
-                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,3)){
-                                    $cmall_kind[element('ckd_id',$a_cvalue)] = element('ckd_id',$a_cvalue);
-
-                                    
-                                    
-
-
-                                 
-
-                                    
-
-                                    
-                                }
-                            } 
-                        }
-                 
-                                            
-                    
-                    
-                    
-                }
-
-                if(!empty($cmall_kind)){
-                    $deletewhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' =>0
-                    );
-
-                    $this->Cmall_kind_rel_model->delete_where($deletewhere);   
-
-                    $manualwhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' => 1,
-                    );
-                    if($this->Cmall_kind_rel_model->count_by($manualwhere)) continue;        
-                    
-                    $this->Cmall_kind_rel_model->save_kind(element('cit_id',$val), $cmall_kind);    
-
-                    
-                }
-                
-
 
                 foreach($all_attr as $a_cvalue){
                     
@@ -1881,6 +1840,59 @@ class Crawl extends CB_Controller
                     
                 }
 
+                foreach(element(0,$all_kind) as $a_cvalue){
+                    
+                    
+                        
+                        
+                        $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
+
+                
+
+                                         
+                        foreach ($tag_array as $tval) {
+                            $i++;
+                            if(element('ckd_text',$a_cvalue)){
+                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,3)){
+                                    $cmall_kind[element('ckd_id',$a_cvalue)] = element('ckd_id',$a_cvalue);
+
+                                    
+                                    
+
+
+                                 
+
+                                    
+
+                                    
+                                }
+                            } 
+                        }
+                 
+                                            
+                    
+                    
+                    
+                }
+
+                if(!empty($cmall_kind)){
+                    $deletewhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' =>0
+                    );
+
+                    $this->Cmall_kind_rel_model->delete_where($deletewhere);   
+
+                    $manualwhere = array(
+                        'cit_id' => element('cit_id',$val),
+                        'is_manual' => 1,
+                    );
+                    if($this->Cmall_kind_rel_model->count_by($manualwhere)) continue;        
+                    
+                    $this->Cmall_kind_rel_model->save_kind(element('cit_id',$val), $cmall_kind);    
+
+                    
+                }
 // print_r2($cmall_kind);
                 // $crawl_tag_arr = $this->Crawl_tag_model->get('','',array('cit_id' => element('cit_id',$val)));
 
@@ -1937,7 +1949,7 @@ class Crawl extends CB_Controller
     
     }
 
-    public function crawling_attr_update($post_id=0,$brd_id = 0,$cit_id = 0)
+    public function crawling_attr_update_bak($post_id=0,$brd_id = 0,$cit_id = 0)
     {
 
         // 이벤트 라이브러리를 로딩합니다
@@ -2744,17 +2756,18 @@ class Crawl extends CB_Controller
                                     }
                                     
                                     if(count($arr_str) > 2 || $s2flag){
-                                    
-                                        if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+
+                                        if(preg_match("/".preg_quote(element('tgw_value',$word),'/')."/i",$tval)){
                                             if(!in_array(element('tgw_value',$word),$translate_text))
                                                 array_push($translate_text,element('tgw_value',$word));       
                                         }     
                                     } else {
-                                        if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                        if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
                                             if(!in_array(element('tgw_value',$word),$translate_text))
                                                 array_push($translate_text,element('tgw_value',$word));       
                                         }     
                                     }
+                                    
                                     // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
                                     // if(count($arr_str) > 2){
                                     //     if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
@@ -2833,14 +2846,14 @@ class Crawl extends CB_Controller
 
                                 }
                                 
-                                if(count($arr_str) > 2 || $s2flag){                                    
-                                
-                                    if(strpos(strtolower(str_replace(" ","",$tval)),strtolower(str_replace(" ","",element('tgw_value',$word)))) !== false ){
+                                if(count($arr_str) > 2 || $s2flag){
+
+                                    if(preg_match("/".preg_quote(element('tgw_value',$word),'/')."/i",$tval)){
                                         if(!in_array(element('tgw_value',$word),$translate_text))
                                             array_push($translate_text,element('tgw_value',$word));       
                                     }     
                                 } else {
-                                    if(strtolower(str_replace(" ","",$tval)) === strtolower(str_replace(" ","",element('tgw_value',$word)))){
+                                    if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
                                         if(!in_array(element('tgw_value',$word),$translate_text))
                                             array_push($translate_text,element('tgw_value',$word));       
                                     }     
@@ -3415,7 +3428,7 @@ class Crawl extends CB_Controller
                     }
                     if($crawl_type==='tag_update'){
                         
-                        $this->crawling_tag_update(element('post_id', $post),element('brd_id', $post));
+                        // $this->crawling_tag_update(element('post_id', $post),element('brd_id', $post));
                     }
                     if($crawl_type==='tag_overwrite'){
                         
@@ -3444,7 +3457,7 @@ class Crawl extends CB_Controller
                     }
                     if($crawl_type==='tag_update'){
                         
-                        $this->crawling_tag_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
+                        // $this->crawling_tag_update(element('post_id', $cmall),element('brd_id', $cmall),element('cit_id', $cmall));
                     }
                     if($crawl_type==='tag_overwrite'){
                         
@@ -3475,7 +3488,7 @@ class Crawl extends CB_Controller
                     }
                     if($crawl_type==='tag_update'){
                         
-                        $this->crawling_tag_update(0,element('brd_id', $val));
+                        // $this->crawling_tag_update(0,element('brd_id', $val));
                     }
                     if($crawl_type==='tag_overwrite'){
                         
@@ -3539,18 +3552,18 @@ class Crawl extends CB_Controller
                     $arr_str_kr = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
 
                     if(count($arr_str_kr) > 2){
-                        if(strpos(strtolower(cut_str($c_value, count(preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY))+2)),strtolower($c_value))!== false)
+
+                        if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value))
                             return true;
                     } else {
-                        if(strpos($t_value,$c_value) !==false)
+                        if($c_value === $t_value || preg_match("/[\s?\[?]".preg_quote($c_value,'/')."[\]?\s?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?]".preg_quote($c_value,'/')."$/i",$t_value))
                          return true;
                     }
                     
                 } else {
 
-                    
 
-                    if(strpos(strtolower($t_value),strtolower($c_value)) !==false){
+                    if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value)){
                     //     echo $t_value."//".$c_value;
                     // echo "<br>";
                         return true;
@@ -3590,15 +3603,15 @@ class Crawl extends CB_Controller
                     if(count($arr_str_kr) > $flag){
                         // echo $t_value."//".$c_value;
                         // echo "<br>";
-                        if(strpos(strtolower(str_replace(" ","",$t_value)),strtolower(str_replace(" ","",$c_value))) !==false){
-
+                        
+                        if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value)){
                             return true;
                         }
                     } else {
                         // echo $t_value."//".$c_value;
                         // echo "<br>";
-                        if(strtolower(str_replace(" ","",$t_value)) === strtolower(str_replace(" ","",$c_value))){
-                                
+                        
+                        if($c_value === $t_value || preg_match("/[\s?\[?]".preg_quote($c_value,'/')."[\]?\s?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?]".preg_quote($c_value,'/')."$/i",$t_value)){
                              return true;
                         }
                     }
@@ -3662,6 +3675,7 @@ class Crawl extends CB_Controller
                     
                     $s2flag=true;
                         foreach(config_item('str_2') as $s2val){
+                            // if(preg_match("/".$s2val."/i",element('cbr_value_kr',$value))){
                             if(strtolower($s2val) === strtolower(element('cbr_value_kr',$value))){
                                 $s2flag = false;
                                 break;
@@ -3672,7 +3686,7 @@ class Crawl extends CB_Controller
 
                     if($s2flag){
                         
-                        if(element('cbr_value_kr',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_kr',$value))))!== false)
+                        if(element('cbr_value_kr',$value) && preg_match("/".preg_quote(element('cbr_value_kr',$value),'/')."/i",$brand_word))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strpos(strtolower(element('cbr_value_kr',$value)),strtolower($brand_word))!== false)
                         //     return element('cbr_id',$value);
@@ -3690,7 +3704,10 @@ class Crawl extends CB_Controller
                         // if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
 
-                        if(element('cbr_value_kr',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_kr',$value))))
+
+
+
+                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
@@ -3706,7 +3723,7 @@ class Crawl extends CB_Controller
 
                     if(count($arr_str_kr) > 2){
                         
-                        if(element('cbr_value_kr',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_kr',$value))))!== false)
+                        if(element('cbr_value_kr',$value) && preg_match("/".preg_quote(element('cbr_value_kr',$value),'/')."/i",$brand_word))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strpos(strtolower(element('cbr_value_kr',$value)),strtolower($brand_word))!== false)
                         //     return element('cbr_id',$value);
@@ -3724,7 +3741,7 @@ class Crawl extends CB_Controller
                         // if(element('cbr_value_kr',$value) && strtolower(cut_str(element('cbr_value_kr',$value), count(preg_split("//u",$brand_word , -1, PREG_SPLIT_NO_EMPTY))+2)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
 
-                        if(element('cbr_value_kr',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_kr',$value))))
+                        if(element('cbr_value_kr',$value) && (element('cbr_value_kr',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_kr',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_kr',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_kr',$value) && strtolower(element('cbr_value_kr',$value)) === strtolower($brand_word)) 
                         //     return element('cbr_id',$value);
@@ -3779,15 +3796,16 @@ class Crawl extends CB_Controller
                     
 
                     // if(count($cbr_value_en) > 3){
-                    if($s2flag){                        
-                        if(element('cbr_value_en',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
+                    if($s2flag){         
+
+                        if(element('cbr_value_en',$value) && preg_match("/".preg_quote(element('cbr_value_en',$value),'/')."/i",$brand_word))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strpos(strtolower(element('cbr_value_en',$value)),strtolower($brand_word)) !== false )
                         //     return element('cbr_id',$value);
                         
                     } else {
                         
-                        if(element('cbr_value_en',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_en',$value))))
+                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
                         // return element('cbr_id',$value);
@@ -3809,15 +3827,14 @@ class Crawl extends CB_Controller
                     
 
                     if(count($cbr_value_en) > 3){
-                    
-                        if(element('cbr_value_en',$value) && strpos(str_replace(" ","",strtolower($brand_word)),str_replace(" ","",strtolower(element('cbr_value_en',$value))))!== false)
+                        if(element('cbr_value_en',$value) && preg_match("/".preg_quote(element('cbr_value_en',$value),'/')."/i",$brand_word))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strpos(strtolower(element('cbr_value_en',$value)),strtolower($brand_word)) !== false )
                         //     return element('cbr_id',$value);
                         
                     } else {
                         
-                        if(element('cbr_value_en',$value) && str_replace(" ","",strtolower($brand_word)) === str_replace(" ","",strtolower(element('cbr_value_en',$value))))
+                        if(element('cbr_value_en',$value) && (element('cbr_value_en',$value) === $brand_word || preg_match("/[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."[\]?\s?]|^".preg_quote(element('cbr_value_en',$value),'/')."[\s\]]|[\s?\[?]".preg_quote(element('cbr_value_en',$value),'/')."$/i",$brand_word)))
                             return element('cbr_id',$value);
                         // if(element('cbr_value_en',$value) && strtolower(element('cbr_value_en',$value)) === strtolower($brand_word)) 
                         // return element('cbr_id',$value);
@@ -4077,35 +4094,23 @@ class Crawl extends CB_Controller
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
-            $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
-            $str = $this->input->post('crw_category1');
             
-            preg_match_all($pattern, $str, $match);
-            $crw_category1 = implode('', $match[0]);
             
-            // $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
-            $crw_category1 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category1);
+            $crw_category1 = unicode_decode($this->input->post('crw_category1'));
+            
+            $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category1);
+            $crw_category1 = preg_replace("/\s{2,}/", " ", $crw_category1);
 
-            $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
+           
+            $crw_category2 = unicode_decode($this->input->post('crw_category2'));
+            
+            $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category2);
+            $crw_category2 = preg_replace("/\s{2,}/", " ", $crw_category2);
 
-            $str='';
-            $str = $this->input->post('crw_category2');
+            $crw_category3 = unicode_decode($this->input->post('crw_category3'));
             
-            preg_match_all($pattern, $str, $match);
-            $crw_category2 = implode('', $match[0]);
-            
-            // $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
-            $crw_category2 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category2);
-
-            $str='';
-            $str = $this->input->post('crw_category2');
-            
-            preg_match_all($pattern, $str, $match);
-            $crw_category3 = implode('', $match[0]);
-            
-            // $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
-            $crw_category3 = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $crw_category3);
-
+            $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category3);
+            $crw_category3 = preg_replace("/\s{2,}/", " ", $crw_category3);
 
             
             if(strpos($crw_category1,'고양이') !==false || strpos($crw_category2,'고양이') !==false || strpos($crw_category3,'고양이') !==false){
@@ -4326,7 +4331,7 @@ class Crawl extends CB_Controller
                         @fclose($f);
                         @chmod($file, 0644);
                     }
-                    $upload_path .= $crw_category1 . '/';
+                    $upload_path .= str_replace(" ","",$crw_category1) . '/';
                     if (is_dir($upload_path) === false) {
                         mkdir($upload_path, 0707);
                         $file = $upload_path . 'index.php';
@@ -4346,7 +4351,7 @@ class Crawl extends CB_Controller
 
                     if ($this->upload->do_upload('crw_file_' . $k)) {
                         $img = $this->upload->data();
-                        $crw_file[$k] = $brd_id . '/' . $crw_category1 . '/' . element('file_name', $img);
+                        $crw_file[$k] = $brd_id . '/' . str_replace(" ","",$crw_category1) . '/' . element('file_name', $img);
                     } else {
                         $file_error = $this->upload->display_errors();
                         return $file_error;
@@ -4396,12 +4401,13 @@ class Crawl extends CB_Controller
             for ($k = 1; $k <= 3; $k++) {
                 if (!empty($this->input->post('crw_category' . $k))) {
                     // $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
-                    $str = $this->input->post('crw_category' . $k);
+                    
                     
                     // preg_match_all($pattern, $str, $match);
 
-                    $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
-                    $updatedata['crw_category' . $k] = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                    $updatedata['crw_category' . $k] = unicode_decode($this->input->post('crw_category' . $k));
+                    $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $updatedata['crw_category' . $k]);
+                    $updatedata['crw_category' . $k] = preg_replace("/\s{2,}/", " ", $updatedata['crw_category' . $k]);
                     // $updatedata['crw_category' . $k] = implode('', $match[0]);
                     
                 }
@@ -4476,13 +4482,11 @@ class Crawl extends CB_Controller
                 for ($k = 1; $k <= 3; $k++) {
                     // if (!empty($this->input->post('crw_category' . $k))) {
 
-                        // $pattern = '/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/';
-                        $str = $this->input->post('crw_category' . $k);
                         
-                        // preg_match_all($pattern, $str, $match);
-                        $updatedata['crw_category' . $k] = json_decode(sprintf('"%s"', $str));
-
-                        $updatedata['crw_category' . $k] = preg_replace("/[#\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                        
+                        $updatedata['crw_category' . $k] = unicode_decode($this->input->post('crw_category' . $k));
+                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                        $updatedata['crw_category' . $k] = preg_replace("/\s{2,}/", " ", $updatedata['crw_category' . $k]);
                     // }
                 }
            

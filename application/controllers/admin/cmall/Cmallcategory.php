@@ -399,7 +399,6 @@ class Cmallcategory extends CB_Controller
 				$cat_text_arr = explode(",",urldecode($cat_text));
 
                 
-
                 if(count($cat_text_arr)){
                     
                     if ($cat_text_arr && is_array($cat_text_arr)) {
