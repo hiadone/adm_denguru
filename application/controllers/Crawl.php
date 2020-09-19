@@ -4490,7 +4490,7 @@ class Crawl extends CB_Controller
                         
                         
                         $updatedata['crw_category' . $k] = unicode_decode($this->input->post('crw_category' . $k));
-                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", "", $updatedata['crw_category' . $k]);
+                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $updatedata['crw_category' . $k]);
                         $updatedata['crw_category' . $k] = preg_replace("/\s{2,}/", " ", $updatedata['crw_category' . $k]);
                     // }
                 }
