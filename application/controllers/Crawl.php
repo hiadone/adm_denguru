@@ -4461,6 +4461,10 @@ class Crawl extends CB_Controller
                         $result = array('resultcode'=>9001,'message' => '카테고리가 기존 데이터보다 적습니다.');
                         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                     }
+                    if(str_replace(" ","",$this->input->post('crw_category1')) ==='전체상품'){
+                        $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
+                        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                    }
                 }
             }
 
