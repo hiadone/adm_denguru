@@ -6739,6 +6739,9 @@ class Crawl extends CB_Controller
         foreach(explode(' ', $chars) as $val){
             $str = str_replace($val, " ", $str);
         }
+        $str = preg_replace('!\s+!', ' ', $str);
+        $str = trim($str);
+        
 
         return $str;
     }
