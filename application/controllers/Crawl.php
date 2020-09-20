@@ -4099,19 +4099,15 @@ class Crawl extends CB_Controller
             
             $crw_category1 = unicode_decode($this->input->post('crw_category1'));
             
-            $crw_category1 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category1);
-            $crw_category1 = preg_replace("/\s{2,}/", " ", $crw_category1);
-
+            $crw_category1 = $this->specialchars_replace($crw_category1);
            
             $crw_category2 = unicode_decode($this->input->post('crw_category2'));
             
-            $crw_category2 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category2);
-            $crw_category2 = preg_replace("/\s{2,}/", " ", $crw_category2);
+            $crw_category2 = $this->specialchars_replace($crw_category2);
 
             $crw_category3 = unicode_decode($this->input->post('crw_category3'));
             
-            $crw_category3 = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $crw_category3);
-            $crw_category3 = preg_replace("/\s{2,}/", " ", $crw_category3);
+            $crw_category3 = $this->specialchars_replace($crw_category3);
 
             
             if(strpos($crw_category1,'고양이') !==false || strpos($crw_category2,'고양이') !==false || strpos($crw_category3,'고양이') !==false){
@@ -4407,9 +4403,9 @@ class Crawl extends CB_Controller
                     // preg_match_all($pattern, $str, $match);
 
                     $updatedata['crw_category' . $k] = unicode_decode($this->input->post('crw_category' . $k));
-                    $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $updatedata['crw_category' . $k]);
-                    $updatedata['crw_category' . $k] = preg_replace("/\s{2,}/", " ", $updatedata['crw_category' . $k]);
-                    // $updatedata['crw_category' . $k] = implode('', $match[0]);
+
+                    $updatedata['crw_category' . $k] = $this->specialchars_replace($updatedata['crw_category' . $k]);
+                    
                     
                 }
             }
@@ -4461,10 +4457,10 @@ class Crawl extends CB_Controller
                         $result = array('resultcode'=>9001,'message' => '카테고리가 기존 데이터보다 적습니다.');
                         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                     }
-                    // if(str_replace(" ","",$this->input->post('crw_category1')) ==='전체상품'){
-                    //     $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
-                    //     exit(json_encode($result,JSON_UNESCAPED_UNICODE));
-                    // }
+                    if(str_replace(" ","",$this->input->post('crw_category1')) ==='전체상품' && !empty(element('crw_category1',$crawl_item))){
+                        $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
+                        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                    }
                 }
             }
 
@@ -4490,8 +4486,9 @@ class Crawl extends CB_Controller
                         
                         
                         $updatedata['crw_category' . $k] = unicode_decode($this->input->post('crw_category' . $k));
-                        $updatedata['crw_category' . $k] = preg_replace("/[ #\&\+\-%@=\/\\\:;,\.'\"\^`~\_|\!\?\*$#<>()\[\]\{\}]/i", " ", $updatedata['crw_category' . $k]);
-                        $updatedata['crw_category' . $k] = preg_replace("/\s{2,}/", " ", $updatedata['crw_category' . $k]);
+
+                        $updatedata['crw_category' . $k] = $this->specialchars_replace($updatedata['crw_category' . $k]);
+                        
                     // }
                 }
            
@@ -6731,6 +6728,19 @@ class Crawl extends CB_Controller
     }
 
 
-    
+    function specialchars_replace($str){
+
+        $chars = "、 。 · ‥ … ¨ 〃 ― ∥ ＼ ∼ ‘ ’ “ ” 〔 〕 〈 〉 《 》 「 」 『 』 【 】 ± × ÷ ≠ ≤ ≥ ∞ ∴ ° ′ ″ ℃ Å ￠ ￡ ￥ ♂ ♀ ∠ ⊥ ⌒ ∂ ∇ ≡ ≒ § ※ ☆ ★ ○ ● ◎ ◇ ◆ □ ■ △ ▲ ▽ ▼ → ← ↑ ↓ ↔ 〓 ≪ ≫ √ ∽ ∝ ∵ ∫ ∬ ∈ ∋ ⊆ ⊇ ⊂ ⊃ ∩ ∧ ∨ ￢ ⇒ ⇔ ∀ ∃ ´ ～ ˇ ˘ ˝ ˚ ˙ ¸ ˛ ¡ ¿ ː ∮ ∑ ∏ ¤ ℉ ‰ ◁ ◀ ▷ ▶ ♤ ♠ ♡ ♥ ♧ ♣ ⊙ ◈ ▣ ◐ ◑ ▒ ▤ ▥ ▨ ▧ ▦ ▩ ♨ ☏ ☎ ☜ ☞ ¶ † ‡ ↕ ↗ ↙ ↖ ↘ ♭ ♩ ♪ ♬ ㉿ ㈜ № ㏇ ™ ㏂ ㏘ ℡";
+
+        
+
+        $str =  preg_replace("/[^ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]/i", " ", $str);
+        
+        foreach(explode(' ', $chars) as $val){
+            $str = str_replace($val, " ", $str);
+        }
+
+        return $str;
+    }
 }
 
