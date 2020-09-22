@@ -86,7 +86,7 @@ class Cmallitem extends CB_Controller
         $skeyword = $this->input->get('skeyword', null, '');
 
         $where = array();
-
+        $where['cmall_item.cit_is_del'] = 0;
         if(!empty($this->input->get('warning'))){
             // $or_where = array(
             //     'cit_name' => '',
@@ -627,7 +627,8 @@ class Cmallitem extends CB_Controller
                 $tag_array=array();
                 foreach ($tag as $tvalue) {
                     if (element('cta_tag', $tvalue)) {
-                        array_push($tag_array,trim(element('cta_tag', $tvalue)));
+                        if(!in_array(element('cta_tag',$tvalue),$tag_array))
+                            array_push($tag_array,trim(element('cta_tag', $tvalue)));
                     }
                 }
                 $getdata['cta_tag'] = implode("\n",$tag_array);
@@ -638,7 +639,8 @@ class Cmallitem extends CB_Controller
                 $tag_array=array();
                 foreach ($manualtag as $tvalue) {
                     if (element('cmt_tag', $tvalue)) {
-                        array_push($tag_array,trim(element('cmt_tag', $tvalue)));
+                        if(!in_array(element('cmt_tag',$tvalue),$tag_array))
+                            array_push($tag_array,trim(element('cmt_tag', $tvalue)));
                     }
                 }
                 $getdata['cmt_tag'] = implode("\n",$tag_array);
@@ -650,7 +652,8 @@ class Cmallitem extends CB_Controller
                 $tag_array=array();
                 foreach ($deletetag as $tvalue) {
                     if (element('cdt_tag', $tvalue)) {
-                        array_push($tag_array,trim(element('cdt_tag', $tvalue)));
+                        if(!in_array(element('cdt_tag',$tvalue),$tag_array))
+                            array_push($tag_array,trim(element('cdt_tag', $tvalue)));
                     }
                 }
                 $getdata['cdt_tag'] = implode("\n",$tag_array);
@@ -1384,14 +1387,27 @@ class Cmallitem extends CB_Controller
                     foreach ($cta_tag_text as $key => $value) {
                         $value = trim($value);
                         if ($value) {
-                            $tagdata = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
-                                'cta_tag' => $value,
-                                // 'is_manual' => 1,
-                            );
-                            $this->Crawl_tag_model->insert($tagdata);
+
+                            $where = array(
+                                        // 'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cta_tag' => $value,
+                                    );
+
+                           
+
+                            if(!$this->Crawl_tag_model->count_by($where)) {
+
+                                $tagdata = array(
+                                    'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cta_tag' => $value,
+                                    // 'is_manual' => 1,
+                                );
+                                $this->Crawl_tag_model->insert($tagdata);
+                            }
                         }
                     }
                 }
@@ -1413,15 +1429,27 @@ class Cmallitem extends CB_Controller
                     foreach ($cdt_tag_text as $key => $value) {
                         $value = trim($value);
                         if ($value) {
-                            $tagdata = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
-                                'cdt_tag' => $value,
-                                // 'is_manual' => 1,
-                            );
-                            $this->Crawl_delete_tag_model->insert($tagdata);
 
+                            $where = array(
+                                        // 'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cdt_tag' => $value,
+                                    );
+
+                            
+
+                            if(!$this->Crawl_delete_tag_model->count_by($where)) {
+
+                                $tagdata = array(
+                                    'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cdt_tag' => $value,
+                                    // 'is_manual' => 1,
+                                );
+                                $this->Crawl_delete_tag_model->insert($tagdata);
+                            }
                             $deletewhere = array(
                                 // 'post_id' => $this->input->post('post_id', null, ''),
                                 'cit_id' => $pid,
@@ -1455,26 +1483,49 @@ class Cmallitem extends CB_Controller
                     foreach ($cmt_tag_text as $key => $value) {
                         $value = trim($value);
                         if ($value) {
-                            $tagdata = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
-                                'cmt_tag' => $value,
-                                // 'is_manual' => 1,
-                            );
-                            $this->Crawl_manual_tag_model->insert($tagdata);
 
+
+                            $where = array(
+                                        // 'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cmt_tag' => $value,
+                                    );
+
+                            
+
+                            if(!$this->Crawl_manual_tag_model->count_by($where)) {
+
+                                $tagdata = array(
+                                    'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cmt_tag' => $value,
+                                    // 'is_manual' => 1,
+                                );
+                                $this->Crawl_manual_tag_model->insert($tagdata);
+                            }
                             $countwhere = array(
-                                'post_id' => $this->input->post('post_id', null, ''),
+                                // 'post_id' => $this->input->post('post_id', null, ''),
                                 'cit_id' => $pid,
-                                'brd_id' => $this->input->post('brd_id', null, ''),
+                                // 'brd_id' => $this->input->post('brd_id', null, ''),
                                 'cdt_tag' => $value,
                             );
                             $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
 
                             if(!element('cdt_id',$dtag)){
 
-                                
+                                    
+                                    $where = array(
+                                                // 'post_id' => $this->input->post('post_id', null, ''),
+                                                'cit_id' => $pid,
+                                                // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                                'cta_tag' => $value,
+                                            );
+
+                                    
+
+                                    if(!$this->Crawl_tag_model->count_by($where)) {
                                     
                                     $tagdata = array(
                                         'post_id' => $this->input->post('post_id', null, ''),
@@ -1484,6 +1535,7 @@ class Cmallitem extends CB_Controller
                                         'is_manual' => 1,
                                     );
                                     $this->Crawl_tag_model->insert($tagdata);
+                                }
                                 
                             }
                         }

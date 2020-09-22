@@ -2896,9 +2896,9 @@ class Helptool extends CB_Controller
 	            						    $this->Crawl_tag_model->delete_where($deletewhere);    
 	            						    
 						            		$countwhere = array(
-						            	            'post_id' => element('post_id', $c_value),
+						            	            // 'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
-						            	            'brd_id' => element('brd_id', $c_value),
+						            	            // 'brd_id' => element('brd_id', $c_value),
 						            	            'cdt_tag' => $value,
 						            	        );
 						            		$tag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
@@ -2973,9 +2973,9 @@ class Helptool extends CB_Controller
 	            						    $this->Crawl_tag_model->delete_where($deletewhere);            
 
 						            		$countwhere = array(
-						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            // 'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => $val,
-						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            // 'brd_id' => element('brd_id', $Cmall_item),
 						            	            'cdt_tag' => $value,
 						            	        );
 
@@ -3332,9 +3332,9 @@ class Helptool extends CB_Controller
 							            if ($value) {
 
 							            	$countwhere = array(
-						            	            'post_id' => element('post_id', $c_value),
+						            	            // 'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
-						            	            'brd_id' => element('brd_id', $c_value),
+						            	            // 'brd_id' => element('brd_id', $c_value),
 						            	            'cdt_tag' => $value,
 						            	        );
 						            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
@@ -3343,9 +3343,9 @@ class Helptool extends CB_Controller
 
 
 								            	$countwhere = array(
-							            	            'post_id' => element('post_id', $c_value),
+							            	            // 'post_id' => element('post_id', $c_value),
 							            	            'cit_id' => element('cit_id', $c_value),
-							            	            'brd_id' => element('brd_id', $c_value),
+							            	            // 'brd_id' => element('brd_id', $c_value),
 							            	            'cta_tag' => $value,
 							            	        );
 							            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
@@ -3371,9 +3371,9 @@ class Helptool extends CB_Controller
 	            						 //    $this->Crawl_tag_delete_model->delete_where($deletewhere); 
 
 						            		$countwhere = array(
-						            	            'post_id' => element('post_id', $c_value),
+						            	            // 'post_id' => element('post_id', $c_value),
 						            	            'cit_id' => element('cit_id', $c_value),
-						            	            'brd_id' => element('brd_id', $c_value),
+						            	            // 'brd_id' => element('brd_id', $c_value),
 						            	            'cmt_tag' => $value,
 						            	        );
 						            		$tag = $this->Crawl_manual_tag_model->get_one('','',$countwhere);
@@ -3440,9 +3440,9 @@ class Helptool extends CB_Controller
 							            if ($value) {
 
 							            	$countwhere = array(
-						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            // 'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => element('cit_id', $Cmall_item),
-						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            // 'brd_id' => element('brd_id', $Cmall_item),
 						            	            'cdt_tag' => $value,
 						            	        );
 						            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
@@ -3450,9 +3450,9 @@ class Helptool extends CB_Controller
 						            		if(!element('cdt_id',$dtag)){
 
 								            	$countwhere = array(
-							            	            'post_id' => element('post_id', $Cmall_item),
+							            	            // 'post_id' => element('post_id', $Cmall_item),
 							            	            'cit_id' => element('cit_id', $Cmall_item),
-							            	            'brd_id' => element('brd_id', $Cmall_item),
+							            	            // 'brd_id' => element('brd_id', $Cmall_item),
 							            	            'cta_tag' => $value,
 							            	        );
 							            		$tag = $this->Crawl_tag_model->get_one('','',$countwhere);
@@ -3480,9 +3480,9 @@ class Helptool extends CB_Controller
 	            						    
 
 						            		$countwhere = array(
-						            	            'post_id' => element('post_id', $Cmall_item),
+						            	            // 'post_id' => element('post_id', $Cmall_item),
 						            	            'cit_id' => $val,
-						            	            'brd_id' => element('brd_id', $Cmall_item),
+						            	            // 'brd_id' => element('brd_id', $Cmall_item),
 						            	            'cmt_tag' => $value,
 						            	        );
 

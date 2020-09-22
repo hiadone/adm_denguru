@@ -3499,14 +3499,26 @@ class Postact extends CB_Controller
                 foreach ($cta_tag_text as $key => $value) {
                     $value = trim($value);
                     if ($value) {
-                        $tagdata = array(
-                            'post_id' => element('post_id', $cmail_item),
-                            'cit_id' => element('cit_id', $cmail_item),
-                            'brd_id' => element('brd_id', $cmail_item),
-                            'cta_tag' => $value,
-                            // 'is_manual' => 1,
-                        );
-                        $this->Crawl_tag_model->insert($tagdata);
+
+                    	$where = array(
+                    	            
+		                            'cit_id' => element('cit_id', $cmail_item),
+		                            
+                    	            'cta_tag' => $value,
+                    	        );
+
+                    	
+
+                    	if(!$this->Crawl_tag_model->count_by($where)) {
+	                        $tagdata = array(
+	                            'post_id' => element('post_id', $cmail_item),
+	                            'cit_id' => element('cit_id', $cmail_item),
+	                            'brd_id' => element('brd_id', $cmail_item),
+	                            'cta_tag' => $value,
+	                            // 'is_manual' => 1,
+	                        );
+	                        $this->Crawl_tag_model->insert($tagdata);
+                    	}
                     }
                 }
             }
@@ -3586,34 +3598,58 @@ class Postact extends CB_Controller
                 foreach ($cmt_tag_text as $key => $value) {
                     $value = trim($value);
                     if ($value) {
-                        $tagdata = array(
-                            'post_id' => element('post_id', $cmail_item),
-                            'cit_id' => element('cit_id', $cmail_item),
-                            'brd_id' => element('brd_id', $cmail_item),
-                            'cmt_tag' => $value,
-                            // 'is_manual' => 1,
-                        );
-                        $this->Crawl_manual_tag_model->insert($tagdata);
 
+                    	$where = array(
+                	            // 'post_id' => element('post_id', $cmail_item),
+	                            'cit_id' => element('cit_id', $cmail_item),
+	                            // 'brd_id' => element('brd_id', $cmail_item),
+                	            'cmt_tag' => $value,
+                	        );
+
+                    	
+
+                    	if(!$this->Crawl_manual_tag_model->count_by($where)) {
+
+	                        $tagdata = array(
+	                            'post_id' => element('post_id', $cmail_item),
+	                            'cit_id' => element('cit_id', $cmail_item),
+	                            'brd_id' => element('brd_id', $cmail_item),
+	                            'cmt_tag' => $value,
+	                            // 'is_manual' => 1,
+	                        );
+	                        $this->Crawl_manual_tag_model->insert($tagdata);
+                    	}
 
 
 		            	$countwhere = array(
-	            	            'post_id' => element('post_id', $cmail_item),
+	            	            // 'post_id' => element('post_id', $cmail_item),
 	            	            'cit_id' => element('cit_id', $cmail_item),
-	            	            'brd_id' => element('brd_id', $cmail_item),
+	            	            // 'brd_id' => element('brd_id', $cmail_item),
 	            	            'cdt_tag' => $value,
 	            	        );
 	            		$dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
 
 	            		if(!element('cdt_id',$dtag)){
-	            			$tagdata = array(
-	            			    'post_id' => element('post_id', $cmail_item),
+
+	            			$where = array(
+                	            // 'post_id' => element('post_id', $cmail_item),
 	            			    'cit_id' => element('cit_id', $cmail_item),
-	            			    'brd_id' => element('brd_id', $cmail_item),
+	            			    // 'brd_id' => element('brd_id', $cmail_item),
 	            			    'cta_tag' => $value,
-	            			    'is_manual' => 1,
-	            			);
-	            			$this->Crawl_tag_model->insert($tagdata);
+                	        );
+
+                    	
+
+                    		if(!$this->Crawl_tag_model->count_by($where)) {
+		            			$tagdata = array(
+		            			    'post_id' => element('post_id', $cmail_item),
+		            			    'cit_id' => element('cit_id', $cmail_item),
+		            			    'brd_id' => element('brd_id', $cmail_item),
+		            			    'cta_tag' => $value,
+		            			    'is_manual' => 1,
+		            			);
+		            			$this->Crawl_tag_model->insert($tagdata);
+	            			}
 	            		}
 		            		                
 							            
@@ -3690,15 +3726,27 @@ class Postact extends CB_Controller
                 foreach ($cdt_tag_text as $key => $value) {
                     $value = trim($value);
                     if ($value) {
-                        $tagdata = array(
-                            'post_id' => element('post_id', $cmail_item),
-                            'cit_id' => element('cit_id', $cmail_item),
-                            'brd_id' => element('brd_id', $cmail_item),
-                            'cdt_tag' => $value,
-                            // 'is_manual' => 1,
-                        );
-                        $this->Crawl_delete_tag_model->insert($tagdata);
 
+                    	$where = array(
+                    	            
+	                            'cit_id' => element('cit_id', $cmail_item),
+	                            
+                    	            'cdt_tag' => $value,
+                    	        );
+
+                    	
+
+                    	if(!$this->Crawl_delete_tag_model->count_by($where)) {
+
+	                        $tagdata = array(
+	                            'post_id' => element('post_id', $cmail_item),
+	                            'cit_id' => element('cit_id', $cmail_item),
+	                            'brd_id' => element('brd_id', $cmail_item),
+	                            'cdt_tag' => $value,
+	                            // 'is_manual' => 1,
+	                        );
+	                        $this->Crawl_delete_tag_model->insert($tagdata);
+	                     }
 
 					    $deletewhere = array(
 					        // 'post_id' => element('post_id', $cmail_item),
@@ -3734,15 +3782,25 @@ class Postact extends CB_Controller
        		    
 
        		    $countwhere = array(
-       		        'post_id' => element('post_id',$tval),
+       		        // 'post_id' => element('post_id',$tval),
        		        'cit_id' => element('cit_id',$tval),
-       		        'brd_id' => element('brd_id',$tval),
+       		        // 'brd_id' => element('brd_id',$tval),
        		        'cdt_tag' => $value,
        		    );
        		    $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
 
        		    if(!element('cdt_id',$dtag)){       		        
        		            
+   		            $where = array(
+                                // 'post_id' => $this->input->post('post_id', null, ''),
+                                'cit_id' => $pid,
+                                // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                'cta_tag' => $value,
+                            );
+
+                        
+
+                    if(!$this->Crawl_tag_model->count_by($where)) {
        		            $tagdata = array(
        		                'post_id' => element('post_id',$tval),
        		                'cit_id' => element('cit_id',$tval),
@@ -3751,7 +3809,7 @@ class Postact extends CB_Controller
        		                'is_manual' => 1,
        		            );
        		            $this->Crawl_tag_model->insert($tagdata);
-       		        
+       		        }
        		    }
        		}
        	}

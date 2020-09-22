@@ -24,6 +24,7 @@ $config['admin_page_menu']['cmall'] =
 			'cmallcategory'			=> array('카테고리 및 특성관리', ''),
 			'cmallbrand'			=> array('브랜드관리', ''),
 			'cmallitem'				=> array('상품관리', ''),
+			'trashcmallitem'		=> array('휴지통 상품관리', ''),
 			'crawlitem'				=> array('크롤링관리', ''),
 			'qna'					=> array('상품문의', ''),
 			'review'				=> array('상품사용후기', ''),
