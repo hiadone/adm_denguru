@@ -423,6 +423,7 @@ class Crawl extends CB_Controller
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                         'cit_type3' => $is_new ? 1 : 0,
+                        'cit_is_del' => 0,
                         // 'cit_type4' => element('cit_type4', $ivalue) ? 1 : 0,
                         
                     );
