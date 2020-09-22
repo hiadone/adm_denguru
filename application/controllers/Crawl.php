@@ -50,10 +50,8 @@ class Crawl extends CB_Controller
     {
         parent::__construct();
 
-        ini_set('memory_limit','-1');
+        
 
-        ini_set('max_execution_time','86400');
-        ini_set('max_input_time','86400');
 
         /**
          * 라이브러리를 로딩합니다
@@ -78,6 +76,12 @@ class Crawl extends CB_Controller
         ]);
 
         $this->db2 = $this->load->database('db2', TRUE);
+
+        ini_set('memory_limit','-1');
+-
+-       ini_set('max_execution_time','86400');
+-       ini_set('max_input_time','86400');
+
     }
 
 
@@ -317,7 +321,7 @@ class Crawl extends CB_Controller
                 $_post_id='';
                 $cbr_id = 0;
                 $_cbr_id = 0;
-                
+                $filetype ='';
                 
                 $where = array(
                     'brd_id' => element('brd_id', $val),
@@ -1789,9 +1793,20 @@ class Crawl extends CB_Controller
                     foreach($a_cvalue as $a_cvalue_){
                         
                         
-                        $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);
+                        if(element('cat_parent',$a_cvalue_) == '1'){
 
-                
+
+                            foreach(element(0,$all_kind) as $k_cvalue){
+                                if(element('cat_id',$a_cvalue_) == element('ckd_size',$k_cvalue))
+                                    $a_cvalue_['cat_text'] .= ','.element('ckd_text',$k_cvalue);
+                                
+                            }
+                        } else {
+                            $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);    
+                        }
+                        
+
+
 
                                          
                         foreach ($tag_array as $tval) {
@@ -1820,20 +1835,20 @@ class Crawl extends CB_Controller
                     
                     
                 }
-
+                print_r2($cmall_attr);
                 if(!empty($cmall_attr)){
-                    $deletewhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' =>0
-                    );
+                    // $deletewhere = array(
+                    //     'cit_id' => element('cit_id',$val),
+                    //     'is_manual' =>0
+                    // );
 
-                    $this->Cmall_attr_rel_model->delete_where($deletewhere);   
+                    // $this->Cmall_attr_rel_model->delete_where($deletewhere);   
 
-                    $manualwhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' => 1,
-                    );
-                    if($this->Cmall_attr_rel_model->count_by($manualwhere)) continue;        
+                    // $manualwhere = array(
+                    //     'cit_id' => element('cit_id',$val),
+                    //     'is_manual' => 1,
+                    // );
+                    // if($this->Cmall_attr_rel_model->count_by($manualwhere)) continue;        
                     
                     $this->Cmall_attr_rel_model->save_attr(element('cit_id',$val), $cmall_attr);    
 
@@ -1877,18 +1892,18 @@ class Crawl extends CB_Controller
                 }
                 
                 if(!empty($cmall_kind)){
-                    $deletewhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' =>0
-                    );
+                    // $deletewhere = array(
+                    //     'cit_id' => element('cit_id',$val),
+                    //     'is_manual' =>0
+                    // );
 
-                    $this->Cmall_kind_rel_model->delete_where($deletewhere);   
+                    // $this->Cmall_kind_rel_model->delete_where($deletewhere);   
 
-                    $manualwhere = array(
-                        'cit_id' => element('cit_id',$val),
-                        'is_manual' => 1,
-                    );
-                    if($this->Cmall_kind_rel_model->count_by($manualwhere)) continue;        
+                    // $manualwhere = array(
+                    //     'cit_id' => element('cit_id',$val),
+                    //     'is_manual' => 1,
+                    // );
+                    // if($this->Cmall_kind_rel_model->count_by($manualwhere)) continue;        
                     
                     $this->Cmall_kind_rel_model->save_kind(element('cit_id',$val), $cmall_kind);    
 
@@ -3596,26 +3611,32 @@ class Crawl extends CB_Controller
             }
 
             foreach($crawl_tag_text as $t_value){
-
-                
-
-                    $arr_str_kr = preg_split("//u", $c_value, -1, PREG_SPLIT_NO_EMPTY);
-
-                    if(count($arr_str_kr) > $flag){
-                        // echo $t_value."//".$c_value;
-                        // echo "<br>";
-                        
-                        if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value)){
-                            return true;
-                        }
-                    } else {
-                        // echo $t_value."//".$c_value;
-                        // echo "<br>";
-                        
-                        if($c_value === $t_value || preg_match("/[\s?\[?\-?]".preg_quote($c_value,'/')."[\]?\s?\-?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?\-?]".preg_quote($c_value,'/')."$/i",$t_value)){
-                             return true;
-                        }
+                $attr_str_equal=true;
+                foreach(config_item('attr_str_equal') as $equalval){
+                    if(strtolower($equalval) === strtolower($c_value)){
+                        $attr_str_equal = false;
+                        break;
                     }
+
+                }
+
+                $arr_str_kr = preg_split("//u", $c_value, -1, PREG_SPLIT_NO_EMPTY);
+
+                if(count($arr_str_kr) > $flag && $attr_str_equal){
+                    // echo $t_value."//".$c_value;
+                    // echo "<br>";
+                    
+                    if(preg_match("/".preg_quote($c_value,'/')."/i",$t_value)){
+                        return true;
+                    }
+                } else {
+                    // echo $t_value."//".$c_value;
+                    // echo "<br>";
+                    
+                    if($c_value === $t_value || preg_match("/[\s?\[?\-?]".preg_quote($c_value,'/')."[\]?\s?\-?]|^".preg_quote($c_value,'/')."[\s\]]|[\s?\[?\-?]".preg_quote($c_value,'/')."$/i",$t_value)){
+                         return true;
+                    }
+                }
                     
             
 
@@ -3882,6 +3903,10 @@ class Crawl extends CB_Controller
     public function get_storelist()
     {
 
+
+
+
+  
 
 //                             $storelist = array();
 
@@ -4461,11 +4486,16 @@ class Crawl extends CB_Controller
                         $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
                         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                     }
+
+                    if(strtolower(str_replace(" ","",$this->input->post('crw_category1'))) ==='allitem' && !empty(element('crw_category1',$crawl_item))){
+                        $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
+                        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                    }
                 }
             }
 
            
-
+ 
             $updatedata = array(
                 'crw_updated_datetime' => cdate('Y-m-d H:i:s'),
                 'is_del' => 0,

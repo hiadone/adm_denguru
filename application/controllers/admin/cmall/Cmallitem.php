@@ -183,8 +183,8 @@ class Cmallitem extends CB_Controller
 
             if($skeyword && $sfield === 'brd_id')
                 array_push($skey_,$skeyword);
-
-            $brd_id_arr=array();
+            
+            $brd_name_arr=array();
             foreach($skey_ as $val){            
 
                
@@ -384,7 +384,11 @@ class Cmallitem extends CB_Controller
 
                 $category = $this->Cmall_category_model->get_category(element('cit_id', $val));
 
-                
+                // $aaaa = $this->Post_model->get_one(element('post_id', $val));                
+
+                // echo element('post_title',$aaaa)."//".element('post_id',$aaaa);
+                // echo "<br>";
+
 
                 if($category){
                     foreach($category as $aval){

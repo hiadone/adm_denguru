@@ -43,6 +43,37 @@ class Main extends CB_Controller
 	 */
 	public function index()
 	{
+
+
+		echo ini_get('memory_limit');
+echo "<br>";
+echo ini_get('max_execution_time');
+echo "<br>";
+echo ini_get('max_input_time');
+echo "<br>";
+echo ini_get('log_errors');
+echo "<br>";
+
+
+
+
+        ini_set('memory_limit','-1');
+-
+-       ini_set('max_execution_time','864');
+-       ini_set('max_input_time','864');
+-       ini_set('log_errors','0');
+
+echo ini_get('memory_limit');
+echo "<br>";
+echo ini_get('max_execution_time');
+echo "<br>";
+echo ini_get('max_input_time');
+echo "<br>";
+echo ini_get('log_errors');
+echo "<br>";
+-
+
+exit;
 		// 이벤트 라이브러리를 로딩합니다
 		$eventname = 'event_main_index';
 		$this->load->event($eventname);
