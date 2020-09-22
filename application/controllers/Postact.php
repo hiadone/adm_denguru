@@ -3793,7 +3793,7 @@ class Postact extends CB_Controller
        		            
    		            $where = array(
                                 // 'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
+                                'cit_id' => element('cit_id',$tval),
                                 // 'brd_id' => $this->input->post('brd_id', null, ''),
                                 'cta_tag' => $value,
                             );
