@@ -713,8 +713,8 @@ class Crawl extends CB_Controller
 
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
-                            echo element('cit_id',$c_value);
-                            echo "<br>";
+                            // echo element('cit_id',$c_value);
+                            // echo "<br>";
                             $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
                             // $this->board->delete_cmall(element('cit_id',$c_value));
                         }
@@ -761,8 +761,8 @@ class Crawl extends CB_Controller
 
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
-                            echo element('cit_id',$c_value);
-                            echo "<br>";
+                            // echo element('cit_id',$c_value);
+                            // echo "<br>";
                             $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
                             // $this->board->delete_cmall(element('cit_id',$c_value));
                         }
@@ -3501,7 +3501,7 @@ class Crawl extends CB_Controller
                     if($crawl_type==='update'){
                         $this->crawling_update(0,element('brd_id', $val));
                         $this->crawling_category_update(0,element('brd_id', $val));
-                        $this->crawling_tag_overwrite(0,element('brd_id', $val));
+                        // $this->crawling_tag_overwrite(0,element('brd_id', $val));
                     } 
 
                     if($crawl_type==='overwrite'){
@@ -3518,6 +3518,7 @@ class Crawl extends CB_Controller
                     if($crawl_type==='vision_api_label'){
                         
                         $this->vision_api_label(0,element('brd_id', $val));
+                        $this->crawling_tag_overwrite(0,element('brd_id', $val));
                     }
                     if($crawl_type==='attr_update'){
                         $this->crawling_attr_update(0,element('brd_id', $val));
