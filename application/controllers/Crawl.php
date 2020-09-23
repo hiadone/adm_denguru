@@ -417,7 +417,8 @@ class Crawl extends CB_Controller
                         'cit_updated_datetime' => cdate('Y-m-d H:i:s'),                    
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
-                        'cit_status' => element('is_del', $val) ? 0 : element('cit_status',$item) ,
+                        // 'cit_status' => element('is_del', $val) ? 0 : element('cit_status',$item) ,
+                        'cit_status' => 1,
                         'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
@@ -569,7 +570,7 @@ class Crawl extends CB_Controller
                         $_cbr_id = $brd_brand ;
                     else 
                         $_cbr_id = $cbr_id ;
-                    
+           
 
                     $updatedata = array(
                         
@@ -711,6 +712,8 @@ class Crawl extends CB_Controller
 
                 if($flag){
 
+                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
                             // echo element('cit_id',$c_value);
@@ -718,6 +721,14 @@ class Crawl extends CB_Controller
                             $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
                             // $this->board->delete_cmall(element('cit_id',$c_value));
                         }
+                    } elseif(element('cit_datetime', $c_value)){
+                        if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
+                            // echo element('cit_id',$c_value);
+                            // echo "<br>";
+                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                            // $this->board->delete_cmall(element('cit_id',$c_value));
+                        }
+
                     }
                     
                     
@@ -759,6 +770,8 @@ class Crawl extends CB_Controller
 
                 if($flag){
 
+                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
                             // echo element('cit_id',$c_value);
@@ -766,9 +779,15 @@ class Crawl extends CB_Controller
                             $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
                             // $this->board->delete_cmall(element('cit_id',$c_value));
                         }
+                    } elseif(element('cit_datetime', $c_value)){
+                        if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
+                            // echo element('cit_id',$c_value);
+                            // echo "<br>";
+                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                            // $this->board->delete_cmall(element('cit_id',$c_value));
+                        }
+
                     }
-                    
-                    
                 
                 }
             }
@@ -3501,7 +3520,9 @@ class Crawl extends CB_Controller
                     if($crawl_type==='update'){
                         $this->crawling_update(0,element('brd_id', $val));
                         $this->crawling_category_update(0,element('brd_id', $val));
-                        // $this->crawling_tag_overwrite(0,element('brd_id', $val));
+                        $this->vision_api_label(0,element('brd_id', $val));
+                        $this->crawling_tag_overwrite(0,element('brd_id', $val));
+                        
                     } 
 
                     if($crawl_type==='overwrite'){
