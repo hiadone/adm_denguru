@@ -1593,39 +1593,17 @@ class Trashcmallitem extends CB_Controller
          */
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 
-            $cit_name = $this->input->post('cit_name');
-            $cit_price = $this->input->post('cit_price');
-            $cit_price_sale = $this->input->post('cit_price_sale');
-            $cit_status = $this->input->post('cit_status');
-
-            $item_layout = $this->input->post('item_layout');
-            $item_mobile_layout = $this->input->post('item_mobile_layout');
-            $item_sidebar = $this->input->post('item_sidebar');
-            $item_mobile_sidebar = $this->input->post('item_mobile_sidebar');
-            $item_skin = $this->input->post('item_skin');
-            $item_mobile_skin = $this->input->post('item_mobile_skin');
+            
 
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
-                    $cit_price_update = element($val, $cit_price) ? element($val, $cit_price) : 0;
-                    $cit_price_sale_update = element($val, $cit_price_sale) ? element($val, $cit_price_sale) : 0;
-                    $cit_status_update = element($val, $cit_status) ? 1 : 0;
-                    $updatedata = array(
-                        'cit_name' => element($val, $cit_name),
-                        'cit_price' => $cit_price_update,
-                        'cit_price_sale' => $cit_price_sale_update,
-                        'cit_status' => $cit_status_update,
+                    
+                    $updatedata = array(                        
+                        'cit_is_del' => 0,
                     );
-                    $metadata = array(
-                        'item_layout' => element($val, $item_layout),
-                        'item_mobile_layout' => element($val, $item_mobile_layout),
-                        'item_sidebar' => element($val, $item_sidebar),
-                        'item_mobile_sidebar' => element($val, $item_mobile_sidebar),
-                        'item_skin' => element($val, $item_skin),
-                        'item_mobile_skin' => element($val, $item_mobile_skin),
-                    );
+                    
                     $this->{$this->modelname}->update($val, $updatedata);
-                    $this->Cmall_item_meta_model->save($val, $metadata);
+                    
                 }
             }
         }

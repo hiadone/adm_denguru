@@ -151,13 +151,13 @@ var cookie_prefix = "<?php echo config_item('cookie_prefix'); ?>";
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function() {
-	$(function() {
-		$('#fsearch').validate({
-			rules: {
-				skeyword: { required:true, minlength:2}
-			}
-		});
-	});
+	// $(function() {
+	// 	$('#fsearch').validate({
+	// 		rules: {
+	// 			skeyword: { required:true, minlength:2}
+	// 		}
+	// 	});
+	// });
 });
 //]]>
 </script>

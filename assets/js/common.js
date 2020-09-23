@@ -80,19 +80,33 @@ if (typeof(COMMON_JS) === 'undefined') {
     }
 
     $(document).on('click', '.btn-list-update', function() {
-        select_submit(document.flist, 'update', $(this).attr('data-list-update-url'));
+        var f ='' ;
+        if(document.flist) f = document.flist ;
+        if(document.fboardlist) f = document.fboardlist;
+
+
+        select_submit(f, 'update', $(this).attr('data-list-update-url'));
     });
 
     $(document).on('click', '.btn-list-delete', function() {
-        select_submit(document.flist, 'delete', $(this).attr('data-list-delete-url'));
+        var f ='' ;
+        if(document.flist) f = document.flist ;
+        if(document.fboardlist) f = document.fboardlist;
+        select_submit(f, 'delete', $(this).attr('data-list-delete-url'));
     });
 
     $(document).on('click', '.btn-list-trash', function() {
-        select_submit(document.flist, 'trash', $(this).attr('data-list-trash-url'));
+        var f ='' ;
+        if(document.flist) f = document.flist ;
+        if(document.fboardlist) f = document.fboardlist;
+        select_submit(f, 'trash', $(this).attr('data-list-trash-url'));
     });
 
     $(document).on('click', '.btn-list-recover', function() {
-        select_submit(document.flist, 'recover', $(this).attr('data-list-recover-url'));
+        var f ='' ;
+        if(document.flist) f = document.flist ;
+        if(document.fboardlist) f = document.fboardlist;
+        select_submit(f, 'recover', $(this).attr('data-list-recover-url'));
     });
 
     $(document).on('click', '.btn-one-delete', function() {
@@ -1030,6 +1044,7 @@ if (typeof(COMMON_JS) === 'undefined') {
 
 
     function multi_crawling_item_update( crawl_mode, crawl_type,msg) {
+
         var href;
         if (  crawl_mode == '' || crawl_type == '') {
             return false;
@@ -1037,6 +1052,7 @@ if (typeof(COMMON_JS) === 'undefined') {
         if ( msg) {
             if ( ! confirm(msg)) { return false; }
         }
+        
         href = cb_url + '/crawl/multi_crawling_item_update/' + crawl_mode + '/' + crawl_type;
         var $that = $(this);
         $.ajax({

@@ -225,3 +225,15 @@ ul.de_pg_tab li.tab-current a{background:#2CC185;color:#fff}
 	.content_wrapper{margin-left:0;}
 	.search{display:none;}
 }
+
+
+.btn-admin-manage-layer { display:none;border:1px solid #ddd;position:absolute;background-color:#fff;z-index:99999; }
+.btn-admin-manage-layer div.item { height:23px;border-bottom:1px solid #ddd; cursor:pointer;padding-left:2px;padding-right:10px; }
+.btn-admin-manage-layer div.item { font:normal 11px 'dotum';line-height:23px; }
+.btn-admin-manage-layer div.item i { width:20px;text-align:center; }
+
+
+.btn-admin-manage-layer2 { display:none;border:1px solid #ddd;position:absolute;background-color:#fff;z-index:99999; }
+.btn-admin-manage-layer2 div.item { height:23px;border-bottom:1px solid #ddd; cursor:pointer;padding-left:2px;padding-right:10px; }
+.btn-admin-manage-layer2 div.item { font:normal 11px 'dotum';line-height:23px; }
+.btn-admin-manage-layer2 div.item i { width:20px;text-align:center; }

@@ -6167,13 +6167,13 @@ $config['str_tag_2']  = array(
 );
 
 $config['from_category_to_attr']  = array(
-      '6' =>array(8 => array('all'),9,10),
-      '7' =>array(8 => array('adult'),11,72),
-      '8' =>array(8 => array('adult'),72,9,10),
-      '9' =>array(8 => array('adult'),72,9,10),
-      '10' =>array(8 => array('all'),72,9,10),
-      '11' =>array(8 => array('adult'),72,9,10),
-      '12' =>array(8 => array('adult'),72),
+      '6' =>array(1=>1,8 => array('all'),9=>9,10=>10),
+      '7' =>array(1=>1,8 => array('adult'),11=>11,72=>72),
+      '8' =>array(1=>1,8 => array('adult'),72=>72,9=>9,10=>10),
+      '9' =>array(1=>1,8 => array('adult'),72=>72,9=>9,10=>10),
+      '10' =>array(1=>1,8 => array('all'),72=>72,9=>9,10=>10),
+      '11' =>array(1=>1,8 => array('adult'),72=>72,9=>9,10=>10),
+      '12' =>array(1=>1,8 => array('adult'),72=>72),
 );
 
 

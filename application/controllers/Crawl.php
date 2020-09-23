@@ -1779,6 +1779,7 @@ class Crawl extends CB_Controller
                 
                 $all_attr = $this->Cmall_attr_model->get_all_attr();
                 $all_kind = $this->Cmall_kind_model->get_all_kind();
+                $get_category = $this->Cmall_category_model->get_category(element('cit_id', $val));
 
 
                 $crawlwhere = array(
@@ -1808,56 +1809,86 @@ class Crawl extends CB_Controller
 
                 $i = 0;
 
-                foreach($all_attr as $a_cvalue){
-                    
-                    foreach($a_cvalue as $a_cvalue_){
-                        
-                        if(element('cat_parent',$a_cvalue_) > 0){
-                            if(element('cat_parent',$a_cvalue_) == '1'){
+                if(empty(!$get_category)){
 
+                    foreach($get_category as $value){
 
-                                foreach(element(0,$all_kind) as $k_cvalue){
-                                    if(element('cat_id',$a_cvalue_) == element('ckd_size',$k_cvalue)){
-                                        $a_cvalue_['cat_text'] .= ','.element('ckd_value_kr',$k_cvalue);
-                                        $a_cvalue_['cat_text'] .= ','.element('ckd_value_en',$k_cvalue);
-
-                                    }
-                                    
-                                }
-                            } else {
-                                $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);    
-                            }
-                        }
+                        if((int) $value['cca_parent'] > 0) continue;
                         
 
+                        foreach($all_attr as $a_cvalue){
+                            
+                            foreach($a_cvalue as $a_cvalue_){
+                                
+                                if(element('cat_parent',$a_cvalue_) > 0){
 
+                                    if(!array_key_exists(element('cat_parent',$a_cvalue_),element(element('cca_id',$value),config_item('from_category_to_attr')))) continue;
 
-                                         
-                        foreach ($tag_array as $tval) {
-                            $i++;
-                            if(element('cat_text',$a_cvalue_)){
-                                if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
-                                    $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
-
-
-                                    if(element('cat_parent',$a_cvalue_)){
-
-                                        $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
-                                        $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
-
-                                        
-                                        
-                                    }
                                     
-                                }
+                                    if(element('cat_parent',$a_cvalue_) == '1'){
 
-                            } 
+
+                                        foreach(element(0,$all_kind) as $k_cvalue){
+                                            if(element('cat_id',$a_cvalue_) == element('ckd_size',$k_cvalue)){
+                                                $a_cvalue_['cat_text'] .= ','.element('ckd_value_kr',$k_cvalue);
+                                                $a_cvalue_['cat_text'] .= ','.element('ckd_value_en',$k_cvalue);
+
+                                            }
+                                            
+                                        }
+                                    } else {
+                                        $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);    
+                                    }
+                                }
+                                
+
+
+
+                                foreach ($tag_array as $tval) {
+                                    $i++;
+                                    if(element('cat_text',$a_cvalue_)){
+                                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
+                                            $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
+
+
+                                            if(element('cat_parent',$a_cvalue_)){
+
+                                                $cmall_attr[element('cat_parent',$a_cvalue_)] = element('cat_parent',$a_cvalue_);
+                                                $cmall_attr[element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)))] = element('cat_id',$this->Cmall_attr_model->get_attr_info(element('cat_parent',$a_cvalue_)));
+
+                                                
+                                                
+                                            }
+                                            
+                                        }
+                                        
+                                        if(element('cat_parent',$a_cvalue_) == '8'){
+
+                                            if(!in_array(12,$cmall_attr) || !in_array(13,$cmall_attr) || !in_array(14,$cmall_attr)){
+                                                
+                                                if(element(0,element(8,element(element('cca_id',$value),config_item('from_category_to_attr'))))==='all'){
+                                                    
+                                                    $cmall_attr[12]=12;
+                                                    $cmall_attr[13]=13;
+                                                    $cmall_attr[14]=14;
+                                                }
+                                                if(element(0,element(8,element(element('cca_id',$value),config_item('from_category_to_attr'))))==='adult'){
+                                                    
+                                                    $cmall_attr[13]=13;
+                                                }
+                                            }
+                                            
+                                        }
+
+                                    } 
+                                }
+                         
+                            }                                            
+                            
+                            
+                            
                         }
-                 
-                    }                                            
-                    
-                    
-                    
+                    }
                 }
                 // print_r2($cmall_attr);
                 if(!empty($cmall_attr)){

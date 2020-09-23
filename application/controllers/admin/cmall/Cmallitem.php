@@ -1374,6 +1374,140 @@ class Cmallitem extends CB_Controller
                 );
             }
 
+            
+
+            
+
+            $cdt_tag_text=array();
+            
+            $cdt_tag_text = explode("\n",urldecode($cdt_tag));
+
+            if(count($cdt_tag_text)){
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                );
+                $this->Crawl_delete_tag_model->delete_where($deletewhere);            
+                if ($cdt_tag_text && is_array($cdt_tag_text)) {
+                    foreach ($cdt_tag_text as $key => $value) {
+                        $value = trim($value);
+                        if ($value) {
+
+                            $where = array(
+                                        // 'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cdt_tag' => $value,
+                                    );
+
+                            
+
+                            if(!$this->Crawl_delete_tag_model->count_by($where)) {
+
+                                $tagdata = array(
+                                    'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cdt_tag' => $value,
+                                    // 'is_manual' => 1,
+                                );
+                                $this->Crawl_delete_tag_model->insert($tagdata);
+                            }
+                            // $deletewhere = array(
+                            //     // 'post_id' => $this->input->post('post_id', null, ''),
+                            //     'cit_id' => $pid,
+                            //     // 'brd_id' => $this->input->post('brd_id', null, ''),
+                            //     'cta_tag' => $value,
+                                
+                            // );
+                            // $this->Crawl_tag_model->delete_where($deletewhere);            
+                        }
+                    }
+                }
+                
+            }
+
+            $cmt_tag_text=array();
+            
+            $cmt_tag_text = explode("\n",urldecode($cmt_tag));
+
+            if(count($cmt_tag_text)){
+                $deletewhere = array(
+                    'cit_id' => $pid,
+                );
+                $this->Crawl_manual_tag_model->delete_where($deletewhere);
+                // $deletewhere = array(
+                //     'cit_id' => $pid,
+                //     'is_manual' => 1,
+                // );
+                // $this->Crawl_tag_model->delete_where($deletewhere);
+
+                if ($cmt_tag_text && is_array($cmt_tag_text)) {
+                    foreach ($cmt_tag_text as $key => $value) {
+                        $value = trim($value);
+                        if ($value) {
+
+
+                            $where = array(
+                                        // 'post_id' => $this->input->post('post_id', null, ''),
+                                        'cit_id' => $pid,
+                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                        'cmt_tag' => $value,
+                                    );
+
+                            
+
+                            if(!$this->Crawl_manual_tag_model->count_by($where)) {
+
+                                $tagdata = array(
+                                    'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cmt_tag' => $value,
+                                    // 'is_manual' => 1,
+                                );
+                                $this->Crawl_manual_tag_model->insert($tagdata);
+                            }
+                            // $countwhere = array(
+                            //     // 'post_id' => $this->input->post('post_id', null, ''),
+                            //     'cit_id' => $pid,
+                            //     // 'brd_id' => $this->input->post('brd_id', null, ''),
+                            //     'cdt_tag' => $value,
+                            // );
+                            // $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
+
+                            // if(!element('cdt_id',$dtag)){
+
+                                    
+                            //         $where = array(
+                            //                     // 'post_id' => $this->input->post('post_id', null, ''),
+                            //                     'cit_id' => $pid,
+                            //                     // 'brd_id' => $this->input->post('brd_id', null, ''),
+                            //                     'cta_tag' => $value,
+                            //                 );
+
+                                    
+
+                            //     if(!$this->Crawl_tag_model->count_by($where)) {
+                                    
+                            //         $tagdata = array(
+                            //             'post_id' => $this->input->post('post_id', null, ''),
+                            //             'cit_id' => $pid,
+                            //             'brd_id' => $this->input->post('brd_id', null, ''),
+                            //             'cta_tag' => $value,
+                            //             'is_manual' => 1,
+                            //         );
+                            //         $this->Crawl_tag_model->insert($tagdata);
+                            //     } else{
+                            //         $this->Crawl_tag_model->update('',array('is_manual' =>1),$where);
+                            //     }
+                                
+                            // }
+                        }
+                    }
+                }
+                
+            }
+
             $cta_tag_text=array();
             
             $cta_tag_text = explode("\n",urldecode($cta_tag));
@@ -1414,136 +1548,55 @@ class Cmallitem extends CB_Controller
                 
             }
 
-            
-
-            $cdt_tag_text=array();
-            
-            $cdt_tag_text = explode("\n",urldecode($cdt_tag));
-
-            if(count($cdt_tag_text)){
-                $deletewhere = array(
-                    'cit_id' => $pid,
-                );
-                $this->Crawl_delete_tag_model->delete_where($deletewhere);            
-                if ($cdt_tag_text && is_array($cdt_tag_text)) {
-                    foreach ($cdt_tag_text as $key => $value) {
-                        $value = trim($value);
-                        if ($value) {
-
-                            $where = array(
-                                        // 'post_id' => $this->input->post('post_id', null, ''),
-                                        'cit_id' => $pid,
-                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
-                                        'cdt_tag' => $value,
-                                    );
+            if ($cmt_tag_text && is_array($cmt_tag_text)) {
+                foreach ($cmt_tag_text as $key => $value) {
+                    $value = trim($value);
+                    if ($value) {
+                        $where = array(
+                                    // 'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cta_tag' => $value,
+                                );
 
                             
 
-                            if(!$this->Crawl_delete_tag_model->count_by($where)) {
-
-                                $tagdata = array(
-                                    'post_id' => $this->input->post('post_id', null, ''),
-                                    'cit_id' => $pid,
-                                    'brd_id' => $this->input->post('brd_id', null, ''),
-                                    'cdt_tag' => $value,
-                                    // 'is_manual' => 1,
-                                );
-                                $this->Crawl_delete_tag_model->insert($tagdata);
-                            }
-                            $deletewhere = array(
-                                // 'post_id' => $this->input->post('post_id', null, ''),
+                        if(!$this->Crawl_tag_model->count_by($where)) {
+                            
+                            $tagdata = array(
+                                'post_id' => $this->input->post('post_id', null, ''),
                                 'cit_id' => $pid,
-                                // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                'brd_id' => $this->input->post('brd_id', null, ''),
                                 'cta_tag' => $value,
-                                
+                                'is_manual' => 1,
                             );
-                            $this->Crawl_tag_model->delete_where($deletewhere);            
+                            $this->Crawl_tag_model->insert($tagdata);
+                        } else{
+                            $this->Crawl_tag_model->update('',array('is_manual' =>1),$where);
                         }
                     }
                 }
-                
             }
 
-            $cmt_tag_text=array();
-            
-            $cmt_tag_text = explode("\n",urldecode($cmt_tag));
-
-            if(count($cmt_tag_text)){
-                $deletewhere = array(
-                    'cit_id' => $pid,
-                );
-                $this->Crawl_manual_tag_model->delete_where($deletewhere);
-                $deletewhere = array(
-                    'cit_id' => $pid,
-                    'is_manual' => 1,
-                );
-                $this->Crawl_tag_model->delete_where($deletewhere);
-
-                if ($cmt_tag_text && is_array($cmt_tag_text)) {
-                    foreach ($cmt_tag_text as $key => $value) {
-                        $value = trim($value);
-                        if ($value) {
-
-
-                            $where = array(
-                                        // 'post_id' => $this->input->post('post_id', null, ''),
-                                        'cit_id' => $pid,
-                                        // 'brd_id' => $this->input->post('brd_id', null, ''),
-                                        'cmt_tag' => $value,
-                                    );
+            if ($cdt_tag_text && is_array($cdt_tag_text)) {
+                foreach ($cdt_tag_text as $key => $value) {
+                    $value = trim($value);
+                    if ($value) {
+                        $where = array(
+                                    // 'post_id' => $this->input->post('post_id', null, ''),
+                                    'cit_id' => $pid,
+                                    // 'brd_id' => $this->input->post('brd_id', null, ''),
+                                    'cta_tag' => $value,
+                                );
 
                             
 
-                            if(!$this->Crawl_manual_tag_model->count_by($where)) {
-
-                                $tagdata = array(
-                                    'post_id' => $this->input->post('post_id', null, ''),
-                                    'cit_id' => $pid,
-                                    'brd_id' => $this->input->post('brd_id', null, ''),
-                                    'cmt_tag' => $value,
-                                    // 'is_manual' => 1,
-                                );
-                                $this->Crawl_manual_tag_model->insert($tagdata);
-                            }
-                            $countwhere = array(
-                                // 'post_id' => $this->input->post('post_id', null, ''),
-                                'cit_id' => $pid,
-                                // 'brd_id' => $this->input->post('brd_id', null, ''),
-                                'cdt_tag' => $value,
-                            );
-                            $dtag = $this->Crawl_delete_tag_model->get_one('','',$countwhere);
-
-                            if(!element('cdt_id',$dtag)){
-
-                                    
-                                    $where = array(
-                                                // 'post_id' => $this->input->post('post_id', null, ''),
-                                                'cit_id' => $pid,
-                                                // 'brd_id' => $this->input->post('brd_id', null, ''),
-                                                'cta_tag' => $value,
-                                            );
-
-                                    
-
-                                    if(!$this->Crawl_tag_model->count_by($where)) {
-                                    
-                                    $tagdata = array(
-                                        'post_id' => $this->input->post('post_id', null, ''),
-                                        'cit_id' => $pid,
-                                        'brd_id' => $this->input->post('brd_id', null, ''),
-                                        'cta_tag' => $value,
-                                        'is_manual' => 1,
-                                    );
-                                    $this->Crawl_tag_model->insert($tagdata);
-                                }
-                                
-                            }
-                        }
+                        if($this->Crawl_tag_model->count_by($where)) {
+                            $this->Crawl_tag_model->delete_where($where);            
+                        } 
                     }
                 }
-                
             }
-
             $this->load->model('Cmall_item_history_model');
             $historydata = array(
                 'cit_id' => $pid,
@@ -1634,7 +1687,7 @@ class Cmallitem extends CB_Controller
     public function listupdate()
     {
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_cmall_cmallitem_listupdate';
+        $eventname = 'event_admin_cmall_trashcmallitem_listupdate';
         $this->load->event($eventname);
 
         // 이벤트가 존재하면 실행합니다
@@ -1645,39 +1698,17 @@ class Cmallitem extends CB_Controller
          */
         if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 
-            $cit_name = $this->input->post('cit_name');
-            $cit_price = $this->input->post('cit_price');
-            $cit_price_sale = $this->input->post('cit_price_sale');
-            $cit_status = $this->input->post('cit_status');
-
-            $item_layout = $this->input->post('item_layout');
-            $item_mobile_layout = $this->input->post('item_mobile_layout');
-            $item_sidebar = $this->input->post('item_sidebar');
-            $item_mobile_sidebar = $this->input->post('item_mobile_sidebar');
-            $item_skin = $this->input->post('item_skin');
-            $item_mobile_skin = $this->input->post('item_mobile_skin');
+            
 
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
-                    $cit_price_update = element($val, $cit_price) ? element($val, $cit_price) : 0;
-                    $cit_price_sale_update = element($val, $cit_price_sale) ? element($val, $cit_price_sale) : 0;
-                    $cit_status_update = element($val, $cit_status) ? 1 : 0;
-                    $updatedata = array(
-                        'cit_name' => element($val, $cit_name),
-                        'cit_price' => $cit_price_update,
-                        'cit_price_sale' => $cit_price_sale_update,
-                        'cit_status' => $cit_status_update,
+                    
+                    $updatedata = array(                        
+                        'cit_is_del' => 1,
                     );
-                    $metadata = array(
-                        'item_layout' => element($val, $item_layout),
-                        'item_mobile_layout' => element($val, $item_mobile_layout),
-                        'item_sidebar' => element($val, $item_sidebar),
-                        'item_mobile_sidebar' => element($val, $item_mobile_sidebar),
-                        'item_skin' => element($val, $item_skin),
-                        'item_mobile_skin' => element($val, $item_mobile_skin),
-                    );
+                    
                     $this->{$this->modelname}->update($val, $updatedata);
-                    $this->Cmall_item_meta_model->save($val, $metadata);
+                    
                 }
             }
         }

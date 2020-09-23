@@ -3462,7 +3462,7 @@ class Postact extends CB_Controller
 
 
         
-        $this->load->model(array('Crawl_tag_model','Cmall_item_model'));
+        $this->load->model(array('Crawl_tag_model','Cmall_item_model','Crawl_delete_tag_model','Crawl_manual_tag_model'));
 
         $crawltagwhere = array(
 			'cit_id' => $cit_id,
@@ -3510,14 +3510,45 @@ class Postact extends CB_Controller
                     	
 
                     	if(!$this->Crawl_tag_model->count_by($where)) {
-	                        $tagdata = array(
-	                            'post_id' => element('post_id', $cmail_item),
-	                            'cit_id' => element('cit_id', $cmail_item),
-	                            'brd_id' => element('brd_id', $cmail_item),
-	                            'cta_tag' => $value,
-	                            // 'is_manual' => 1,
-	                        );
-	                        $this->Crawl_tag_model->insert($tagdata);
+
+                    		$where = array(
+                    	            
+		                            'cit_id' => element('cit_id', $cmail_item),
+		                            
+                    	            'cdt_tag' => $value,
+                    	        );
+
+                    		
+
+                    		if(!$this->Crawl_delete_tag_model->count_by($where)) {
+
+
+                    			$where = array(
+                    	            
+		                            'cit_id' => element('cit_id', $cmail_item),
+		                            
+                    	            'cmt_tag' => $value,
+                    	        );
+                    			if($this->Crawl_manual_tag_model->count_by($where)) {
+			                        $tagdata = array(
+			                            'post_id' => element('post_id', $cmail_item),
+			                            'cit_id' => element('cit_id', $cmail_item),
+			                            'brd_id' => element('brd_id', $cmail_item),
+			                            'cta_tag' => $value,
+			                            'is_manual' => 1,
+			                        );
+			                        $this->Crawl_tag_model->insert($tagdata);
+		                    	} else {
+		                    		$tagdata = array(
+			                            'post_id' => element('post_id', $cmail_item),
+			                            'cit_id' => element('cit_id', $cmail_item),
+			                            'brd_id' => element('brd_id', $cmail_item),
+			                            'cta_tag' => $value,
+			                            // 'is_manual' => 1,
+			                        );
+			                        $this->Crawl_tag_model->insert($tagdata);
+		                    	}
+		                    }
                     	}
                     }
                 }
@@ -4596,6 +4627,144 @@ class Postact extends CB_Controller
 		
 
 		$result = array('success' => '실행되었습니다');
+		exit(json_encode($result));
+
+	}
+
+	public function cit_multi_type1($flag = 0)
+	{
+
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_postact_post_multi_blame_blind';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_item_model'));
+
+		$result = array();
+		$this->output->set_content_type('application/json');
+
+		$cit_ids = $this->input->post('chk');
+		if (empty($cit_ids)) {
+			$result = array('error' => '선택된 게시물이 없습니다.');
+			exit(json_encode($result));
+		}
+		$flag = ((int) $flag === 1) ? 1 : 0;
+
+		foreach ($cit_ids as $cit_id) {
+			$cit_id = (int) $cit_id;
+			if (empty($cit_id) OR $cit_id < 1) {
+				$result = array('error' => '잘못된 접근입니다');
+				exit(json_encode($result));
+			}
+			
+			$select = 'cit_id,post_id, brd_id';
+			$cmall = $this->Cmall_item_model->get_one($cit_id, $select);
+
+			if ( ! element('cit_id', $cmall)) {
+				$result = array('error' => '존재하지 않는 게시물입니다');
+				exit(json_encode($result));
+			}
+
+			$board = $this->board->item_all(element('brd_id', $cmall));
+
+			$is_admin = $this->member->is_admin(
+				array(
+					'board_id' => element('brd_id', $board),
+					'group_id' => element('bgr_id', $board),
+				)
+			);
+
+			if ($is_admin === false) {
+				$result = array('error' => '접근권한이 없습니다');
+				exit(json_encode($result));
+			}
+
+			
+
+			$cit_type1 = $flag ? $flag : 0;
+			$updatedata = array(
+				'cit_type1' => $cit_type1,
+			);
+			$this->Cmall_item_model->update($cit_id, $updatedata);
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		$success = ($flag) ? '이 항목을 베스트 상품 등록 하셨습니다' : '이 항목을 베스트 상품 해제 하였습니다' ;
+		$result = array('success' => $success);
+		exit(json_encode($result));
+
+	}
+
+	public function cit_multi_type2($flag = 0)
+	{
+
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_postact_post_multi_blame_blind';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_item_model'));
+
+		$result = array();
+		$this->output->set_content_type('application/json');
+
+		$cit_ids = $this->input->post('chk');
+		if (empty($cit_ids)) {
+			$result = array('error' => '선택된 게시물이 없습니다.');
+			exit(json_encode($result));
+		}
+		$flag = ((int) $flag === 1) ? 1 : 0;
+
+		foreach ($cit_ids as $cit_id) {
+			$cit_id = (int) $cit_id;
+			if (empty($cit_id) OR $cit_id < 1) {
+				$result = array('error' => '잘못된 접근입니다');
+				exit(json_encode($result));
+			}
+			
+			$select = 'cit_id,post_id, brd_id';
+			$cmall = $this->Cmall_item_model->get_one($cit_id, $select);
+
+			if ( ! element('cit_id', $cmall)) {
+				$result = array('error' => '존재하지 않는 게시물입니다');
+				exit(json_encode($result));
+			}
+
+			$board = $this->board->item_all(element('brd_id', $cmall));
+
+			$is_admin = $this->member->is_admin(
+				array(
+					'board_id' => element('brd_id', $board),
+					'group_id' => element('bgr_id', $board),
+				)
+			);
+
+			if ($is_admin === false) {
+				$result = array('error' => '접근권한이 없습니다');
+				exit(json_encode($result));
+			}
+
+			
+
+			$cit_type2 = $flag ? $flag : 0;
+			$updatedata = array(
+				'cit_type2' => $cit_type2,
+			);
+			$this->Cmall_item_model->update($cit_id, $updatedata);
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		$success = ($flag) ? '이 항목을 인기 상품 등록 하셨습니다' : '이 항목을 인기 상품 해제 하였습니다' ;
+		$result = array('success' => $success);
 		exit(json_encode($result));
 
 	}
