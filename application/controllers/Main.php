@@ -49,6 +49,7 @@ class Main extends CB_Controller
 		$eventname = 'event_main_index';
 		$this->load->event($eventname);
 
+		$this->Cmall_item_model->reconnect();
 
 		// $str = '가나다라마바사 [가나] 라마바 사아자 가나 다라 마바 사아 가 나 다 라 마 WEB';
 		// if (preg_match_all('/\s\[?가나\]?\s/i', $str,$match)) {

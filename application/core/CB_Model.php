@@ -495,5 +495,11 @@ class CB_Model extends CI_Model
 		
 	}
 
+	public function reconnect()
+	{
+		echo "a";
+		$this->db->reconnect();
+	}
+
 	
 }
