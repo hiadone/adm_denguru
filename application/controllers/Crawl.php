@@ -1847,7 +1847,7 @@ class Crawl extends CB_Controller
                                 foreach ($tag_array as $tval) {
                                     $i++;
                                     if(element('cat_text',$a_cvalue_)){
-                                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval)){
+                                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval,4)){
                                             $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
 
 
