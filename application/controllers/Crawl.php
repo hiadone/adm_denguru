@@ -313,7 +313,7 @@ class Crawl extends CB_Controller
         $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
         $result = $this->get_admin_list('','',$brdwhere);
 
-        
+        $this->Cmall_item_model->reconnect();
         if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val){ 
 
@@ -330,7 +330,7 @@ class Crawl extends CB_Controller
                 );
 
                 
-                $this->Cmall_item_model->reconnect();
+                
                 $item = $this->Cmall_item_model->get_one('','',$where);
 
                 if($post_id && element('cit_id',$item)) {
