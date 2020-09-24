@@ -6174,6 +6174,9 @@ $config['from_category_to_attr']  = array(
       '10' =>array(1=>1,8 => array('all'),72=>72,9=>9,10=>10),
       '11' =>array(1=>1,8 => array('adult'),72=>72,9=>9,10=>10),
       '12' =>array(1=>1,8 => array('adult'),72=>72),
+      '12' =>array(1=>1,8 => array('adult'),72=>72),
+      '13' =>array(),
+      '135' =>array(),
 );
 
 

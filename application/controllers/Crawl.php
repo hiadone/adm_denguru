@@ -1865,15 +1865,15 @@ class Crawl extends CB_Controller
                                         if(element('cat_parent',$a_cvalue_) == '8'){
 
                                             if(!in_array(12,$cmall_attr) || !in_array(13,$cmall_attr) || !in_array(14,$cmall_attr)){
-                                                
+
                                                 if(element(0,element(8,element(element('cca_id',$value),config_item('from_category_to_attr'))))==='all'){
-                                                    
+                                                    $cmall_attr[8]=8;
                                                     $cmall_attr[12]=12;
                                                     $cmall_attr[13]=13;
                                                     $cmall_attr[14]=14;
                                                 }
                                                 if(element(0,element(8,element(element('cca_id',$value),config_item('from_category_to_attr'))))==='adult'){
-                                                    
+                                                    $cmall_attr[8]=8;
                                                     $cmall_attr[13]=13;
                                                 }
                                             }
@@ -1890,7 +1890,7 @@ class Crawl extends CB_Controller
                         }
                     }
                 }
-                // print_r2($cmall_attr);
+                
                 if(!empty($cmall_attr)){
                     // $deletewhere = array(
                     //     'cit_id' => element('cit_id',$val),

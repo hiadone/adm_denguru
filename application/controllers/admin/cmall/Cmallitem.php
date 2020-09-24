@@ -399,6 +399,7 @@ class Cmallitem extends CB_Controller
 
                 $attr = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
 
+                
                 if($attr){
                     foreach($attr as $aval){
                         $result['list'][$key]['attr'][element('cat_parent',$aval)][]=array('cat_id' => element('cat_id',$aval),'cat_value'=>element('cat_value',$aval));

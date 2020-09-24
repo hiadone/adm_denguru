@@ -472,8 +472,8 @@ if (typeof(COMMON_JS) === 'undefined') {
     });
     $(document).on('mouseenter', '.admin-manage-list', function () {
         $manage_button_list = $(this);
-        $('.admin-manage-layer-list').css('top', $manage_button_list.position().top);
-        $('.admin-manage-layer-list').css('left', $manage_button_list.position().left - ($('.admin-manage-layer-list').width()-$manage_button_list.width()));
+        $('.admin-manage-layer-list').css('top', $manage_button_list.position().top+30);
+        $('.admin-manage-layer-list').css('left', $manage_button_list.position().left );
         $('.admin-manage-layer-list').css('display', 'block');
         $(document).on('mouseenter', '.admin-manage-layer-list .item', function () {
             $(this).css('background-color', '#DEDEDE');
@@ -495,7 +495,10 @@ if (typeof(COMMON_JS) === 'undefined') {
         });
     });
     $(document).on('mouseleave', '.btn-admin-manage-layer', function () {
-        $(this).css('display', 'none');
+        $('.btn-admin-manage-layer').each(function(){
+            $(this).css('display', 'none');
+        });
+        
     });
 
     // 쿠키 입력

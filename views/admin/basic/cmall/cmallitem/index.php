@@ -324,7 +324,7 @@
 		                        </td>
 							<td style="width:130px;">
 								<?php 
-								    if(element('attr', $result)){
+								    if(element(0,element('attr', $result))){
 								        echo '<div style="overflow:auto; height:150px;">';
 								        foreach (element(0,element('attr', $result)) as $cv) { 
 								            
@@ -388,22 +388,7 @@
 			</div>
 			<div class="box-table-header ">
 				<?php echo $buttons; ?>
-				 <button type="button" class="btn btn-default btn-sm admin-manage-list"><i class="fa fa-cog big-fa"></i> 관리</button>
-                <div class=" btn-admin-manage-layer admin-manage-layer-list2">
-                    
-                    <div class="item" onClick="post_multi_change_category();"><i class="fa fa-tags"></i> 카테고리변경</div>
-                    
-                    
-
-                    
-                    <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
-                    <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
-                    <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
-                    <div class="item" onClick="post_multi_change_attr();"><i class="fa fa-tags"></i> 특성변경</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 글들을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 글들을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
-               
-                </div>
+				
 			</div>
 		<?php echo form_close(); ?>
 	</div>
