@@ -208,7 +208,7 @@
                     </td>
                     <td style="width:130px;">
                         <?php 
-                            if(element('attr', $result)){
+                            if(element(0,element('attr', $result))){
                                 echo '<div style="overflow:auto; height:150px;">';
                                 foreach (element(0,element('attr', $result)) as $cv) { 
                                     
