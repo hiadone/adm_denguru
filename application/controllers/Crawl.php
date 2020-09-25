@@ -1645,7 +1645,7 @@ class Crawl extends CB_Controller
                             array_push($label,$val);
                     }
                 }
-                
+                $this->Vision_api_label_model->reconnect();
                 if(count($label)){
                     $deletewhere = array(
                         'cit_id' => element('cit_id', $c_value),
