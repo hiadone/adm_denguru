@@ -1566,7 +1566,7 @@ class Crawl extends CB_Controller
 
 
         $crawl = $this->Cmall_item_model
-            ->get('', '', $postwhere, '', '', 'cit_id', 'ASC');
+            ->get('', '', $postwhere, '', '', 'cit_id', 'desc');
 
             
         foreach ($crawl as $c_key => $c_value) {
@@ -1742,7 +1742,7 @@ class Crawl extends CB_Controller
         }
 
         $result['list'] = $this->Cmall_item_model
-                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+                ->get('', '', $where, '', '', 'cit_id', 'desc');
 
         
         
@@ -2073,7 +2073,7 @@ class Crawl extends CB_Controller
         }
 
         $result['list'] = $this->Cmall_item_model
-                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+                ->get('', '', $where, '', '', 'cit_id', 'desc');
 
         
         
@@ -2355,7 +2355,7 @@ class Crawl extends CB_Controller
         }
 
         $result['list'] = $this->Cmall_item_model
-                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+                ->get('', '', $where, '', '', 'cit_id', 'desc');
 
 
         // $kind_list = $this->Cmall_kind_model->get_all_kind();
@@ -2730,7 +2730,7 @@ class Crawl extends CB_Controller
         }
 
         $result['list'] = $this->Cmall_item_model
-                ->get('', '', $where, '', '', 'cit_id', 'ASC');
+                ->get('', '', $where, '', '', 'cit_id', 'desc');
 
         // $kind_list = $this->Cmall_kind_model->get_all_kind();
         
@@ -2949,7 +2949,7 @@ class Crawl extends CB_Controller
                         }
                     }
                 }
-                
+                $this->Cmall_item_model->reconnect();
                 if(count($translate_text)){
                     
 

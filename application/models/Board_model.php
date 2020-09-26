@@ -28,7 +28,7 @@ class Board_model extends CB_Model
 
 	public $allow_order = array();
 
-	public $_join = array();
+	
 
 	function __construct()
 	{

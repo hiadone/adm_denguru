@@ -17,7 +17,7 @@ class Cmall_item_model extends CB_Model
 	 */
 	public $_table = 'cmall_item';
 
-	public $_join = array();
+	
 
 	/**
 	 * 사용되는 테이블의 프라이머리키

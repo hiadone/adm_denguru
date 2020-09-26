@@ -47,6 +47,7 @@ class CB_Model extends CI_Model
 
 	public $set_where = array();
 
+	public $_join = array();
 
 
 	/* --------------------------------------------------------------
