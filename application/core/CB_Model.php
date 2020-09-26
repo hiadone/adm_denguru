@@ -501,7 +501,7 @@ class CB_Model extends CI_Model
 
 			
 
-			// $this->db->close();
+			$this->db->close();
 			$this->db->initialize();
 		
 		
