@@ -6184,6 +6184,10 @@ $config['attr_str_equal']  = array(
       'span',
       '스탠다드 푸들',
       'Standard Poodle',
+      '그레이 하운드',
+      'Grey Hound',
+      '이탈리안 그레이 하운드',
+      'Italian Grey hound',
       );
 
 

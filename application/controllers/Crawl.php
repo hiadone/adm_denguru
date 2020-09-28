@@ -3672,7 +3672,7 @@ class Crawl extends CB_Controller
                 foreach(config_item('attr_str_equal') as $equalval){
                     if(strtolower($equalval) === strtolower($c_value)){
                         $attr_str_equal = false;
-                        $t_value = $c_value;
+                        // $t_value = $c_value;
                         break;
                     }
 
@@ -3687,6 +3687,13 @@ class Crawl extends CB_Controller
                     if(preg_match("/".preg_quote(str_replace(" ","",$t_value),'/')."/i",str_replace(" ","",$c_value))){
                         // echo $c_value ."//".$t_value;
                         return true;
+                    }
+                } elseif($attr_str_equal === false) {
+                    // echo $t_value."//".$c_value;
+                    // echo "<br>";
+                    
+                    if(strtolower(str_replace(" ","",$c_value)) === strtolower(str_replace(" ","",$t_value))){
+                         return true;
                     }
                 } else {
                     // echo $t_value."//".$c_value;
