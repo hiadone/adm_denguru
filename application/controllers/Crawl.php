@@ -3672,6 +3672,7 @@ class Crawl extends CB_Controller
                 foreach(config_item('attr_str_equal') as $equalval){
                     if(strtolower($equalval) === strtolower($c_value)){
                         $attr_str_equal = false;
+                        $t_value = $c_value;
                         break;
                     }
 

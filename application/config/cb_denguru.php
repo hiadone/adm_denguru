@@ -6182,4 +6182,9 @@ $config['from_category_to_attr']  = array(
 
 $config['attr_str_equal']  = array(
       'span',
+      '스탠다드 푸들',
+      'Standard Poodle',
       );
+
+
+ 

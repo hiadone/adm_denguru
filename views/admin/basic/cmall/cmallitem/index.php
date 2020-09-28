@@ -333,10 +333,23 @@
 								            if(!empty(element(element('cat_id', $cv),element('attr', $result))))
 								            foreach (element(element('cat_id', $cv),element('attr', $result)) as $cv_) {
 								            	$label_primary = 'label-primary';
+								            	
+								                echo '<label class="label '.$label_primary.'">' . html_escape(element('cat_value', $cv_)) . '</label> ';
+								                
+								                
+
+								            } 
+								            echo "<br>";
+								        } 
+								        
+
+								        if(!empty(element(1,element('attr', $result))))
+								            foreach (element(1,element('attr', $result)) as $cv_) {
+								            	$label_primary = 'label-primary';
 								            	if(element('cat_id', $cv_) ==='4') $label_primary = 'label-danger';
 								            	if(element('cat_id', $cv_) ==='5') $label_primary = 'label-warning';
 								            	if(element('cat_id', $cv_) ==='6') $label_primary = 'label-success';
-								                echo '<label class="label '.$label_primary.'">' . html_escape(element('cat_value', $cv_)) . '</label> ';
+								                
 								                if(element(element('cat_id', $cv_),element('kind', $result))){
 								                	echo "<br>";
 									                foreach (element(element('cat_id', $cv_),element('kind', $result)) as $kv) {
@@ -348,7 +361,6 @@
 
 								            } 
 								            echo "<br>";
-								        } 
 								        echo '</div>';
 								    }
 								?>
