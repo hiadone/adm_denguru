@@ -2920,13 +2920,13 @@ class Crawl extends CB_Controller
                                 if(count($arr_str) > 2 || $s2flag){
 
                                     if(preg_match("/".preg_quote(str_replace(" ","",element('tgw_value',$word)),'/')."/i",str_replace(" ","",$tval))){
-                                        if(!in_array(element('tgw_value',$word),$translate_text))
-                                            array_push($translate_text,element('tgw_value',$word));       
+                                        if(!in_array(strtolower(element('tgw_value',$word)),$translate_text))
+                                            array_push($translate_text,strtolower(element('tgw_value',$word)));       
                                     }     
                                 } else {
                                     if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?\-?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
-                                        if(!in_array(element('tgw_value',$word),$translate_text))
-                                            array_push($translate_text,element('tgw_value',$word));       
+                                        if(!in_array(strtolower(element('tgw_value',$word)),$translate_text))
+                                            array_push($translate_text,strtolower(element('tgw_value',$word)));       
                                     }     
                                 }
                                 // $arr_str = preg_split("//u", str_replace(" ","",$tval), -1, PREG_SPLIT_NO_EMPTY);
