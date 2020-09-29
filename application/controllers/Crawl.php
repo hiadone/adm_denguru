@@ -2829,7 +2829,7 @@ class Crawl extends CB_Controller
                                     if(count($arr_str) > 2 || $s2flag){
 
                                         if(preg_match("/".preg_quote(str_replace(" ","",element('tgw_value',$word)),'/')."/i",str_replace(" ","",$tval))){
-                                            if(!in_array(element('tgw_value',$word),strtolower($translate_text)))
+                                            if(!in_array(strtolower(element('tgw_value',$word)),$translate_text))
                                                 array_push($translate_text,strtolower(element('tgw_value',$word)));
                                         }     
                                     } else {
