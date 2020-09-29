@@ -2834,7 +2834,7 @@ class Crawl extends CB_Controller
                                         }     
                                     } else {
                                         if(element('tgw_value',$word) === $tval || preg_match("/[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."[\]?\s?\-?]|^".preg_quote(element('tgw_value',$word),'/')."[\s\]]|[\s?\[?\-?]".preg_quote(element('tgw_value',$word),'/')."$/i",$tval)){
-                                            if(!in_array(element('tgw_value',$word),strtolower($translate_text)))
+                                            if(!in_array(strtolower(element('tgw_value',$word)),$translate_text))
                                                 array_push($translate_text,strtolower(element('tgw_value',$word)));
                                         }     
                                     }
