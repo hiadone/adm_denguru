@@ -6830,8 +6830,8 @@ class Crawl extends CB_Controller
 
         
 
-        $str =  preg_replace("/[^ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]/i", " ", $str);
-        
+        // $str =  preg_replace("/[^ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]/i", " ", $str);
+        $str =  preg_replace("/[^\x{1100}-\x{11FF}|\x{3130}-\x{318F}|\x{AC00}-\x{D7AF}|a-z|A-Z|0-9]/u", " ", $str);
         foreach(explode(' ', $chars) as $val){
             $str = str_replace($val, " ", $str);
         }
