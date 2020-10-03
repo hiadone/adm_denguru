@@ -1652,7 +1652,9 @@ class Crawl extends CB_Controller
                     $deletewhere = array(
                         'cit_id' => element('cit_id', $c_value),
                     );
-                    echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
+
+
+                    // if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
                     //     $this->Vision_api_label_model->reconnect();
                     $this->Vision_api_label_model->delete_where($deletewhere);            
                     if ($label && is_array($label)) {
@@ -2965,7 +2967,8 @@ class Crawl extends CB_Controller
                     $this->benchmark->mark('code_end');
 
                     echo $this->benchmark->elapsed_time('code_start', 'code_end')."\n";
-                    //     $this->Crawl_tag_model->reconnect();    
+                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                        $this->Crawl_tag_model->reconnect();    
 
                     $this->Crawl_tag_model->delete_where($deletewhere);            
                     if ($translate_text && is_array($translate_text)) {
