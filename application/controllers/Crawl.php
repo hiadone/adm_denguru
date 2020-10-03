@@ -1575,7 +1575,7 @@ class Crawl extends CB_Controller
                 'cit_id' => element('cit_id', $c_value),
             );
             if (empty($cit_id) && $this->Vision_api_label_model->count_by($where)) continue;        
-
+            $this->benchmark->mark('code_start');
             $label_text = array();
             $label = array();
             $label_tag = array();
@@ -1645,11 +1645,15 @@ class Crawl extends CB_Controller
                             array_push($label,$val);
                     }
                 }
-                // $this->Vision_api_label_model->reconnect();
+                $this->benchmark->mark('code_end');
+
+                
                 if(count($label)){
                     $deletewhere = array(
                         'cit_id' => element('cit_id', $c_value),
                     );
+                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                        $this->Vision_api_label_model->reconnect();
                     $this->Vision_api_label_model->delete_where($deletewhere);            
                     if ($label && is_array($label)) {
                         foreach ($label as $key => $value) {
@@ -2783,7 +2787,7 @@ class Crawl extends CB_Controller
 
                 
                         $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-
+                        $this->benchmark->mark('code_start');
                         if ($tag && is_array($tag)) {
                             $tag_array=array();
                             foreach ($tag as $tvalue) {
@@ -2875,7 +2879,7 @@ class Crawl extends CB_Controller
 
                     
                     $tag = $this->Vision_api_label_model->get('', '', $crawlwhere, '', '', 'val_id', 'ASC');
-
+                    $this->benchmark->mark('code_start');
                     if ($tag && is_array($tag)) {
                         $tag_array=array();
                         foreach ($tag as $tvalue) {
@@ -2958,6 +2962,11 @@ class Crawl extends CB_Controller
                         'cit_id' => element('cit_id',$val),
                         // 'is_manual' => 0,
                     );
+                    $this->benchmark->mark('code_end');
+
+                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                        $this->Crawl_tag_model->reconnect();    
+
                     $this->Crawl_tag_model->delete_where($deletewhere);            
                     if ($translate_text && is_array($translate_text)) {
                         foreach ($translate_text as  $text) {
