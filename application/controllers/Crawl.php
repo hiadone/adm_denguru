@@ -3581,7 +3581,7 @@ class Crawl extends CB_Controller
                     if($crawl_type==='vision_api_label'){
                         
                         $this->vision_api_label(0,element('brd_id', $val));
-                        $this->crawling_tag_overwrite(0,element('brd_id', $val));
+                        // $this->crawling_tag_overwrite(0,element('brd_id', $val));
                     }
                     if($crawl_type==='attr_update'){
                         $this->crawling_attr_update(0,element('brd_id', $val));
