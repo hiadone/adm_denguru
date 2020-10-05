@@ -1654,8 +1654,8 @@ class Crawl extends CB_Controller
                     );
 
 
-                    // if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
-                    //     $this->Vision_api_label_model->reconnect();
+                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                        $this->Vision_api_label_model->reconnect();
                     $this->Vision_api_label_model->delete_where($deletewhere);            
                     if ($label && is_array($label)) {
                         foreach ($label as $key => $value) {
