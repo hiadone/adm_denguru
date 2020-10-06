@@ -12,8 +12,8 @@
 				<div class="btn-group pull-right" role="group" aria-label="...">
 					<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
 					<a href="<?php echo element('listall_url', $view); ?>?noitem=1" class="btn btn-warning btn-sm">no item 목록</a>
-					<a href="<?php echo element('listall_url', $view); ?>?trash=1" class="btn btn-warning btn-sm">휴지통 목록</a>
-					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-trash btn-list-selected disabled" data-list-trash-url = "<?php echo element('list_trash_url', $view); ?>" >휴지통</button>
+					<a href="<?php echo element('listall_url', $view); ?>?trash=1" class="btn btn-warning btn-sm">레거지 목록</a>
+					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-trash btn-list-selected disabled" data-list-trash-url = "<?php echo element('list_trash_url', $view); ?>" >선택 휴지통</button>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 				</div>
 			<?php

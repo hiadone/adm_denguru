@@ -84,8 +84,12 @@ class Post extends CB_Controller
 			'post_del <>' => 2,
 		);
 
-		if($this->input->get('noitem'))
+		if($this->input->get('noitem')){
+			$where = array(
+				// 'post_del <>' => 1,
+			);
 			$this->{$this->modelname}->set_where("post_id not in(select post_id from cb_cmall_item group by post_id)",'',false);
+		}
 
 		if($this->input->get('trash'))
 			$this->{$this->modelname}->set_where("post_id in(select post_id from cb_cmall_item where cit_is_del = 1 group by post_id) and post_id not in(select post_id from cb_cmall_item where cit_is_del = 0 group by post_id)",'',false);

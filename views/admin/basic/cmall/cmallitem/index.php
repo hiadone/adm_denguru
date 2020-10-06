@@ -1,5 +1,5 @@
 <div class="box">
-	<div class="box-table">
+	<div class="box-table" style="padding-bottom: 130px;">
 		<form name="fsearch" id="fsearch" action="<?php echo current_full_url(); ?>" method="get">
 		<div>추가 검색 조건 
 		<div class="searchwhere" >
