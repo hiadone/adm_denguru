@@ -3285,6 +3285,7 @@ class Crawl extends CB_Controller
 
 
         $row_tag_ = array();
+        $row_tag__ = '';
         if($row_tag){
             foreach($row_tag as $val){
                 $pattern = "/([\xEA-\xED][\x80-\xBF]{2}|[a-zA-Z0-9])+/";
@@ -3297,8 +3298,8 @@ class Crawl extends CB_Controller
                 
                 
             }
-
-            $language_ = $this->naturallanguage->analyzeEntities(implode("\n",$row_tag_));
+            $row_tag__ = implode(" ",$row_tag_);
+            $language_ = $this->naturallanguage->analyzeEntities($row_tag__);
 
             
         }
