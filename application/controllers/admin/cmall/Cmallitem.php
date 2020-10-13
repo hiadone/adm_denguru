@@ -112,6 +112,13 @@ class Cmallitem extends CB_Controller
             
         } 
 
+        if(!empty($this->input->get('tag'))){            
+            
+            $this->Board_model->set_where('cb_cmall_item.cit_id in (select DISTINCT cit_id from cb_crawl_manual_tag UNION select DISTINCT cit_id from cb_crawl_delete_tag)','',false);
+
+            
+        } 
+
         if(!empty($this->input->get('notag'))){            
             
             $this->Board_model->set_where('cb_cmall_item.cit_id not in (select DISTINCT A.cit_id from cb_cmall_item A inner join cb_crawl_tag B on A.cit_id = B.cit_id )','',false);
@@ -535,7 +542,7 @@ class Cmallitem extends CB_Controller
         /**
          * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
          */
-        $search_option = array('brd_id' => '스토어 명', 'cit_name' => '상품명', 'cit_price' => '판매가격', 'cbr_id' => '브랜드', 'cca_id' => '카테고리', 'cat_id' => '특성', 'cta_id' => '태그', 'ckd_id' => '견종');
+        $search_option = array('brd_id' => '스토어 명', 'cit_name' => '상품명', 'cit_price' => '판매가격', 'cbr_id' => '브랜드', 'cta_id' => '태그', 'ckd_id' => '견종');
         $view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
         $view['view']['search_option'] = search_option($search_option, $sfield);
         $view['view']['listall_url'] = admin_url($this->pagedir);

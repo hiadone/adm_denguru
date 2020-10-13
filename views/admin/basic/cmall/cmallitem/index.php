@@ -137,7 +137,14 @@
 		
 		<div class="box-search">
 			<div class="row">
-				<div class="col-md-6 col-md-offset-3">
+				<div class='col-md-2 col-md-offset-1'>
+						<button type="button" class="btn btn-info btn-sm" onClick="search_category()">카테고리검색</button>
+						<button type="button" class="btn btn-info btn-sm" onClick="search_attr()">특성검색</button>
+							
+					</div>
+				<div class="col-md-6">
+					
+					
 					<select class="form-control" name="sfield" >
 						<?php echo element('search_option', $view); ?>
 					</select>
@@ -211,6 +218,7 @@
 						<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-primary btn-sm">베스트상품 목록</a>
 						<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-primary btn-sm">인기상품  목록</a>
 						<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-primary btn-sm">신상품 목록</a>						
+						<a href="<?php echo element('search_url', $view); ?>&tag=3" class="btn btn-primary btn-sm">태그목록</a>						
 						<a href="<?php echo element('search_url', $view); ?>&warning=1" class="btn btn-warning btn-sm">warning 목록</a>
 						<a href="<?php echo element('search_url', $view); ?>&nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
 						<a href="<?php echo element('search_url', $view); ?>&notag=1" class="btn btn-warning btn-sm">no 태그 목록</a>
@@ -599,9 +607,9 @@ $("select[name='sfield']").change(function(e){
 
 		if($(this).val() =='cbr_id') brand_list(0);
 
-		if($(this).val() =='cca_id') search_category();
+		// if($(this).val() =='cca_id') search_category();
 
-		if($(this).val() =='cat_id') search_attr();
+		// if($(this).val() =='cat_id') search_attr();
 
 		if($(this).val() =='ckd_id') kind_list(0);
 	    	
