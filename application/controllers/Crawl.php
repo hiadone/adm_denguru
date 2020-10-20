@@ -418,7 +418,7 @@ class Crawl extends CB_Controller
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         // 'cit_status' => element('is_del', $val) ? 0 : element('cit_status',$item) ,
-                        'cit_status' => 1,
+                        // 'cit_status' => 1,
                         'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
                         'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
