@@ -712,7 +712,7 @@ class Crawl extends CB_Controller
 
                 if($flag){
 
-                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+                    // $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
 
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
@@ -770,7 +770,7 @@ class Crawl extends CB_Controller
 
                 if($flag){
 
-                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+                    // $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
 
                     if(element('cit_updated_datetime', $c_value)){
                         if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {

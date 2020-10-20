@@ -251,7 +251,7 @@
 							<th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
 							<th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
 							<th><a href="<?php echo element('cit_hit', element('sort', $view)); ?>">조회수</a></th>
-							<th>스크랩</th>
+							<th><a href="<?php echo element('cit_wish_count', element('sort', $view)); ?>">스크랩</a></th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
@@ -380,7 +380,7 @@
 							<td><a href="javascript:post_action_crawl('cit_status', '<?php echo element('cit_id', $result);?>', '<?php echo empty(element('cit_status', $result)) ? '1':'0';?>',0);" class="btn <?php echo empty(element('cit_status', $result)) ? 'btn-primary':'btn-warning';?> btn-xs"><?php echo empty(element('cit_status', $result)) ? 'disable' : 'enable'; ?></a></td>
 							<td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
 							<td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
-							<td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>
+							<td class="text-right"><?php echo number_format(element('cit_wish_count', $result)); ?></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a>
 							<br>
 							<br>

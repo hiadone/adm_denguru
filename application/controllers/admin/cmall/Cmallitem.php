@@ -77,11 +77,15 @@ class Cmallitem extends CB_Controller
             'cit_updated_datetime' => $param->sort('cit_updated_datetime', 'asc'),
             'cit_hit' => $param->sort('cit_hit', 'asc'),
             'cit_sell_count' => $param->sort('cit_sell_count', 'asc'),
+            'cit_wish_count' => $param->sort('cit_wish_count', 'asc'),
             'cit_price' => $param->sort('cit_price', 'asc'),
+            'cit_status' => $param->sort('cit_status', 'asc'),
 
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
         $forder = $this->input->get('forder', null, 'desc');
+
+        
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
 
@@ -379,9 +383,9 @@ class Cmallitem extends CB_Controller
          */
         $this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content'); // 검색이 가능한 필드
         $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+        $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price', 'cit_status','cit_wish_count'); // 정렬이 가능한 필드
         $result = $this->Board_model
-            ->get_item_list($per_page, $offset, $where, '',  $forder,$sfield,$skeyword);
+            ->get_admin_list($per_page, $offset, $where, '',  $findex,$forder,$sfield,$skeyword);
 
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {
@@ -424,14 +428,14 @@ class Cmallitem extends CB_Controller
                 
                 
 
-                $cmall_wishlist_where = array(
-                    'cit_id' => element('cit_id', $val),
+                // $cmall_wishlist_where = array(
+                //     'cit_id' => element('cit_id', $val),
                     
-                );
-                $cmall_wishlist_count = $this->Cmall_wishlist_model
-                    ->count_by($cmall_wishlist_where);
+                // );
+                // $cmall_wishlist_count = $this->Cmall_wishlist_model
+                //     ->count_by($cmall_wishlist_where);
 
-                $result['list'][$key]['cmall_wishlist_count'] = $cmall_wishlist_count ? $cmall_wishlist_count : 0;
+                // $result['list'][$key]['cmall_wishlist_count'] = $cmall_wishlist_count ? $cmall_wishlist_count : 0;
 
                 if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
                     $result['list'][$key]['warning'] = 1 ; 
