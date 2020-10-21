@@ -598,7 +598,7 @@ class Eventgroup extends CB_Controller
                 if($this->Notification_model->count_by($countwhere)) continue;
 
                 $egr_file ='';
-                if(element('is_image',$getdata))
+                if(element('egr_image',$getdata))
                     $egr_file =  cdn_url('eventgroup', element('egr_image', $getdata));
 
                 $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
