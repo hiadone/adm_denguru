@@ -6812,7 +6812,7 @@ class Crawl extends CB_Controller
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('brd_id,count(*) cnt,sum(IF(cb_crawl_item.cit_is_del > 0, 1, 0)) as delcnt');
+        $DB2->select('brd_id,count(*) cnt,sum(IF(cb_crawl_item.is_del > 0, 1, 0)) as delcnt');
         $DB2->from('crawl_item');
 
         $DB2->group_by('brd_id');
