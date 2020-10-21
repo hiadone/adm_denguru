@@ -609,7 +609,7 @@ class Eventgroup extends CB_Controller
                     element('mem_id', $val),
                     'event',
                     element('egr_id',$getdata),
-                    element('egr_content',$getdata),
+                    element('egr_title',$getdata),
                     $not_url,
                     $egr_file,
                 );
