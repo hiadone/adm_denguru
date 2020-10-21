@@ -195,8 +195,8 @@ class Memberpet extends CB_Controller
             $getdata['mem_userid'] = element('mem_userid',$this->Member_model->get_by_memid(element('mem_id',$getdata),'mem_userid'));
 
             $pet_kind_text = array();
-            if(element('pet_kind', $getdata))
-                $pet_kind_text = $this->Cmall_kind_model->get_kind_info(element('pet_kind', $getdata));
+            if(element('ckd_id', $getdata))
+                $pet_kind_text = $this->Cmall_kind_model->get_kind_info(element('ckd_id', $getdata));
 
             
             if(element('ckd_value_kr',$pet_kind_text))
@@ -438,8 +438,8 @@ class Memberpet extends CB_Controller
             $pet_neutral = $this->input->post('pet_neutral') ? $this->input->post('pet_neutral') : 0;
             $pet_weight = $this->input->post('pet_weight') ? $this->input->post('pet_weight') : 0;
             $pet_attr = $this->input->post('pet_attr', null, '');
-            $pet_form = $this->input->post('pet_form') ? $this->input->post('pet_form') : 0;
-            $pet_allergy = $this->input->post('pet_allergy') ? $this->input->post('pet_allergy') : 0;            
+            $pat_id = $this->input->post('pat_id') ? $this->input->post('pat_id') : 0;
+            $pet_is_allergy = $this->input->post('pet_is_allergy') ? $this->input->post('pet_is_allergy') : 0;            
             $pet_allergy_rel = $this->input->post('pet_allergy_rel', null, '');
 
             
@@ -453,7 +453,7 @@ class Memberpet extends CB_Controller
                 $cmall_kind = $result->row_array();
             }
 
-            $pet_kind = empty($cmall_kind) ? 0 : element('ckd_id',$cmall_kind);
+            $ckd_id = empty($cmall_kind) ? 0 : element('ckd_id',$cmall_kind);
 
             $updatedata = array(
                 'mem_id' => $mem_id,
@@ -462,9 +462,9 @@ class Memberpet extends CB_Controller
                 'pet_sex' => $pet_sex,
                 'pet_neutral' => $pet_neutral,
                 'pet_weight' => $pet_weight,                
-                'pet_allergy' => $pet_allergy,
-                'pet_form' => $pet_form,
-                'pet_kind' => $pet_kind,
+                'pet_is_allergy' => $pet_is_allergy,
+                'pat_id' => $pat_id,
+                'ckd_id' => $ckd_id,
                 
             );
 

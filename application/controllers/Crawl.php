@@ -436,7 +436,7 @@ class Crawl extends CB_Controller
                     // $updatedata['cit_key'] = 'c_'.element('cit_id',$item);
                             
                     $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
-
+                    $this->benchmark->mark('code_start');
 
 
                     # 이미지 URL 추출
@@ -525,8 +525,10 @@ class Crawl extends CB_Controller
                                 $deleted = $this->aws_s3->delete_file($upload_path_);
 
                                 
-                                    
+                                $this->benchmark->mark('code_end');    
                                 if($upload){
+                                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                                        $this->Cmall_item_model->reconnect();
                                     $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$citimageName;
                                     $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
                                 }
@@ -553,8 +555,10 @@ class Crawl extends CB_Controller
 
 
                                 
-                                    
+                                $this->benchmark->mark('code_end');    
                                 if($upload){
+                                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                                        $this->Cmall_item_model->reconnect();
                                     $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$crwimageName;
                                     $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
                                 }
@@ -602,7 +606,7 @@ class Crawl extends CB_Controller
                     $updatedata['cit_key'] = 'c_'.$cit_id;
                             
                     $this->Cmall_item_model->update($cit_id, $updatedata);
-
+                    $this->benchmark->mark('code_start');
 
 
                     # 이미지 URL 추출
@@ -669,8 +673,10 @@ class Crawl extends CB_Controller
 
 
                         
-                            
+                        $this->benchmark->mark('code_end');    
                         if($upload){
+                            if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                                $this->Cmall_item_model->reconnect();
                             $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$imageName;
                             $this->Cmall_item_model->update($cit_id, $updatedata);
                         }
@@ -713,23 +719,23 @@ class Crawl extends CB_Controller
                 if($flag){
 
                     // $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    // if(element('cit_updated_datetime', $c_value)){
+                    //     if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
+                    //         // echo element('cit_id',$c_value);
+                    //         // echo "<br>";
+                    //         $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    //         // $this->board->delete_cmall(element('cit_id',$c_value));
+                    //     }
+                    // } elseif(element('cit_datetime', $c_value)){
+                    //     if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
+                    //         // echo element('cit_id',$c_value);
+                    //         // echo "<br>";
+                    //         $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    //         // $this->board->delete_cmall(element('cit_id',$c_value));
+                    //     }
 
-                    if(element('cit_updated_datetime', $c_value)){
-                        if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
-                            // echo element('cit_id',$c_value);
-                            // echo "<br>";
-                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
-                            // $this->board->delete_cmall(element('cit_id',$c_value));
-                        }
-                    } elseif(element('cit_datetime', $c_value)){
-                        if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
-                            // echo element('cit_id',$c_value);
-                            // echo "<br>";
-                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
-                            // $this->board->delete_cmall(element('cit_id',$c_value));
-                        }
-
-                    }
+                    // }
                     
                     
                 
@@ -771,23 +777,23 @@ class Crawl extends CB_Controller
                 if($flag){
 
                     // $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_status' => 0));
+                    $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    // if(element('cit_updated_datetime', $c_value)){
+                    //     if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
+                    //         // echo element('cit_id',$c_value);
+                    //         // echo "<br>";
+                    //         $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    //         // $this->board->delete_cmall(element('cit_id',$c_value));
+                    //     }
+                    // } elseif(element('cit_datetime', $c_value)){
+                    //     if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
+                    //         // echo element('cit_id',$c_value);
+                    //         // echo "<br>";
+                    //         $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
+                    //         // $this->board->delete_cmall(element('cit_id',$c_value));
+                    //     }
 
-                    if(element('cit_updated_datetime', $c_value)){
-                        if (( ctimestamp() - strtotime(element('cit_updated_datetime', $c_value)) > 168 * 3600)) {
-                            // echo element('cit_id',$c_value);
-                            // echo "<br>";
-                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
-                            // $this->board->delete_cmall(element('cit_id',$c_value));
-                        }
-                    } elseif(element('cit_datetime', $c_value)){
-                        if (( ctimestamp() - strtotime(element('cit_datetime', $c_value)) > 720 * 3600)) {
-                            // echo element('cit_id',$c_value);
-                            // echo "<br>";
-                            $this->Cmall_item_model->update(element('cit_id',$c_value), array('cit_is_del' => 1));
-                            // $this->board->delete_cmall(element('cit_id',$c_value));
-                        }
-
-                    }
+                    // }
                 
                 }
             }
@@ -6806,7 +6812,7 @@ class Crawl extends CB_Controller
         
         $DB2 = $this->load->database('db2', TRUE);
         
-        $DB2->select('brd_id,count(*) cnt,sum(IF(cb_crawl_item.is_del > 0, 1, 0)) as delcnt');
+        $DB2->select('brd_id,count(*) cnt,sum(IF(cb_crawl_item.cit_is_del > 0, 1, 0)) as delcnt');
         $DB2->from('crawl_item');
 
         $DB2->group_by('brd_id');
