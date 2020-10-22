@@ -1324,6 +1324,7 @@ class Board_post extends CB_Controller
 			'cmall_item.brd_id' => $this->board->item_key('brd_id', $brd_key),
 			'cmall_item.post_id' => $post_id,
 			'cmall_item.cit_is_del' => 0,
+			'cmall_item.cit_status' => 1,
 		);
 		
 		if(!empty($this->input->get('warning'))){
@@ -1767,7 +1768,10 @@ class Board_post extends CB_Controller
 			$this->db->join('cmall_category_rel', 'cmall_category_rel.cit_id = cmall_item.cit_id', 'left');
 			$this->db->join('cmall_category', 'cmall_category.cca_id = cmall_category_rel.cca_id', 'left');
 			$this->db->where(array('post.brd_id' => element('brd_id', $board)));
+			$this->db->where(array('cmall_item.cit_is_del' => 0));
+			$this->db->where(array('cmall_item.cit_status' => 1));
 
+			
 			$this->db->where_in('cmall_category_rel.cca_id' , $cca_id_arr);
 
 			
@@ -1789,7 +1793,7 @@ class Board_post extends CB_Controller
 			
 			}
 
-			$board['category_cnt']['total'] = $this->Cmall_item_model->count_by(array('brd_id' => element('brd_id', $board))); 
+			$board['category_cnt']['total'] = $this->Cmall_item_model->count_by(array('brd_id' => element('brd_id', $board),'cit_is_del' =>0,'cit_status' =>1)); 
 			
 
 				

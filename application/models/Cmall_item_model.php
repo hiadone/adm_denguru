@@ -287,8 +287,8 @@ class Cmall_item_model extends CB_Model
 		$this->db->group_by($group_by);
 		$this->db->select($group_by.',count(*) as rownum');
 		
-		$this->db->where(array('cit_is_del' =>0));				
-		
+		$this->db->where(array('cit_is_del' =>0));
+		$this->db->where(array('cit_status' =>1));
 		// if ($or_where) {
 		// 	$this->db->group_start();
 		// 	$this->db->or_where($or_where);
