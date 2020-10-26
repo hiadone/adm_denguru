@@ -6191,4 +6191,13 @@ $config['attr_str_equal']  = array(
       );
 
 
- 
+$config['brd_site_type']  = array(
+      1 => 'naver',
+      2 => 'cafe24',
+      3 => 'godomall',
+      4 => 'imweb',
+      5 => 'makeshop',
+      6 => 'wisa',
+      7 => 'sixshop',
+      8 => 'private',
+      ); 

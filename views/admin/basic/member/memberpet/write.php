@@ -55,7 +55,7 @@
 						<?php foreach(element('pet_form',element('config',$view)) as $key => $val){ 
 
 							?>
-							<input type="radio" name="pet_form" value="<?php echo element('pat_id',$val) ?>" <?php echo set_radio('pet_form', '1', (element('pet_form', element('data', $view)) == element('pat_id',$val) ? true : false)); ?> /> <?php echo element('pat_value',$val) ?>
+							<input type="radio" name="pat_id" value="<?php echo element('pat_id',$val) ?>" <?php echo set_radio('pat_id', '1', (element('pat_id', element('data', $view)) == element('pat_id',$val) ? true : false)); ?> /> <?php echo element('pat_value',$val) ?>
 						<?php } ?>
 						
 						</div>
@@ -153,8 +153,8 @@
 					<div class="col-sm-10">
 						<div class="input-group">
 						
-						<input type="radio" name="pet_allergy" value="1" <?php echo set_radio('pet_allergy', '1', (element('pet_allergy', element('data', $view)) === '1' ? true : false)); ?> /> 있어요
-						<input type="radio" name="pet_allergy" value="0" <?php echo set_radio('pet_allergy', '0', (element('pet_allergy', element('data', $view)) !== '1' ? true : false)); ?> /> 없어요					
+						<input type="radio" name="pet_is_allergy" value="1" <?php echo set_radio('pet_is_allergy', '1', (element('pet_is_allergy', element('data', $view)) === '1' ? true : false)); ?> /> 있어요
+						<input type="radio" name="pet_is_allergy" value="0" <?php echo set_radio('pet_is_allergy', '0', (element('pet_is_allergy', element('data', $view)) !== '1' ? true : false)); ?> /> 없어요					
 						
 						</div>
 					</div>

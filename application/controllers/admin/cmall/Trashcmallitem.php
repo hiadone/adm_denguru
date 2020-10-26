@@ -376,7 +376,7 @@ class Trashcmallitem extends CB_Controller
         $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
         $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price', 'cit_status','cit_wish_count'); // 정렬이 가능한 
         $result = $this->Board_model
-            ->get_admin_list($per_page, $offset, $where, '',  $findex,$forder,$sfield,$skeyword);
+            ->get_item_list($per_page, $offset, $where, '',  $findex,$forder,$sfield,$skeyword);
 
         $list_num = $result['total_rows'] - ($page - 1) * $per_page;
         if (element('list', $result)) {

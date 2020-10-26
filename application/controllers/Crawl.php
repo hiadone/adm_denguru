@@ -3994,14 +3994,22 @@ class Crawl extends CB_Controller
 
 
 
-  
+//         $lists = array("bonjourtou-tou",
+// "comercotte",
+// "ddoang",
+// "guilty-pleasure",
+// "harryspet",
+// "melonicoco",
+// "pawunion",
+// "pethod",
+// "wilddog",);
 
 //                             $storelist = array();
 
-// $this->load->model(array('Board_model'));
+// $this->load->model(array('Board_model','Board_crawl_model'));
 
 //         $where = array(
-//             'brd_blind' => 0,
+//             // 'brd_blind' => 0,
 //         );
 //         $result = $this->Board_model->get_crawl_list($where);
 
@@ -4010,22 +4018,14 @@ class Crawl extends CB_Controller
 //                 if (element('list', $result)) {
 //                     foreach (element('list', $result) as $key => $val) {
                             
-//                             // if(strpos(element('brd_url',$val),'smartstore') !==false) continue;
-//                             // if(in_array(element('brd_id',$val),$storelist)) continue;
-                            
-//                             foreach($storelist as $sval){
-//                                 if(strpos(element('brd_name',$val),$sval) !==false){
-//                                     $data['list'][element('brd_id',$val)] = element('brd_id',$val);
-//                                     echo element('brd_id',$val)."<br>";
-//                                     break;
-//                                 }
-
-//                                 if(strpos($sval,element('brd_name',$val)) !==false){
-//                                     $data['list'][element('brd_id',$val)] = element('brd_id',$val);
-//                                     echo element('brd_id',$val)."<br>";
-//                                     break;
-//                                 }
+//                         foreach($lists as $url){
+//                             if(preg_match("/".$url."/i",element('brd_url',$val))) {
+//                                 echo element('brd_url',$val);
+                                
+//                                 echo "<br>";
+//                                 $this->Board_crawl_model->update(element('bdc_id',$val),array('brd_site_type' => 7));
 //                             }
+//                         }
 //                             // $data['list'][$key]['brd_id'] = element('brd_id',$val);
 //                             // $data['list'][$key]['brd_name'] = element('brd_name',$val);
 //                             // $data['list'][$key]['brd_url'] = element('brd_url',$val);                    
@@ -4570,10 +4570,13 @@ class Crawl extends CB_Controller
                         $result = array('resultcode'=>9001,'message' => '카테고리가 기존 데이터보다 적습니다.');
                         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                     }
-                    if(str_replace(" ","",$this->input->post('crw_category1')) ==='전체상품' && !empty(element('crw_category1',$crawl_item))){
+                    if(preg_match("/전체상품/",str_replace(" ","",$this->input->post('crw_category1'))) && !empty(element('crw_category1',$crawl_item))){
                         $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');
                         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
                     }
+
+
+
 
                     if(strtolower(str_replace(" ","",$this->input->post('crw_category1'))) ==='allitem' && !empty(element('crw_category1',$crawl_item))){
                         $result = array('resultcode'=>9002,'message' => '불필요한 카테고리입니다.');

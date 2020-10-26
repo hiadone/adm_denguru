@@ -33,14 +33,14 @@
                     if (element('list', element('data', $view))) {
                         foreach (element('list', element('data', $view)) as $result) {
                     ?>
-                        <tr class="<?php echo ((element('cit_count', $result) - element('cit_is_del_count', $result)) < element('cit_count', $result) * 0.7 || (element('cit_count_avg', $result) - element('cit_count', $result)) > element('cit_count_avg', $result) * 0.7) ? 'warning':''; ?> ">
+                        <tr class="<?php echo ((element('cit_count', $result) - element('cit_is_del_count', $result)) < element('cit_count', $result) * 0.7 || (element('cit_count_avg', $result) - element('cit_count', $result)) > element('cit_count_avg', $result) * 0.7 || (element('cit_is_del_count', $result) - element('cit_is_del_count_avg', $result)) > element('cit_is_del_count_avg', $result) * 1.7) ? 'warning':''; ?> ">
                             <td><?php echo element('num', $result); ?></td>
                             <td><?php echo element('brd_id', $result); ?></td>
                             <td><a href="<?php echo board_url(element('brd_key', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
-                            <td><?php echo element('cit_count', $result); ?></td>
-                            <td><?php echo element('cit_is_del_count', $result); ?></td>                          
-                            <td><?php echo element('cit_count_avg', $result); ?></td>                          
-                            <td><?php echo element('cit_is_del_count_avg', $result); ?></td>                          
+                            <td><?php echo number_format(element('cit_count', $result)); ?></td>
+                            <td><?php echo number_format(element('cit_is_del_count', $result)); ?></td>
+                            <td><?php echo number_format(element('cit_count_avg', $result),2); ?></td>
+                            <td><?php echo number_format(element('cit_is_del_count_avg', $result),2); ?></td>                          
                             <!-- <td><?php echo element('a_cnt', $result); ?></td>                          
                             <td><?php echo element('b_cnt', $result); ?></td>                           -->
                             
