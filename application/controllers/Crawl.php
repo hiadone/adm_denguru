@@ -1818,7 +1818,7 @@ class Crawl extends CB_Controller
 
                 $updatedata = array();
                 $is_cate = true;
-
+                $str_length = 2;
                 $i = 0;
 
                 if(empty(!$get_category)){
@@ -1839,16 +1839,18 @@ class Crawl extends CB_Controller
                                     
                                     if(element('cat_parent',$a_cvalue_) == '1'){
 
+                                        $str_length = 999;
 
                                         foreach(element(0,$all_kind) as $k_cvalue){
                                             if(element('cat_id',$a_cvalue_) == element('ckd_size',$k_cvalue)){
-                                                $a_cvalue_['cat_text'] .= ','.element('ckd_value_kr',$k_cvalue);
-                                                $a_cvalue_['cat_text'] .= ','.element('ckd_value_en',$k_cvalue);
+                                                $a_cvalue_['cat_text'] .= ','.str_replace(" ","",element('ckd_value_kr',$k_cvalue));
+                                                $a_cvalue_['cat_text'] .= ','.str_replace(" ","",element('ckd_value_en',$k_cvalue));
 
                                             }
                                             
                                         }
                                     } else {
+                                        $str_length = 4;
                                         $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);    
                                     }
                                 }
@@ -1859,7 +1861,11 @@ class Crawl extends CB_Controller
                                 foreach ($tag_array as $tval) {
                                     $i++;
                                     if(element('cat_text',$a_cvalue_)){
-                                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval,4)){
+                                        if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval,$str_length)){
+                                            // echo element('cat_text',$a_cvalue_);
+                                            // echo '///';
+                                            // echo $tval;
+                                            // echo '<br>';
                                             $cmall_attr[element('cat_id',$a_cvalue_)] = element('cat_id',$a_cvalue_);
 
 
@@ -1931,6 +1937,8 @@ class Crawl extends CB_Controller
 
                         if(!in_array(element('ckd_size',$a_cvalue),$cmall_attr)) continue;
                         
+                        if(element('ckd_size',$a_cvalue) == '6') $str_length = 999;
+                        else $str_length = 3;
                         $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
 
                 
@@ -1939,7 +1947,7 @@ class Crawl extends CB_Controller
                         foreach ($tag_array as $tval) {
                             $i++;
                             if(element('ckd_text',$a_cvalue)){
-                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,3)){
+                                if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,$str_length)){
                                     $cmall_kind[element('ckd_id',$a_cvalue)] = element('ckd_id',$a_cvalue);
 
                                     
@@ -3051,6 +3059,16 @@ class Crawl extends CB_Controller
                     }
 
                 }
+
+                
+                $this->db->where("cit_id = ".element('cit_id', $val)." and replace(cta_tag,' ','') = '이탈리안그레이하운드'",'',false);
+                
+                if($this->db->count_all_results('crawl_tag')) {
+
+                    $this->db->where("cit_id = ".element('cit_id', $val)." and replace(cta_tag,' ','') = '그레이하운드'",'',false);
+                    $result = $this->db->delete('crawl_tag');
+                }
+                
             }
         }   
 
@@ -3675,7 +3693,7 @@ class Crawl extends CB_Controller
         }
     }
 
-    function crawl_tag_to_attr($cat_text,$crawl_tag_text,$flag=2)
+    function crawl_tag_to_attr($cat_text,$crawl_tag_text,$str_length = 2)
     {   
         $cat_text_arr = explode(',',$cat_text);
 
@@ -3690,6 +3708,9 @@ class Crawl extends CB_Controller
             }
 
             foreach($crawl_tag_text as $t_value){
+
+                            
+                
                 $attr_str_equal=true;
                 foreach(config_item('attr_str_equal') as $equalval){
                     if(strtolower($equalval) === strtolower($c_value)){
@@ -3702,7 +3723,7 @@ class Crawl extends CB_Controller
 
                 $arr_str_kr = preg_split("//u", $t_value, -1, PREG_SPLIT_NO_EMPTY);
 
-                if(count($arr_str_kr) > $flag && $attr_str_equal){
+                if(count($arr_str_kr) > $str_length && $attr_str_equal){
                     // echo $t_value."//".$c_value;
                     // echo "<br>";
                     
@@ -3722,6 +3743,7 @@ class Crawl extends CB_Controller
                     // echo "<br>";
                     
                     if(strtolower(str_replace(" ","",$c_value)) === strtolower(str_replace(" ","",$t_value)) || preg_match("/[\s?\[?\-?]".preg_quote($t_value,'/')."[\]?\s?\-?]|^".preg_quote($t_value,'/')."[\s\]]|[\s?\[?\-?]".preg_quote($t_value,'/')."$/i",$c_value)){
+                        
                          return true;
                     }
                 }
