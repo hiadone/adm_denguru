@@ -1,0 +1,264 @@
+.my_profile {
+    position: relative;
+    padding: $layout-large-padding $layout-base-padding;
+
+    .my_profile_container {
+        display: flex;
+
+    }
+    .thumb_box {
+        flex-shrink: 0;
+        margin-right: $layout-small-padding;
+        @include circle(56px);
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+
+        .img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .txt_box {
+        flex: 1;
+    }
+    .user_mail {
+        max-width: calc(100% - 102px);
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .user_nick {
+        margin-top: $layout-small-padding/2;
+        font-size: $large-font-size;
+        font-weight: 800;
+        color: $bold-font-color;
+    }
+    .user_pet_info {
+        margin-top: $layout-small-padding;
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .user_pet_promotion {
+        margin-top: $layout-small-padding;
+        font-size: $base-font-size;
+        color: $base-font-color;
+        line-height: $base-line-height;
+    }
+    .my_profile_tag_list {    
+        margin-top: 4px;
+        font-size: 0;
+    }
+    .tag {
+        display: inline-block;
+        height: 20px;
+        padding: 0 10px;
+        margin-right: $layout-small-padding;
+        margin-top: 4px;
+        font-size: $small-font-size;
+        line-height: 20px;
+        border: $light-border;
+        border-radius: 10px;
+        color: $light-font-color;
+    }
+    .my_profile_set_btn {
+        position: absolute;
+        top: $layout-large-padding - 1px; 
+        right: $layout-base-padding;
+        font-size: $mid-font-size;
+    }
+}
+.my_icon_btn_box {
+    display: flex;
+    padding: $layout-base-padding;
+    background-color: $gray-0;
+    margin-bottom: $layout-small-padding;
+    
+    .my_icon_btn {
+        position: relative;
+        flex: 1;
+    }
+    .my_icon_btn:not(:last-child):after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 38px;
+        background-color: $gray-2;
+    }
+    .img_box {
+        height: 34px;
+
+        .img {
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .txt_box {
+        margin-top: $layout-small-padding;
+        text-align: center;
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+}
+.my_category {
+    margin-bottom: $layout-small-padding;
+    padding: 0 $layout-base-padding;
+    background-color: $gray-0;
+
+    .title_category {
+        height: 40px;
+        line-height: 40px;
+        font-size: $base-font-size;
+        text-indent: $layout-small-padding;
+        color: $light-font-color;
+        border-bottom: $light-border;
+    }
+    .my_category_item {
+        height: 48px;
+        line-height: 48px;
+        font-size: $large-font-size;
+        color: $bold-font-color;
+    }
+}
+.my_setting_wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .my_setting_container {
+        padding: 0 $layout-base-padding;
+        margin-bottom: $layout-small-padding;
+        background-color: $gray-0;
+
+        &:first-child {
+            padding-top: $layout-base-padding;
+        }
+    }
+    .my_setting_box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 48px;
+
+        &:not(:last-child) {
+            border-bottom: $x-light-border;
+        }
+    }
+    .my_setting_txt {
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .my_setting_btn {
+        text-align: right;
+        min-width: 40px;
+
+        .icon {
+            height: 24px;
+        }
+    }
+    .my_setting_link {
+        flex: 1;
+        background-color: $gray-0;
+        padding: $layout-base-padding;
+
+        .link {
+            text-decoration: underline;
+            font-size: $small-font-size;
+            color: $base-font-color;
+        }
+    }
+}
+.event_list_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: $layout-small-padding;
+    
+    .noreview_message_container {
+        background-color: $gray-0;
+        flex: 1;
+        padding-bottom: 20%;
+    }
+    .event_box {
+        position: relative;
+        background-color: $gray-0;
+        margin-bottom: $layout-small-padding;
+    }
+    .event_txt_box {
+        padding: $layout-base-padding;
+    }
+    .event_title {
+        font-size: $large-font-size;
+        color: $base-font-color;
+        font-weight: bold;
+        line-height: $narrow-line-height;
+    }
+    .event_date {
+        margin-top: $layout-small-padding;
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .event_tag_box {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0;
+    }
+    .tag {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: $mid-font-size;
+        min-width: 40px;
+        text-align: center;
+        margin-right: 4px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+        &_main {
+            background-color: $main-color;
+            color: $gray-0;
+        }
+        &_accent {
+            background-color: $accent-color;
+            color: $gray-0;
+        }
+        &_primary {
+            background-color: $primary-color;
+            color: $gray-0;
+        }
+    }
+}
+.version_info {
+    padding: $layout-base-padding 0;
+    font-size: $mid-font-size;
+    color: $light-font-color;
+
+    .logo {
+        height: 28px;
+        vertical-align: middle;
+    }
+}
+.my_small_txt_box {
+    padding-bottom: $layout-base-padding;
+    font-size: $small-font-size;
+    color: $light-font-color;
+    line-height: $base-line-height;
+    word-break: keep-all;
+}
+.store_join_form_container {
+    margin-bottom: $layout-small-padding;
+    padding: $layout-base-padding;
+    background-color: $gray-0;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+    .inp_box04:not(:last-child) {
+        margin-bottom: $layout-small-padding;
+    }
+}

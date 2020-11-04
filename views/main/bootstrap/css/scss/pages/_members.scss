@@ -1,0 +1,231 @@
+.members_contianer {
+    flex: 1;
+    padding: 0 $layout-base-padding*2;
+    background-color: #fff;
+
+    .members_logo {
+        height: 48px;
+        padding-top: $layout-large-padding;
+
+        .img {
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .members_form_contianer {
+        margin-top: $layout-large-padding;
+        padding-bottom: $layout-base-padding;
+        border-bottom: $light-border;
+    }
+    .inp_box03 {
+        margin-bottom: $layout-base-padding;
+    }
+    .btn_box {
+        margin-top: $layout-large-padding;
+    }
+    .members_link_box {
+        margin-top: $layout-base-padding;
+    }
+    .members_link {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+        margin: 0 4px;
+    }
+    .sns_login_box {
+        margin-top: $layout-base-padding;
+    }
+    .join_title {
+        font-size: $title-font-size;
+        color: $bold-font-color;
+        font-weight: bold;
+    }
+    .join_subtitle {
+        margin-top: $layout-small-padding;
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .sns_login_title {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .sns_login_btn_box {
+        margin-top: $layout-base-padding;
+        text-align: center;
+        font-size: 0;
+    }
+    .sns_login_btn {
+        display: inline-block;
+        width: 48px;
+        height: 48px;
+        margin: 0 $layout-small-padding;
+        box-sizing: border-box;
+        overflow: hidden;
+        font-size: 10px;
+        border-radius: $base-border-radius;
+
+        .img {
+            width: 100%;
+        }
+    }
+    .sns_naver {
+        background-color: #1ec700;
+    }
+    .sns_facebook {
+        background-color: #1777f1;
+    }
+    .sns_kakao {
+        background-color: #f9e200;
+    }
+    // .sns_google {
+    //     border: $light-border;
+    // }
+}
+.members_join_form {
+    padding: $layout-base-padding*2 $layout-base-padding;
+    background-color: $gray-0;
+    flex: 1;
+    
+    .sub_txt {
+        margin-top: $layout-small-padding;
+        word-break: keep-all;
+    }
+    .inp_box04 .inp_txt_box {
+        margin-top: $layout-base-padding;
+    }
+    .join_form_agree_container {
+        margin-top: $layout-large-padding;
+    }
+    .lab_checkbox01 {
+        display: inline-block;
+        margin-bottom: $layout-small-padding;
+    }
+    .lab_checkbox02 {
+        margin-left: $layout-small-padding;
+        margin-top: $layout-small-padding;
+    }
+    .btn_join_success {
+        margin-top: $layout-base-padding*2;
+    }
+}
+.join_success_contianer {
+    position: relative;
+    flex: 1;
+    background-color: #fff;
+
+    .join_success_box {
+        position: absolute;
+        top: 33.3333%;
+        left: 0;
+        transform: translateY(-50%);
+        width: 100%;
+        padding: 0 $layout-base-padding*2;
+        box-sizing: border-box;
+    }
+    .join_success_logo {
+        width: auto;
+        height: 98px;
+
+        .img {
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .join_txt_box {
+        margin-top: $layout-large-padding;
+    }
+    .join_title {
+        font-size: $title-font-size;
+        color: $bold-font-color;
+        font-weight: bold;
+    }
+    .join_subtitle {
+        margin-top: $layout-small-padding;
+        font-size: $base-font-size;
+        line-height: $base-line-height;
+        color: $base-font-color;
+        word-break: keep-all;
+    }
+    .btn_box {
+        margin-top: $layout-large-padding;
+    }
+    @media screen and (max-width: 359px) {
+        .join_title {
+            font-size: $large-font-size;
+        }
+        .join_subtitle {
+            font-size: $mid-font-size;
+        }
+    }
+}
+.find_password_contianer {
+    flex: 1;
+    background-color: #fff;
+    padding: $layout-large-padding*2 $layout-base-padding*2;
+
+    .title08 {
+        margin-bottom: $layout-base-padding;
+    }
+    .btn_box {
+        margin-top: $layout-large-padding;
+    }
+}
+
+.edit_info_wrap {
+    flex: 1;
+    background-color: #fff;
+    padding: $layout-large-padding $layout-base-padding;
+
+    :first-child {
+        margin-top: 0;
+    }
+    .edit_notice {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .edit_notice_list {
+        margin-top: $layout-small-padding;
+    }
+    .edit_notice_item {
+        padding-left: 5px;
+        text-indent: -5px;
+        line-height: $base-line-height;
+        letter-spacing: -0.05em;
+        margin-top: 4px;
+    }
+    .inp_message {
+        margin-top: 4px;
+        height: 12px;
+        font-size: 12px;
+        color: #616161;
+    }
+    .inp_txt_box.inp_txt_box_warn + .inp_message {
+        color: #ff4d7e;
+    }
+}
+.identity_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    justify-content: center;
+    padding: 0 $layout-base-padding*2;
+    background: #fff;
+
+    .identity_icon_container {
+        margin-top: -40%;
+    }
+    .identity_icon_box {
+        width: 108px;
+        margin: 0 auto;
+    }
+    .identity_text_box {
+        margin-top: $layout-base-padding;
+        text-align: center;
+        color: $base-font-color;
+        font-size: $base-font-size;
+        line-height: $base-line-height;
+    }
+    .identity_btn_box {
+        margin-top: $layout-large-padding;
+    }
+}

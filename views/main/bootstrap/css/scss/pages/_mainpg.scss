@@ -1,0 +1,145 @@
+.main_profile {
+    position: relative;
+    width: 100%;
+    padding-top: 4.03%;
+    background-color: $gray-0;
+    background-image: url(/images/bg-profile.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center top;
+
+    &.swiper-container{
+        padding-bottom: 36px;
+    }
+    .profile_img {
+        @include circle(33.3333vw);
+        max-width: 240px;
+        max-height: 240px;
+        box-sizing: border-box;
+        margin: 0 auto $layout-base-padding;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.15);
+
+        .img {
+            width: 100%;
+        }
+    }
+    .profile_name {
+        margin: $layout-base-padding 0;
+        text-align: center;
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .profile_name_sm {
+        font-size: $base-font-size;
+        font-weight: normal;
+        color: $base-font-color;
+    }
+    .profile_tag_list {
+        padding: 0 $layout-base-padding*2;
+        text-align: center;
+        font-size: 0;
+    }
+    .profile_tag {
+        display: inline-block;
+        font-size: $mid-font-size;
+        border-radius: $large-border-radius;
+        margin: 0 $layout-small-padding/2 $layout-small-padding;
+        vertical-align: middle;
+        height: 26px;
+        line-height: 26px;
+        padding: 0 13px;
+        background-color: $bg-gray-color;
+        color: $base-font-color;
+        box-sizing: border-box;
+    }
+    .profile_tag_list_feathers .profile_tag {
+        background-color: lighten($main-color, 35);
+    }
+    .profile_tag_list_allergy .profile_tag {
+        background-color: lighten($accent-color, 30);
+        max-width: 100%;
+        @include one-line-ellipsis;
+    }
+    .resister_btn_box {
+        margin: $layout-base-padding $layout-base-padding 0;
+        text-align: center;
+    }
+    .profile_message01 {
+        font-size: 17px;
+        font-weight: 800;
+        text-align: center;
+        line-height: $base-line-height;
+        color: $bold-font-color;
+
+        .emph {
+            color: $main-font-color;
+        }
+    }
+    .profile_message02 {
+        margin-top: 12px;
+        font-size: $mid-font-size;
+        text-align: center;
+        color: $x-light-font-color;
+    }
+    .btn_modify_pet {
+        position: absolute;
+        top: 23.4722vw;
+        left: calc(50% + 9vw);
+        width: 9.4444vw;
+        max-width: 68px;
+
+        .img {
+            width: 100%;
+        }
+    }
+    .btn_add {
+        display: block;
+        position: absolute;
+        z-index: 100;
+        bottom: 0;
+        right: 0;
+        margin: 0 $layout-base-padding;
+        text-align: center;
+        font-size: $base-font-size;
+        color: $accent-font-color;
+        
+        .icon {
+            height: 24px;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+    }
+    .pagination_main {
+        bottom: 8px;
+        font-size: 0;
+        text-align: left;
+        padding: 0 $layout-base-padding;
+    }
+
+    + .sect01,
+    + .sect02 {
+        margin-top: 0;
+    }
+
+    @media screen and (min-width: 721px) {
+        .btn_modify_pet {
+            top: 169px;
+            left: 425px;
+        }
+    }
+}
+
+.sect_recommand_ai {
+
+    .title01 {
+        margin-bottom: $layout-small-padding;
+    }
+    .list_info_bar01 {
+        margin: $layout-base-padding;
+    }
+}
+.hash_list_container {
+    margin-bottom: $layout-base-padding;
+}

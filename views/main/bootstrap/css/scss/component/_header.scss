@@ -1,0 +1,459 @@
+//header 메인
+.header01 {
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $layout-base-padding;
+    height: $header-height01;
+    background-color: $gray-0;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    transition: all .3s;
+
+    .h_logo_box {
+        height: $layout-base-padding * 2;
+        margin-right: $layout-small-padding;
+        background-size: contain;
+        background-position: right center;
+        background-repeat: no-repeat;
+    }
+    .h_link {
+        display: block;
+        height: 100%;
+    }
+    .h_logo {
+        height: 100%;
+    }
+    .h_search_box {
+        margin-left: auto;
+        flex: 1;
+        height: $layout-base-padding * 2.25;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #d1cddb;
+        background-color: #fbfbfb;//$bg-gray-color;
+        border-radius: $base-border-radius;
+
+        a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .icon_box {
+            width: 20px;
+            font-size: 0;
+        }
+        .icon {
+            font-size: 12px;
+        }
+        .search_txt {
+            margin-left: $layout-small-padding;
+            color: $light-font-color;
+            @include one-line-ellipsis;
+        }
+    }
+    .h_btn {
+        position: relative;
+        width: 24px;
+        margin-left: $layout-small-padding;
+
+        .icon {
+            width: 100%;
+        }
+    }
+    .has_alarm {
+        display: block;
+        position: absolute;
+        top: -2px;
+        right: 0;
+        width: 6px;
+        height: 6px;
+        background-color: $accent-color;
+        border-radius: 6px;
+    }
+
+    &.main_transparent {
+        background-color: transparent;
+        box-shadow: none;
+
+        .h_logo_box {
+            background-image: url(/images/h_logo_white.png);
+        }
+        .h_logo {
+            opacity: 0;
+        }
+        .h_search_box {
+            background-color: rgba($bg-gray-color,0.8);
+        }
+        .h_btn {
+            background-image: url(/images/icon-bell-white.svg);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center 0;
+
+            .icon {
+                visibility: hidden;
+            }
+        }
+        .has_alarm {
+            background-color: $secondary-color;
+        }
+    }
+}
+.pd_header01 {
+    padding-top: $header-height01;
+}
+
+//검색 헤더
+.header02 {
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $layout-base-padding;
+    height: $header-height02;
+    background-color: $gray-0;
+    border-bottom: $light-border;
+    box-sizing: border-box;
+
+    .btn_goback {
+        display: block;
+        width: $layout-base-padding * 2;
+        height: $layout-base-padding * 2;
+        flex-shrink: 0;
+    }
+    .h_search_box {
+        margin-left: $layout-small-padding;
+        flex: 1;
+        border: 1px solid #d1cddb;
+        background-color: #fbfbfb;
+        border-radius: $base-border-radius;
+        height: $layout-base-padding * 2.25;
+        font-size: $large-font-size;
+        padding: 0 $layout-small-padding;
+        box-sizing: border-box;
+        flex-shrink: 2;
+
+        form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .lab_search {
+            width: 20px;
+            height: 20px;
+        }
+        .inp_search {
+            margin-left: $layout-small-padding;
+            flex: 1;
+            box-sizing: border-box;
+            width: 60%;
+            height: 100%;
+            border: none;
+            background-color: transparent;
+            font-size: inherit;
+            color: $bold-font-color;
+
+            &:focus {
+                outline: none;
+            }
+            &::-ms-clear,
+            &::-ms-reveal {display: none; width : 0; height: 0;}
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration { display: none; }
+
+        }
+        .btn_del {
+            width: 1.2em;
+            height: 1.2em;
+            .icon {
+                width: 100%;
+                height: 100%;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+        &:focus-within {
+            outline: $main-color auto;
+        }
+        .search_result {
+            font-size: $mid-font-size;
+            color: $light-font-color;
+            white-space: nowrap;
+            margin: 0 $layout-small-padding;
+        }
+    }
+}
+.pd_header02 {
+    padding-top: $header-height02;
+}
+//뒤로가기 버튼 + 페이지 이름
+.header03 {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    height: $header-height03;
+    box-sizing: border-box;
+    padding: 0 $layout-base-padding;
+    background-color: $main-color;
+
+    .btn_box {
+        flex: 1;
+        align-items: center;
+    }
+    .h_title {
+        @include position-center(absolute);
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $gray-0;
+    }
+    .btn_goback {
+        display: block;
+        width: $layout-base-padding * 2;
+        height: $layout-base-padding * 2;
+        flex-shrink: 0;
+    }
+    .btn_submit {
+        font-size: $base-font-size;
+        font-weight: bold;
+    }
+    &_white {
+        background-color: $gray-0;
+        border-bottom: $light-border;
+
+        .h_title {
+            color: $base-font-color;
+        }
+    }
+    .icon {
+        height: 100%;
+    }
+}
+.pd_header03 {
+    padding-top: $header-height03;
+}
+// 제품,쇼핑몰 정보
+.header04 {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    height: $header-height04;
+    padding: 0 $layout-base-padding;
+    box-sizing: border-box;
+    border-bottom: $light-border;
+    background-color: $gray-0;
+
+    .h_title {
+        white-space: nowrap;
+        order: 1;
+        margin-right: auto;
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+        vertical-align: middle;
+    }
+    .h_btn_icon {
+        width: $layout-base-padding * 2;
+        height: $layout-base-padding * 2;
+        
+        .icon {
+            height: 100%;
+        }
+    }
+    .img_shop_box {
+        display: inline-block;
+        vertical-align: middle;
+        @include circle(28px);
+        @include thumnail;
+    }
+    .shop_name {
+        vertical-align: middle;
+        margin: 0 4px;
+    }
+    .icon_shop {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+    }
+    .btn_goback {
+        margin-right: 4px;
+        order: 0;
+        display: block;
+        width: $layout-base-padding * 2;
+        height: $layout-base-padding * 2;
+        flex-shrink: 0;
+    }
+    .btn_bookmark{
+        order: 2;
+    }
+    .h_btn_right {
+        order: 2;
+        margin-left: 4px;
+    }
+}
+.pd_header04 {
+    padding-top: $header-height04;
+}
+.header05 {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    height: $header-height05;
+    padding: 0 $layout-base-padding;
+    box-sizing: border-box;
+    border-bottom: $light-border;
+    background-color: $gray-0;
+
+    .btn_close {
+        order: 0;
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-right: $layout-base-padding;
+
+        .icon {
+            width: 100%;
+        }
+    }
+    .h_title {
+        order: 1;
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $base-font-color;
+    }
+}
+.pd_header05 {
+    padding-top: $header-height05;
+}
+.header06 {
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $layout-base-padding;
+    height: $header-height06;
+    background-color: $gray-0;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+
+    .h_logo_box {
+        height: $layout-base-padding * 2;
+        margin-right: $layout-small-padding;
+        background-size: contain;
+        background-position: right center;
+        background-repeat: no-repeat;
+    }
+    .h_link {
+        display: block;
+        height: 100%;
+    }
+    .h_logo {
+        height: 100%;
+    }
+    .h_btn {
+        position: relative;
+        width: 24px;
+        margin-left: $layout-base-padding;
+
+        .icon {
+            width: 100%;
+        }
+    }
+    .h_btn_mlauto {
+        margin-left: auto;
+    }
+    .has_alarm {
+        display: block;
+        position: absolute;
+        top: -2px;
+        right: 0;
+        width: 6px;
+        height: 6px;
+        background-color: $accent-color;
+        border-radius: 6px;
+    }
+}
+.pd_header06 {
+    padding-top: $header-height06;
+}
+//
+.header07 {
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: $layout-small-padding $layout-small-padding 0;
+    
+    .btn_goback {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include circle(45px);
+        background-color: $gray-0;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+
+        .icon {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}
+.header08 {
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    @include layout-frame;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $layout-base-padding;
+    height: $header-height08;
+    background-color: $gray-0;
+    border-bottom: $light-border;
+    box-sizing: border-box;
+    
+    .h_btn_close {
+        font-size: 0;
+
+        .icon {
+            font-size: 10px;
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+.pd_header08 {
+    padding-top: $header-height08;
+}

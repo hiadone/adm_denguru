@@ -80,9 +80,9 @@
 				</div>
 			</div>
 
-			<div class="pull-left mr10">
+			<!-- <div class="pull-left mr10">
                     <button type="button" class="btn btn-default btn-sm admin-manage-list" onClick="theme_in_store(<?php echo element(element('primary_key', $view), element('data', $view)); ?>);" >테마에 스토어 종속 시키기</button>
-                </div>
+                </div> -->
 
 			<div class="btn-group pull-right" role="group" aria-label="...">
 				<button type="button" class="btn btn-default btn-sm btn-history-back" >취소하기</button>
@@ -92,7 +92,7 @@
 	</div>
 </div>
 
-    <div class="box">
+    <!-- <div class="box">
 		<div class="box-table">
             <?php
             echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
@@ -165,7 +165,7 @@
             <?php echo form_close(); ?>
         </div>
     
-</div>
+</div> -->
 <script type="text/javascript">
 //<![CDATA[
 $(function() {

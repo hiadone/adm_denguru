@@ -1,0 +1,185 @@
+//BUTTON STYLE
+.btn {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border-radius: $base-border-radius;
+    text-align: center;
+
+    .icon {
+        width: 1.1em;
+        vertical-align: sub;
+    }
+}
+//color
+.btn_main {
+    @include btn-color-full($main-color);
+    color: $gray-0;
+}
+.btn_accent {
+    @include btn-color-full($accent-color);
+    color: $gray-0;
+}
+.btn_primary {
+    @include btn-color-full($primary-color);
+    color: $gray-0;
+}
+.btn_normal {
+    @include btn-color-full($gray-2);
+    color: $base-font-color;
+}
+.btn_disabled {
+    opacity: 0.7;
+}
+.btn_linkstyle {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+.btn_linkstyle_main {
+    background-color: transparent;
+    border: none;
+    color: $main-font-color;
+}
+.btn_linkstyle_accent {
+    background-color: transparent;
+    border: none;
+    color: $accent-font-color;
+}
+.btn_linkstyle_primary {
+    background-color: transparent;
+    border: none;
+    color: $primary-font-color;
+}
+.btn_linkstyle_normal {
+    background-color: transparent;
+    border: none;
+    color: $base-font-color;
+}
+.btn_main_line {
+    border: $main-border;
+    background-color: $gray-0;
+    color: $base-font-color;
+}
+.btn_accent_line {
+    border: $accent-border;
+    background-color: $gray-0;
+    color: $base-font-color;
+}
+.btn_primary_line {
+    border: $primary-border;
+    background-color: $gray-0;
+    color: $base-font-color;
+}
+.btn_normal_line {
+    border: $base-border;
+    background-color: $gray-0;
+    color: $base-font-color;
+}
+// size 
+.btn_sm {
+    font-size: $mid-font-size;
+    line-height: 1;
+    padding: 3px 5px;
+
+    .icon {
+        width: 1em;
+    }
+    &_round {
+        border-radius: 10px;
+    }
+}
+.btn_mid {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 8px;
+    font-size: $base-font-size;
+    &_round {
+        padding: 0 10px;
+        border-radius: 16px;
+    }
+}
+.btn_big {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 16px;
+    font-size: $large-font-size;
+    &_round {
+        border-radius: 24px;
+    }
+}
+.btn_half {
+    width: calc(50% - 4px);
+    height: 48px;
+    line-height: 48px;
+    font-size: $large-font-size;
+    &_round {
+        border-radius: 24px;
+    }
+}
+.btn_half_popup {
+    width: calc(50% - 4px);
+    height: 36px;
+    line-height: 36px;
+    font-size: $base-font-size;
+}
+.btn_full {
+    width: 100%;
+    height: 48px;
+    padding: 0;
+    line-height: 48px;
+    font-size: $large-font-size;
+    &_round {
+        border-radius: 24px;
+    }
+}
+.btn_full_popup {
+    width: 100%;
+    height: 36px;
+    padding: 0;
+    line-height: 36px;
+    font-size: $base-font-size;
+}
+.btn_box {
+    display: flex;
+}
+.btn_right {
+    margin-left: auto;
+}
+.btn_left {
+    margin-right: auto;
+}
+.btn_center {
+    margin: 0 auto;
+}
+.btn_fixed_box {
+    position: fixed;
+    bottom: $gnb-bottom-height + $layout-base-padding;
+    right: $layout-base-padding;
+    z-index: 500;
+    
+    .btn_circle {
+        display: block;
+        @include circle(40px);
+        line-height: 38px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        margin-top: 8px;
+
+        .icon {
+            width: 18px;
+            vertical-align: middle;
+        }
+    }
+    .btn-top {
+        display: none;
+    }
+    &_nognb {
+        bottom: $layout-base-padding*2;
+    }
+}
+
+@media screen and (min-width: 721px) {
+    .btn_fixed_box {
+        right: calc(50% - 344px);
+    }
+}

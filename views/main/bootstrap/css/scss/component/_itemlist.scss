@@ -1,0 +1,341 @@
+.list_info_bar01 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: $layout-base-padding 0;
+
+    .list_num {
+        font-size: $mid-font-size;
+        color: $base-font-color;
+
+        .num {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+    }
+    .list_order {
+        padding-left: 20px;
+        height: 1.1em;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: $mid-font-size;
+        color: $base-font-color;
+        background: url(/images/icon-sort.svg) no-repeat 0 50%;
+        background-size: contain;
+        border: none;
+    }
+}
+
+.item_list01 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .item_box {
+        width: calc(50% - 4px);
+        margin-bottom: $layout-base-padding;
+    }
+    .item_thum {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        margin-bottom: $layout-small-padding;
+        border-radius: $base-border-radius;
+        overflow: hidden;
+
+        .img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @include thumnail-border($base-border-radius);
+        
+    }
+    .item_shop {
+        font-size: $small-font-size;
+        color: $light-font-color;
+        margin-bottom: $layout-small-padding / 2;
+    }
+    .item_name {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        @include multi-line-ellipsis ($base-line-height, 2);
+    }
+    .item_price {
+        margin-top: $layout-small-padding;
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .item_price_before {
+        margin-top: 4px;
+        height: 1em;
+        font-size: $small-font-size;
+        font-weight: normal;
+        color: $x-light-font-color;
+        text-decoration: line-through;
+    }
+    .rate_discount {
+        font-size: $mid-font-size;
+        color: $accent-font-color;
+    }
+}
+
+.item_list02 {
+    padding: 0 $layout-base-padding;
+
+    .item_box a {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .item_box:not(:first-child) a {
+        margin-top: $layout-small-padding;
+    }
+    .item_thum {
+        width: 104px;
+        height: 104px;
+        flex-shrink: 0;
+        border-radius: $base-border-radius;
+        overflow: hidden;
+
+        .img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @include thumnail-border($base-border-radius);
+    }
+    .item_txt_box {
+        flex-shrink: 1;
+        padding-left: $layout-small-padding;
+    }
+    .item_shop {
+        font-size: $small-font-size;
+        color: $light-font-color;
+        margin-bottom: $layout-small-padding / 2;
+    }
+    .item_name {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        margin-bottom: $layout-small-padding / 2;
+        @include multi-line-ellipsis ($base-line-height, 2);
+    }
+    .item_price {
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .item_price_before {
+        font-size: $small-font-size;
+        font-weight: normal;
+        color: $x-light-font-color;
+        text-decoration: line-through;
+    }
+    .rate_discount {
+        font-size: $mid-font-size;
+        color: $accent-font-color;
+    }
+    .best_num {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        width: $layout-large-padding;
+        height: $layout-large-padding;
+        background-color: rgba($accent-color,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $gray-0;
+        font-size: $mid-font-size;
+        font-weight: bold;
+        border-top-left-radius: $base-border-radius;
+        border-bottom-right-radius: $base-border-radius;
+    }
+}
+
+.item_list03 {
+    padding: 0 $layout-base-padding;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .item_box {
+        width: calc(33.3333% - 5.0333px);
+    }
+    .item_box:not(:nth-child(-n+3)){
+        margin-top: $layout-large-padding;
+    }
+    .item_box:last-child:nth-child(3n + 2){
+        margin-right: auto;
+        margin-left: 8px;
+    }
+    .item_thum {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+        margin-bottom: $layout-small-padding / 2;
+        border-radius: $base-border-radius;
+        @include thumnail;
+        @include thumnail-border($base-border-radius);
+    }
+    .tag_new {
+        display: block;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        height: 13px;
+
+        .img_tag {
+            height: 100%;
+        }
+    }
+    .item_shop {
+        font-size: $small-font-size;
+        color: $light-font-color;
+        margin: $layout-small-padding 0;
+    }
+    .item_name {
+        font-size: $mid-font-size;
+        color: $bold-font-color;
+        margin: $layout-small-padding 0;
+        @include multi-line-ellipsis ($base-line-height, 2);
+    }
+    .item_price {
+        margin-top: $layout-small-padding;
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .item_price_before {
+        margin-top: 4px;
+        font-size: $small-font-size;
+        font-weight: normal;
+        color: $x-light-font-color;
+        text-decoration: line-through;
+    }
+    .rate_discount {
+        font-size: $mid-font-size;
+        color: $accent-font-color;
+    }
+}
+
+.item_list04 {
+
+    .item_box {
+        width: fit-content;
+        
+        a {
+            display: block;
+            margin: 0 4px;
+        }
+    }
+    .item_thum {
+        width: 27.7778vw;
+        height: 27.7778vw;
+        max-width: 200px;
+        max-height: 200px;
+        margin-bottom: $layout-small-padding / 2;
+        border-radius: $base-border-radius;
+        
+        @include thumnail;
+        @include thumnail-border($base-border-radius);
+    }
+    .item_box:first-child a {
+        margin-left: $layout-base-padding;
+    }
+    .item_box:last-child a {
+        margin-right: $layout-base-padding;
+    }
+    .hash {
+        width: 27.7778vw;
+        max-width: 200px;
+        font-size: $mid-font-size;
+        color: $bold-font-color;
+    }
+    .item_name {
+        width: 27.7778vw;
+        max-width: 200px;
+        font-size: $mid-font-size;
+        color: $bold-font-color;
+        margin-top: $layout-small-padding;
+        @include multi-line-ellipsis ($base-line-height, 2);
+    }
+    .item_shop {
+        width: 27.7778vw;
+        max-width: 200px;
+        font-size: $small-font-size;
+        color: $light-font-color;
+        margin: $layout-small-padding 0;
+    }
+}
+.item_list05 {
+    
+    .item_box {
+        padding: $layout-base-padding 0;
+        margin: 0 $layout-base-padding;
+        border-bottom: $x-light-border;
+    }
+    .item_link {
+        display: flex;
+        align-items: center;
+    }
+    .item_thum {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        margin-right: $layout-small-padding;
+        border-radius: $base-border-radius;
+        
+        @include thumnail;
+        @include thumnail-border($base-border-radius);
+    }
+    .item_txt_box {
+        flex: 1;
+        overflow: hidden;
+    }
+    .item_name {
+        width: 100%;
+        font-size: $base-font-size;
+        color: $base-font-color;
+        @include one-line-ellipsis;
+    }
+    .item_price {
+        margin-top: 4px;
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        font-weight: bold;
+    }
+    .btn_more {
+        flex-shrink: 0;
+        width: 24px;
+    }
+}
+
+@media screen and (max-width: 359px) {
+    .item_list01 .rate_discount {
+        font-size: $small-font-size;
+    }
+    .item_list02 .rate_discount {
+        font-size: $small-font-size;
+    }
+    .item_list03 .rate_discount {
+        font-size: $small-font-size;
+    }
+    .item_list01 .item_price {
+        font-size: $base-font-size;
+    }
+    .item_list02 .item_price {
+        font-size: $base-font-size;
+    }
+    .item_list03 .item_price {
+        font-size: $base-font-size;
+    }
+}

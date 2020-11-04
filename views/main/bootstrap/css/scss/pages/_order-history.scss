@@ -1,0 +1,189 @@
+.top_order_number_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 $layout-base-padding;
+    height: 40px;
+    background-color: $gray-0;
+
+    .order_number {
+        font-size: $small-font-size;
+        color: $base-font-color;
+    }
+    .btn_copy_order_number {
+        font-size: $base-font-size;
+    }
+}
+.order_history_container {
+    flex: 1;
+    margin-top: $layout-small-padding;
+    background-color: $gray-0;
+}
+.order_history_login_container {
+    padding: $layout-large-padding 0;
+
+    .members_contianer {
+        min-height: unset;
+    }
+}
+.order_history_login_announce {
+
+    .logo_order_shop {
+        margin: 0 auto $layout-base-padding;
+        overflow: hidden;
+        @include circle(64px);
+
+        .img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .order_login_announce_txt01 {
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $base-font-color;
+    }
+    .order_login_announce_txt02 {
+        margin-top: $layout-small-padding;
+        font-size: $base-font-size;
+        color: $light-font-color;
+        line-height: $base-line-height;
+    }
+}
+.order_history_login_form {
+    margin-top: $layout-base-padding;
+
+    .inp_box02 {
+        margin: $layout-base-padding 0;
+    }
+    .inp_box04{ 
+        margin-top: $layout-base-padding;
+        
+        .lab_checkbox02 {
+            font-size: $base-font-size;
+        }
+    }
+}
+
+.order_item_info_container {
+    display: flex;
+    align-items: center;
+    margin-top: $layout-small-padding;
+    background-color: $gray-0;
+    padding: $layout-base-padding;
+
+    .thum_box {
+        flex-shrink: 0;
+        width: 104px;
+        height: 104px;
+        margin-right: $layout-small-padding;
+        overflow: hidden;
+        border-radius: $base-border-radius;
+
+        @include thumnail;
+        @include thumnail-border($base-border-radius);
+    }
+    .order_item_txt_box {
+        flex: 1;
+    }
+    .order_item_store {
+        margin-bottom: 4px;
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .order_item_title {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        @include multi-line-ellipsis ($base-line-height, 2);
+        height: auto;
+        max-height: $base-line-height * 2em;
+    }
+    .order_item_price {
+        margin-top: 4px;
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .order_item_delivery_number {
+        margin-top: $layout-small-padding;
+        font-size: $small-font-size;
+        color: $main-font-color;
+    }
+    .order_item_status {
+        margin-top: $layout-small-padding;
+        font-size: $small-font-size;
+        color: $light-font-color;
+
+        &_success {
+            color: $primary-font-color;
+        }
+        &_accent {
+            color: $accent-font-color;
+        }
+
+    }
+}
+.order_delivery_container {
+    padding: 0 $layout-base-padding;
+}
+.order_delivery_status {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: $layout-base-padding 0;
+    border-bottom: $x-light-border;
+
+    .img_box {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        margin-right: $layout-small-padding;
+    }
+    .txt_box {
+        flex: 1;
+    }
+    .txt01 {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+    }
+    .txt02 {
+        margin-top: $layout-small-padding;
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .order_date {
+        position: absolute;
+        top: $layout-base-padding;
+        right: 0;
+        font-size: $small-font-size;
+        color: $x-light-font-color;
+    }
+}
+.order_history_list_container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .order_history_item {
+        margin-bottom: $layout-small-padding;
+        padding: $layout-base-padding 0;
+        background-color: $gray-0;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .order_item_info_container {
+        padding: 0 $layout-base-padding;
+    }
+    .order_history_date {
+        padding: 0 $layout-base-padding;
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .noreview_message_container {
+        flex: 1;
+        background-color: $gray-0;
+    }
+}

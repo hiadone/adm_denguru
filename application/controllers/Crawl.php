@@ -1818,7 +1818,7 @@ class Crawl extends CB_Controller
 
                 $updatedata = array();
                 $is_cate = true;
-                $str_length = 2;
+                $str_length = 3;
                 $i = 0;
 
                 if(empty(!$get_category)){
@@ -1839,7 +1839,8 @@ class Crawl extends CB_Controller
                                     
                                     if(element('cat_parent',$a_cvalue_) == '1'){
 
-                                        $str_length = 999;
+                                        
+                                       
 
                                         foreach(element(0,$all_kind) as $k_cvalue){
                                             if(element('cat_id',$a_cvalue_) == element('ckd_size',$k_cvalue)){
@@ -1850,7 +1851,7 @@ class Crawl extends CB_Controller
                                             
                                         }
                                     } else {
-                                        $str_length = 4;
+                                        
                                         $a_cvalue_['cat_text'] .= ','.element('cat_value',$a_cvalue_);    
                                     }
                                 }
@@ -1861,6 +1862,27 @@ class Crawl extends CB_Controller
                                 foreach ($tag_array as $tval) {
                                     $i++;
                                     if(element('cat_text',$a_cvalue_)){
+
+                                        if(preg_match("/[\xA1-\xFE][\xA1-\xFE]/", $tval))
+                                            $str_length = 3;
+                                        else 
+                                            $str_length = 5;
+
+                                        if(element('cat_parent',$a_cvalue_) == '9')
+                                            $str_length = 999;
+
+                                        if(element('cat_id',$a_cvalue_) == '6'){
+                                            $str_length = 3;
+                                            foreach(config_item('kind_str_equal') as $equalval){
+                                                if(strtolower($equalval) === strtolower($tval)){
+                                                    
+                                                    $str_length = 999;
+                                                    break;
+                                                }
+
+                                            }
+                                            
+                                        } 
                                         if($this->crawl_tag_to_attr(element('cat_text',$a_cvalue_),$tval,$str_length)){
                                             // echo element('cat_text',$a_cvalue_);
                                             // echo '///';
@@ -1937,8 +1959,10 @@ class Crawl extends CB_Controller
 
                         if(!in_array(element('ckd_size',$a_cvalue),$cmall_attr)) continue;
                         
-                        if(element('ckd_size',$a_cvalue) == '6') $str_length = 999;
-                        else $str_length = 3;
+                        
+
+                        
+
                         $a_cvalue['ckd_text'] .= ','.element('ckd_value_en',$a_cvalue).','.element('ckd_value_kr',$a_cvalue);
 
                 
@@ -1947,6 +1971,24 @@ class Crawl extends CB_Controller
                         foreach ($tag_array as $tval) {
                             $i++;
                             if(element('ckd_text',$a_cvalue)){
+
+                                if(element('ckd_size',$a_cvalue) == '6'){
+
+                                    if(preg_match("/[\xA1-\xFE][\xA1-\xFE]/", $tval))
+                                            $str_length = 3;
+                                        else 
+                                            $str_length = 5;
+                                    
+                                    foreach(config_item('kind_str_equal') as $equalval){
+                                        if(strtolower($equalval) === strtolower($tval)){
+                                            $str_length = 999;
+                                            break;
+                                        }
+
+                                    }
+                                    
+                                } 
+
                                 if($this->crawl_tag_to_attr(element('ckd_text',$a_cvalue),$tval,$str_length)){
                                     $cmall_kind[element('ckd_id',$a_cvalue)] = element('ckd_id',$a_cvalue);
 

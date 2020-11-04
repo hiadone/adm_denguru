@@ -1,0 +1,66 @@
+.withdrawal_title_container {
+    padding: $layout-base-padding*2 $layout-base-padding;
+    background-color: $gray-0;
+
+    .img_box {
+        height: 64px;
+
+        .img {
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    .withdrawal_title {
+        margin-top: $layout-base-padding;
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+}
+.withdrawal_info_container {
+    padding: $layout-large-padding 0;
+
+    .withdrawal_item_num {
+        font-weight: bold;
+        color: $main-font-color;
+    }
+    .title07 {
+        margin: 0 $layout-base-padding;
+    }
+}
+.withdrawal_item_box {
+    margin-bottom: $layout-large-padding;
+
+    .withdrawal_item_list_container {
+        margin-top: $layout-small-padding;
+    }
+    .thumb_box {
+        width: 56px;
+        height: 56px;
+        overflow: hidden;
+        border-radius: $base-border-radius;
+        @include thumnail;
+    }
+    .withdrawal_item_bnr {
+        margin: $layout-base-padding $layout-base-padding 0;
+    }
+}
+.withdrawal_notice_box {
+    padding: 0 $layout-base-padding;
+
+    .withdrawal_notice {
+        margin-top: $layout-small-padding;
+        font-size: $small-font-size;
+        color: $base-font-color;
+        line-height: $base-line-height;
+    }
+}
+.withdrawal_btn_container {
+    flex: 1;
+    padding: $layout-large-padding $layout-base-padding;
+    background-color: $gray-0;
+
+    .btn_box {
+        margin-top: $layout-large-padding;
+    }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g>
+	<defs>
+		<rect id="SVGID_1_" x="1" y="9.382" width="46" height="29.236"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  overflow="visible"/>
+	</clipPath>
+	<path clip-path="url(#SVGID_2_)" fill="#9d9ba1" d="M44.384,21.37H9.928l7.535-7.535c1.02-1.02,1.02-2.668,0-3.688
+		s-2.669-1.021-3.689,0L1.765,22.155c-1.02,1.021-1.02,2.668,0,3.689l12.009,12.008c1.02,1.021,2.669,1.021,3.689,0
+		c1.02-1.02,1.02-2.668,0-3.688l-7.535-7.562h34.456c1.439,0,2.616-1.177,2.616-2.616C47,22.548,45.823,21.37,44.384,21.37"/>
+</g>
+</svg>

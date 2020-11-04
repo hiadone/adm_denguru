@@ -1,0 +1,47 @@
+.notification_list_container {
+    background-color: $gray-0;
+    
+    .notification_box {
+        position: relative;
+        padding: $layout-large-padding $layout-base-padding;
+
+        &:not(:first-child):before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: $layout-base-padding;
+            right: $layout-base-padding;
+            height: 1px;
+            background-color: $gray-1;
+        }
+    }
+    .notification_new {
+        background-color: $bg-gray-color;
+    }
+    .notification_link {
+        display: flex;
+    }
+    .icon_box {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        margin-right: $layout-base-padding;
+    }
+    .notification_content {
+        flex: 1;
+    }
+    .notification_title {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        line-height: $base-line-height;
+    }
+    .notification_date {
+        margin-top: 4px;
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .notification_img {
+        margin-top: $layout-base-padding;
+    }
+}

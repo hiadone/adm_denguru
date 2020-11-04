@@ -1,0 +1,478 @@
+button, input, select, textarea {
+    font-family: $base-font-family;
+}
+
+//select
+select {
+    -webkit-appearance: none;  /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+    background: url(/images/icon-select-triangle.svg) no-repeat right 50%;  /* 화살표 모양의 이미지 */
+    background-size: 12px;
+}
+/* IE 10, 11의 네이티브 화살표 숨기기 */
+select::-ms-expand {
+    display: none;
+}
+input[type="password"] {
+    font-family: 'Apple SD Gothic Neo','Malgun Gothic',arial,sans-serif;
+}
+
+//INPUT
+.inp_box01 {
+    margin: $layout-large-padding 0;
+
+    .lab_box {
+        margin-bottom: $layout-base-padding;
+    }
+    .lab {
+        font-size: $large-font-size;
+        color: $bold-font-color;
+    }
+    .lab_small {
+        font-size: $base-font-size;
+        text-indent: $base-font-size;
+    }
+    .inp_noti {
+        font-size: $small-font-size;
+        color: $accent-font-color;
+    }
+    .inp {
+        width: 100%;
+        height: 38px;
+        padding: 0 4px;
+        border: $base-border;
+        border-radius: $base-border-radius;
+        box-sizing: border-box;
+        font-size: $large-font-size;
+        color: $bold-font-color;
+    }
+
+    .radio_container {
+        text-align: center;
+        font-size: 0;
+    }
+    .lab_radio {
+        display: inline-block;
+        width: 30%;
+        max-width: 120px;
+        height: 32px;
+        margin: 0 4px;
+        line-height: 32px;
+        border-radius: 18px;
+        border: $base-border;
+        background-color: $gray-0;
+        text-align: center;
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .inp_radio:checked + .lab_radio {
+        background-color: lighten($accent-color, 6%);
+        border-color: $accent-color;
+        color: $gray-0;
+        font-weight: bold;
+    }
+    .radio_box02 {
+        margin-bottom: $layout-small-padding;
+    }
+    .lab_radio02 {
+        display: inline-block;
+        padding-left: 26px;
+        line-height: 20px;
+        background-image: url(/images/icon-radio-uncheck.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        font-size: $large-font-size;
+        color: $base-font-color;
+    }
+    .inp_radio02:checked + .lab_radio02 {
+        background-image: url(/images/icon-radio-check.svg);
+    }
+    .inp_check_box {
+        margin-top: 12px;
+        text-align: center;
+    }
+    .lab_checkbox01 {
+        font-size: $mid-font-size;
+        color: $base-font-color;
+    }
+    .lab_checkbox01:after {
+        content:'';
+        display: inline-block;
+        width: 1.3em;
+        height: 1.3em;
+        background-image: url(/images/icon-checkbox.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: sub;
+        margin-left: 4px;
+    }
+    .inp_check:checked + .lab_checkbox01:after {
+        background-image: url(/images/icon-checkbox-checked.svg);
+    }
+    .lab_checkbox02 {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+    }
+    .lab_checkbox02:before {
+        content:'';
+        display: inline-block;
+        width: 1.3em;
+        height: 1.3em;
+        background-image: url(/images/icon-checkbox-circle.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: sub;
+        margin-right: 6px;
+    }
+    .inp_check:checked + .lab_checkbox02:before {
+        background-image: url(/images/icon-checkbox-circle-checked.svg);
+    }
+    .inp_date_box {
+        display: flex;
+    }
+    .inp_date {
+        text-align: center;
+        line-height: 36px;
+        padding-right: 4px;
+        font-size: $base-font-size;
+        color: $light-font-color;
+
+        &:not(:last-child) {
+            border-right: $base-border;
+        }
+    }
+    .inp_nostyle {
+        border: none;
+        width: 80%;
+        height: 90%;
+        vertical-align: middle;
+        padding: 0;
+        font-size: $base-font-size;
+        text-align: center;
+        color: $base-font-color;
+    }
+    .inp_two_thirds {
+        font-size: $base-font-size;
+
+        .inp {
+            width: 66.6666%;
+            margin-right: 4px;
+        }
+    }
+    .check_box_table {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0;
+
+        td {
+            width: 1%;
+            border: $base-border;
+        }
+    }
+    .lab_check_table {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 36px;
+        line-height: 36px;
+        font-size: $base-font-size;
+        text-align: center;
+        color: $light-font-color;
+    }
+    .inp_check_table:checked + .lab_check_table {
+        background-color: lighten($accent-color, 6%);
+        color: $gray-0;
+
+        &::before{
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: -1px;
+            left: -1px;
+            border: $accent-border;
+        }
+    }
+}
+
+.inp_box02 {
+    margin: $layout-base-padding 0;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .lab_box {
+        margin-bottom: $layout-small-padding;
+    }
+    .lab {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        vertical-align: middle;
+    }
+    .lab_icon {
+        width: $base-font-size * 2;
+        margin-right: $layout-small-padding;
+        vertical-align: middle;
+    }
+    .lab_noti01 {
+        font-size: $small-font-size;
+        color: $light-font-color;
+        vertical-align: middle;
+    }
+
+    .inp {
+        width: 100%;
+        padding: 0 4px;
+        border: $base-border;
+        border-radius: $base-border-radius;
+        box-sizing: border-box;
+        font-size: $mid-font-size;
+        color: $base-font-color;
+    }
+    .inp_textarea {
+        padding: $layout-small-padding;
+        line-height: $base-line-height;
+        min-height: 56px;
+        resize: vertical; 
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+    }
+}
+.inp_box03 {
+    .inp {
+        width: 100%;
+        height: 37px;
+        box-sizing: border-box;
+        border: $base-border;
+        border-radius: $base-border-radius;
+    }
+    .inp_txt {
+        padding: 0 $layout-small-padding;
+        color: $base-font-color;
+        font-size: $base-font-size;
+    }
+    .inp_password {
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", arial, sans-serif;
+
+        &::placeholder {
+            font-family: "NanumSquare", "Apple SD Gothic Neo", "Malgun Gothic", arial, sans-serif;
+        }
+    }
+    .lab_checkbox01 {
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .lab_checkbox01:before {
+        content:'';
+        display: inline-block;
+        width: $layout-base-padding;
+        height: $layout-base-padding;
+        background-image: url(/images/icon-checkbox.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: sub;
+        margin-right: 4px;
+    }
+    .inp_check:checked + .lab_checkbox01:before {
+        background-image: url(/images/icon-checkbox-checked.svg);
+    }
+}
+.inp_box04 {
+    
+    .inp_txt_box {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 40px;
+        padding: 0 $layout-small-padding;
+        box-sizing: border-box;
+        border: $base-border;
+        border-radius: $base-border-radius;
+
+        &.inp_txt_box_warn {
+            border-color: $accent-color;
+
+            + .inp_message {
+                color: $accent-font-color;
+            }
+        }
+        &.inp_txt_box_primary {
+
+            + .inp_message {
+                color: $primary-font-color;
+            }
+        }
+        &.inp_disabled {
+            background-color: $bg-gray-color;
+        }
+    }
+    .tel_box {
+        flex: 1;
+        align-items: stretch;
+        align-self: stretch;
+
+        .inp_tel {
+            width: 28%;
+            height: 100%;
+            margin: 0;
+        }
+        select.inp_tel {
+            width: 22%;
+            margin-right: 2px;
+        }
+    }
+    .inp_txt {
+        width: 1%;
+        flex: 1;
+        margin: 0 8px;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        font-size: $base-font-size;
+        color: $bold-font-color;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .lab_txt {
+        flex-shrink: 0;
+        min-width: 75px;
+        font-size: $mid-font-size;
+        color: $base-font-color;
+    }
+    .btn_inp_txt {
+        font-size: $mid-font-size;
+        flex-shrink: 0;
+
+        .icon {
+            height: 16px;
+        }
+    }
+    .inp_message {
+        margin-top: 4px;
+        height: $small-font-size;
+        font-size: $small-font-size;
+        color: $light-font-color;
+    }
+    .lab_checkbox01 {
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .lab_checkbox01:before {
+        content:'';
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-image: url(/images/icon-checkbox-circle.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: sub;
+        margin-right: 4px;
+    }
+    .inp_check:checked + .lab_checkbox01:before {
+        background-image: url(/images/icon-checkbox-circle-checked.svg);
+    }
+    .lab_checkbox02 {
+        display: flex;
+        font-size: $mid-font-size;
+        line-height: $base-line-height;
+        color: $base-font-color;
+    }
+    .lab_checkbox02:before {
+        content:'';
+        display: inline-block;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        background-image: url(/images/icon-checkbox.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        vertical-align: sub;
+        margin-right: 6px;
+    }
+    .inp_check:checked + .lab_checkbox02:before {
+        background-image: url(/images/icon-checkbox-checked.svg);
+    }
+    .authentication_time {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+        margin-right: $layout-base-padding;
+        flex-shrink: 0;
+    }
+}
+.inp_box04_flex {
+    display: flex;
+
+    .inp_btn_box {
+        margin-left: 4px;
+        flex-shrink: 0;
+
+        .btn {
+            height: 100%;
+            box-sizing: border-box;
+        }
+    }
+    .inp_txt {
+        width: 1%;
+    }
+}
+.switch_box {
+    
+    .lab_switch {
+        font-size: $base-font-size;
+        color: $base-font-color;
+    }
+    .inp_switch {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        width: 36px;
+        height: 14px;
+        background-color: $gray-3;
+        border-radius: 14px;
+    }
+    .circle_switch {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        display: block;
+        background-color: $gray-0;
+        @include circle(21px);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.37);
+        transition: left .3s;
+    }
+    .inp_blind:checked {
+        & + .inp_switch{
+            background-color: #c1b8da;
+        }
+        &+.inp_switch .circle_switch {
+            left: 36px - 21px;
+            background-color: $main-color;
+        }
+    }
+}
+.inp_box05 {
+
+    .lab_radio {
+        display: block;
+        padding: 12px $layout-small-padding;
+        font-size: $large-font-size;
+        color: $base-font-color;
+    }
+    .inp_radio_blind:checked + .lab_radio {
+        background-color: $bg-gray-color;
+    }
+}

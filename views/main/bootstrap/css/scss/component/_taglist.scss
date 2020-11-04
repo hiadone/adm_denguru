@@ -1,0 +1,23 @@
+.tag_list01 {
+    
+    .tag_item {
+        width: fit-content;
+        float: left;
+
+        .btn {
+            margin: 0 4px;
+        }
+        &:first-child .btn {
+            margin-left: $layout-base-padding;
+        }
+        &:last-child .btn {
+            margin-right: $layout-base-padding;
+        }
+        &.active .btn {
+            font-weight: bold;
+            background-color: lighten($accent-color, 6%);
+            border-color: $accent-color;
+            color: $gray-0;
+        }
+    }
+}

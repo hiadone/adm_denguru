@@ -1,0 +1,30 @@
+.toast_box {
+    position: fixed;
+    bottom: $gnb-bottom-height;
+    left: $layout-base-padding;
+    right: $layout-base-padding;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $layout-small-padding;
+    min-height: 48px;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+    text-align: center;
+    word-break: keep-all;
+    border-radius: $large-border-radius;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .5s, visibility .5s, transform .5s;
+    z-index: 900;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(0, $layout-small-padding*-1);
+    }
+}

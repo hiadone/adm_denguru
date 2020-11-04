@@ -6180,6 +6180,7 @@ $config['from_category_to_attr']  = array(
 );
 
 
+
 $config['attr_str_equal']  = array(
       'span',
       '스탠다드 푸들',
@@ -6188,8 +6189,16 @@ $config['attr_str_equal']  = array(
       'Grey Hound',
       '이탈리안 그레이 하운드',
       'Italian Grey hound',
+      '자이언트 슈나우저',
+      'Giant Schnauzer'
       );
 
+$config['kind_str_equal']  = array(      
+      '푸들',
+      'Poodle',
+      '슈나우저',
+      'Schnauzer',
+      );
 
 $config['brd_site_type']  = array(
       1 => 'naver',

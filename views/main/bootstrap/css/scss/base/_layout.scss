@@ -1,0 +1,121 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    font-family: $base-font-family;
+}
+.blind {
+    @include blind;
+}
+.clearfix {
+    @include clearfix;
+}
+.wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    @include layout-frame;
+    margin: 0 auto;
+    background-color: $bg-gray-color;
+}
+@media screen and (min-width: 722px) {
+    .wrap {
+        border-right: $light-border;
+        border-left: $light-border;
+    }
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.img_box {
+    display: block;
+    font-size: 0;
+
+    .img {
+        width: 100%;
+        font-size: 12px;
+    }
+}
+.vis_hidden {
+    visibility: hidden!important;
+}
+.disnone {
+    display: none!important;
+}
+.sect01 {
+    padding: $layout-base-padding*3 0 0;
+    margin-bottom: $layout-base-padding;
+    background-color: $gray-0;
+    
+    .btn_box_bottom {
+        margin-top: $layout-large-padding;
+    }
+    .btn_more {
+        display: block;
+        height: $layout-base-padding * 3;
+        line-height: $layout-base-padding * 3;
+        font-size: $base-font-size;
+        border-top: $light-border;
+        text-align: center;
+        color: $main-font-color;
+        font-weight: bold;
+
+        .icon {
+            width: 1.1em;
+            vertical-align: middle;
+        }
+    }
+}
+.sect02 {
+    padding: $layout-base-padding*3 0;
+    margin-bottom: $layout-base-padding;
+    background-color: $gray-0;
+
+    .swiper-pagination {
+        bottom: 0;
+    }
+    .items_wrap {
+        padding-bottom: 10px;
+    }
+}
+.sect03 {
+    padding: $layout-small-padding;
+    background-color: $gray-0;
+}
+.sect04 {
+    margin-top: $layout-base-padding;
+    background-color: $gray-0;
+}
+.sect05 {
+    padding: $layout-large-padding 0;
+    background-color: $gray-0;
+}
+.sect06 {
+    padding: $layout-base-padding*2 0;
+    background-color: $gray-0;
+}
+.sect07 {
+    flex: 1;
+    padding: $layout-large-padding 0;
+    margin-top: $layout-base-padding;
+    background-color: $gray-0;
+}
+.sect08 {
+    flex: 1;
+    padding: $layout-large-padding 0;
+    margin-top: $layout-base-padding;
+    background-color: $gray-0;
+}
+.sect_ad01 {
+    margin-bottom: $layout-base-padding;
+    font-size: 0;
+    
+    .bnr {
+        width: 100%;
+        font-size: 12px;
+    }
+}
+.mt_head02 {
+    margin-top: $layout-base-padding * 3.5;
+}

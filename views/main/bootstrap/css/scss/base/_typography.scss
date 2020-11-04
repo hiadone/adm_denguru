@@ -1,0 +1,120 @@
+.txt_center {
+    text-align: center;
+}
+.txt_left {
+    text-align: left;
+}
+.txt_right {
+    text-align: right;
+}
+.emph_color_main {color: $main-font-color;}
+.emph_color_accent {color: $accent-font-color;}
+.emph_color_primary {color: $primary-font-color;}
+.title01 {
+    margin: 0 $layout-base-padding $layout-large-padding;
+    font-size: $title-font-size;
+    font-weight: 800;
+    color: $bold-font-color;
+    
+    .emph {
+        color: $main-font-color;
+    }
+    .logo_icon {
+        width:20px;vertical-align: middle;
+    }
+}
+.title02 {
+    font-size: $large-font-size;
+    font-weight: bold;
+    color: $bold-font-color;
+}
+.title03 {
+    padding: 0 $layout-base-padding;
+    margin-bottom: $layout-base-padding;
+    font-size: $title-font-size;
+    font-weight: 800;
+    color: $bold-font-color;
+    
+    .emph {
+        color: $main-font-color;
+    }
+}
+.title04 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 $layout-base-padding;
+    height: 40px;
+    border-bottom: $light-border;
+
+    .tit {
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $base-font-color;
+    }
+    .tit_sub01 {
+        font-size: $base-font-size;
+        color: $main-font-color;
+    }
+}
+.title05 {
+    margin: 0 $layout-base-padding;
+    padding-top: $layout-small-padding;
+    font-size: $large-font-size;
+    font-weight: bold;
+    color: $bold-font-color;
+
+    .tit_sub {
+        font-size: $mid-font-size;
+        font-weight: normal;
+        color: $base-font-color;
+    }
+}
+.title06 {
+    font-size: $large-font-size;
+    color: $bold-font-color;
+}
+.title07 {
+    font-size: $base-font-size;
+    color: $bold-font-color;
+}
+.title08 {
+    font-size: $title-font-size;
+    font-weight: bold;
+    color: $base-font-color;
+}
+.title09 {
+    font-size: $large-font-size;
+    font-weight: bold;
+    color: $base-font-color;
+}
+.sub_title01 {
+    padding-left: $layout-small-padding;
+    margin: 0 $layout-base-padding;
+    border-left: $base-border;
+    font-size: $base-font-size;
+    color: $base-font-color;
+    line-height: $base-line-height;
+    word-break: keep-all;
+
+    .emph01 {
+        font-size: 1.14285em;
+        font-weight: 800;
+        color: $main-font-color;
+    }
+    .emph02 {
+        font-size: 1.07143em;
+        font-weight: bold;
+        color: $accent-font-color;
+    }
+}
+.paragraph01 {
+    font-size: $base-font-size;
+    color: $base-font-color;
+    line-height: $base-line-height;
+}
+.paragraph02 {
+    font-size: $mid-font-size;
+    color: $base-font-color;
+    line-height: $base-line-height;
+}

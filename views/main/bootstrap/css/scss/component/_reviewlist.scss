@@ -1,0 +1,530 @@
+.review_list01 {
+    padding: 0 $layout-base-padding;
+
+    .review_card:not(:last-child) {
+        border-bottom: $light-border;
+        padding-bottom: $layout-base-padding;
+        margin-bottom: $layout-base-padding;
+    }
+    .review_profile_box a {
+        display: flex;
+        align-items: flex-start;
+    }
+    .profile_thum {
+        @include circle(40px);
+        @include thumnail;
+        @include thumnail-border(40px);
+        flex-shrink: 0;
+        margin-bottom: $layout-small-padding;
+    }
+    .profile_txt_box {
+        padding-left: $layout-small-padding;
+        margin-bottom: $layout-base-padding;
+    }
+    .user_id {
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .user_features {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+        line-height: $base-line-height;
+        margin-top: $layout-small-padding / 2;
+    }
+    .review_item_info_box {
+        margin-bottom: $layout-base-padding;
+    }
+    .review_item_name {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        @include one-line-ellipsis;
+    }
+    .review_post_info {
+        font-size: $small-font-size;
+        margin-top: $layout-small-padding / 2;
+    }
+    .star {
+        width: 1.167em;
+        vertical-align: middle;
+    }
+    .post_date {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .post_modified {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .link_report {
+        margin-left: 4px;
+        color: $base-font-color;
+    }
+    .review_txt_box {
+        display: flex;
+        margin-bottom: $layout-base-padding;
+        color: $bold-font-color;
+
+        .icon_box {
+            margin: 0 $layout-base-padding;
+            flex-shrink: 0;
+        }
+        .review_icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+    .review_txt01 {
+        font-size: $base-font-size;
+        @include multi-line-ellipsis ($mid-line-height, 3);
+    }
+    .review_txt02 {
+        font-size: $base-font-size;
+        line-height: $mid-line-height;
+
+        p {
+            min-width: 1px;
+            min-height: 1em;
+        }
+    }
+    .review_img_box a {
+        display: block;
+        width: 100%;
+        padding-top: 56.25%;
+        border-radius: $base-border-radius;
+        @include thumnail;
+        @include thumnail-border($base-border-radius);
+    }
+    .review_img_box02 {
+        display: flex;
+        justify-content: space-between;
+        border-radius: $base-border-radius;
+        overflow: hidden;
+
+        a {
+            display: block;
+            width: calc(50% - 2px);
+            height: 45vw;
+            max-height: 324px;
+            @include thumnail;
+            @include thumnail-border($base-border-radius);
+
+            &:first-child:after {border-radius: $base-border-radius 0 0 $base-border-radius;}
+            &:last-child:after {border-radius: 0 $base-border-radius $base-border-radius 0;}
+        }
+
+        .more_img {
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            color: $gray-0;
+            font-size: 36px;
+            font-weight: bold;
+        }
+    }
+    .btn_box {
+        margin-top: $layout-base-padding;
+        align-items: center;
+    }
+    .txt_question {
+        margin-right: $layout-small-padding;
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+
+    .review_blind_container {
+        padding: $layout-base-padding $layout-small-padding;
+        background-color: $bg-gray-color;
+        border: $light-border;
+        border-radius: $base-border-radius;
+
+        .btn_review_write {
+            height: 38px;
+            line-height: 38px;
+            padding: 0 $layout-base-padding;
+            font-size: $large-font-size;
+        }
+    }
+    .review_blind_title {
+        text-align: center;
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+    }
+    .review_blind_txt01 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $base-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-small-padding;
+    }
+    .review_blind_txt02 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $light-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-base-padding;
+    }
+    .btn_proreviewer{
+        padding: 0;
+    }
+}
+//사용자리뷰
+.review_list02 {
+    background-color: $bg-gray-color;
+
+    .review_user_profile_container {
+        box-shadow: none;
+        border-bottom: $light-border;
+    }
+    .review_card {
+        padding-bottom: $layout-base-padding;
+        background-color: #fff;
+        margin-bottom: $layout-base-padding;
+    }
+    .review_item_box {
+        padding: $layout-base-padding;
+        border-bottom: $light-border;
+
+        .btn_arrow {
+            width: 24px;
+        }
+    }
+    .review_item_link {
+        display: flex;
+        align-items: center;
+    }
+    .review_item_txt {
+        flex: 1;
+        margin-right: $layout-small-padding;
+    }
+    .review_item_thum {
+        width: 48px;
+        height: 48px;
+        border-radius: $base-border-radius;
+        overflow: hidden;
+
+        .img {
+            object-fit: cover;
+        }
+        @include thumnail-border($base-border-radius);
+    }
+    .review_item_shop {
+        font-size: $small-font-size;
+        color: $light-font-color;
+        margin-bottom: 4px;
+    }
+    .review_item_name {
+        font-size: $base-font-size;
+        color: $bold-font-color;
+        line-height: $base-line-height;
+    }
+    .review_post_info_box {
+        margin: $layout-base-padding 0 $layout-base-padding 56px;
+        font-size: $small-font-size;
+    }
+    .star {
+        width: 1.167em;
+        vertical-align: middle;
+    }
+    .post_date {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .post_modified {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .link_report {
+        margin-left: 4px;
+        color: $base-font-color;
+    }
+    .review_txt_box {
+        display: flex;
+        padding: 0 $layout-base-padding;
+        margin-bottom: $layout-base-padding;
+        color: $bold-font-color;
+
+        .icon_box {
+            margin-right: $layout-base-padding;
+            flex-shrink: 0;
+        }
+        .review_icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+    .review_txt {
+        font-size: $base-font-size;
+        line-height: $mid-line-height;
+
+        p {
+            min-width: 1px;
+            min-height: 1em;
+        }
+    }
+    .review_img_box {
+        width: fit-content;
+        
+        .img_box {
+            display: block;
+            width: 27.7778vw;
+            height: 27.7778vw;
+            max-width: 200px;
+            max-height: 200px;
+            margin: 0 4px;
+            border-radius: $base-border-radius;
+            @include thumnail;
+            @include thumnail-border($base-border-radius);
+        }
+        &:first-child .img_box {
+            margin-left: $layout-base-padding;
+        }
+        &:last-child .img_box {
+            margin-right: $layout-base-padding;
+        }
+    }
+    .btn_box {
+        margin: $layout-base-padding $layout-base-padding 0;
+        align-items: center;
+    }
+    .txt_question {
+        margin-right: $layout-small-padding;
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .review_blind_container {
+        padding: $layout-base-padding $layout-small-padding;
+        margin: $layout-base-padding $layout-base-padding 0;
+        background-color: $bg-gray-color;
+        border: $light-border;
+        border-radius: $base-border-radius;
+
+        .btn_review_write {
+            height: 38px;
+            line-height: 38px;
+            padding: 0 $layout-base-padding;
+            font-size: $large-font-size;
+        }
+    }
+    .review_blind_title {
+        text-align: center;
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+    }
+    .review_blind_txt01 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $base-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-small-padding;
+    }
+    .review_blind_txt02 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $light-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-base-padding;
+    }
+    .btn_proreviewer{
+        padding: 0;
+    }
+}
+.review_list03 {
+
+    .review_card {
+        padding: $layout-base-padding 0;
+        background-color: #fff;
+        border-bottom: $light-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    .review_profile_box a {
+        margin: 0 $layout-base-padding;
+        display: flex;
+        align-items: flex-start;
+    }
+    .profile_thum {
+        @include circle(40px);
+        @include thumnail;
+        @include thumnail-border(40px);
+        flex-shrink: 0;
+        margin-bottom: $layout-small-padding;
+    }
+    .profile_txt_box {
+        padding-left: $layout-small-padding;
+        margin-bottom: $layout-small-padding;
+    }
+    .user_id {
+        font-size: $large-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+    }
+    .user_features {
+        font-size: $mid-font-size;
+        color: $light-font-color;
+        line-height: $base-line-height;
+        margin-top: $layout-small-padding / 2;
+    }
+    .review_post_info_box {
+        margin: $layout-base-padding 0 $layout-base-padding 56px;
+        font-size: $small-font-size;
+    }
+    .review_post_info {
+        font-size: $small-font-size;
+        margin-left: 24px + 40px;
+    }
+    .star {
+        width: 1.167em;
+        vertical-align: middle;
+    }
+    .post_date {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .post_modified {
+        margin-left: 4px;
+        color: $x-light-font-color;
+    }
+    .link_report {
+        margin-left: 4px;
+        color: $base-font-color;
+    }
+    .star {
+        width: 1.167em;
+        vertical-align: middle;
+    }
+    .review_txt_box {
+        display: flex;
+        padding: 0 $layout-base-padding;
+        margin: $layout-base-padding;
+        margin-right: 0;
+        color: $bold-font-color;
+
+        .icon_box {
+            margin-right: $layout-small-padding;
+            flex-shrink: 0;
+        }
+        .review_icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+    .review_txt {
+        font-size: $base-font-size;
+        line-height: $mid-line-height;
+
+        p {
+            min-width: 1px;
+            min-height: 1em;
+        }
+    }
+    .review_img_box {
+        width: fit-content;
+        
+        .img_box {
+            display: block;
+            width: 27.7778vw;
+            height: 27.7778vw;
+            max-width: 200px;
+            max-height: 200px;
+            margin: 0 4px;
+            border-radius: $base-border-radius;
+            @include thumnail;
+            @include thumnail-border($base-border-radius);
+        }
+        &:first-child .img_box {
+            margin-left: $layout-base-padding;
+        }
+        &:last-child .img_box {
+            margin-right: $layout-base-padding;
+        }
+    }
+    .btn_box {
+        margin: $layout-base-padding $layout-base-padding 0;
+        align-items: center;
+    }
+    .txt_question {
+        margin-right: $layout-small-padding;
+        font-size: $mid-font-size;
+        color: $light-font-color;
+    }
+    .review_content_blind_wrap {
+        position: relative;
+        margin-top: $layout-base-padding;
+        padding: $layout-base-padding 0;
+
+        .review_content_wrap {
+            -webkit-filter:blur(10px);
+            -moz-filter:blur(10px);
+            -o-filter:blur(10px);
+            -ms-filter:blur(10px);
+            filter:blur(10px);
+        }
+    }
+    .review_blind_container {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        padding: $layout-base-padding $layout-small-padding;
+        box-sizing: border-box;
+        background-color: rgba(239, 236, 243, 0.5);
+
+        .btn_review_write {
+            height: 38px;
+            line-height: 38px;
+            padding: 0 $layout-base-padding;
+            font-size: $large-font-size;
+        }
+    }
+    .review_blind_title {
+        text-align: center;
+        font-size: $title-font-size;
+        font-weight: bold;
+        color: $bold-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+    }
+    .review_blind_txt01 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $base-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-small-padding;
+    }
+    .review_blind_txt02 {
+        text-align: center;
+        font-size: $base-font-size;
+        color: $light-font-color;
+        word-break: keep-all;
+        line-height: $base-line-height;
+        margin-top: $layout-base-padding;
+    }
+    .btn_proreviewer{
+        padding: 0;
+    }
+}
