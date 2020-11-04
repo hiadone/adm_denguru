@@ -667,7 +667,8 @@ class Members extends CB_Controller
 
 			if ($this->input->post('mem_photo_del')) {
 				$updatedata['mem_photo'] = '';
-			} elseif ($updatephoto) {
+			}
+			if ($updatephoto) {
 				$updatedata['mem_photo'] = $updatephoto;
 			}
 			if (element('mem_photo', $getdata) && ($this->input->post('mem_photo_del') OR $updatephoto)) {

@@ -481,7 +481,9 @@ class Memberpet extends CB_Controller
 
             if ($this->input->post('pet_photo_del')) {
                 $updatedata['pet_photo'] = '';
-            } elseif ($updatephoto) {
+            } 
+
+            if ($updatephoto) {
                 $updatedata['pet_photo'] = $updatephoto;
             }
             if (element('pet_photo', $getdata) && ($this->input->post('pet_photo_del') OR $updatephoto)) {
