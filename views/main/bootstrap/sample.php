@@ -3,6 +3,7 @@ $this->managelayout->add_css(base_url('views/main/bootstrap/css/main.css'));
 
 $member = element('member',element('layout',element('main',$view)));
 
+
 $layout = element('layout',element('main',$view));
 
 
@@ -38,45 +39,49 @@ $reviewlist = element('data',element('reviewlist',$view));
             <h1 class="h_logo_box"><a href="index.html" class="h_link"><img src="/views/main/bootstrap/images/logo-horizontal.svg" alt="DENGURU 로고" class="h_logo"></a></h1>
             <div class="h_search_box">
                 <a href="search.html">
-                    <div class="icon_box"><img src="/views/main/bootstrap/images//icon-search.svg" alt="검색" class="icon"></div>
+                    <div class="icon_box"><img src="/views/main/bootstrap/images/icon-search.svg" alt="검색" class="icon"></div>
                     <div class="search_txt">추천검색어</div>
                 </a>
             </div>
             <div class="h_btn">
                 <!-- <span class="has_alarm"><span class="blind">알림이 있습니다</span></span> -->
-                <a href="my_notification.html"><img src="/views/main/bootstrap/images//icon-bell-with-dot.svg" alt="알림" class="icon"></a>
+                <a href="my_notification.html"><img src="/views/main/bootstrap/images/icon-bell-with-dot.svg" alt="알림" class="icon"></a>
             </div>
         </header>
+
+        <div class="img_box"><a href="<?php echo element('ban_click_url',element('main_top',element('banner',$layout))) ?>"><img src="<?php echo element('ban_image_url',element('main_top',element('banner',$layout))) ?>" alt="영양제 최대 특가전" class="bnr"></a>
+        </div>
+
         <nav class="gnb_bottom">
             <h2 class="blind">하단 네비게이션</h2>
             <ul class="gnb_list">
                 <li class="gnb_item">
                     <a href="store_rank.html" class="gnb_link">
-                        <img src="/views/main/bootstrap/images//gnb-store.svg" alt="store" class="gnb_icon">
+                        <img src="/views/main/bootstrap/images/gnb-store.svg" alt="store" class="gnb_icon">
                         <span class="gnb_txt blind">store</span>
                     </a>
                 </li>
                 <li class="gnb_item">
                     <a href="category_main.html" class="gnb_link">
-                        <img src="/views/main/bootstrap/images//gnb-category.svg" alt="category" class="gnb_icon">
+                        <img src="/views/main/bootstrap/images/gnb-category.svg" alt="category" class="gnb_icon">
                         <span class="gnb_txt blind">category</span>
                     </a>
                 </li>
                 <li class="gnb_item active">
                     <a href="index.html" class="gnb_link">
-                        <img src="/views/main/bootstrap/images//gnb-home-active.svg" alt="home" class="gnb_icon">
+                        <img src="/views/main/bootstrap/images/gnb-home-active.svg" alt="home" class="gnb_icon">
                         <span class="gnb_txt blind">home</span>
                     </a>
                 </li>
                 <li class="gnb_item">
                     <a href="pick_main.html" class="gnb_link">
-                        <img src="/views/main/bootstrap/images//gnb-pick.svg" alt="pick" class="gnb_icon">
+                        <img src="/views/main/bootstrap/images/gnb-pick.svg" alt="pick" class="gnb_icon">
                         <span class="gnb_txt blind">pick</span>
                     </a>
                 </li>
                 <li class="gnb_item">
                     <a href="my_main_resister.html" class="gnb_link">
-                        <img src="/views/main/bootstrap/images//gnb-my.svg" alt="my" class="gnb_icon">
+                        <img src="/views/main/bootstrap/images/gnb-my.svg" alt="my" class="gnb_icon">
                         <span class="gnb_txt blind">my</span>
                     </a>
                 </li>
@@ -85,6 +90,32 @@ $reviewlist = element('data',element('reviewlist',$view));
         
         <div class="main">
             <!-- main_profile -->
+            <?php 
+
+            if(empty(element('list',$petlist))){ ?>
+            
+            <section class="main_profile">
+                <h2 class="blind">마이펫 프로필</h2>
+                <ul class="profile_list swiper-wrapper">
+                    <li class="profile swiper-slide">
+                        <div class="profile_img"><img src="/views/main/bootstrap/images/profile-noimg.png" alt="프로필 이미지" class="img"></div>
+                        <div class="profile_message01">
+                            <span class="emph">사랑스러운 우리아이</span>를<br>등록해주세요.
+                        </div>
+                        <div class="profile_message02">
+                            댕구루 AI가 꼭! 맞는 제품을 추천해드릴께요!
+                        </div>
+                        <div class="resister_btn_box">
+                            <a href="home_resister_pet.html" class="btn btn_big btn_accent btn_resister">
+                                등록하기
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+            <?php 
+            } else {?>
+            
             <section class="main_profile swiper-container">
                 <h2 class="blind">마이펫 프로필</h2>
                 <ul class="profile_list swiper-wrapper">
@@ -139,16 +170,17 @@ $reviewlist = element('data',element('reviewlist',$view));
                                 
                             </li>
                         </ul>
-                        <a href="home_resister_pet_edit.html" class="btn_modify_pet"><img src="/views/main/bootstrap/images//btn_setting.png" alt="레오 정보 수정하기" class="img"></a>
+                        <a href="home_resister_pet_edit.html" class="btn_modify_pet"><img src="/views/main/bootstrap/images/btn_setting.png" alt="레오 정보 수정하기" class="img"></a>
                     </li>
                     <?php } ?>
                     
                 </ul>
                 <div class="swiper-pagination pagination_main"></div>
                 <a href="home_resister_pet.html" class="btn_add">
-                    추가 <img src="/views/main/bootstrap/images//btn_plus.png" alt="+" class="icon">
+                    추가 <img src="/views/main/bootstrap/images/btn_plus.png" alt="+" class="icon">
                 </a>
             </section>
+            <?php } ?>
             <!-- 댕구루 AI 추천 -->
             
                 <?php 
@@ -158,7 +190,7 @@ $reviewlist = element('data',element('reviewlist',$view));
 
                 ?>
                     <section class="sect02 sect_recommand_ai">
-                <h2 class="title01"><img src="/views/main/bootstrap/images//logo-icon.svg" alt="로고아이콘" class="logo_icon"> 댕구루 AI 추천</h2>
+                <h2 class="title01"><img src="/views/main/bootstrap/images/logo-icon.svg" alt="로고아이콘" class="logo_icon"> 댕구루 AI 추천</h2>
                         <div class="sub_title01">
                             <span class="emph01 js-petname"><?php echo element('pet_name',element('pet_info',$ai_recom)) ?>
                             </span>에게 맞춤 제품을 추천해드려요.
@@ -243,7 +275,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                         ?>
                     </ul>
                     <div class="btn_box_bottom">
-                        <a href="home_best.html" class="btn_more">더보기 <img src="/views/main/bootstrap/images//icon-angle-right.svg" alt=">" class="icon"></a>
+                        <a href="home_best.html" class="btn_more">더보기 <img src="/views/main/bootstrap/images/icon-angle-right.svg" alt=">" class="icon"></a>
                     </div>
                 </div>
             </section>
@@ -251,7 +283,7 @@ $reviewlist = element('data',element('reviewlist',$view));
             <section class="sect_ad01">
                 <h2 class="blind">광고영역</h2>
 
-                <a href="<?php echo element('ban_click_url',element('main_middle',$layout)) ?>"><img src="<?php echo element('ban_image_url',element('main_middle',$layout)) ?>" alt="영양제 최대 특가전" class="bnr"></a>
+                <a href="<?php echo element('ban_click_url',element('main_middle',element('banner',$layout))) ?>"><img src="<?php echo element('ban_image_url',element('main_middle',element('banner',$layout))) ?>" alt="영양제 최대 특가전" class="bnr"></a>
             </section>
             <!-- 지금 뜨는 인기 ITEMS -->
             <section class="sect02 sect_hot_items">
@@ -326,7 +358,7 @@ $reviewlist = element('data',element('reviewlist',$view));
 
                     ?>
                     <section class="sect01 sect_recommand_pet">
-                <h2 class="title01" style="margin-bottom: 8px;"><img src="/views/main/bootstrap/images//logo-icon.svg" alt="로고아이콘" class="logo_icon"> <span class="emph js-petname"><?php echo element('pet_name',element('pet_info',$denguru_recom)) ?></span>를 위해 이런건 어때요?</h2>
+                <h2 class="title01" style="margin-bottom: 8px;"><img src="/views/main/bootstrap/images/logo-icon.svg" alt="로고아이콘" class="logo_icon"> <span class="emph js-petname"><?php echo element('pet_name',element('pet_info',$denguru_recom)) ?></span>를 위해 이런건 어때요?</h2>
                 <div class="sub_title01" style="margin-bottom: 16px;">
                     <?php 
                     $pet_attr= array();
@@ -364,7 +396,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                         
                     </ul>
                     <div class="btn_box_bottom">
-                        <a href="" class="btn_more"><img src="/views/main/bootstrap/images//icon-refresh.svg" alt="새로고침" class="icon"> 추천 상품 새로 보기</a>
+                        <a href="" class="btn_more"><img src="/views/main/bootstrap/images/icon-refresh.svg" alt="새로고침" class="icon"> 추천 상품 새로 보기</a>
                     </div>
                 </div>
 
@@ -375,7 +407,7 @@ $reviewlist = element('data',element('reviewlist',$view));
             <!-- 광고 -->
             <section class="sect_ad01">
                 <h2 class="blind">광고영역</h2>
-                <a href="<?php echo element('ban_click_url',element('main_bottom',$layout)) ?>"><img src="<?php echo element('ban_image_url',element('main_bottom',$layout)) ?>" alt="영양제 최대 특가전" class="bnr"></a>
+                <a href="<?php echo element('ban_click_url',element('main_bottom',element('banner',$layout))) ?>"><img src="<?php echo element('ban_image_url',element('main_bottom',element('banner',$layout))) ?>" alt="영양제 최대 특가전" class="bnr"></a>
             </section>
             <!-- 리뷰 -->
             <section class="sect01">
@@ -409,7 +441,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                                     <?php 
 
                                     for($i =0 ; (int) element('cit_review_average',$val) > $i ; $i++){
-                                        echo '<img src="/views/main/bootstrap/images//icon-star.svg" alt="별" class="star">';
+                                        echo '<img src="/views/main/bootstrap/images/icon-star.svg" alt="별" class="star">';
                                     }
                                     ?>
                                 </span>
@@ -436,7 +468,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                             
                         </div>
                         <div class="btn_box">
-                            <button class="btn btn_mid btn_mid_round btn_normal_line btn_like btn_right" onclick="clickReviewHeart(this)"><img src="/views/main/bootstrap/images//icon-heart-o.svg" alt="하트" class="icon"><span class="num"><?php echo element('reviewlikestatus',$val) ?></span></button>
+                            <button class="btn btn_mid btn_mid_round btn_normal_line btn_like btn_right" onclick="clickReviewHeart(this)"><img src="/views/main/bootstrap/images/icon-heart-o.svg" alt="하트" class="icon"><span class="num"><?php echo element('reviewlikestatus',$val) ?></span></button>
                         </div>
                     </li>
                     <?php         
@@ -445,12 +477,12 @@ $reviewlist = element('data',element('reviewlist',$view));
                     
                 </ul>
                 <div class="btn_box_bottom">
-                    <a href="" class="btn_more js-btn-review-list-more">더보기 <img src="/views/main/bootstrap/images//icon-angle-down.svg" alt="아래화살표" class="icon"></a>
+                    <a href="" class="btn_more js-btn-review-list-more">더보기 <img src="/views/main/bootstrap/images/icon-angle-down.svg" alt="아래화살표" class="icon"></a>
                 </div>
             </section>
             <div class="pd_gnb_bottom" style="height: 24px;background-color: #fff;"></div>
             <div class="btn_fixed_box">
-                <button type="button" class="btn btn_circle btn_normal_line btn_write btn-top" id="btnTop"><img src="/views/main/bootstrap/images//icon-backtop.svg" alt="맨위로" class="icon icon_up"></button>
+                <button type="button" class="btn btn_circle btn_normal_line btn_write btn-top" id="btnTop"><img src="/views/main/bootstrap/images/icon-backtop.svg" alt="맨위로" class="icon icon_up"></button>
             </div>
             <!-- .main end -->
         </div>
