@@ -210,7 +210,7 @@ class Main extends CB_Controller
 		$this->load->model(array('Cmall_item_model','Other_model','Cmall_review_model','Member_pet_model'));
 
 
-		$href ='http://devapi.denguru.kr/cmall/main';
+		$href ='http://api.denguru.kr/cmall/main';
         $url = $href;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -229,7 +229,7 @@ class Main extends CB_Controller
         if($petlist)
             foreach($petlist as $key => $value){
 
-            	$href ='http://devapi.denguru.kr/cmall/itemairecomlists/'.element('pet_id', $value);
+            	$href ='http://api.denguru.kr/cmall/itemairecomlists/'.element('pet_id', $value);
             	$url = $href;
             	$ch = curl_init();
             	curl_setopt($ch, CURLOPT_URL, $url);
@@ -241,7 +241,7 @@ class Main extends CB_Controller
                 $view['view']['ai_recom'][] = json_decode($result,true);
 
 
-                $href ='http://devapi.denguru.kr/cmall/itemdengururecomlists/'.element('pet_id', $value);
+                $href ='http://api.denguru.kr/cmall/itemdengururecomlists/'.element('pet_id', $value);
             	$url = $href;
             	$ch = curl_init();
             	curl_setopt($ch, CURLOPT_URL, $url);
@@ -259,7 +259,7 @@ class Main extends CB_Controller
         
 
 
-        $href ='http://devapi.denguru.kr/cmall_review/reviewlist';
+        $href ='http://api.denguru.kr/cmall_review/reviewlist';
         $url = $href;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

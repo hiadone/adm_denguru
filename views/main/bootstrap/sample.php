@@ -462,7 +462,7 @@ $reviewlist = element('data',element('reviewlist',$view));
 
                             <?php 
                             foreach(element('review_image',$val) as $aval){
-                                echo '<a><img src="'.element('pat_value',$aval).'" alt="리뷰이미지" class="img"></a>';
+                                echo '<a><img src="'.element('uri',$aval).'" alt="리뷰이미지" class="img"></a>';
                             }
                              ?>
                             
