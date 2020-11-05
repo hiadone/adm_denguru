@@ -111,11 +111,11 @@
 								<?php 
 
 									if(empty(element('pet', $result))){										
-										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫 등록</a>';
+										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >미등록</a>';
 
 									} else {
 										
-										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫'.count(element('pet', $result)).' 관리</a>';
+										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫'.count(element('pet', $result)).' 등록</a>';
 										
 									}
 								?>
