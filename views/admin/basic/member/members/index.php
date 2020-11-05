@@ -51,14 +51,14 @@
 							<?php if ($this->cbconfig->item('use_sociallogin')) { ?>
 								<th>소셜연동</th>
 							<?php } ?>
-							<th>펫 관리</th>
+							<th>등록된 펫</th>
 							<!-- <th><a href="<?php echo element('mem_point', element('sort', $view)); ?>">포인트</a></th> -->
 							<!-- <th><?php echo $this->cbconfig->item('deposit_name') ? html_escape($this->cbconfig->item('deposit_name')) : '예치금'; ?></th> -->
 							<th><a href="<?php echo element('mem_register_datetime', element('sort', $view)); ?>">가입일</a></th>
 							<th><a href="<?php echo element('mem_lastlogin_datetime', element('sort', $view)); ?>">최근로그인</a></th>
 							<th>회원그룹</th>
-							<th><a href="<?php echo element('mem_level', element('sort', $view)); ?>">회원레벨</a></th>
-							<th>메일인증/공개/메일/쪽지/문자</th>
+							<!-- <th><a href="<?php echo element('mem_level', element('sort', $view)); ?>">회원레벨</a></th> -->
+							<th>메일/SMS</th>
 							<th>승인</th>
 							<th>action</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -71,7 +71,9 @@
 					?>
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
-							<td><a href="<?php echo admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)); ?>"><?php echo html_escape(element('mem_userid', $result)); ?><span class="fa fa-external-link"></span></a></td>
+							<td><a href="<?php echo admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)); ?>"><?php echo html_escape(element('mem_userid', $result)); ?><span class="fa fa-external-link"></span></a>
+								<a href="<?php echo admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)); ?>" class="btn btn-outline btn-primary btn-xs" >펫 관리</a>
+							</td>
 							<td>
 								<span><?php echo html_escape(element('mem_username', $result)); ?></span>
 								<?php echo element('mem_is_admin', $result) ? '<span class="label label-primary">최고관리자</span>' : ''; ?>
@@ -107,15 +109,18 @@
 									<?php } ?>
 								</td>
 							<?php } ?>
-							<td class="text-right">
+							<td class="text-center">
 								<?php 
 
-									if(empty(element('pet', $result))){										
-										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >미등록</a>';
+									if(empty(element('pet', $result))){
+										echo '-';
 
 									} else {
 										
-										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫'.count(element('pet', $result)).' 등록</a>';
+										foreach(element('list',element('pet', $result)) as $pval){
+											echo element('pet_kind',$pval)."<br>";
+										}
+										
 										
 									}
 								?>
@@ -126,12 +131,10 @@
 							<td><?php echo display_datetime(element('mem_register_datetime', $result), 'full'); ?></td>
 							<td><?php echo display_datetime(element('mem_lastlogin_datetime', $result), 'full'); ?></td>
 							<td><?php echo element('member_group', $result); ?></td>
-							<td class="text-right"><?php echo element('mem_level', $result); ?></td>
+							<!-- <td class="text-right"><?php echo element('mem_level', $result); ?></td> -->
 							<td>
-								<?php echo element('mem_email_cert', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
-								<?php echo element('mem_open_profile', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
-								<?php echo element('mem_receive_email', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
-								<?php echo element('mem_use_note', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
+								
+								<?php echo element('mem_receive_email', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>								
 								<?php echo element('mem_receive_sms', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
 							</td>
 							<td><?php echo element('mem_denied', $result) ? '<span class="label label-danger">차단</span>' : '승인'; ?></td>

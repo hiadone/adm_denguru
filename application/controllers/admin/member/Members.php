@@ -43,7 +43,7 @@ class Members extends CB_Controller
 		/**
 		 * 라이브러리를 로딩합니다
 		 */
-		$this->load->library(array('pagination', 'querystring'));
+		$this->load->library(array('pagination', 'querystring','denguruapi'));
 	}
 
 	/**
@@ -140,8 +140,9 @@ class Members extends CB_Controller
 				);
 				$result['list'][$key]['meta'] = $this->Member_meta_model->get_all_meta(element('mem_id', $val));
 				$result['list'][$key]['social'] = $this->Social_meta_model->get_all_meta(element('mem_id', $val));
-				$result['list'][$key]['pet'] = $this->Member_pet_model->get('','',array('mem_id' => element('mem_id', $val)));
-
+				
+				$result['list'][$key]['pet'] = $this->denguruapi->get_mem_pet_info(element('mem_id', $val));
+				
 				$result['list'][$key]['num'] = $list_num--;
 			}
 		}
