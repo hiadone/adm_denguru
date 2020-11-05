@@ -1,6 +1,8 @@
 <div class="box">
 	<div class="box-table">
 		<?php
+		echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
+        echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
 		echo form_open_multipart(current_full_url(), $attributes);
@@ -14,7 +16,7 @@
 					?>
 						<img src="<?php echo banner_image_url(element('ban_image', element('data', $view)), '', 150); ?>" alt="배너 이미지" title="배너 이미지" />
 						<label for="ban_image_del">
-							<input type="checkbox" name="ban_image_del" id="ban_image_del" value="1" <?php echo set_checkbox('ban_image_del', '1'); ?> /> 삭제
+							<input type="checkbox" name="ban_image_del" id="ban_image_del" value="1" <?php //echo set_checkbox('ban_image_del', '1'); ?> /> 삭제
 						</label>
 					<?php
 					}

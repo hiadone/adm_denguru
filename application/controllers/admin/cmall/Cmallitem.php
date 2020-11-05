@@ -1196,7 +1196,7 @@ class Cmallitem extends CB_Controller
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
 
             if ($file_error) {
-                $view['view']['message'] = $file_error;
+                $view['view']['alert_message'] = $file_error;
             }
 
             

@@ -309,7 +309,7 @@ class Other extends CB_Controller
 
             // 이벤트가 존재하면 실행합니다
             $view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
-            $view['view']['message'] = $file_error;
+            $view['view']['alert_message'] = $file_error;
 
             if ($pid) {
                 if (empty($getdata['oth_start_date']) OR $getdata['oth_start_date'] === '0000-00-00') {

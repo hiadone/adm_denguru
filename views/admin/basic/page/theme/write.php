@@ -1,7 +1,7 @@
 <div class="box">
 	<div class="box-table">
 		<?php
-        echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
+        echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
         echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
@@ -16,7 +16,7 @@
 					?>
 						<img src="<?php echo thumb_url('theme',element('the_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 						<label for="the_image_del">
-							<input type="checkbox" name="the_image_del" id="the_image_del" value="1" <?php echo set_checkbox('the_image_del', '1'); ?> /> 삭제
+							<input type="checkbox" name="the_image_del" id="the_image_del" value="1" <?php //echo set_checkbox('the_image_del', '1'); ?> /> 삭제
 						</label>
 					<?php
 					}

@@ -2,6 +2,7 @@
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
+        echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
 		echo form_open_multipart(current_full_url(), $attributes);
 		?>
@@ -14,12 +15,12 @@
 					?>
 						<img src="<?php echo thumb_url('other',element('oth_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 						<label for="oth_image_del">
-							<input type="checkbox" name="oth_image_del" id="oth_image_del" value="1" <?php echo set_checkbox('oth_image_del', '1'); ?> /> 삭제
+							<input type="checkbox" name="oth_image_del" id="oth_image_del" value="1" <?php //echo set_checkbox('oth_image_del', '1'); ?> /> 삭제
 						</label>
 					<?php
 					}
 					?>
-					<input type="file" name="oth_image" id="oth_image" />
+					<input type="file" name="oth_image" id="oth_image"  />
 					<p class="help-block">gif, jpg, png 파일 업로드가 가능합니다</p>
 				</div>
 			</div>

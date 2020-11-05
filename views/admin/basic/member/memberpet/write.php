@@ -3,7 +3,7 @@
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
-		echo show_alert_message(element('message', $view), '<div class="alert alert-warning">', '</div>');
+		echo show_alert_message(element('alert_message', $view), '<div class="alert alert-warning">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
 		echo form_open_multipart(current_full_url(), $attributes);
 		?>
@@ -249,7 +249,7 @@
 					?>
 						<img src="<?php echo cdn_url('member_photo',element('pet_photo', element('data', $view))); ?>" alt="회원 사진" title="회원 사진" />
 						<label for="pet_photo_del">
-							<input type="checkbox" name="pet_photo_del" id="pet_photo_del" value="1" <?php echo set_checkbox('pet_photo_del', '1'); ?> /> 삭제
+							<input type="checkbox" name="pet_photo_del" id="pet_photo_del" value="1" <?php //echo set_checkbox('pet_photo_del', '1'); ?> /> 삭제
 						</label>
 					<?php
 					}

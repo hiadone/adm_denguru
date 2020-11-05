@@ -2,7 +2,7 @@
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
-        echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
+        echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
         echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info">', '</div>');
 
         
@@ -19,7 +19,7 @@
 			        ?>
 			            <img src="<?php echo cdn_url('eventgroup',element('egr_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 			            <label for="egr_image_del">
-			                <input type="checkbox" name="egr_image_del" id="egr_image_del" value="1" <?php echo set_checkbox('egr_image_del', '0'); ?> /> 삭제
+			                <input type="checkbox" name="egr_image_del" id="egr_image_del" value="1" <?php //echo set_checkbox('egr_image_del', '0'); ?> /> 삭제
 			            </label>
 			        <?php
 			        }

@@ -379,7 +379,7 @@ class Boards extends CB_Controller
 
 			// 이벤트가 존재하면 실행합니다
 			$view['view']['event']['formrunfalse'] = Events::trigger('formrunfalse', $eventname);
-
+			$view['view']['alert_message'] = $file_error;
 			$this->load->model('Board_group_model');
 			$group_cnt = $this->Board_group_model->count_by();
 			if ($group_cnt === 0) {
