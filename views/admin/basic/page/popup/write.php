@@ -14,7 +14,7 @@
 					<?php
 					if (element('pop_image', element('data', $view))) {
 					?>
-						<img src="<?php echo banner_image_url(element('pop_image', element('data', $view)), '', 150); ?>" alt="배너 이미지" title="배너 이미지" />
+						<img src="<?php echo cdn_url('popup',element('pop_image', element('data', $view))); ?>" alt="배너 이미지" title="배너 이미지" />
 						<label for="pop_image_del">
 							<input type="checkbox" name="pop_image_del" id="pop_image_del" value="1" <?php //echo set_checkbox('pop_image_del', '1'); ?> /> 삭제
 						</label>
