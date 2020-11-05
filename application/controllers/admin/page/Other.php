@@ -427,7 +427,8 @@ class Other extends CB_Controller
             );
             if ($this->input->post('oth_image_del')) {
                 $updatedata['oth_image'] = '';
-            } elseif ($updatephoto) {
+            } 
+            if ($updatephoto) {
                 $updatedata['oth_image'] = $updatephoto;
             }
             if (element('oth_image', $getdata) && ($this->input->post('oth_image_del') OR $updatephoto)) {

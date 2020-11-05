@@ -420,7 +420,8 @@ class Boards extends CB_Controller
 			);
 			if ($this->input->post('brd_image_del')) {
 				$updatedata['brd_image'] = '';
-			} elseif ($updatephoto) {
+			} 
+			if ($updatephoto) {
 				$updatedata['brd_image'] = $updatephoto;
 			}
 			if (element('brd_image', $getdata) && ($this->input->post('brd_image_del') OR $updatephoto)) {

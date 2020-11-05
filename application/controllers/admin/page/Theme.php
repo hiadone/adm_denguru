@@ -433,7 +433,8 @@ class Theme extends CB_Controller
             );
             if ($this->input->post('the_image_del')) {
                 $updatedata['the_image'] = '';
-            } elseif ($updatephoto) {
+            } 
+            if ($updatephoto) {
                 $updatedata['the_image'] = $updatephoto;
             }
             if (element('the_image', $getdata) && ($this->input->post('the_image_del') OR $updatephoto)) {

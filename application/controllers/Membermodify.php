@@ -818,7 +818,8 @@ class Membermodify extends CB_Controller
 
 			if ($this->input->post('mem_photo_del')) {
 				$updatedata['mem_photo'] = '';
-			} elseif ($updatephoto) {
+			} 
+			if ($updatephoto) {
 				$updatedata['mem_photo'] = $updatephoto;
 			}
 			if ($this->member->item('mem_photo')

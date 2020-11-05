@@ -399,7 +399,8 @@ class Popup extends CB_Controller
 
 			if ($this->input->post('pop_image_del')) {
 				$updatedata['pop_image'] = '';
-			} elseif ($updatephoto) {
+			} 
+			if ($updatephoto) {
 				$updatedata['pop_image'] = $updatephoto;
 			}
 			if (element('pop_image', $getdata) && ($this->input->post('pop_image_del') OR $updatephoto)) {
