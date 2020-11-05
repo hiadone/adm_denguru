@@ -186,7 +186,7 @@ class Main extends CB_Controller
 	}
 	
 
-	public function sample($mem_id)
+	public function sample($mem_id = 0)
 	{
 
  

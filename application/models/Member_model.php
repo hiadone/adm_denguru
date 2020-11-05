@@ -96,7 +96,9 @@ class Member_model extends CB_Model
 		if (isset($where['mgr_id']) || isset($where_in['mgr_id'])) {
 			$select = 'member.*';
 			$join[] = array('table' => 'member_group_member', 'on' => 'member.mem_id = member_group_member.mem_id', 'type' => 'left');
+
 		}
+		
 		$result = $this->_get_list_common($select = '', $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop,$where_in);
 
 		return $result;

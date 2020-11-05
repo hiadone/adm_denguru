@@ -424,7 +424,7 @@ class Review extends CB_Controller
 			$view['view']['primary_key'] = $primary_key;
 
 			if ($file_error) {
-				$view['view']['message'] = $file_error;
+				$view['view']['alert_message'] = $file_error;
 			}
 
 			// 이벤트가 존재하면 실행합니다

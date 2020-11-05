@@ -2145,7 +2145,7 @@ class Cmall extends CB_Controller
 			$view['view']['item'] = $item;
 
 			if ($file_error) {
-				$view['view']['message'] = $file_error;
+				$view['view']['alert_message'] = $file_error;
 			}
 
 			/**

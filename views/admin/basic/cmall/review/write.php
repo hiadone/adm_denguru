@@ -2,7 +2,7 @@
 	<div class="box-table">
 		<?php
 		echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>');
-		echo show_alert_message(element('message', $view), '<div class="alert alert-auto-close alert-dismissible alert-warning">', '</div>');
+		echo show_alert_message(element('alert_message', $view), '<div class="alert alert-auto-close alert-dismissible alert-warning">', '</div>');
 		$attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
 		echo form_open_multipart(current_full_url(), $attributes);
 		?>
@@ -41,7 +41,7 @@
 
 							<?php } ?>
 							<label for="<?php echo $del_column; ?>">
-								<input type="checkbox" name="<?php echo $del_column; ?>" id="<?php echo $del_column; ?>" value="1" <?php echo set_checkbox($del_column, '1'); ?> /> 삭제
+								<input type="checkbox" name="<?php echo $del_column; ?>" id="<?php echo $del_column; ?>" value="1" <?php //echo set_checkbox($del_column, '1'); ?> /> 삭제
 							</label>
 						<?php } ?>
 					</div>

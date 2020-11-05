@@ -51,15 +51,16 @@
 							<?php if ($this->cbconfig->item('use_sociallogin')) { ?>
 								<th>소셜연동</th>
 							<?php } ?>
-							<th><a href="<?php echo element('mem_point', element('sort', $view)); ?>">포인트</a></th>
-							<th><?php echo $this->cbconfig->item('deposit_name') ? html_escape($this->cbconfig->item('deposit_name')) : '예치금'; ?></th>
+							<th>펫 관리</th>
+							<!-- <th><a href="<?php echo element('mem_point', element('sort', $view)); ?>">포인트</a></th> -->
+							<!-- <th><?php echo $this->cbconfig->item('deposit_name') ? html_escape($this->cbconfig->item('deposit_name')) : '예치금'; ?></th> -->
 							<th><a href="<?php echo element('mem_register_datetime', element('sort', $view)); ?>">가입일</a></th>
 							<th><a href="<?php echo element('mem_lastlogin_datetime', element('sort', $view)); ?>">최근로그인</a></th>
 							<th>회원그룹</th>
 							<th><a href="<?php echo element('mem_level', element('sort', $view)); ?>">회원레벨</a></th>
 							<th>메일인증/공개/메일/쪽지/문자</th>
 							<th>승인</th>
-							<th>수정</th>
+							<th>action</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
 					</thead>
@@ -106,8 +107,22 @@
 									<?php } ?>
 								</td>
 							<?php } ?>
-							<td class="text-right"><?php echo number_format(element('mem_point', $result)); ?></td>
-							<td class="text-right"><?php echo number_format((int) element('total_deposit', element('meta', $result))); ?></td>
+							<td class="text-right">
+								<?php 
+
+									if(empty(element('pet', $result))){										
+										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫 등록</a>';
+
+									} else {
+										
+										echo '<a href="'.admin_url('member/memberpet?sfield=member.mem_userid&skeyword='.element('mem_userid', $result)).'" class="btn btn-outline btn-primary btn-xs" >펫'.count(element('pet', $result)).' 관리</a>';
+										
+									}
+								?>
+								
+							</td>
+							<!-- <td class="text-right"><?php echo number_format(element('mem_point', $result)); ?></td>
+							<td class="text-right"><?php echo number_format((int) element('total_deposit', element('meta', $result))); ?></td> -->
 							<td><?php echo display_datetime(element('mem_register_datetime', $result), 'full'); ?></td>
 							<td><?php echo display_datetime(element('mem_lastlogin_datetime', $result), 'full'); ?></td>
 							<td><?php echo element('member_group', $result); ?></td>
@@ -120,7 +135,9 @@
 								<?php echo element('mem_receive_sms', $result) ? '<i class="fa fa-check-square-o"></i>' : '<i class="fa fa-square-o"></i>';; ?>
 							</td>
 							<td><?php echo element('mem_denied', $result) ? '<span class="label label-danger">차단</span>' : '승인'; ?></td>
-							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
+							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a><br>
+								<a href="<?php echo site_url('main/sample/'.element(element('primary_key', $view), $result)); ?>" class="btn btn-outline btn-info btn-xs" target="_blank">미리보기</a>
+							</td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>
 					<?php
