@@ -84,7 +84,7 @@ class Findaccount extends CB_Controller
 			$config[] = array(
 				'field' => 'change_userid',
 				'label' => '아이디',
-				'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[20]',
+				'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[50]',
 			);
 			$config[] = array(
 				'field' => 'change_password',

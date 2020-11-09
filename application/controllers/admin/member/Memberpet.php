@@ -239,7 +239,7 @@ class Memberpet extends CB_Controller
             array(
                 'field' => 'mem_userid',
                 'label' => '회원아이디',
-                'rules' => 'trim|required|min_length[3]|max_length[20]|is_checked[member.mem_userid]',
+                'rules' => 'trim|required|min_length[3]|max_length[50]|is_checked[member.mem_userid]',
             ),
             array(
                 'field' => 'pet_name',

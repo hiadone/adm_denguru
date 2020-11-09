@@ -291,7 +291,7 @@ class Register extends CB_Controller
 		$configbasic['mem_userid'] = array(
 			'field' => 'mem_userid',
 			'label' => '아이디',
-			'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[20]|is_unique[member_userid.mem_userid]|callback__mem_userid_check',
+			'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[50]|is_unique[member_userid.mem_userid]|callback__mem_userid_check',
 			'description' => '영문자, 숫자, _ 만 입력 가능. 최소 3자이상 입력하세요',
 		);
 

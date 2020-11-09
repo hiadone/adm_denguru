@@ -1029,7 +1029,7 @@ class Membermodify extends CB_Controller
 		$config['mem_userid'] = array(
 			'field' => 'mem_userid',
 			'label' => '아이디',
-			'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[20]|is_unique[member_userid.mem_userid]|callback__mem_userid_check',
+			'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[50]|is_unique[member_userid.mem_userid]|callback__mem_userid_check',
 		);
 		$config['mem_password'] = array(
 			'field' => 'mem_password',
