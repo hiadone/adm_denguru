@@ -26,6 +26,8 @@ $config['admin_page_menu']['page'] =
 			'eventgroup'                          => array('이벤트관리', ''),
 			'event'                          => array('색션관리', '','hide'),
 			'theme'					=> array('테마관리', ''),
+			'kinditemgroup'                          => array('견종별 item 관리', '',''),
+			// 'kinditem'                          => array('item 관리', '','hide'),
 			'other'					=> array('기타관리', ''),
 		),
 	);

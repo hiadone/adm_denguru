@@ -111,7 +111,7 @@
   
 
     <?php if($this->session->flashdata('message')){ ?>
-        window.opener.location.reload();
+        // window.opener.location.reload();
     <?php } ?>
     //]]>
     </script>

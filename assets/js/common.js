@@ -1153,4 +1153,11 @@ if (typeof(COMMON_JS) === 'undefined') {
         f.action = cb_url + '/helptool/post_change_kind';
         f.submit();
     }
+
+    function kinditem_in_cmall_item(ckd_id) {
+        var f = document.fboardlist;
+        var sub_win = window.open(cb_url + '/helptool/kinditem_in_cmall_item/'+ckd_id, 'kinditem_in_cmall_item', 'left=100, top=50, width=1440, height=700, scrollbars=1');
+
+        
+    }
 }
