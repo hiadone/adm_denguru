@@ -1869,6 +1869,8 @@ class Board_post extends CB_Controller
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */
+		
+
 		$where = array(
 			'post.brd_id' => $this->board->item_key('brd_id', $brd_key),
 
@@ -1894,6 +1896,9 @@ class Board_post extends CB_Controller
 			if($sfield === 'cit_name'){
 
 		        $this->Post_model->set_join(array('cmall_item','post.post_id = cmall_item.post_id','inner'));
+
+		        $where['cmall_item.cit_is_del'] = 0;
+		        $where['cmall_item.cit_status'] = 1;
 			    
 			}
 

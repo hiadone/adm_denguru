@@ -4466,7 +4466,13 @@ class Crawl extends CB_Controller
 
             }
 
-            
+            if($brd_id == '328'){
+                if(strpos(strtolower(str_replace(" ","",$crw_category1)),strtolower('전체상품')) !==false ){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
 
 
 
@@ -4868,6 +4874,14 @@ class Crawl extends CB_Controller
 
             }
 
+            if($brd_id == '328'){
+                if(strpos(strtolower(str_replace(" ","",$updatedata['crw_category1'])),strtolower('전체상품')) !==false ){
+                    $result = array('resultcode'=>9002,'message' => '불필요한 카테고리 입니다..');
+                    exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                }
+
+            }
+            
             
 
 
