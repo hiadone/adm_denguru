@@ -49,7 +49,7 @@
                                 <!-- <th>Vision API label</th> -->
                                 
                                 <th><a href="<?php echo element('cit_price_sale', element('sort', $view)); ?>">할인가격</a></th>
-                                <th><a href="<?php echo element('cit_status', element('sort', $view)); ?>">판매여부</a></th>
+                                
                                 <th><a href="<?php echo element('cit_sell_count', element('sort', $view)); ?>">판매량</a></th>
                                 <th><a href="<?php echo element('cit_hit', element('sort', $view)); ?>">조회수</a></th>
                                 <th>스크랩</th>
@@ -95,7 +95,7 @@
                                
                                 
                                 <td><?php echo html_escape(element('cit_price_sale', $result)); ?></td>
-                                <td> <?php echo element('cit_status', $result) ? '판매중' : '삭제처리' ?> </td>
+                                
                                 <td class="text-right"><?php echo number_format(element('cit_sell_count', $result)); ?></td>
                                 <td class="text-right"><?php echo number_format(element('cit_hit', $result)); ?></td>
                                 <td class="text-right"><?php echo number_format(element('cmall_wishlist_count', $result)); ?></td>

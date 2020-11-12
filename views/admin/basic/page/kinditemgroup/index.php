@@ -6,7 +6,18 @@
 		echo form_open(current_full_url(), $attributes);
 		?>
 			<div class="box-table-header">
-				
+				<?php
+				ob_start();
+				?>
+					<div class="btn-group pull-right" role="group" aria-label="...">
+						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">견종별 item 전체목록</a>
+						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
+						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">견종별 item 추가</a>
+					</div>
+				<?php
+				$buttons = ob_get_contents();
+				ob_end_flush();
+				?>
 			</div>
 			<div class="row">전체 : <?php echo count(element('list', element('data', $view), 0)); ?>건</div>
 			<div class="table-responsive">
@@ -19,6 +30,7 @@
 							<th><a href="<?php echo element('ckd_size', element('sort', $view)); ?>">견종 사이즈</a></th>
 							<th><a href="<?php echo element('kinditem_count', element('sort', $view)); ?>">종속된 상품 수</a></th>
 							<th>action</th>
+							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -39,8 +51,8 @@
 								?>
 							</td>
 							<td><?php echo (int) element('kinditem_count', $result); ?></td>
-							<td><button type="button" class="btn btn-outline btn-primary btn-xs" onClick="kinditem_in_cmall_item(<?php echo element(element('primary_key', $view), $result); ?>);">종속 아이템 관리</button></td>
-							
+							<td><a href="<?php echo admin_url($this->pagedir.'/lists/'.element(element('primary_key', $view), $result)); ?>" class="btn btn-outline btn-primary btn-xs" >종속 아이템 관리</a></td>
+							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 							
 							
 						</tr>
@@ -59,13 +71,14 @@
 				</table>
 			</div>
 			<div class="box-info">
-				<!-- <?php echo element('paging', $view); ?>
-				<div class="pull-left ml20"><?php echo admin_listnum_selectbox();?></div> -->
-				
+				<?php echo element('paging', $view); ?>
+				<div class="pull-left ml20"><?php echo admin_listnum_selectbox();?></div>
+				<?php echo $buttons; ?>
 			</div>
 		<?php echo form_close(); ?>
 	</div>
-	<!-- <form name="fsearch" id="fsearch" action="<?php echo current_full_url(); ?>" method="get">
+	<form name="fsearch" id="fsearch" action="<?php echo current_full_url(); ?>" method="get">
+	<input type="hidden" name="kig_id" value="<?php echo $this->input->get('kig_id'); ?>" />
 		<div class="box-search">
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
@@ -81,5 +94,5 @@
 				</div>
 			</div>
 		</div>
-	</form> -->
+	</form>
 </div>

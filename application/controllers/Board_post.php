@@ -49,7 +49,42 @@ class Board_post extends CB_Controller
 			show_404();
 		}
 
+		// $where = array(
+		// 	'brd_id' => 328,
+		// 	'cit_is_del' => 1,
+			
+		// );
+		// $result = $this->Cmall_item_model->get_item_list('','', $where);
+		
 
+		
+		// if (element('list', $result)) {
+		// 	foreach (element('list', $result) as $key => $val) {
+		// 		echo element('cit_id',$val).'<br>';
+		// 		$where = array(
+		// 			'brd_id' => 328,
+		// 			'cit_is_del' => 0,
+		// 			'cit_name' => element('cit_name',$val),
+		// 			// 'cit_id <>' => element('cit_id',$val),
+					
+					
+		// 		);
+
+		// 		$result_ = $this->Cmall_item_model->get_one('','', $where);
+				
+		// 		if(!empty($result_)){
+
+		// 			$this->Cmall_item_model->delete(element('cit_id',$val));
+
+
+		// 			$this->Cmall_item_model->update(element('cit_id',$result_),array('cit_id' =>element('cit_id',$val)));
+		// 			// break;
+		// 		}
+
+				
+				
+		// 	}
+		// }
 		
 		
 

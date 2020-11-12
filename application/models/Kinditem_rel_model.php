@@ -28,43 +28,52 @@ class Kinditem_rel_model extends CB_Model
     }
 
 
-    public function save_kinditem($ckd_id = 0, $kinditem = '')
+    public function save_kinditem($kig_id = 0, $kinditem = '')
     {
-        $ckd_id = (int) $ckd_id;
-        if (empty($ckd_id) OR $ckd_id < 1) {
+        $kig_id = (int) $kig_id;
+        if (empty($kig_id) OR $kig_id < 1) {
             return;
         }
-        $deletewhere = array(
-            'ckd_id' => $ckd_id,
-        );
-        $this->delete_where($deletewhere);
+        // $deletewhere = array(
+        //     'kig_id' => $kig_id,
+        // );
+        // $this->delete_where($deletewhere);
 
         if ($kinditem) {
             foreach ($kinditem as $cval) {
-                $insertdata = array(
-                    'ckd_id' => $ckd_id,
-                    'cit_id' => $cval,
-                );
-                $this->insert($insertdata);
+
+                $where = array(
+                        'kig_id' => $kig_id,
+                        'cit_id' => $cval,
+                    );
+
+                if(!$this->count_by($where)){
+
+                    $insertdata = array(
+                        'kig_id' => $kig_id,
+                        'cit_id' => $cval,
+                    );
+                    $this->insert($insertdata);
+                }
             }
         }
     }
 
-    public function delete_kinditem($ckd_id = 0, $kinditem = '')
+    public function delete_kinditem($kig_id = 0, $kinditem = '')
     {
-        $ckd_id = (int) $ckd_id;
-        if (empty($ckd_id) OR $ckd_id < 1) {
+        $kig_id = (int) $kig_id;
+        if (empty($kig_id) OR $kig_id < 1) {
             return;
         }
         // $deletewhere = array(
-        //     'ckd_id' => $ckd_id,
+        //     'kig_id' => $kig_id,
         // );
         
 
         if ($kinditem) {
             foreach ($kinditem as $cval) {
                 $deletewhere = array(
-                    'ckd_id' => $ckd_id,
+                    'kig_id' => $kig_id,
                     'cit_id' => $cval,
                 );
                 $this->delete_where($deletewhere);

@@ -4115,14 +4115,14 @@ class Helptool extends CB_Controller
 	}
 
 
-	public function kinditem_in_cmall_item($ckd_id = 0)
+	public function kinditem_in_cmall_item($kig_id = 0)
 	{
 
 		// 이벤트 라이브러리를 로딩합니다
 		$eventname = 'event_admin_cmall_cmallitem_index';
 		$this->load->event($eventname);
 
-		if (empty($ckd_id)) {
+		if (empty($kig_id)) {
 			show_404();
 		}
 		$view = array();
@@ -4131,7 +4131,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before'] = Events::trigger('before', $eventname);
 
-		$this->load->model(array('Cmall_wishlist_model','Cmall_item_model','Cmall_category_model','Cmall_kind_model','Board_model'));
+		$this->load->model(array('Cmall_wishlist_model','Cmall_item_model','Cmall_category_model','Kinditem_group_model','Board_model'));
 
 		/**
 		 * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
@@ -4181,7 +4181,9 @@ class Helptool extends CB_Controller
 		$per_page = admin_listnum();
 		$offset = ($page - 1) * $per_page;
 		$kinditem_rel = array();
-		$kinditem_rel = $this->Cmall_kind_model->get_kinditme($ckd_id);
+		$kinditem_rel = $this->Kinditem_group_model->get_kinditme($kig_id);
+
+		
 
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
@@ -4202,6 +4204,7 @@ class Helptool extends CB_Controller
 				foreach($kinditem_rel as $eveval){
 
 					if(element('cit_id',$val) === 	element('cit_id',$eveval)){
+
 						$result['list'][$key]['checked'] =  1;
 
 						break;
@@ -4250,7 +4253,7 @@ class Helptool extends CB_Controller
 		 * 페이지네이션을 생성합니다
 		 */
 		
-		$config['base_url'] = site_url('helptool/kinditem_in_cmall_item/' . $ckd_id) . '?' . $param->replace('page');
+		$config['base_url'] = site_url('helptool/kinditem_in_cmall_item/' . $kig_id) . '?' . $param->replace('page');
 		$config['total_rows'] = $result['total_rows'];
 		$config['per_page'] = $per_page;
 		$this->pagination->initialize($config);
@@ -4265,9 +4268,9 @@ class Helptool extends CB_Controller
 		$search_option = array( 'cit_name' => '상품명');
 		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
 		$view['view']['search_option'] = search_option($search_option, $sfield);
-		$view['view']['listall_url'] = site_url('helptool/kinditem_in_cmall_item/' . $ckd_id);
-		$view['view']['list_update_url'] = site_url('helptool/kinditem_in_listupdate/'.$ckd_id.'?' . $param->output());
-		$view['view']['list_delete_url'] = site_url('helptool/kinditem_in_listdelete/'.$ckd_id.'?' . $param->output());
+		$view['view']['listall_url'] = site_url('helptool/kinditem_in_cmall_item/' . $kig_id);
+		$view['view']['list_update_url'] = site_url('helptool/kinditem_in_listupdate/'.$kig_id.'?' . $param->output());
+		$view['view']['list_delete_url'] = site_url('helptool/kinditem_in_listdelete/'.$kig_id.'?' . $param->output());
 
 		// 이벤트가 존재하면 실행합니다
 		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
@@ -4295,7 +4298,7 @@ class Helptool extends CB_Controller
 		
 	}
 
-	public function kinditem_in_listupdate($ckd_id)
+	public function kinditem_in_listupdate($kig_id)
 	{
 		
 		// 이벤트 라이브러리를 로딩합니다
@@ -4305,7 +4308,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('before', $eventname);
 
-		if (empty($ckd_id)) {
+		if (empty($kig_id)) {
 			show_404();
 		}
 		/**
@@ -4316,7 +4319,7 @@ class Helptool extends CB_Controller
 
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			
-			$this->Kinditem_rel_model->save_kinditem($ckd_id, $this->input->post('chk'));    
+			$this->Kinditem_rel_model->save_kinditem($kig_id, $this->input->post('chk'));    
 			
 		}
 
@@ -4331,12 +4334,12 @@ class Helptool extends CB_Controller
 			'정상적으로 추가 되었습니다'
 		);
 		$param =& $this->querystring;
-		$redirecturl = site_url('helptool/kinditem_in_cmall_item/' . $ckd_id. '?' . $param->output());
+		$redirecturl = site_url('helptool/kinditem_in_cmall_item/' . $kig_id. '?' . $param->output());
 
 		redirect($redirecturl);
 	}
 
-	public function kinditem_in_listdelete($ckd_id)
+	public function kinditem_in_listdelete($kig_id)
 	{
 		
 		// 이벤트 라이브러리를 로딩합니다
@@ -4346,7 +4349,7 @@ class Helptool extends CB_Controller
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('before', $eventname);
 
-		if (empty($ckd_id)) {
+		if (empty($kig_id)) {
 			show_404();
 		}
 		/**
@@ -4357,7 +4360,7 @@ class Helptool extends CB_Controller
 
 		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
 			
-			$this->Kinditem_rel_model->delete_kinditem($ckd_id, $this->input->post('chk'));    
+			$this->Kinditem_rel_model->delete_kinditem($kig_id, $this->input->post('chk'));    
 			
 		}
 
@@ -4372,7 +4375,7 @@ class Helptool extends CB_Controller
 			'정상적으로 삭제 되었습니다'
 		);
 		$param =& $this->querystring;
-		$redirecturl = site_url('helptool/kinditem_in_cmall_item/' . $ckd_id. '?' . $param->output());
+		$redirecturl = site_url('helptool/kinditem_in_cmall_item/' . $kig_id. '?' . $param->output());
 
 		redirect($redirecturl);
 	}

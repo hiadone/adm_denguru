@@ -7,18 +7,27 @@
         $attributes = array('class' => 'form-horizontal', 'name' => 'fadminwrite', 'id' => 'fadminwrite');
         echo form_open_multipart(current_full_url(), $attributes);
         ?>
-            <input type="hidden" name="<?php echo element('primary_key', $view); ?>"    value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
-            <input type="hidden" name="kig_id"  value="<?php echo element('kig_id', element('kinditemgroup', element('data', $view))); ?>" />
-            <input type="hidden" name="cit_id" id="cit_id"  value="" />
+            
+            <input type="hidden" name="kir_id"  value="<?php echo element('kir_id', element('data', $view)); ?>" />
+            <input type="hidden" name="cit_id"  value="<?php echo element('cit_id', element('data', $view)); ?>" />
+            
 
-                    <button type="button" class="btn btn-default btn-sm admin-manage-list" onClick="event_in_cmall_item(<?php echo element(element('primary_key', $view), element('data', $view)); ?>);" >이벤트에 상품 종속 시키기</button>
+                    
             
             <div class="form-horizontal">
                 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">상품리스트</label>
+                    <label class="col-sm-2 control-label">상품이미지</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" name="cit_name" value="<?php echo set_value('cit_name', element('cit_name', element('data', $view))); ?>" />
+                        <?php if (element('cit_file_1', element('data', $view))) {?><img src="<?php echo cdn_url('cmallitem', element('cit_file_1', element('data', $view))); ?>" alt="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" title="<?php echo html_escape(element('cit_name', element('data', $view))); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">상품명</label>
+                    <div class="col-sm-6">
+                        <?php echo element('cit_name', element('data', $view)); ?>
                     </div>
                     
                 </div>

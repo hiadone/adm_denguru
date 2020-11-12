@@ -17,7 +17,7 @@
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체 목록</a>
                         <button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
-                        <button type="button" class="btn btn-danger btn-sm admin-manage-list" onClick="kinditem_in_cmall_item(<?php echo element(element('primary_key', $view), element('data', $view)); ?>);" >종속 item 추가</button>
+                        <button type="button" class="btn btn-danger btn-sm admin-manage-list" onClick="kinditem_in_cmall_item(<?php echo element('kig_id', $view); ?>);" >종속 item 추가</button>
                         
                     </div>
                 <?php
@@ -34,11 +34,11 @@
                             <th>이미지</th>
                             <th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
                             <!-- <th><a href="<?php echo element('eve_device', element('sort', $view)); ?>">접속기기</a></th> -->
-                            <th><a href="<?php echo element('kdi_start_date', element('sort', $view)); ?>">시작일시</a></th>
-                            <th><a href="<?php echo element('kdi_end_date', element('sort', $view)); ?>">종료일시</a></th>
+                            <th><a href="<?php echo element('kir_start_date', element('sort', $view)); ?>">시작일시</a></th>
+                            <th><a href="<?php echo element('kir_end_date', element('sort', $view)); ?>">종료일시</a></th>
                             <!-- <th>시간</th>
                             <th>가운데정렬</th> -->
-                            <th class="px100"><a href="<?php echo element('kdi_order', element('sort', $view)); ?>">정렬순서</a></th>
+                            <th class="px100"><a href="<?php echo element('kir_order', element('sort', $view)); ?>">정렬순서</a></th>
                             <th>action</th>
                             <th><input type="checkbox" name="chkall" id="chkall" /></th>
                         </tr>
@@ -50,16 +50,16 @@
                     ?>
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
-                            <td><?php if (element('cdn_url', $result)) {?><img src="<?php echo element('cdn_url', $result); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
+                            <td><?php if (element('cit_file_1', $result)) {?><img src="<?php echo cdn_url('cmallitem', element('cit_file_1', $result)); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
                             <td><?php echo html_escape(element('cit_name', $result)); ?></td>
                             <!-- <td class="text-center"><?php echo element('eve_device', $result); ?></td> -->
-                            <td><?php echo element('kdi_start_date', $result); ?></td>
-                            <td><?php echo element('kdi_end_date', $result); ?></td>
+                            <td><?php echo element('kir_start_date', $result); ?></td>
+                            <td><?php echo element('kir_end_date', $result); ?></td>
                             <!-- <td class="text-center"><?php echo element('eve_disable_hours', $result); ?></td>
                             <td><?php echo element('eve_is_center', $result) ? '가운데정렬' : ''; ?></td> -->
-                            <td><?php echo element('kdi_order', $result); ?></td>                            
+                            <td><?php echo element('kir_order', $result); ?></td>                            
                             
-                            <td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
+                            <td><a href="<?php echo admin_url($this->pagedir); ?>/listswrite/<?php echo element('kir_id', $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
                             <td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
                         </tr>
                     <?php
