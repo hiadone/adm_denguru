@@ -168,12 +168,12 @@ class Kinditemgroup extends CB_Controller
         $page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
         $view['view']['sort'] = array(
             'cit_name' => $param->sort('cit_name', 'asc'),            
-            'kir_order' => $param->sort('kir_order', 'asc'),            
+            'kir_order' => $param->sort('(0.1/kir_order)', 'asc'),            
             'kir_start_date' => $param->sort('kir_start_date', 'asc'),
             'kir_end_date' => $param->sort('kir_end_date', 'asc'),
         );
-        $findex = $this->input->get('findex', null, 'kir_order');
-        $forder = $this->input->get('forder', null, 'asc');
+        $findex = $this->input->get('findex', null, '(0.1/kir_order)');
+        $forder = $this->input->get('forder', null, 'desc');
         $sfield = $this->input->get('sfield', null, '');
         $skeyword = $this->input->get('skeyword', null, '');
         

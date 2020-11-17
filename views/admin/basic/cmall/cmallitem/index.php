@@ -243,6 +243,7 @@
 							<th>이미지</th>
 							<th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
 							<th><a href="<?php echo element('cit_price', element('sort', $view)); ?>">판매가격</a></th>
+							<th><a href="<?php echo element('cit_order', element('sort', $view)); ?>">정렬순서</a></th>
 							<!-- <th>Vision API label</th> -->
                     		<th >자동태그</th>
 		                    <th >수동태그</th>
@@ -316,7 +317,7 @@
 								        echo '<div><button class="btn btn-danger btn-xs" type="button">Sold out</button></div>';
 								?>
 							</td>
-							
+							<td><input type="number" name="cit_order[<?php echo element('cit_id', $result); ?>]" id="cit_order_<?php echo element('cit_id', $result); ?>" class="form-control" style="width:70px;" data-cit_id="<?php echo element('cit_id', $result); ?>"  value="<?php echo html_escape(element('cit_order', $result)); ?>" /></td>
 							<!-- <td>
 		                       <textarea name="vision_api_label[<?php echo element('cit_id', $result); ?>]" id="val_tag_<?php echo element('cit_id', $result); ?>" data-cit_id="<?php echo element('cit_id', $result); ?>" class="form-control options" style="margin-top:5px;height:120px;" placeholder="선택 옵션 (엔터로 구분하여 입력)"><?php echo html_escape(element('display_label', $result)); ?></textarea>
 		                    </td> -->
@@ -629,6 +630,12 @@ $(document).on('change', 'textarea[name^=cdt_tag]', function() {
 
 
     post_action_crawl('cdt_tag_update', $(this).data('cit_id'),'','cdt_tag_');
+});
+
+$(document).on('change', 'input[name^=cit_order]', function() {
+
+
+    post_action_crawl('cit_order_update', $(this).data('cit_id'),'','cit_order_');
 });
 
 var searchbrand_list = [

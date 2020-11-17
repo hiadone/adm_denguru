@@ -4768,4 +4768,65 @@ class Postact extends CB_Controller
 		exit(json_encode($result));
 
 	}
+
+
+	public function cit_order_update($cit_id = 0, $cit_order = 0)
+    {
+
+        // 이벤트 라이브러리를 로딩합니다
+        $eventname = 'event_postact_post_extra';
+        $this->load->event($eventname);
+
+        // 이벤트가 존재하면 실행합니다
+        Events::trigger('before', $eventname);
+
+        $result = array();
+        $this->output->set_content_type('application/json');
+
+        $cit_id = (int) $cit_id;
+        if (empty($cit_id) OR $cit_id < 1) {
+            $result = array('error' => '잘못된 접근입니다');
+            exit(json_encode($result));
+        }
+
+
+        
+        $this->load->model(array('Cmall_item_model'));
+
+        $crawltagwhere = array(
+			'cit_id' => $cit_id,
+		);
+
+        $select = 'cit_id,post_id,brd_id';
+
+        $cmail_item = $this->Cmall_item_model->get_one('',$select,$crawltagwhere);
+        
+        
+        if ( ! element('cit_id', $cmail_item)) {
+            $result = array('error' => '존재하지 않는 항목입니다');
+            exit(json_encode($result));
+        }
+
+
+        $is_admin = $this->member->is_admin();
+
+        if ($is_admin === false &&  $this->member->item('mem_level') < 1) {
+            $result = array('error' => '접근권한이 없습니다');
+            exit(json_encode($result));
+        }
+        
+        
+		$updatedata = array(
+			'cit_order' => $cit_order,
+		);
+		$this->Cmall_item_model->update($cit_id, $updatedata);
+		
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+        $result = array('success' => '저장되었습니다');
+        exit(json_encode($result));
+
+    }
 }
