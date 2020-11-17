@@ -4797,7 +4797,7 @@ class Postact extends CB_Controller
 			'cit_id' => $cit_id,
 		);
 
-        $select = 'cit_id,post_id,brd_id';
+        $select = 'cit_id,post_id,brd_id,cit_type1,cit_type2,cit_type3,cit_type4';
 
         $cmail_item = $this->Cmall_item_model->get_one('',$select,$crawltagwhere);
         
@@ -4821,6 +4821,34 @@ class Postact extends CB_Controller
 		);
 		$this->Cmall_item_model->update($cit_id, $updatedata);
 		
+		if ( element('cit_type1', $cmail_item)) {
+			$config = array(
+	            'cit_type1' => '1',
+	            'limit' => '5',
+	            'cache_minute' => 86400,
+	            // 'select' => $select,
+	        );
+	        $this->make_cit_latest_cache($config);
+    	}
+
+    	if ( element('cit_type2', $cmail_item)) {
+	        $config = array(
+	            'cit_type2' => '1',
+	            'limit' => '20',
+	            'cache_minute' => 86400,
+	            // 'select' => $select,
+	        );
+	        $this->make_cit_latest_cache($config);
+    	}
+
+    	if ( element('cit_type3', $cmail_item)) {
+	        $config = array(
+	            'cit_type1' => '1',
+	            'limit' => '30',
+	            'cache_minute' => 86400
+	        );
+	        $this->make_cit_latest_cache($config);
+    	}
 
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
@@ -4828,5 +4856,44 @@ class Postact extends CB_Controller
         $result = array('success' => '저장되었습니다');
         exit(json_encode($result));
 
+    }
+
+    public function make_cit_latest_cache($config)
+    {   
+
+        $this->load->model('Board_model');
+            
+        $cache_minute = element('cache_minute', $config);
+        $where['cit_status'] = 1;
+        $where['cit_is_del'] = 0;
+        if (element('cit_type1', $config)) {
+            $where['cit_type1'] = 1;
+        }
+        if (element('cit_type2', $config)) {
+            $where['cit_type2'] = 1;
+        }
+        if (element('cit_type3', $config)) {
+            $where['cit_type3'] = 1;
+        }
+        if (element('cit_type4', $config)) {
+            $where['cit_type4'] = 1;
+        }
+        $limit = element('limit', $config) ? element('limit', $config) : 4;
+
+        $cachename = 'latest/cit-' . element('cit_type1', $config).element('cit_type2', $config).element('cit_type3', $config).element('cit_type4', $config) . '-' . $limit . '-' . cdate('Y-m-d');
+
+        
+        
+        $this->db->join('cmall_item', 'board.brd_id = cmall_item.brd_id', 'inner');
+        $this->db->join('cmall_brand', 'cmall_item.cbr_id = cmall_brand.cbr_id', 'inner');
+        $this->db->where($where);
+        $this->db->limit($limit);
+        $this->db->order_by('(0.1/cit_order)', 'desc');
+        $qry = $this->db->get('board');
+        $result = $qry->result_array();
+        check_cache_dir('cmall');
+        $this->cache->save($cachename, $result, $cache_minute);
+        
+        return $result;
     }
 }

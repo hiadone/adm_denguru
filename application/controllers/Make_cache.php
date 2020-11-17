@@ -168,7 +168,7 @@ class Make_cache extends CB_Controller
         $this->db->join('cmall_brand', 'cmall_item.cbr_id = cmall_brand.cbr_id', 'inner');
         $this->db->where($where);
         $this->db->limit($limit);
-        $this->db->order_by('cit_order', 'asc');
+        $this->db->order_by('(0.1/cit_order)', 'desc');
         $qry = $this->db->get('board');
         $result = $qry->result_array();
         check_cache_dir('cmall');
