@@ -556,11 +556,16 @@ class Kinditemgroup extends CB_Controller
             
             $kir_order = $this->input->post('kir_order') ? $this->input->post('kir_order') : 0;
 
+            $kir_start_date = $this->input->post('kir_start_date');
+            if ( ! $kir_start_date) $kir_start_date = null;
+            $kir_end_date = $this->input->post('kir_end_date');
+            if ( ! $kir_end_date) $kir_end_date = null;
+            
             $updatedata = array(                
                 'cit_id' => $this->input->post('cit_id', null, ''),
                 'kir_order' => $this->input->post('kir_order', null, ''),
-                'kir_start_date' => $this->input->post('kir_start_date', null, ''),
-                'kir_end_date' => $this->input->post('kir_end_date', null, ''),
+                'kir_start_date' => $kir_start_date,
+                'kir_end_date' => $kir_end_date,
                 
             );
 

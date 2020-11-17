@@ -203,12 +203,12 @@ class Theme extends CB_Controller
         $config = array(
             array(
                 'field' => 'the_start_date',
-                'label' => '배너시작일',
+                'label' => '시작일',
                 'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             array(
                 'field' => 'the_end_date',
-                'label' => '배너종료일',
+                'label' => '종료일',
                 'rules' => 'trim|alpha_dash|exact_length[10]',
             ),
             array(

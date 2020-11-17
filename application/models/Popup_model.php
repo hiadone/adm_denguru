@@ -42,10 +42,10 @@ class Popup_model extends CB_Model
 			$this->db->group_start();
 			$this->db->where(array('pop_start_date <=' => cdate('Y-m-d')));
 			$this->db->or_where(array('pop_start_date' => null));
+			$this->db->or_where(array('pop_start_date' => ''));
 			$this->db->group_end();
 			$this->db->group_start();
-			$this->db->where('pop_end_date >=', cdate('Y-m-d'));
-			$this->db->or_where('pop_end_date', '0000-00-00');
+			$this->db->where('pop_end_date >=', cdate('Y-m-d'));			
 			$this->db->or_where(array('pop_end_date' => ''));
 			$this->db->or_where(array('pop_end_date' => null));
 			$this->db->group_end();
