@@ -56,7 +56,7 @@ class Make_cache extends CB_Controller
         $this->make_cit_latest_cache($config);
 
         $config = array(
-            'cit_type2' => '1',
+            'cit_type2' => '2',
             'limit' => '20',
             'cache_minute' => 86400,
             // 'select' => $select,
@@ -64,7 +64,7 @@ class Make_cache extends CB_Controller
         $this->make_cit_latest_cache($config);
 
         $config = array(
-            'cit_type1' => '1',
+            'cit_type1' => '3',
             'limit' => '30',
             'cache_minute' => 86400
         );

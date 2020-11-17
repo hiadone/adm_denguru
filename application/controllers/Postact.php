@@ -4691,6 +4691,15 @@ class Postact extends CB_Controller
 			$this->Cmall_item_model->update($cit_id, $updatedata);
 		}
 
+
+		$config = array(
+            'cit_type1' => '1',
+            'limit' => '5',
+            'cache_minute' => 86400,
+            // 'select' => $select,
+        );
+        $this->make_cit_latest_cache($config);
+    	
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
 
@@ -4759,6 +4768,14 @@ class Postact extends CB_Controller
 			);
 			$this->Cmall_item_model->update($cit_id, $updatedata);
 		}
+
+		$config = array(
+            'cit_type2' => '2',
+            'limit' => '20',
+            'cache_minute' => 86400,
+            // 'select' => $select,
+        );
+        $this->make_cit_latest_cache($config);
 
 		// 이벤트가 존재하면 실행합니다
 		Events::trigger('after', $eventname);
@@ -4833,7 +4850,7 @@ class Postact extends CB_Controller
 
     	if ( element('cit_type2', $cmail_item)) {
 	        $config = array(
-	            'cit_type2' => '1',
+	            'cit_type2' => '2',
 	            'limit' => '20',
 	            'cache_minute' => 86400,
 	            // 'select' => $select,
@@ -4843,7 +4860,16 @@ class Postact extends CB_Controller
 
     	if ( element('cit_type3', $cmail_item)) {
 	        $config = array(
-	            'cit_type1' => '1',
+	            'cit_type3' => '3',
+	            'limit' => '30',
+	            'cache_minute' => 86400
+	        );
+	        $this->make_cit_latest_cache($config);
+    	}
+
+    	if ( element('cit_type4', $cmail_item)) {
+	        $config = array(
+	            'cit_type4' => '4',
 	            'limit' => '30',
 	            'cache_minute' => 86400
 	        );
