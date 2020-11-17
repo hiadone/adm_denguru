@@ -27,7 +27,6 @@ class Kinditem_rel_model extends CB_Model
         parent::__construct();
     }
 
-
     public function save_kinditem($kig_id = 0, $kinditem = '')
     {
         $kig_id = (int) $kig_id;
