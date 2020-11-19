@@ -48,8 +48,8 @@
                             <td><?php echo element('b_cnt', $result); ?></td>                           -->
                             
                             
-                            <td><?php echo (element('cit_count_avg', $result) - element('cit_count', $result)) ?></td>
                             <td></td>
+                            <td><a href="<?php echo admin_url($this->pagedir.'/bbbbdelete/'.element('brd_id', $result)); ?>" class="btn btn-danger btn-xs">history 삭제</a></td>
                             <td></td>
                             
                         </tr>

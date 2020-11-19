@@ -2116,7 +2116,11 @@ class Crawlitem extends CB_Controller
         $this->Cmall_item_count_history_model->allow_order_field=array('cit_count','cih_datetime');
 
         
-        $result = $this->Cmall_item_count_history_model->get_admin_list('','','','','cit_count','asc');
+        $cih_datetime = cdate('Y-m-d 00:00:00');
+        $where = array(
+            'cih_datetime <' => $cih_datetime,
+        );
+        $result = $this->Cmall_item_count_history_model->get_admin_list('','',$where,'','cit_count','asc');
         $result_2=array();
         $i=0;
         if (element('list', $result)) {
@@ -2221,6 +2225,21 @@ class Crawlitem extends CB_Controller
         $this->layout = element('layout_skin_file', element('layout', $view));
         $this->view = element('view_skin_file', element('layout', $view));
         
+    }
+
+    function bbbbdelete($brd_id)
+    {
+        $cih_datetime = cdate('Y-m-d 00:00:00');
+        $deletewhere = array(            
+            'brd_id' => $brd_id,
+            'cih_datetime <' => $cih_datetime,
+        );
+        
+
+        $this->Cmall_item_count_history_model->delete_where($deletewhere);
+        
+        $redirecturl = admin_url($this->pagedir.'/bbbb');
+        redirect($redirecturl);
     }
 }
 
