@@ -130,7 +130,8 @@ $reviewlist = element('data',element('reviewlist',$view));
                             $diff = abs(strtotime(date('Y-m-d')) - strtotime(element('pet_birthday',$pval)));
 
                             $years = floor($diff / (365*60*60*24));
-                            $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                            $months = floor(($diff) / (30*60*60*24));
+                            // $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                      ?>       
 
                      
@@ -138,12 +139,33 @@ $reviewlist = element('data',element('reviewlist',$view));
                         <div class="profile_img"><img src="<?php echo element('pet_photo_url',$pval) ?>" alt="레오 사진" class="img"></div>
                         <div class="profile_name">
                             <?php echo element('pet_name',$pval) ?>
-                            <span class="profile_name_sm">(<?php echo element('pet_sex',$pval) == '1' ? '남아' : '여아' ?>/<?php echo $months ?>개월)</span>
+                            <span class="profile_name_sm">(
+                                <?php 
+                                    if(element('pet_sex',$pval)  == '1')
+                                        echo '남아/';
+                                    elseif(element('pet_sex',$pval)  == '2')
+                                        echo '여아/';
+                                ?><?php echo $months ?>개월 )</span>
                         </div>
                         <ul class="profile_tag_list">
-                            <li class="profile_tag"><?php echo element('pet_form_str',$pval) ?></li>
-                            <li class="profile_tag"><?php echo element('ckd_size_str',$pval) ?></li>
-                            <li class="profile_tag"><?php echo element('pet_kind',$pval) ?></li>
+                            <?php 
+
+                            $cat_value = '';
+                            // if(element('pet_form_str',$pval)) 
+                            //     echo '<li class="profile_tag">'.element('pet_form_str',$pval).'</li>';
+                            if($years < 1) 
+                                $cat_value = '퍼피';
+                            elseif($years < 7) 
+                                $cat_value = '어덜트';
+                            else
+                                $cat_value = '시니어';
+                                echo '<li class="profile_tag">'.$cat_value.'</li>';
+                            if(element('ckd_size_str',$pval)) 
+                                echo '<li class="profile_tag">'.element('ckd_size_str',$pval).'</li>';
+                            if(element('pet_kind',$pval)) 
+                                echo '<li class="profile_tag">'.element('pet_kind',$pval).'</li>';
+                             ?>
+                            
                         </ul>
                         <ul class="profile_tag_list profile_tag_list_feathers">
                             <?php 
@@ -156,11 +178,14 @@ $reviewlist = element('data',element('reviewlist',$view));
                             
                             
                         </ul>
+                        <?php                           
+                            if(element('pet_is_allergy',$pval) && element('pet_allergy_rel',$pval)){
+                        ?>
                         <ul class="profile_tag_list profile_tag_list_allergy">
                             <li class="profile_tag">
 
-                                <?php 
-                                $val =array();
+                                <?php                               
+                                
                                 foreach(element('pet_allergy_rel',$pval) as $value){
                                     $val[]=element('pag_value',$value);    
                                 }
@@ -170,6 +195,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                                 
                             </li>
                         </ul>
+                        <?php } ?>
                         <a href="home_resister_pet_edit.html" class="btn_modify_pet"><img src="/views/main/bootstrap/images/btn_setting.png" alt="레오 정보 수정하기" class="img"></a>
                     </li>
                     <?php } ?>

@@ -50,7 +50,7 @@ class Main extends CB_Controller
 		$this->load->event($eventname);
 		
 		
-
+		
 		
 		$view = array();
 		$view['view'] = array();
@@ -200,7 +200,7 @@ class Main extends CB_Controller
 
 		$tokenData['mem_id'] = $mem_id; //TODO: Replace with data for token
 		$output['token'] = AUTHORIZATION::generateToken($tokenData);
-		echo $output['token'];
+		// echo $output['token'];
 		$view = array();
 		$view['view'] = array();
 

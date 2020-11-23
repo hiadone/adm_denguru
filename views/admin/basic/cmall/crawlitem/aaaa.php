@@ -18,13 +18,14 @@
                             <th>스토어명</th>
                             <th>상품 숫자</th>                            
                             <th>상품 상세 숫자</th>
-                            <!-- <th>상품 이미지 숫자</th>
-                            <th>상품 텍스트 숫자</th> -->
-                            <th>vision count</th>
-                            <th>비교 </th>
+                            <th>상품 이미지 숫자</th>
+                            <th>상품 텍스트 숫자</th>
+                            
                             <th>warning_count</th>
-                            <th>action</th>
-                            <th><input type="checkbox" name="chkall" id="chkall" /></th>
+                            <th>비교 </th>
+                            
+                            <!-- <th>action</th>
+                            <th><input type="checkbox" name="chkall" id="chkall" /></th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -38,14 +39,13 @@
                             <td><?php echo element('brd_id', $result); ?></td>
                             <td><a href="<?php echo admin_url($this->pagedir.'?sfield=brd_id2&skeyword='.element('brd_id', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
                             <td><?php echo element('cnt', $result); ?></td>
-                            <td><?php echo element('d_cnt', $result); ?></td>                          
-                            <td><?php echo element('v_cnt', $result); ?></td>                          
+                            <td><?php echo element('d_cnt', $result); ?></td>
+                            <td><?php echo element('d_file_cnt', $result); ?></td>                          
+                            <td><?php echo element('d_content_cnt', $result); ?></td>                          
                             <!-- <td><?php echo element('a_cnt', $result); ?></td>                          
                             <td><?php echo element('b_cnt', $result); ?></td>                           -->
-                            
+                            <td><?php echo element('w_cnt', $result) ?></td>
                             <td><?php echo (element('cnt', $result) - element('d_cnt', $result)); ?></td>
-                            <td><?php echo element('warning_count', $result) ?></td>
-                            <td><?php echo element('crw_is_soldout', $result) ? 'sold out' : '-'; ?></td>
                             
                         </tr>
                     <?php

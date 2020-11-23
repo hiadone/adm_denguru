@@ -1876,7 +1876,7 @@ class Crawlitem extends CB_Controller
         $aaa = $this->db2->get();
         $result['list'] = $aaa->result_array();
         
-        $this->db2->select('brd_id,count(*) as cnt');
+        $this->db2->select("brd_id,count(*) as cnt , sum(if(cdt_file_1!='',1,0)) as file_cnt,sum(if(cdt_content!='',1,0)) as content_cnt");
 
         $this->db2->group_by('brd_id');
         $this->db2->order_by('brd_id');
@@ -1884,25 +1884,42 @@ class Crawlitem extends CB_Controller
         $aaa = $this->db2->get();
         $result['list2'] = $aaa->result_array();
         $result_2 = array();
-
+        
         if (element('list2', $result)) {
             foreach (element('list2', $result) as $key => $val) {
-                $result_2[element('brd_id',$val)] = element('cnt',$val);
+                $result_2[element('brd_id',$val)]['cnt'] = element('cnt',$val);
+                
+                $result_2[element('brd_id',$val)]['cdt_file_1'] = element('file_cnt',$val);
+                $result_2[element('brd_id',$val)]['cdt_content'] = element('content_cnt',$val);
             }
         }
 
-        $this->db->select('brd_id,count(DISTINCT cit_id) as cnt');
+           
 
-        $this->db->group_by('brd_id');
-        $this->db->order_by('brd_id');
-        $this->db->from('vision_api_label');
-        $aaa = $this->db->get();
-        $result['list3'] = $aaa->result_array();
-        $result_3 = array();
 
-        if (element('list3', $result)) {
-            foreach (element('list3', $result) as $key => $val) {
-                $result_3[element('brd_id',$val)] = element('cnt',$val);
+        $this->db2->select('brd_id,count(*) as cnt');
+        $this->db2->where("crw_name = '' or (crw_price = 0 AND crw_price_sale = 0) OR crw_post_url = '' OR crw_goods_code = '' OR crw_file_1 = ''",'',false);
+        
+
+        $this->db2->group_by('brd_id');
+        $this->db2->order_by('brd_id');
+        $this->db2->from('crawl_item');
+        $aaa = $this->db2->get();
+        $result3['list'] = $aaa->result_array();
+
+
+        // $this->db->select('brd_id,count(DISTINCT cit_id) as cnt');
+
+        // $this->db->group_by('brd_id');
+        // $this->db->order_by('brd_id');
+        // $this->db->from('vision_api_label');
+        // $aaa = $this->db->get();
+        // $result['list3'] = $aaa->result_array();
+        // $result_3 = array();
+
+        if (element('list', $result3)) {
+            foreach (element('list', $result3) as $key => $val) {
+                $result_3[element('brd_id',$val)]['cnt'] = element('cnt',$val);
             }
         }
 
@@ -1994,9 +2011,15 @@ class Crawlitem extends CB_Controller
                 // $result['list'][$key]['a_cnt'] = $this->db2->count_all_results('crawl_detail');
 
                 // $this->db2->where(array('brd_id' => element('brd_id', $val),'cdt_content1 !=' => '' ));
-                $result['list'][$key]['d_cnt'] = element(element('brd_id',$val),$result_2);
+                $result['list'][$key]['d_cnt'] = element('cnt',element(element('brd_id',$val),$result_2));
 
-                $result['list'][$key]['v_cnt'] = element(element('brd_id',$val),$result_3);
+                $result['list'][$key]['d_file_cnt'] = element('cdt_file_1',element(element('brd_id',$val),$result_2));
+
+                $result['list'][$key]['d_content_cnt'] = element('cdt_content',element(element('brd_id',$val),$result_2));
+
+                $result['list'][$key]['w_cnt'] = element('cnt',element(element('brd_id',$val),$result_3));
+                
+                // $result['list'][$key]['v_cnt'] = element(element('brd_id',$val),$result_3);
 
 
 
