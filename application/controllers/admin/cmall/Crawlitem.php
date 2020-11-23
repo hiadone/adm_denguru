@@ -1898,7 +1898,7 @@ class Crawlitem extends CB_Controller
 
 
         $this->db2->select('brd_id,count(*) as cnt');
-        $this->db2->where("crw_name = '' or (crw_price = 0 AND crw_price_sale = 0) OR crw_post_url = '' OR crw_goods_code = '' OR crw_file_1 = ''",'',false);
+        $this->db2->where("crw_name = '' or (crw_price = 0 AND crw_price_sale = 0 AND crw_is_soldout = 0) OR crw_post_url = '' OR crw_goods_code = '' OR crw_file_1 = ''",'',false);
         
 
         $this->db2->group_by('brd_id');
@@ -2018,7 +2018,7 @@ class Crawlitem extends CB_Controller
                 $result['list'][$key]['d_content_cnt'] = element('cdt_content',element(element('brd_id',$val),$result_2));
 
                 $result['list'][$key]['w_cnt'] = element('cnt',element(element('brd_id',$val),$result_3));
-                
+
                 // $result['list'][$key]['v_cnt'] = element(element('brd_id',$val),$result_3);
 
 

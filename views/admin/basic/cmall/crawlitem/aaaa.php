@@ -34,7 +34,7 @@
                     if (element('list', element('data', $view))) {
                         foreach (element('list', element('data', $view)) as $result) {
                     ?>
-                        <tr class="<?php echo (element('cnt', $result) - element('d_cnt', $result) || element('cnt', $result) - element('v_cnt', $result)) ? 'warning':''; ?> ">
+                        <tr class="<?php echo ((element('d_cnt', $result) * 0.8) > element('d_file_cnt', $result) || (element('cnt', $result) * 0.1) < element('w_cnt', $result)) ? 'warning':''; ?> ">
                             <td><?php echo element('num', $result); ?></td>
                             <td><?php echo element('brd_id', $result); ?></td>
                             <td><a href="<?php echo admin_url($this->pagedir.'?sfield=brd_id2&skeyword='.element('brd_id', $result)); ?>"><?php echo element('brd_name', $result); ?></a></td>
