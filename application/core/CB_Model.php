@@ -49,6 +49,8 @@ class CB_Model extends CI_Model
 
 	public $_join = array();
 
+	public $_group_by = '';
+
 
 	/* --------------------------------------------------------------
 	 * GENERIC METHODS
@@ -504,6 +506,17 @@ class CB_Model extends CI_Model
 			$this->db->close();
 			$this->db->initialize();
 		
+		
+	}
+
+	public function set_group_by($group_by)
+	{
+		if (empty($group_by)) {
+			return false;
+		}
+			
+		$this->_group_by = $group_by;
+			
 		
 	}
 
