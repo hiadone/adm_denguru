@@ -30,7 +30,7 @@ class Cmall_category_model extends CB_Model
 
 	public function get_all_category()
 	{
-		$cachename = 'cmall-category-all';
+		$cachename = 'adm-cmall-category-all';
 		if ( ! $result = $this->cache->get($cachename)) {
 			$return = $this->get($primary_value = '', $select = '', $where = '', $limit = '', $offset = 0, $findex = 'cca_order', $forder = 'asc');
 			if ($return) {
