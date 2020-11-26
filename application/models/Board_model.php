@@ -264,6 +264,8 @@ class Board_model extends CB_Model
 			$this->db->group_end();
 		}
 		
+		$this->db->group_by($this->_group_by);
+
 		$this->db->order_by($findex, $forder);
 		if ($limit) {
 			$this->db->limit($limit, $offset);
@@ -333,10 +335,14 @@ class Board_model extends CB_Model
 			}
 			$this->db->group_end();
 		}
-		$qry = $this->db->get();
-		$rows = $qry->row_array();
-		$result['total_rows'] = $rows['rownum'];
 
+
+		$this->db->group_by($this->_group_by);
+		$qry = $this->db->get();
+
+		if($this->_group_by){			
+			$result['total_rows'] = count($qry->result_array());
+		}
 		return $result;
 		
 	}
