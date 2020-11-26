@@ -342,6 +342,9 @@ class Board_model extends CB_Model
 
 		if($this->_group_by){			
 			$result['total_rows'] = count($qry->result_array());
+		} else {
+			$rows = $qry->row_array();
+			$result['total_rows'] = $rows['rownum'];
 		}
 		return $result;
 		
