@@ -1160,4 +1160,11 @@ if (typeof(COMMON_JS) === 'undefined') {
 
         
     }
+
+    function other_in_cmall_item(oth_id) {
+        var f = document.fboardlist;
+        var sub_win = window.open(cb_url + '/helptool/other_in_cmall_item/'+oth_id, 'other_in_cmall_item', 'left=100, top=50, width=1440, height=700, scrollbars=1');
+
+        
+    }
 }

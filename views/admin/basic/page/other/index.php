@@ -31,8 +31,8 @@
 						<tr>
 							<th><a href="<?php echo element('oth_id', element('sort', $view)); ?>">번호</a></th>
 							<th>이미지</th>
-							<th><a href="<?php echo element('oth_title', element('sort', $view)); ?>">제목</a></th>
-							<th><a href="<?php echo element('oth_url', element('sort', $view)); ?>">URL</a></th>
+							<th><a href="<?php echo element('oth_title', element('sort', $view)); ?>">태그명</a></th>
+							<!-- <th><a href="<?php echo element('oth_url', element('sort', $view)); ?>">URL</a></th> -->
 							
 							<th><a href="<?php echo element('oth_start_date', element('sort', $view)); ?>">시작일시</a></th>
 							<th><a href="<?php echo element('oth_end_date', element('sort', $view)); ?>">종료일시</a></th>
@@ -53,8 +53,8 @@
 							<td><?php if (element('thumb_url', $result)) {?><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('oth_title', $result)); ?>" title="<?php echo html_escape(element('oth_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
 							<td><?php echo html_escape(element('oth_title', $result)); ?></td>
 							
-							<td><?php if (element('oth_url', $result)) { ?><a href="<?php echo goto_url(element('oth_url', $result)); ?>" target="_blank"><?php echo html_escape(element('oth_url', $result)); ?></a> <?php } ?></td>
-							<td class="text-center"><?php echo html_escape(element('oth_width', $result)); ?> / <?php echo html_escape(element('oth_height', $result)); ?></td>
+							
+							
 							<td><?php echo element('oth_start_date', $result); ?></td>
 							<td><?php echo element('oth_end_date', $result); ?></td>
 							<td class="text-center"><?php echo number_format((int) element('oth_hit', $result)); ?></td>

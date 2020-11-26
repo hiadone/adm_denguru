@@ -4380,4 +4380,268 @@ class Helptool extends CB_Controller
 		redirect($redirecturl);
 	}
 
+	public function other_in_cmall_item($oth_id = 0)
+	{
+
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_cmallitem_index';
+		$this->load->event($eventname);
+
+		if (empty($oth_id)) {
+			show_404();
+		}
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_wishlist_model','Cmall_item_model','Cmall_category_model','Other_model','Board_model'));
+
+		/**
+		 * 페이지에 숫자가 아닌 문자가 입력되거나 1보다 작은 숫자가 입력되면 에러 페이지를 보여줍니다.
+		 */
+		$param =& $this->querystring;
+		$page = (((int) $this->input->get('page')) > 0) ? ((int) $this->input->get('page')) : 1;
+		$view['view']['sort'] = array(
+			'cit_id' => $param->sort('cit_id', 'asc'),
+			'cit_key' => $param->sort('cit_key', 'asc'),
+			'cit_price_sale' => $param->sort('cit_price_sale', 'asc'),
+			'cit_name' => $param->sort('cit_name', 'asc'),
+			'cit_datetime' => $param->sort('cit_datetime', 'asc'),
+			'cit_updated_datetime' => $param->sort('cit_updated_datetime', 'asc'),
+			'cit_hit' => $param->sort('cit_hit', 'asc'),
+			'cit_sell_count' => $param->sort('cit_sell_count', 'asc'),
+			'cit_price' => $param->sort('cit_price', 'asc'),
+
+		);
+		$findex = $this->input->get('findex') ? $this->input->get('findex') : $this->Cmall_item_model->primary_key;
+		$forder = $this->input->get('forder', null, 'desc');
+		$sfield = $this->input->get('sfield', null, 'cit_name');
+		$skeyword = $this->input->get('skeyword', null, '');
+
+		if(!empty($this->input->get('warning'))){
+			$or_where = array(
+				'cit_name' => '',
+				'cit_price' => 0,
+				'cit_post_url' => '',
+				'cit_goods_code' => '',
+				'cit_file_1' => '',
+				'cbr_id' => 0,
+			);
+			
+			// $this->Cmall_item_model->or_where($or_where);
+
+			$this->Board_model->set_where("(cit_name = '' OR (cit_price = 0 and cit_is_soldout =0 ) OR cit_post_url = '' OR cit_goods_code = '' OR cit_file_1 = '' OR cb_cmall_item.cbr_id = 0)",'',false);
+		} 
+		
+		$where = array(
+			'brd_search' => 1,
+			'brd_blind' => 0,
+			'cit_is_del' => 0,
+			'cit_status' => 1,
+
+		);
+
+		$per_page = admin_listnum();
+		$offset = ($page - 1) * $per_page;
+		$other_rel = array();
+		$other_rel = $this->Other_model->get_other_rel($oth_id);
+
+		
+
+		/**
+		 * 게시판 목록에 필요한 정보를 가져옵니다.
+		 */
+		$this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content', 'cit_price'); // 검색이 가능한 필드
+		$this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
+		$this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price'); // 정렬이 가능한 필드
+		$result = $this->Board_model
+			->get_item_list($per_page, $offset, $where, '', $findex, $forder, $sfield, $skeyword);
+
+		$list_num = $result['total_rows'] - ($page - 1) * $per_page;
+		if (element('list', $result)) {
+			foreach (element('list', $result) as $key => $val) {
+				// $result['list'][$key]['meta'] = $this->Cmall_item_meta_model->get_all_meta(element('cit_id', $val));
+				$result['list'][$key]['category'] = $this->Cmall_category_model->get_category(element('cit_id', $val));
+				// $result['list'][$key]['attr'] = $this->Cmall_attr_model->get_attr(element('cit_id', $val));
+				if($other_rel)
+				foreach($other_rel as $eveval){
+
+					if(element('cit_id',$val) === 	element('cit_id',$eveval)){
+
+						$result['list'][$key]['checked'] =  1;
+
+						break;
+					}
+				}
+				
+				$cmall_wishlist_where = array(
+					'cit_id' => element('cit_id', $val),
+					
+				);
+				$cmall_wishlist_count = $this->Cmall_wishlist_model
+					->count_by($cmall_wishlist_where);
+
+				$result['list'][$key]['cmall_wishlist_count'] = $cmall_wishlist_count ? $cmall_wishlist_count : 0;
+
+				if(empty(element('cit_name', $val)) || empty(element('cit_price', $val)) || empty(element('cit_post_url', $val)) || empty(element('cit_goods_code', $val)) || empty(element('cbr_id', $val)))
+					$result['list'][$key]['warning'] = 1 ; 
+				else 
+					$result['list'][$key]['warning'] = '' ; 
+
+
+				$result['list'][$key]['display_tag'] = '';
+				$crawlwhere = array(
+					'cit_id' => element('cit_id', $val),
+				);
+				
+
+				$result['list'][$key]['display_label'] = '';
+				$crawlwhere = array(
+					'cit_id' => element('cit_id', $val),
+				);
+				
+
+				$result['list'][$key]['num'] = $list_num--;
+			}
+		}
+
+		$view['view']['data'] = $result;
+
+		/**
+		 * primary key 정보를 저장합니다
+		 */
+		$view['view']['primary_key'] = $this->Cmall_item_model->primary_key;
+
+		/**
+		 * 페이지네이션을 생성합니다
+		 */
+		
+		$config['base_url'] = site_url('helptool/other_in_cmall_item/' . $oth_id) . '?' . $param->replace('page');
+		$config['total_rows'] = $result['total_rows'];
+		$config['per_page'] = $per_page;
+		$this->pagination->initialize($config);
+		$view['view']['paging'] = $this->pagination->create_links();
+		$view['view']['page'] = $page;
+
+
+
+		/**
+		 * 쓰기 주소, 삭제 주소등 필요한 주소를 구합니다
+		 */
+		$search_option = array( 'cit_name' => '상품명');
+		$view['view']['skeyword'] = ($sfield && array_key_exists($sfield, $search_option)) ? $skeyword : '';
+		$view['view']['search_option'] = search_option($search_option, $sfield);
+		$view['view']['listall_url'] = site_url('helptool/other_in_cmall_item/' . $oth_id);
+		$view['view']['list_update_url'] = site_url('helptool/other_in_listupdate/'.$oth_id.'?' . $param->output());
+		$view['view']['list_delete_url'] = site_url('helptool/other_in_listdelete/'.$oth_id.'?' . $param->output());
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+
+		/**
+		 * 어드민 레이아웃을 정의합니다
+		 */
+		
+		$layoutconfig = array(
+			'path' => 'helptool',
+			'layout' => 'layout_popup',
+			'skin' => 'other_in_cmall_item',
+			'layout_dir' => $this->cbconfig->item('layout_helptool'),
+			'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_helptool'),
+			'skin_dir' => $this->cbconfig->item('skin_helptool'),
+			'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_helptool'),
+			
+		);
+
+		
+		$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+		$this->data = $view;
+		$this->layout = element('layout_skin_file', element('layout', $view));
+		$this->view = element('view_skin_file', element('layout', $view));
+		
+	}
+
+	public function other_in_listupdate($oth_id)
+	{
+		
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_cmallitem_listupdate';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		if (empty($oth_id)) {
+			show_404();
+		}
+		/**
+		 * 체크한 게시물의 업데이트를 실행합니다
+		 */
+		
+		$this->load->model(array('Other_rel_model'));
+
+		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+			
+			$this->Other_rel_model->save_other($oth_id, $this->input->post('chk'));    
+			
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 업데이트가 끝난 후 목록페이지로 이동합니다
+		 */
+		$this->session->set_flashdata(
+			'message',
+			'정상적으로 추가 되었습니다'
+		);
+		$param =& $this->querystring;
+		$redirecturl = site_url('helptool/other_in_cmall_item/' . $oth_id. '?' . $param->output());
+
+		redirect($redirecturl);
+	}
+
+	public function other_in_listdelete($oth_id)
+	{
+		
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_admin_cmall_cmallitem_listupdate';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		if (empty($oth_id)) {
+			show_404();
+		}
+		/**
+		 * 체크한 게시물의 업데이트를 실행합니다
+		 */
+		
+		$this->load->model(array('Other_rel_model'));
+
+		if ($this->input->post('chk') && is_array($this->input->post('chk'))) {
+			
+			$this->Other_rel_model->delete_other($oth_id, $this->input->post('chk'));    
+			
+		}
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		/**
+		 * 업데이트가 끝난 후 목록페이지로 이동합니다
+		 */
+		$this->session->set_flashdata(
+			'message',
+			'정상적으로 삭제 되었습니다'
+		);
+		$param =& $this->querystring;
+		$redirecturl = site_url('helptool/other_in_cmall_item/' . $oth_id. '?' . $param->output());
+
+		redirect($redirecturl);
+	}
 }

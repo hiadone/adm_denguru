@@ -69,9 +69,9 @@ class Other extends CB_Controller
         $view['view']['sort'] = array(
             'oth_id' => $param->sort('oth_id', 'asc'),
             'oth_title' => $param->sort('oth_title', 'asc'),
-            'oth_url' => $param->sort('oth_url', 'asc'),
-            'oth_hit' => $param->sort('oth_hit', 'asc'),
-            'oth_order' => $param->sort('oth_order', 'asc'),
+            // 'oth_url' => $param->sort('oth_url', 'asc'),
+            'oth_hit' => $param->sort('oth_hit', 'asc'),            
+            'oth_order' => $param->sort('(0.1/oth_order)', 'asc'),            
             'oth_activated' => $param->sort('oth_activated', 'asc'),
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
@@ -340,6 +340,7 @@ class Other extends CB_Controller
             $other_rel = $where_in =array();
             $other_rel = $this->Other_model->get_other_rel($pid);
 
+            if($other_rel)
             foreach($other_rel as $othval)
                 array_push($where_in,element('brd_id',$othval));
 
@@ -444,6 +445,8 @@ class Other extends CB_Controller
             if ($this->input->post($primary_key)) {
                 $this->cache->delete('other/other-' . element('oth_title', $getdata) . '-random-' . cdate('Y-m-d'));
                 $this->cache->delete('other/other-' . element('oth_title', $getdata) . '-order-' . cdate('Y-m-d'));
+                $this->cache->delete('other/other-order-' . cdate('Y-m-d'));
+                $this->cache->delete('other/other-random-' . cdate('Y-m-d'));
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -456,6 +459,8 @@ class Other extends CB_Controller
                 $updatedata['oth_datetime'] = cdate('Y-m-d H:i:s');                
                 $updatedata['mem_id'] = $this->member->item('mem_id');
                 $this->{$this->modelname}->insert($updatedata);
+                $this->cache->delete('other/other-order-' . cdate('Y-m-d'));
+                $this->cache->delete('other/other-random-' . cdate('Y-m-d'));
                 $this->session->set_flashdata(
                     'message',
                     '정상적으로 입력되었습니다'

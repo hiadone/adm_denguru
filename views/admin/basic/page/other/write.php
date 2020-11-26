@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">이미지 설명</label>
+				<label class="col-sm-2 control-label">태그명</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="oth_title" value="<?php echo set_value('oth_title', element('oth_title', element('data', $view))); ?>" />
 				</div>
@@ -43,13 +43,13 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">URL</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="oth_url" value="<?php echo set_value('oth_url', element('oth_url', element('data', $view))); ?>" />
 				</div>
-			</div>
-			<div class="form-group">
+			</div> -->
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">배너 사이즈</label>
 				<div class="col-sm-10 form-inline">
 					가로 :
@@ -59,7 +59,7 @@
 					<input type="number" class="form-control" name="oth_height" value="<?php echo set_value('oth_height', (int) element('oth_height', element('data', $view))); ?>" />px
 					<div class="help-inline">가로값과 세로값을 입력하시면 입력하신 사이즈로 배너가 출력이 되며, 입력하지 않으면 업로드한 원본 크기대로 출력됩니다</div>
 				</div>
-			</div>
+			</div> -->
 			
 			<div class="form-group">
 				<label class="col-sm-2 control-label">정렬순서</label>
