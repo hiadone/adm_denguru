@@ -212,7 +212,7 @@ class Other extends CB_Controller
             ),
             array(
                 'field' => 'oth_title',
-                'label' => '이미지 설명',
+                'label' => '태그명',
                 'rules' => 'trim|required',
             ),
             array(
@@ -220,16 +220,16 @@ class Other extends CB_Controller
                 'label' => 'URL',
                 'rules' => 'trim',
             ),
-            array(
-                'field' => 'oth_width',
-                'label' => '이미지 가로값',
-                'rules' => 'trim|required|numeric|is_natural',
-            ),
-            array(
-                'field' => 'oth_height',
-                'label' => '이미지 세로값',
-                'rules' => 'trim|required|numeric|is_natural',
-            ),
+            // array(
+            //     'field' => 'oth_width',
+            //     'label' => '이미지 가로값',
+            //     'rules' => 'trim|required|numeric|is_natural',
+            // ),
+            // array(
+            //     'field' => 'oth_height',
+            //     'label' => '이미지 세로값',
+            //     'rules' => 'trim|required|numeric|is_natural',
+            // ),
             array(
                 'field' => 'oth_order',
                 'label' => '정렬순서',
