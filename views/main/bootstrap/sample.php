@@ -182,7 +182,7 @@ $reviewlist = element('data',element('reviewlist',$view));
                             if(element('pet_is_allergy',$pval) && element('pet_allergy_rel',$pval)){
                         ?>
                         <ul class="profile_tag_list profile_tag_list_allergy">
-                            <li class="profile_tag"> 알레르기,
+                            <li class="profile_tag"> 알레르기 : 
 
                                 <?php                               
                                 
