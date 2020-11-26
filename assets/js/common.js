@@ -981,11 +981,13 @@ if (typeof(COMMON_JS) === 'undefined') {
 
 
         var $that = $(this);
+        var cit_type = input_key.replace(/[^0-9]/g,'');
         $.ajax({
             url : href,
             type : 'post',
             data : {
-             csrf_test_name: cb_csrf_hash
+             csrf_test_name: cb_csrf_hash,
+             cit_type: cit_type
             },
             dataType : 'json',
             success : function(data) {

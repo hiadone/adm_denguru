@@ -4834,7 +4834,7 @@ class Postact extends CB_Controller
         
         
 		$updatedata = array(
-			'cit_order' => $cit_order,
+			'cit_order'.$this->input->post('cit_type') => $cit_order,
 		);
 		$this->Cmall_item_model->update($cit_id, $updatedata);
 		
