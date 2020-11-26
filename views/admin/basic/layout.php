@@ -113,11 +113,18 @@ var cookie_prefix = "<?php echo config_item('cookie_prefix'); ?>";
 				if ($('.nav-default').is(':visible') === true) {
 					$('.nav-default').hide();
 					$('.content_wrapper').css('margin-left', '0px');
+					set_cookie('navbar-minimalize',1);
 				} else {
 					$('.nav-default').show();
 					$('.content_wrapper').css('margin-left', '220px');
+					set_cookie('navbar-minimalize',0);
 				}
 			});
+
+			if(get_cookie('navbar-minimalize') > 0){
+				$('.nav-default').hide();
+				$('.content_wrapper').css('margin-left', '0px');
+			}
 			//]]>
 			</script>
 			<ul class="nav-top">
