@@ -504,7 +504,8 @@ class Other extends CB_Controller
                     $getdata = $this->{$this->modelname}->get_one($val);
                     $this->cache->delete('other/other-' . element('oth_title', $getdata) . '-random-' . cdate('Y-m-d'));
                     $this->cache->delete('other/other-' . element('oth_title', $getdata) . '-order-' . cdate('Y-m-d'));
-                    
+                    $this->cache->delete('other/other-order-' . cdate('Y-m-d'));
+                    $this->cache->delete('other/other-random-' . cdate('Y-m-d'));
                     if($this->{$this->modelname}->delete($val)){
                         if (element('oth_image', $getdata)) {
                             // 기존 파일 삭제

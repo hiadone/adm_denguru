@@ -53,6 +53,20 @@
 					<input type="text" class="form-control" name="egr_title" value="<?php echo set_value('egr_title', element('egr_title', element('data', $view))); ?>" />
 				</div>
 			</div>
+            <div class="form-group">
+                    <label class="col-sm-2 control-label">이벤트타입</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline" for="egr_type_1">
+                            <input type="radio" name="egr_type" id="egr_type_1" value="1" <?php echo set_radio('egr_type', '1', ((element('egr_type', element('data', $view)) !== '2'  && element('egr_type', element('data', $view))) !== '3' ? true : false)); ?> /> 소제목 있는 스페셜
+                        </label>
+                        <label class="radio-inline" for="egr_type_2">
+                            <input type="radio" name="egr_type" id="egr_type_2" value="2" <?php echo set_radio('egr_type', '2', (element('egr_type', element('data', $view)) === '2' ? true : false)); ?> /> 소제목 없는 스페셜
+                        </label>
+                        <label class="radio-inline" for="egr_type_3">
+                            <input type="radio" name="egr_type" id="egr_type_3" value="3" <?php echo set_radio('egr_type', '3', (element('egr_type', element('data', $view)) === '3' ? true : false)); ?> /> 그냥 이벤트
+                        </label>
+                    </div>
+                </div>
 			<div class="form-group">
                 <label class="col-sm-2 control-label">시작일</label>
                 <div class="col-sm-10 form-inline">

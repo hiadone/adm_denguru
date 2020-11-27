@@ -43,12 +43,12 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">URL</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="the_url" value="<?php echo set_value('the_url', element('the_url', element('data', $view))); ?>" />
 				</div>
-			</div>
+			</div> -->
 			
 			
 			<div class="form-group">

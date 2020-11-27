@@ -226,6 +226,16 @@ class Eventgroup extends CB_Controller
                 'label' => '내용',
                 'rules' => 'trim',
             ),            
+            array(
+                'field' => 'egr_content',
+                'label' => '내용',
+                'rules' => 'trim',
+            ),            
+            array(
+                'field' => 'egr_type',
+                'label' => '이벤트타입',
+                'rules' => 'trim|required|numeric',
+            ),
         );
         
 
@@ -393,7 +403,7 @@ class Eventgroup extends CB_Controller
             $egr_activated = $this->input->post('egr_activated') ? $this->input->post('egr_activated') : 0;
             $egr_order = $this->input->post('egr_order') ? $this->input->post('egr_order') : 0;
             $egr_content = $this->input->post('egr_content') ? $this->input->post('egr_content') : '';
-
+            $egr_type = $this->input->post('egr_type') ? $this->input->post('egr_type') : 0;
             
 
             $updatedata = array(
@@ -403,6 +413,7 @@ class Eventgroup extends CB_Controller
                 'egr_activated' => $egr_activated,
                 'egr_order' => $egr_order,
                 'egr_content' => $egr_content,
+                'egr_type' => $egr_type,
             );
 
             
@@ -437,7 +448,7 @@ class Eventgroup extends CB_Controller
 
                     $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_detail_image', $getdata));
                 }
-
+                $this->cache->delete('event_group/event_group-info-' . cdate('Y-m-d'));
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -513,7 +524,7 @@ class Eventgroup extends CB_Controller
                     $where = array(
                         'egr_id' => $val,
                     );
-
+                    $this->cache->delete('event_group/event_group-info-' . cdate('Y-m-d'));
                     $res = $this->Event_model->get('','',$where);
 
                     if ($res && is_array($res)) {                        

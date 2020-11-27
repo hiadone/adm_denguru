@@ -235,11 +235,7 @@ class Event extends CB_Controller
                 'label' => '내용',
                 'rules' => 'trim',
             ),            
-            array(
-                'field' => 'eve_type',
-                'label' => '이벤트타입',
-                'rules' => 'trim|required|numeric',
-            ),
+            
         );
 
         $this->form_validation->set_rules($config);

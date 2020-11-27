@@ -32,14 +32,14 @@
 							<th><a href="<?php echo element('the_id', element('sort', $view)); ?>">번호</a></th>
 							<th>이미지</th>
 							<th><a href="<?php echo element('the_title', element('sort', $view)); ?>">제목</a></th>
-							<th><a href="<?php echo element('the_url', element('sort', $view)); ?>">URL</a></th>
+							<!-- <th><a href="<?php echo element('the_url', element('sort', $view)); ?>">URL</a></th> -->
 							
 							<th><a href="<?php echo element('the_start_date', element('sort', $view)); ?>">시작일시</a></th>
 							<th><a href="<?php echo element('the_end_date', element('sort', $view)); ?>">종료일시</a></th>
 							<th><a href="<?php echo element('the_hit', element('sort', $view)); ?>">클릭수</a></th>
 							<th><a href="<?php echo element('the_order', element('sort', $view)); ?>">정렬순서</a></th>
 							<th><a href="<?php echo element('the_activated', element('sort', $view)); ?>">활성여부</a></th>
-							<th>종속된 상품 수</th>
+							<th>종속된 스토어 수</th>
                             <th>action</th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -55,15 +55,15 @@
 							<td><?php if (element('thumb_url', $result)) {?><img src="<?php echo element('thumb_url', $result); ?>" alt="<?php echo html_escape(element('the_title', $result)); ?>" title="<?php echo html_escape(element('the_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
 							<td><?php echo html_escape(element('the_title', $result)); ?></td>
 							
-							<td><?php if (element('the_url', $result)) { ?><a href="<?php echo goto_url(element('the_url', $result)); ?>" target="_blank"><?php echo html_escape(element('the_url', $result)); ?></a> <?php } ?></td>
+							<!-- <td><?php if (element('the_url', $result)) { ?><a href="<?php echo goto_url(element('the_url', $result)); ?>" target="_blank"><?php echo html_escape(element('the_url', $result)); ?></a> <?php } ?></td> -->
 							
 							<td><?php echo element('the_start_date', $result); ?></td>
 							<td><?php echo element('the_end_date', $result); ?></td>
 							<td class="text-center"><?php echo number_format((int) element('the_hit', $result)); ?></td>
 							<td class="text-center"><?php echo number_format((int) element('the_order', $result)); ?></td>
 							<td><?php echo element('the_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
-							<td><?php echo element('eventcount', $result); ?></td>
-                            <td><a href="<?php echo admin_url($this->pagedir.'/lists/'.element(element('primary_key', $view), $result)); ?>" class="btn btn-outline btn-primary btn-xs" >종속 아이템 관리</a></td>
+							<td><?php echo element('boardcount', $result); ?></td>
+                            <td><a href="<?php echo admin_url($this->pagedir.'/lists/'.element(element('primary_key', $view), $result)); ?>" class="btn btn-outline btn-primary btn-xs" >종속 스토어 관리</a></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>

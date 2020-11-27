@@ -32,13 +32,13 @@
                         <tr>
                             <th>번호</a></th>
                             <th>이미지</th>
-                            <th><a href="<?php echo element('cit_name', element('sort', $view)); ?>">상품명</a></th>
+                            <th><a href="<?php echo element('brd_name', element('sort', $view)); ?>">스토어명</a></th>
                             <!-- <th><a href="<?php echo element('eve_device', element('sort', $view)); ?>">접속기기</a></th> -->
-                            <th><a href="<?php echo element('evr_start_date', element('sort', $view)); ?>">시작일시</a></th>
-                            <th><a href="<?php echo element('evr_end_date', element('sort', $view)); ?>">종료일시</a></th>
+                            <th><a href="<?php echo element('thr_start_date', element('sort', $view)); ?>">시작일시</a></th>
+                            <th><a href="<?php echo element('thr_end_date', element('sort', $view)); ?>">종료일시</a></th>
                             <!-- <th>시간</th>
                             <th>가운데정렬</th> -->
-                            <th class="px100"><a href="<?php echo element('evr_order', element('sort', $view)); ?>">정렬순서</a></th>
+                            <th class="px100"><a href="<?php echo element('thr_order', element('sort', $view)); ?>">정렬순서</a></th>
                             <th>action</th>
                             <th><input type="checkbox" name="chkall" id="chkall" /></th>
                         </tr>
@@ -50,16 +50,16 @@
                     ?>
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
-                            <td><?php if (element('cit_file_1', $result)) {?><img src="<?php echo cdn_url('cmallitem', element('cit_file_1', $result)); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
-                            <td><?php echo html_escape(element('cit_name', $result)); ?></td>
+                            <td><?php if (element('brd_image', $result)) {?><img src="<?php echo cdn_url('board', element('brd_image', $result)); ?>" alt="<?php echo html_escape(element('brd_name', $result)); ?>" title="<?php echo html_escape(element('brd_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
+                            <td><?php echo html_escape(element('brd_name', $result)); ?></td>
                             <!-- <td class="text-center"><?php echo element('eve_device', $result); ?></td> -->
-                            <td><?php echo element('evr_start_date', $result); ?></td>
-                            <td><?php echo element('evr_end_date', $result); ?></td>
+                            <td><?php echo element('thr_start_date', $result); ?></td>
+                            <td><?php echo element('thr_end_date', $result); ?></td>
                             <!-- <td class="text-center"><?php echo element('eve_disable_hours', $result); ?></td>
                             <td><?php echo element('eve_is_center', $result) ? '가운데정렬' : ''; ?></td> -->
-                            <td><?php echo element('evr_order', $result); ?></td>                            
+                            <td><?php echo element('thr_order', $result); ?></td>                            
                             
-                            <td><a href="<?php echo admin_url($this->pagedir); ?>/listswrite/<?php echo element('evr_id', $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
+                            <td><a href="<?php echo admin_url($this->pagedir); ?>/listswrite/<?php echo element('thr_id', $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
                             <td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
                         </tr>
                     <?php

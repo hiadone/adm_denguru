@@ -34,7 +34,7 @@
 							<th>활성여부</a></th>		
 							<th>작성일</a></th>
 							<th>종속된 색션 수</th>
-							<th>이벤트 색션 추가</th>
+							<th>action</th>
 							<th>알림발송</th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -57,7 +57,22 @@
 
 							<td><?php echo display_datetime(element('egr_datetime', $result), 'full'); ?></td>
 							<td><?php echo (int) element('eventcount', $result); ?></td>
-							<td><a href="<?php echo admin_url('page/event'); ?>/write/?egr_id=<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-primary btn-xs">색션 추가</a></td>
+							<td>
+								<?php 
+
+									if(element('egr_type', $result) === '1'){
+										echo '<button type="button" class="btn btn-xs btn-info">소제목 있는 스페셜</button>';
+								?>
+										<div style="height:5px;"></div>
+										<a href="<?php echo admin_url('page/event'); ?>/write/?egr_id=<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-primary btn-xs">색션 추가</a>
+								<?php
+									} elseif(element('egr_type', $result) === '2') {
+										echo '<button type="button" class="btn btn-xs btn-info">소제목 있는 스페셜</button>';
+									} elseif(element('egr_type', $result) === '3') {
+										echo '<button type="button" class="btn btn-xs btn-info">그냥 이벤트</button>';
+									}
+								?>
+								</td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/notification_send/<?php echo element(element('primary_key', $view), $result); ?>" class="btn btn-outline btn-danger btn-xs">발송</a></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
