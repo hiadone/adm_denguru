@@ -47,7 +47,7 @@
 					?>
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
-							<td><a href="<?php echo admin_url('page/event'); ?>/?egr_id=<?php echo element(element('primary_key', $view), $result); ?>" ><?php echo html_escape(element('egr_title', $result)); ?></a></td>
+							<td><a href="<?php echo admin_url('page/event'); ?>/?egr_id=<?php echo element(element('primary_key', $view), $result); ?>" ><?php echo html_escape(element('egr_title', $result)); ?><span class="fa fa-external-link"></span></a></td>
 							<td><?php if (element('cdn_url', $result)) {?><img src="<?php echo element('cdn_url', $result); ?>" alt="<?php echo html_escape(element('egr_title', $result)); ?>" title="<?php echo html_escape(element('egr_title', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
 							<td><?php echo element('egr_start_date', $result); ?></td>
 							<td><?php echo element('egr_end_date', $result); ?></td>
