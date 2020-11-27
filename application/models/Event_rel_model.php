@@ -41,11 +41,13 @@ class Event_rel_model extends CB_Model
 
         if ($event) {
             foreach ($event as $cval) {
+
                 $insertdata = array(
                     'eve_id' => $eve_id,
                     'cit_id' => $cval,
                 );
-                $this->insert($insertdata);
+                if(empty($this->Event_rel_model->count_by($insertdata)))
+                    $this->insert($insertdata);
             }
         }
     }
