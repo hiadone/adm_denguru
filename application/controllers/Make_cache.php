@@ -130,6 +130,18 @@ class Make_cache extends CB_Controller
                 $data['cached'] = '1';
                 check_cache_dir('latest');
                 $this->cache->save($cachename, $data, $cachetime);
+
+                $cachename = 'latest/get_popular_brd_attr' . element('brd_id',$val) . '_8';
+                $cachetime = 86400;
+                $data = array();
+
+                $this->load->model(array('Cmall_item_model'));
+                $result = $this->Cmall_item_model->get_popular_attr(element('brd_id',$val), 8);
+
+                $data['result'] = $result;
+                $data['cached'] = '1';
+                check_cache_dir('latest');
+                $this->cache->save($cachename, $data, $cachetime);
                 
             }
         }

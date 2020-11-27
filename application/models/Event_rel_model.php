@@ -46,7 +46,7 @@ class Event_rel_model extends CB_Model
                     'eve_id' => $eve_id,
                     'cit_id' => $cval,
                 );
-                if(empty($this->Event_rel_model->count_by($insertdata)))
+                if(empty($this->count_by($insertdata)))
                     $this->insert($insertdata);
             }
         }

@@ -45,7 +45,8 @@ class Theme_rel_model extends CB_Model
                     'the_id' => $the_id,
                     'brd_id' => $cval,
                 );
-                $this->insert($insertdata);
+                if(empty($this->count_by($insertdata)))
+                    $this->insert($insertdata);
             }
         }
     }
