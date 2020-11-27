@@ -72,7 +72,7 @@ class Theme extends CB_Controller
             'the_url' => $param->sort('the_url', 'asc'),
             'the_hit' => $param->sort('the_hit', 'asc'),
             'the_order' => $param->sort('the_order', 'asc'),
-            'the_activated' => $param->sort('the_activated', 'asc'),
+            
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
         $forder = $this->input->get('forder', null, 'desc');

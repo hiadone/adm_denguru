@@ -111,10 +111,21 @@
                     <label class="col-sm-2 control-label">이벤트활성화</label>
                     <div class="col-sm-10">
                         <label class="radio-inline" for="eve_activated_1">
-                            <input type="radio" name="eve_activated" id="eve_activated_1" value="1" <?php echo set_radio('eve_activated', '1', (element('eve_activated', element('data', $view)) === '1' ? true : false)); ?> /> 활성
+                            <input type="radio" name="eve_activated" id="eve_activated_1" value="1" <?php echo set_radio('eve_activated', '1', (element('eve_activated', element('data', $view)) !== '0' ? true : false)); ?> /> 활성
                         </label>
                         <label class="radio-inline" for="eve_activated_0">
-                            <input type="radio" name="eve_activated" id="eve_activated_0" value="0" <?php echo set_radio('eve_activated', '0', (element('eve_activated', element('data', $view)) !== '1' ? true : false)); ?> /> 비활성
+                            <input type="radio" name="eve_activated" id="eve_activated_0" value="0" <?php echo set_radio('eve_activated', '0', (element('eve_activated', element('data', $view)) === '0' ? true : false)); ?> /> 비활성
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">이벤트타입</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline" for="eve_type_1">
+                            <input type="radio" name="eve_type" id="eve_type_1" value="1" <?php echo set_radio('eve_type', '1', (element('eve_type', element('data', $view)) !== '2' ? true : false)); ?> /> 소제목 있는 타입
+                        </label>
+                        <label class="radio-inline" for="eve_type_2">
+                            <input type="radio" name="eve_type" id="eve_type_2" value="2" <?php echo set_radio('eve_type', '2', (element('eve_type', element('data', $view)) === '2' ? true : false)); ?> /> 소제목 없는 타입
                         </label>
                     </div>
                 </div>

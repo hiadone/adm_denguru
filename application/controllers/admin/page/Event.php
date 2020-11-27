@@ -235,6 +235,11 @@ class Event extends CB_Controller
                 'label' => '내용',
                 'rules' => 'trim',
             ),            
+            array(
+                'field' => 'eve_type',
+                'label' => '이벤트타입',
+                'rules' => 'trim|required|numeric',
+            ),
         );
 
         $this->form_validation->set_rules($config);
@@ -346,6 +351,7 @@ class Event extends CB_Controller
             $eve_activated = $this->input->post('eve_activated') ? $this->input->post('eve_activated') : 0;
             $eve_order = $this->input->post('eve_order') ? $this->input->post('eve_order') : 0;
             $eve_content = $this->input->post('eve_content') ? $this->input->post('eve_content') : '';
+            $eve_type = $this->input->post('eve_type') ? $this->input->post('eve_type') : 0;
 
             
 
@@ -357,6 +363,7 @@ class Event extends CB_Controller
                 'eve_activated' => $eve_activated,
                 'eve_order' => $eve_order,
                 'eve_content' => $eve_content,
+                'eve_type' => $eve_type,
             );
 
             /**

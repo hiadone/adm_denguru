@@ -77,10 +77,10 @@
                 <label class="col-sm-2 control-label">이벤트활성화</label>
                 <div class="col-sm-10">
                     <label class="radio-inline" for="egr_activated_1">
-                        <input type="radio" name="egr_activated" id="egr_activated_1" value="1" <?php echo set_radio('egr_activated', '1', (element('egr_activated', element('data', $view)) === '1' ? true : false)); ?> /> 활성
+                        <input type="radio" name="egr_activated" id="egr_activated_1" value="1" <?php echo set_radio('egr_activated', '1', (element('egr_activated', element('data', $view)) !== '0' ? true : false)); ?> /> 활성
                     </label>
                     <label class="radio-inline" for="egr_activated_0">
-                        <input type="radio" name="egr_activated" id="egr_activated_0" value="0" <?php echo set_radio('egr_activated', '0', (element('egr_activated', element('data', $view)) !== '1' ? true : false)); ?> /> 비활성
+                        <input type="radio" name="egr_activated" id="egr_activated_0" value="0" <?php echo set_radio('egr_activated', '0', (element('egr_activated', element('data', $view)) === '0' ? true : false)); ?> /> 비활성
                     </label>
                 </div>
             </div>
