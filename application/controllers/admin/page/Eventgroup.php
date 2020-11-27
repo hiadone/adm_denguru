@@ -108,6 +108,7 @@ class Eventgroup extends CB_Controller
                 );
 
                 $result['list'][$key]['eventcount'] = $this->Event_model->count_by($countwhere);
+                
                 $result['list'][$key]['num'] = $list_num--;
             }
         }

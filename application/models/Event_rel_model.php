@@ -20,7 +20,7 @@ class Event_rel_model extends CB_Model
     /**
      * 사용되는 테이블의 프라이머리키
      */
-    public $primary_key = 'egr_id'; // 사용되는 테이블의 프라이머리키
+    public $primary_key = 'evr_id'; // 사용되는 테이블의 프라이머리키
 
     function __construct()
     {
