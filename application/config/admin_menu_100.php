@@ -28,6 +28,6 @@ $config['admin_page_menu']['page'] =
 			'theme'					=> array('테마관리', ''),
 			'kinditemgroup'                          => array('견종별 item 관리', '',''),
 			'kinditem'                          => array('item 관리', '','hide'),
-			'other'					=> array('인기키워드관리', ''),
+			'other'					=> array('인기태그관리', ''),
 		),
 	);
