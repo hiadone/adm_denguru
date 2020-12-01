@@ -2444,7 +2444,7 @@ class Crawl extends CB_Controller
                 $translate_text = array();
                 // echo element('cit_id', $val)."<br>\n";
                 
-                    if(empty(!$cateinfo)){
+                    if(!empty($cateinfo)){
 
                     foreach($cateinfo as $value){
 
@@ -2551,6 +2551,7 @@ class Crawl extends CB_Controller
                         
                     }
                 } else {
+                    continue;
                     foreach(config_item('total_tag_word') as $tval){
                         if(empty($tval)) continue;
                             $this->tag_word[]['tgw_value'] =  $tval;

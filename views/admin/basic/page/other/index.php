@@ -39,6 +39,7 @@
 							<th><a href="<?php echo element('oth_hit', element('sort', $view)); ?>">클릭수</a></th>
 							<th><a href="<?php echo element('oth_order', element('sort', $view)); ?>">정렬순서</a></th>
 							<th><a href="<?php echo element('oth_activated', element('sort', $view)); ?>">활성여부</a></th>
+							<th>action</th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
 						</tr>
@@ -60,6 +61,9 @@
 							<td class="text-center"><?php echo number_format((int) element('oth_hit', $result)); ?></td>
 							<td class="text-center"><?php echo number_format((int) element('oth_order', $result)); ?></td>
 							<td><?php echo element('oth_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
+							<td>
+								<a href="<?php echo site_url('main/search/'.element(element('primary_key', $view), $result)); ?>" class="btn btn-outline btn-info btn-xs" target="_blank">미리보기</a>
+							</td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>

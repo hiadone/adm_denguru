@@ -2177,7 +2177,7 @@ class Crawlitem extends CB_Controller
 
 
 
-                $result_2['cih_datetime'][element('cih_datetime', $val)] = element('cih_datetime', $val);
+                if(!empty(element('cih_datetime', $val))) $result_2['cih_datetime'][element('brd_id', $val)][element('cih_datetime', $val)][] = element('cih_datetime', $val);
 
                 if(isset($result_2['cit_count'][element('brd_id', $val)]))
                     $result_2['cit_count'][element('brd_id', $val)] += element('cit_count', $val);

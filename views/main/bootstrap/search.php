@@ -123,7 +123,7 @@ $other = element('other',$view);
                                 $cat_value = '퍼피 ';
                             elseif($years < 7) 
                                 $cat_value = '어덜트 ';
-                            else
+                            elseif($years > 6) 
                                 $cat_value = '시니어 ';
                                 echo $cat_value ;
                             if(element('ckd_size_str',element('member',$data))) 

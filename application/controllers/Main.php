@@ -309,7 +309,7 @@ class Main extends CB_Controller
 	}
 	
 
-	public function search($oth_id,$mem_id)
+	public function search($oth_id,$mem_id=0)
 	{
 
  
@@ -321,9 +321,10 @@ class Main extends CB_Controller
 		$this->load->helpers(array('authorization'));
 
 
+
 		$tokenData['mem_id'] = $mem_id; //TODO: Replace with data for token
 		$output['token'] = AUTHORIZATION::generateToken($tokenData);
-		
+		echo $output['token'];
 		$view = array();
 		$view['view'] = array();
 
