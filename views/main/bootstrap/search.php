@@ -105,7 +105,7 @@ $other = element('other',$view);
                     <div class="filter_info">
                         <img src="/views/main/bootstrap/images/icon-filter.svg" alt="필터" class="icon">
                         <?php 
-
+                            if(element('member',$data)){
                             $diff = abs(strtotime(date('Y-m-d')) - strtotime(element('pet_birthday',element('member',$data))));
 
                             $years = floor($diff / (365*60*60*24));
@@ -130,7 +130,8 @@ $other = element('other',$view);
                                 echo element('ckd_size_str',element('member',$data)).' ';
                             if(element('pet_kind',element('member',$data))) 
                                 echo element('pet_kind',element('member',$data));
-                             ?>
+                        }
+                        ?>
                         
                     </div>
                     <div class="select_sort_box">
@@ -173,6 +174,10 @@ $other = element('other',$view);
                            
                         </ul>
                     </div>
+                </div>
+            <section class="sect01">
+                <div class="btn_box_bottom">
+                    <a href="<?php echo site_url('main/search/'.element('oth_id', $view).'/'.element('oth_id', $view).'/'.(element('page', $view) + 1)); ?>" class="btn_more js-btn-review-list-more">다음페이지<img src="/views/main/bootstrap/images/icon-angle-down.svg" alt="아래화살표" class="icon"></a>
                 </div>
             </section>
             <div class="pd_gnb_bottom" style="height: 32px;background-color: #fff;"></div>
