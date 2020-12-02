@@ -1,5 +1,6 @@
 <?php 
 $this->managelayout->add_css(base_url('views/main/bootstrap/css/main.css')); 
+$this->managelayout->add_js(base_url('views/main/bootstrap/js/btn_top.js')); 
 
 
 
@@ -21,7 +22,6 @@ $other = element('other',$view);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DENGURU :: 영양제 검색결과</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
-    <link rel="stylesheet" href="css/main.css">
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 <body>
@@ -470,8 +470,8 @@ $other = element('other',$view);
         });
 
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-    <script src="js/btn_top.js"></script>
+    
+    
 
 </body>
 </html>

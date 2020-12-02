@@ -2177,7 +2177,14 @@ class Crawlitem extends CB_Controller
 
 
 
-                if(!empty(element('cih_datetime', $val))) $result_2['cih_datetime'][element('brd_id', $val)][element('cih_datetime', $val)][] = element('cih_datetime', $val);
+                
+
+                
+                if(isset($result_2['avg_count'][element('brd_id', $val)]))
+                    $result_2['avg_count'][element('brd_id', $val)] += 1;
+                else
+                    $result_2['avg_count'][element('brd_id', $val)] = 1;
+
 
                 if(isset($result_2['cit_count'][element('brd_id', $val)]))
                     $result_2['cit_count'][element('brd_id', $val)] += element('cit_count', $val);
@@ -2194,7 +2201,8 @@ class Crawlitem extends CB_Controller
                 
             }
         }
-
+        
+        
 
         $this->db->from('cmall_item_count_history');
         $this->db->select_max('cih_datetime');
@@ -2219,8 +2227,8 @@ class Crawlitem extends CB_Controller
                 $result['list'][$key]['brd_key'] = $this->board->item_id('brd_key',element('brd_id', $val));
 
 
-                $result['list'][$key]['cit_count_avg'] = element(element('brd_id', $val),element('cit_count',$result_2)) / count(element('cih_datetime',$result_2));
-                $result['list'][$key]['cit_is_del_count_avg'] = element(element('brd_id', $val),element('cit_is_del_count',$result_2)) / count(element('cih_datetime',$result_2));
+                $result['list'][$key]['cit_count_avg'] = element(element('brd_id', $val),element('cit_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
+                $result['list'][$key]['cit_is_del_count_avg'] = element(element('brd_id', $val),element('cit_is_del_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
                 
 
                 

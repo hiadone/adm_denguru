@@ -29,7 +29,7 @@ $reviewlist = element('data',element('reviewlist',$view));
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DENGURU</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
-    <link rel="stylesheet" href="css/main.css">
+    
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 <body>
@@ -502,9 +502,6 @@ $reviewlist = element('data',element('reviewlist',$view));
                     ?>
                     
                 </ul>
-                
-            </section>
-            <section>
                 <div class="btn_box_bottom">
                     <a href="" class="btn_more js-btn-review-list-more">더보기 <img src="/views/main/bootstrap/images/icon-angle-down.svg" alt="아래화살표" class="icon"></a>
                 </div>

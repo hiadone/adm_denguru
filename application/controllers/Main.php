@@ -390,7 +390,7 @@ class Main extends CB_Controller
 	}
 
 
-	public function event($oth_id,$mem_id=0)
+	public function category_main($mem_id=0)
 	{
  
 		// 이벤트 라이브러리를 로딩합니다
@@ -404,7 +404,7 @@ class Main extends CB_Controller
 
 		$tokenData['mem_id'] = $mem_id; //TODO: Replace with data for token
 		$output['token'] = AUTHORIZATION::generateToken($tokenData);
-		echo $output['token'];
+		// echo $output['token'];
 		$view = array();
 		$view['view'] = array();
 
@@ -413,11 +413,11 @@ class Main extends CB_Controller
 
 		$this->load->model(array('Cmall_item_model','Other_model','Cmall_review_model','Member_pet_model'));
 
-
+		
 		// $href ='http://api.denguru.kr/search/show_list/1?listnum=99';
 		
-		$other = $this->Other_model->get_one($oth_id);
-		$href ='http://api.denguru.kr/search/show_list/'.$oth_id.'?skeyword='.element('oth_title',$other);
+		// $other = $this->Other_model->get_one($oth_id);
+		$href ='http://api.denguru.kr/event/lists';
         $url = $href;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -427,7 +427,7 @@ class Main extends CB_Controller
         curl_close($ch);
         
         $view['view']['main'] = json_decode($result,true);
-        $view['view']['other'] = $other;
+        // $view['view']['other'] = $other;
         
         
 
@@ -446,7 +446,84 @@ class Main extends CB_Controller
 		$layoutconfig = array(
 			'path' => 'main',
 			'layout' => 'layout_popup',
-			'skin' => 'search',
+			'skin' => 'category_main',
+			'layout_dir' => $this->cbconfig->item('layout_main'),
+			'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
+			'use_sidebar' => $this->cbconfig->item('sidebar_main'),
+			'use_mobile_sidebar' => $this->cbconfig->item('mobile_sidebar_main'),
+			'skin_dir' => $this->cbconfig->item('skin_main'),
+			'mobile_skin_dir' => $this->cbconfig->item('mobile_skin_main'),
+			'page_title' => $page_title,
+			'meta_description' => $meta_description,
+			'meta_keywords' => $meta_keywords,
+			'meta_author' => $meta_author,
+			'page_name' => $page_name,
+		);
+		$view['layout'] = $this->managelayout->front($layoutconfig, $this->cbconfig->get_device_view_type());
+		$this->data = $view;
+		$this->layout = element('layout_skin_file', element('layout', $view));
+		$this->view = element('view_skin_file', element('layout', $view));
+	}
+
+	public function category_sub($egr_id,$mem_id=0)
+	{
+ 
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_main_index';
+		$this->load->event($eventname);
+		
+		
+		$this->load->helpers(array('authorization'));
+
+
+
+		$tokenData['mem_id'] = $mem_id; //TODO: Replace with data for token
+		$output['token'] = AUTHORIZATION::generateToken($tokenData);
+		// echo $output['token'];
+		$view = array();
+		$view['view'] = array();
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before'] = Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_item_model','Other_model','Cmall_review_model','Member_pet_model'));
+
+
+		// $href ='http://api.denguru.kr/search/show_list/1?listnum=99';
+		
+		
+		$href ='http://api.denguru.kr/event/post/'.$egr_id;
+
+        $url = $href;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization:' . $output['token']));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        $view['view']['main'] = json_decode($result,true);
+
+        // $view['view']['other'] = $other;
+        
+        
+
+		// 이벤트가 존재하면 실행합니다
+		$view['view']['event']['before_layout'] = Events::trigger('before_layout', $eventname);
+		
+		/**
+		 * 레이아웃을 정의합니다
+		 */
+		$page_title = $this->cbconfig->item('site_meta_title_main');
+		$meta_description = $this->cbconfig->item('site_meta_description_main');
+		$meta_keywords = $this->cbconfig->item('site_meta_keywords_main');
+		$meta_author = $this->cbconfig->item('site_meta_author_main');
+		$page_name = $this->cbconfig->item('site_page_name_main');
+		
+		$layoutconfig = array(
+			'path' => 'main',
+			'layout' => 'layout_popup',
+			'skin' => 'category_sub',
 			'layout_dir' => $this->cbconfig->item('layout_main'),
 			'mobile_layout_dir' => $this->cbconfig->item('mobile_layout_main'),
 			'use_sidebar' => $this->cbconfig->item('sidebar_main'),
