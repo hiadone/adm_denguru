@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Leavecounter class
+ * Petleavecounter class
  *
  * Copyright (c) CIBoard <www.ciboard.co.kr>
  *
@@ -12,24 +12,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 관리자>통계관리>회원가입통계 controller 입니다.
  */
-class Leavecounter extends CB_Controller
+class Petleavecounter extends CB_Controller
 {
 
     /**
      * 관리자 페이지 상의 현재 디렉토리입니다
      * 페이지 이동시 필요한 정보입니다
      */
-    public $pagedir = 'stat/leavecounter';
+    public $pagedir = 'stat/petleavecounter';
 
     /**
-     * 모델을 로딩합니다
+     * 모델을 
      */
-    protected $models = array('Memberleave');
+    protected $models = array('Member_petleave');
 
     /**
      * 이 컨트롤러의 메인 모델 이름입니다
      */
-    protected $modelname = 'Memberleave_model';
+    protected $modelname = 'Member_petleave_model';
 
     /**
      * 헬퍼를 로딩합니다
@@ -50,9 +50,9 @@ class Leavecounter extends CB_Controller
      * 목록을 가져오는 메소드입니다
      */
     public function index($export = '')
-    {
+    {   
         // 이벤트 라이브러리를 로딩합니다
-        $eventname = 'event_admin_stat_leavecounter_index';
+        $eventname = 'event_admin_stat_petleavecounter_index';
         $this->load->event($eventname);
 
         $view = array();
@@ -167,7 +167,7 @@ class Leavecounter extends CB_Controller
         if ($export === 'excel') {
             
             header('Content-type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment; filename=회원가입통계_' . cdate('Y_m_d') . '.xls');
+            header('Content-Disposition: attachment; filename=펫삭제통계_' . cdate('Y_m_d') . '.xls');
             echo $this->load->view('admin/' . ADMIN_SKIN . '/' . $this->pagedir . '/index_excel', $view, true);
 
         } else {

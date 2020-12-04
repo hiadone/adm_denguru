@@ -29,7 +29,7 @@
 		<div class="table-responsive">
 			<div class="pull-right form-group">
 				<label for="withoutzero" class="checkbox-inline">
-					<input type="checkbox" name="withoutzero" id="withoutzero" value="1" /> 펫 등록수가 0 인 데이터 제외
+					<input type="checkbox" name="withoutzero" id="withoutzero" value="1" /> 펫 수정수가 0 인 데이터 제외
 				</label>
 				<label for="orderdesc" class="checkbox-inline">
 					<input type="checkbox" name="orderdesc" id="orderdesc" value="1"/> 역순으로보기
@@ -45,7 +45,7 @@
 				<thead>
 					<tr>
 						<th>날짜</th>
-						<th>펫 등록수</th>
+						<th>펫 수정수</th>
 						<th>비율</th>
 						<th>그래프</th>
 					</tr>
@@ -113,7 +113,7 @@ function drawChart() {
 	var data = new google.visualization.DataTable();
 
 	data.addColumn('string', '기간');
-	data.addColumn('number', '펫 등록 수');
+	data.addColumn('number', '펫 수정 수');
 	data.addRows([
 		<?php
 		if (element('list', $view)) {

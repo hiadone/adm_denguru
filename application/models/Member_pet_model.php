@@ -43,5 +43,25 @@ class Member_pet_model extends CB_Model
 
         return $result;
     }
+
+    public function get_register_count($type = 'd', $start_date = '', $end_date = '', $orderby = 'asc')
+    {
+        if (empty($start_date) OR empty($end_date)) {
+            return false;
+        }
+        $left = ($type === 'y') ? 4 : ($type === 'm' ? 7 : 10);
+        if (strtolower($orderby) !== 'desc') $orderby = 'asc';
+
+        $this->db->select('count(*) as cnt, left(pet_register_datetime, ' . $left . ') as day ', false);
+        $this->db->where('left(pet_register_datetime, 10) >=', $start_date);
+        $this->db->where('left(pet_register_datetime, 10) <=', $end_date);
+        // $this->db->where('pet_denied', 0);
+        $this->db->group_by('day');
+        $this->db->order_by('pet_register_datetime', $orderby);
+        $qry = $this->db->get($this->_table);
+        $result = $qry->result_array();
+
+        return $result;
+    }
     
 }

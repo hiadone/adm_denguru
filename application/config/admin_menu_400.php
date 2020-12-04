@@ -18,6 +18,7 @@ $config['admin_page_menu']['stat'] =
 			'statcounter'			=> array('접속자통계', ''),
 			'boardcounter'			=> array('게시판별접속자', ''),			
 			'petregistercounter'	=> array('펫등록통계', ''),
+			'petmodifycounter'		=> array('펫수정통계', ''),
 			'petleavecounter'		=> array('펫삭제통계', ''),
 			'registercounter'		=> array('회원가입통계', ''),
 			'leavecounter'			=> array('회원탈퇴통계', ''),

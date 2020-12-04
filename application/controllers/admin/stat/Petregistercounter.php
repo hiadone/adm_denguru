@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Registercounter class
+ * Petregistercounter class
  *
  * Copyright (c) CIBoard <www.ciboard.co.kr>
  *
@@ -12,14 +12,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 관리자>통계관리>회원가입통계 controller 입니다.
  */
-class Registercounter extends CB_Controller
+class Petregistercounter extends CB_Controller
 {
 
 	/**
 	 * 관리자 페이지 상의 현재 디렉토리입니다
 	 * 페이지 이동시 필요한 정보입니다
 	 */
-	public $pagedir = 'stat/registercounter';
+	public $pagedir = 'stat/petregistercounter';
 
 	/**
 	 * 모델을 로딩합니다
@@ -29,7 +29,7 @@ class Registercounter extends CB_Controller
 	/**
 	 * 이 컨트롤러의 메인 모델 이름입니다
 	 */
-	protected $modelname = 'Member_model';
+	protected $modelname = 'Member_pet_model';
 
 	/**
 	 * 헬퍼를 로딩합니다
@@ -52,7 +52,7 @@ class Registercounter extends CB_Controller
 	public function index($export = '')
 	{
 		// 이벤트 라이브러리를 로딩합니다
-		$eventname = 'event_admin_stat_registercounter_index';
+		$eventname = 'event_admin_stat_petregistercounter_index';
 		$this->load->event($eventname);
 
 		$view = array();
@@ -167,7 +167,7 @@ class Registercounter extends CB_Controller
 		if ($export === 'excel') {
 
 			header('Content-type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment; filename=회원가입통계_' . cdate('Y_m_d') . '.xls');
+			header('Content-Disposition: attachment; filename=펫등록통계_' . cdate('Y_m_d') . '.xls');
 			echo $this->load->view('admin/' . ADMIN_SKIN . '/' . $this->pagedir . '/index_excel', $view, true);
 
 		} else {

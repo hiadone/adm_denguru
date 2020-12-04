@@ -6,7 +6,7 @@ td {text-align:center; line-height:40px; font-size:12px; color:#474747; font-fam
 <table width="100%" border="1" bordercolor="#E4E4E4" cellspacing="0" cellpadding="0">
         <tr>
             <th height="40">날짜</th>
-            <th>회원가입자수</th>
+            <th>펫 삭제수</th>
             <th>비율</th>
         </tr>
         <?php

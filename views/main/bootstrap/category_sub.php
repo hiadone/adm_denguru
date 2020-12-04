@@ -116,9 +116,13 @@ $data = element('data',element('main',$view));
             }
             ?>
             <div style="background-color: #fff;padding-bottom: 80px;"></div>
-            <div class="shop_shortcut_box">
-                <button type="button" class="btn btn_accent btn_big btn_big_round">이벤트 참여하기</button>
-            </div>
+            <?php if(element('egr_type',$data) === '3'){  ?>
+                <div class="shop_shortcut_box">
+                    <button type="button" class="btn btn_accent btn_big btn_big_round">이벤트 참여하기</button>
+                </div>
+
+            <?php } ?>
+            
         </div>
     </div>
 
