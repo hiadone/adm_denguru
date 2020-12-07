@@ -351,7 +351,7 @@
 					<label class="col-sm-2 control-label">상품유형</label>
 					<div class="col-sm-10">
 						<label for="cit_type1" class="checkbox-inline">
-							<input type="checkbox" name="cit_type1" id="cit_type1" value="1" <?php echo set_checkbox('cit_type1', '1', (element('cit_type1', element('data', $view)) ? true : false)); ?> /> 추천
+							<input type="checkbox" name="cit_type1" id="cit_type1" value="1" <?php echo set_checkbox('cit_type1', '1', (element('cit_type1', element('data', $view)) ? true : false)); ?> /> BEST
 						</label>
 						<label for="cit_type2" class="checkbox-inline">
 							<input type="checkbox" name="cit_type2" id="cit_type2" value="1" <?php echo set_checkbox('cit_type2', '1', (element('cit_type2', element('data', $view)) ? true : false)); ?> /> 인기
