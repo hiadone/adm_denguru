@@ -335,7 +335,7 @@ class Members extends CB_Controller
 			$config[] = array(
 				'field' => 'mem_userid',
 				'label' => '회원아이디',
-				'rules' => 'trim|required|min_length[3]|max_length[40]|is_unique[member_userid.mem_userid.mem_id.' . element('mem_id', $getdata) . ']|callback__mem_userid_check',
+				'rules' => 'trim|required|min_length[3]|max_length[50]|is_unique[member_userid.mem_userid.mem_id.' . element('mem_id', $getdata) . ']|callback__mem_userid_check',
 			);
 			$config[] = array(
 				'field' => 'mem_password',
@@ -356,7 +356,7 @@ class Members extends CB_Controller
 			$config[] = array(
 				'field' => 'mem_userid',
 				'label' => '회원아이디',
-				'rules' => 'trim|required|alphanumunder|min_length[3]|max_length[50]|is_unique[member_userid.mem_userid]',
+				'rules' => 'trim|required|min_length[3]|max_length[50]|is_unique[member_userid.mem_userid]',
 			);
 			$config[] = array(
 				'field' => 'mem_password',
