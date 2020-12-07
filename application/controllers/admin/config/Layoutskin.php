@@ -1430,9 +1430,9 @@ class Layoutskin extends CB_Controller
 
 				$uploadconfig = array();
 				$uploadconfig['upload_path'] = $upload_path;
-				$uploadconfig['allowed_types'] = 'ico';
-				$uploadconfig['max_width'] = '16';
-				$uploadconfig['max_height'] = '16';
+				$uploadconfig['allowed_types'] = 'ico|png';
+				$uploadconfig['max_width'] = '160';
+				$uploadconfig['max_height'] = '160';
 				$uploadconfig['encrypt_name'] = true;
 
 				$this->upload->initialize($uploadconfig);
