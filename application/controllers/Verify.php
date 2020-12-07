@@ -267,7 +267,7 @@ class Verify extends CB_Controller
 
 				$view['view']['success_message'] = '회원님의 패스워드가 변경되었습니다.<br />감사합니다';
 
-				$this->member->update_login_log(element('mem_id', $result), element('mem_userid', $result), 1, '패스워드 변경 후 로그인 성공');
+				$this->member->update_login_log(element('mem_id', $result), element('mem_userid', $result,''), 1, '패스워드 변경 후 로그인 성공');
 				$this->session->set_userdata('mem_id', element('mem_id', $result));
 			}
 		}
