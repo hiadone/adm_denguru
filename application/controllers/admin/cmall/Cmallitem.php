@@ -384,7 +384,7 @@ class Cmallitem extends CB_Controller
          */
         $this->Board_model->allow_search_field = array('cit_goods_code', 'cit_key', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_content', 'cit_mobile_content'); // 검색이 가능한 필드
         $this->Board_model->search_field_equal = array('cit_goods_code', 'cit_price'); // 검색중 like 가 아닌 = 검색을 하는 필드
-        $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price', 'cit_status','cit_wish_count'); // 정렬이 가능한 필드
+        $this->Board_model->allow_order_field = array('cit_id', 'cit_key', 'cit_price_sale', 'cit_name', 'cit_datetime', 'cit_updated_datetime', 'cit_hit', 'cit_sell_count', 'cit_price', 'cit_status','cit_wish_count','(0.1/cit_order)','(0.1/cit_order1)','(0.1/cit_order2)','(0.1/cit_order3)','(0.1/cit_order4)'); // 정렬이 가능한 필드
         $this->Board_model->set_group_by('cmall_item.cit_id');
         $result = $this->Board_model
             ->get_item_list($per_page, $offset, $where, '',  $findex,$forder,$sfield,$skeyword);
