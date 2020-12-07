@@ -176,7 +176,7 @@ class Make_cache extends CB_Controller
         }
         $limit = element('limit', $config) ? element('limit', $config) : 4;
 
-        $cachename = 'latest/cit-' . element('cit_type1', $config).element('cit_type2', $config).element('cit_type3', $config).element('cit_type4', $config) . '-' . $limit . '-' . cdate('Y-m-d');
+        $cachename = 'latest/cit-order-' . element('cit_type1', $config).element('cit_type2', $config).element('cit_type3', $config).element('cit_type4', $config) . '-' . $limit;
 
         
         

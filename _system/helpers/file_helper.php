@@ -453,3 +453,54 @@ if ( ! function_exists('octal_permissions'))
 		return substr(sprintf('%o', $perms), -3);
 	}
 }
+
+
+if ( ! function_exists('delete_cache_files'))
+{
+	/**
+	 * Delete Files
+	 *
+	 * Deletes all files contained in the supplied directory path.
+	 * Files must be writable or owned by the system in order to be deleted.
+	 * If the second parameter is set to TRUE, any directories contained
+	 * within the supplied base directory will be nuked as well.
+	 *
+	 * @param	string	$path		File path
+	 * @param	bool	$del_dir	Whether to delete any directories found in the path
+	 * @param	bool	$htdocs		Whether to skip deleting .htaccess and index page files
+	 * @param	int	$_level		Current directory depth level (default: 0; internal use only)
+	 * @return	bool
+	 */
+	function delete_cache_files($id='',$prefix='')
+	{
+		// Trim the trailing slash	
+		$CI =& get_instance();
+		$path = $CI->config->item('cache_path');
+		$path = ($path === '') ? APPPATH.'cache/' : $path;
+
+		$path = ($id === '') ? $path : $path . $id;
+
+		if ( ! $current_dir = @opendir($path))
+		{
+			return FALSE;
+		}
+		
+		while (FALSE !== ($filename = @readdir($current_dir)))
+		{	
+			
+			if ($filename !== '.' && $filename !== '..')
+			{
+				$filepath = $path.DIRECTORY_SEPARATOR.$filename;
+				if ($prefix && preg_match("/^(".$prefix.")/i", $filename))
+				{
+					
+					@unlink($filepath);
+				}
+			}
+		}
+
+		closedir($current_dir);
+
+		return TRUE;
+	}
+}

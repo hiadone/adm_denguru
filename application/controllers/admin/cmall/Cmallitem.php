@@ -1358,6 +1358,8 @@ class Cmallitem extends CB_Controller
                 $this->Cmall_attr_rel_model->save_attr($this->input->post($primary_key), $cmall_attr,1);
                 $this->Cmall_kind_rel_model->save_kind($this->input->post($primary_key), $cmall_kind,1);
 
+                delete_cache_files('/latest','cit-order-');
+
                 $this->session->set_flashdata(
                     'message',
                     '정상적으로 수정되었습니다'
@@ -1737,6 +1739,9 @@ class Cmallitem extends CB_Controller
             'message',
             '정상적으로 수정되었습니다'
         );
+
+                
+        delete_cache_files('/latest','cit-order-');
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
@@ -1800,6 +1805,9 @@ class Cmallitem extends CB_Controller
             'message',
             '정상적으로 삭제되었습니다'
         );
+
+        delete_cache_files('/latest','cit-order-');
+
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
 
