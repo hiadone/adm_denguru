@@ -265,7 +265,7 @@
 						<tr class="<?php echo element('warning', $result) ? 'warning':''; ?> ">
 							<td><a href="<?php echo post_url('',element('post_id', $result)); ?>" target="_blank"><span class="glyphicon glyphicon-new-window"></span> <?php echo html_escape(element('cit_key', $result)); ?></a>
 								<br>
-								<?php if (element('cit_type1', $result)) { ?><label class="label label-danger">추천</label> <?php } ?>
+								<?php if (element('cit_type1', $result)) { ?><label class="label label-danger">BEST</label> <?php } ?>
 								<?php if (element('cit_type2', $result)) { ?><label class="label label-warning">인기</label> <?php } ?>
 								<?php if (element('cit_type3', $result)) { ?><label class="label label-default">신상품</label> <?php } ?>
 								<?php if (element('cit_type4', $result)) { ?><label class="label label-primary">할인</label> <?php } ?>

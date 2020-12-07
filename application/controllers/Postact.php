@@ -4894,15 +4894,19 @@ class Postact extends CB_Controller
         $where['cit_is_del'] = 0;
         if (element('cit_type1', $config)) {
             $where['cit_type1'] = 1;
+            $cit_order = '(0.1/cit_order1)';
         }
         if (element('cit_type2', $config)) {
             $where['cit_type2'] = 1;
+            $cit_order = '(0.1/cit_order2)';
         }
         if (element('cit_type3', $config)) {
             $where['cit_type3'] = 1;
+            $cit_order = '(0.1/cit_order3)';
         }
         if (element('cit_type4', $config)) {
             $where['cit_type4'] = 1;
+            $cit_order = '(0.1/cit_order4)';
         }
         $limit = element('limit', $config) ? element('limit', $config) : 4;
 
@@ -4913,7 +4917,8 @@ class Postact extends CB_Controller
         $this->db->join('cmall_item', 'board.brd_id = cmall_item.brd_id', 'inner');
         $this->db->join('cmall_brand', 'cmall_item.cbr_id = cmall_brand.cbr_id', 'inner');
         $this->db->where($where);
-        $this->db->limit($limit);
+        $this->db->limit($limit);        
+        $this->db->order_by($cit_order, 'desc');
         $this->db->order_by('(0.1/cit_order)', 'desc');
         $qry = $this->db->get('board');
         $result = $qry->result_array();
