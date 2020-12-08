@@ -330,7 +330,6 @@ class Crawl extends CB_Controller
                 );
 
                 
-                
                 $item = $this->Cmall_item_model->get_one('','',$where);
 
                 if($post_id && element('cit_id',$item)) {

@@ -448,7 +448,8 @@ class Eventgroup extends CB_Controller
 
                     $deleted = $this->aws_s3->delete_file(config_item('s3_folder_name') . '/eventgroup/' . element('egr_detail_image', $getdata));
                 }
-                $this->cache->delete('event_group/event_group-info-' . cdate('Y-m-d'));
+                
+
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -480,7 +481,7 @@ class Eventgroup extends CB_Controller
                     '정상적으로 입력되었습니다'
                 );
             }
-
+            delete_cache_files('/event_group','event_group-info-');
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
 
@@ -524,7 +525,8 @@ class Eventgroup extends CB_Controller
                     $where = array(
                         'egr_id' => $val,
                     );
-                    $this->cache->delete('event_group/event_group-info-' . cdate('Y-m-d'));
+                    
+                    
                     $res = $this->Event_model->get('','',$where);
 
                     if ($res && is_array($res)) {                        
@@ -558,6 +560,7 @@ class Eventgroup extends CB_Controller
             'message',
             '정상적으로 삭제되었습니다'
         );
+        delete_cache_files('/event_group','event_group-info-');
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
         redirect($redirecturl);
