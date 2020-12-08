@@ -455,10 +455,7 @@ class Theme extends CB_Controller
              * 게시물을 수정하는 경우입니다
              */
             if ($this->input->post($primary_key)) {
-                $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-random-' . cdate('Y-m-d'));
-                $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-order-' . cdate('Y-m-d'));
-                $this->cache->delete('theme/theme-random-' . cdate('Y-m-d'));
-                $this->cache->delete('theme/theme-order-' . cdate('Y-m-d'));
+                delete_cache_files('/theme','theme-');
                 $this->{$this->modelname}->update($this->input->post($primary_key), $updatedata);
                 $this->session->set_flashdata(
                     'message',
@@ -512,10 +509,7 @@ class Theme extends CB_Controller
             foreach ($this->input->post('chk') as $val) {
                 if ($val) {
                     $getdata = $this->{$this->modelname}->get_one($val);
-                    $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-random-' . cdate('Y-m-d'));
-                    $this->cache->delete('theme/theme-' . element('the_title', $getdata) . '-order-' . cdate('Y-m-d'));
-                    $this->cache->delete('theme/theme-random-' . cdate('Y-m-d'));
-                    $this->cache->delete('theme/theme-order-' . cdate('Y-m-d'));
+                    
                     if($this->{$this->modelname}->delete($val)){
                         if (element('the_image', $getdata)) {
                             // 기존 파일 삭제
@@ -533,7 +527,7 @@ class Theme extends CB_Controller
                 }
             }
         }
-
+        delete_cache_files('/theme','theme-');
         // 이벤트가 존재하면 실행합니다
         Events::trigger('after', $eventname);
 
@@ -584,6 +578,7 @@ class Theme extends CB_Controller
             'message',
             '정상적으로 삭제 되었습니다'
         );
+        delete_cache_files('/theme','theme-');
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir.'/write/' . $the_id. '?' . $param->output());
 
@@ -847,6 +842,8 @@ class Theme extends CB_Controller
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
 
+            delete_cache_files('/theme','theme-');
+
             /**
              * 게시물의 신규입력 또는 수정작업이 끝난 후 목록 페이지로 이동합니다
              */
@@ -891,6 +888,9 @@ class Theme extends CB_Controller
             'message',
             '정상적으로 삭제되었습니다'
         );
+        
+        delete_cache_files('/theme','theme-');
+
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '/lists/'.$the_id.'?' . $param->output());
         redirect($redirecturl);
