@@ -6304,6 +6304,11 @@ class Crawl extends CB_Controller
             $res = $this->Post_model->get_one('','post_id',array('post_title' => $post_title,'brd_id' => element('brd_id', $board)));
 
             if($res){
+
+                $updatedata = array(
+                    'post_del' => 0,
+                );
+                $this->Post_model->update($res['post_id'], $updatedata);
                 return $res['post_id'];
             }
 

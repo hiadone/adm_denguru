@@ -19,19 +19,19 @@ $hook['post_controller_constructor'][] = array(
 	'filepath'		=> 'hooks'
 );
 
-$hook['post_controller'][] = array(
-	'class'			=> '_Stat',
-	'function'		=> 'init',
-	'filename'		=> 'Stat.php',
-	'filepath'		=> 'hooks'
-);
+// $hook['post_controller'][] = array(
+// 	'class'			=> '_Stat',
+// 	'function'		=> 'init',
+// 	'filename'		=> 'Stat.php',
+// 	'filepath'		=> 'hooks'
+// );
 
-$hook['post_system'][] = array(
-	'class'			=> '_Scheduler',
-	'function'		=> 'init',
-	'filename'		=> 'Scheduler.php',
-	'filepath'		=> 'hooks'
-);
+// $hook['post_system'][] = array(
+// 	'class'			=> '_Scheduler',
+// 	'function'		=> 'init',
+// 	'filename'		=> 'Scheduler.php',
+// 	'filepath'		=> 'hooks'
+// );
 
 $hook['post_system'][] = array(
 	'class'			=> '_Member_dormant',
