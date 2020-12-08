@@ -31,6 +31,8 @@
 							<th>작성자</th>
 							<th>일시</th>
 							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">평점</a></th>
+							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">조회수</a></th>
+							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">추천수</a></th>
 							<th><a href="<?php echo element('cre_status', element('sort', $view)); ?>">승인</a></th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -49,6 +51,8 @@
 							<td><?php echo element('display_name', $result); ?> <?php if (element('mem_userid', $result)) { ?> ( <a href="?sfield=cmall_review.mem_id&amp;skeyword=<?php echo element('mem_id', $result); ?>"><?php echo html_escape(element('mem_userid', $result)); ?></a> ) <?php } ?></td>
 							<td><?php echo display_datetime(element('cre_datetime', $result), 'full'); ?></td>
 							<td><?php echo str_repeat('&#9733;', element('cre_score', $result)); ?></td>
+							<td><?php echo element('cre_hit', $result); ?></td>
+							<td><?php echo element('cre_like', $result); ?></td>
 							<td><?php echo (element('cre_status', $result)) ? '<button class="btn btn-xs btn-default">승인</button>' : '<button class="btn btn-xs btn-danger">미승인</button>'; ?></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>

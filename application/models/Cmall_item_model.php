@@ -342,6 +342,7 @@ class Cmall_item_model extends CB_Model
             $this->db->where('cmall_item.brd_id', $brd_id);
         $this->db->where('cit_status', 1);
         $this->db->where('cit_is_del', 0);
+        $this->db->where('cat_parent >', 0);
         $this->db->group_by('cat_value');
         $this->db->order_by('cnt', 'desc');
         if ($limit) {
