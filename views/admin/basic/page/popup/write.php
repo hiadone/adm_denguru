@@ -43,7 +43,7 @@
 					<input type="text" class="form-control datepicker" name="pop_end_date" value="<?php echo set_value('pop_end_date', element('pop_end_date', element('data', $view))); ?>" />
 				</div>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">팝업정렬</label>
 				<div class="col-sm-10">
 					<label class="radio-inline" for="pop_is_center_1">
@@ -53,8 +53,8 @@
 						<input type="radio" name="pop_is_center" id="pop_is_center_0" value="0" <?php echo set_radio('pop_is_center', '0', (element('pop_is_center', element('data', $view)) !== '1' ? true : false)); ?> /> 좌측정렬
 					</label>
 				</div>
-			</div>
-			<div class="form-group">
+			</div> -->
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">좌측위치</label>
 				<div class="col-sm-10">
 					<input type="number" class="form-control" name="pop_left" value="<?php echo set_value('pop_left', element('pop_left', element('data', $view))); ?>" />px - 좌측정렬시만 해당
@@ -91,7 +91,7 @@
 						<option value="1" <?php echo set_select('pop_page', '1', (element('pop_page', element('data', $view)) === '1' ? true : false)); ?>>모든페이지에서</option>
 					</select>
 				</div>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<label class="col-sm-2 control-label">시간</label>
 				<div class="col-sm-10">
@@ -109,12 +109,12 @@
 					</label>
 				</div>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">내용</label>
 				<div class="col-sm-10">
 					<?php echo display_dhtml_editor('pop_content', set_value('pop_content', element('pop_content', element('data', $view))), $classname = 'form-control dhtmleditor', $is_dhtml_editor = $this->cbconfig->item('use_popup_dhtml'), $editor_type = $this->cbconfig->item('popup_editor_type')); ?>
 				</div>
-			</div>
+			</div> -->
 			<div class="btn-group pull-right" role="group" aria-label="...">
 				<button type="button" class="btn btn-default btn-sm btn-history-back" >취소하기</button>
 				<button type="submit" class="btn btn-success btn-sm">저장하기</button>

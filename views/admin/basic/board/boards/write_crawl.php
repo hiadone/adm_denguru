@@ -55,9 +55,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">스토어 코멘트</label>
+                    <label class="col-sm-2 control-label">스토어 크롤링 코멘트</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control " name="brd_comment" value="<?php echo set_value('brd_comment', element('brd_comment', element('data', $view))); ?>" />
+                        <input type="text" class="form-control " name="brd_crawl_comment" value="<?php echo set_value('brd_crawl_comment', element('brd_crawl_comment', element('data', $view))); ?>" />
                     </div>
                 </div>
                 <div class="form-group">

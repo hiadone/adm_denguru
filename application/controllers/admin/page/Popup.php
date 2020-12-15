@@ -215,7 +215,7 @@ class Popup extends CB_Controller
 			array(
 				'field' => 'pop_is_center',
 				'label' => '팝업정렬',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'pop_left',
@@ -225,27 +225,27 @@ class Popup extends CB_Controller
 			array(
 				'field' => 'pop_top',
 				'label' => '상단위치',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'pop_width',
 				'label' => '팝업가로길이',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'pop_height',
 				'label' => '팝업세로길이',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'pop_device',
 				'label' => '팝업표시기기',
-				'rules' => 'trim|required',
+				'rules' => 'trim',
 			),
 			array(
 				'field' => 'pop_page',
 				'label' => '팝업이뜨는페이지',
-				'rules' => 'trim|required|numeric',
+				'rules' => 'trim|numeric',
 			),
 			array(
 				'field' => 'pop_disable_hours',
@@ -260,7 +260,7 @@ class Popup extends CB_Controller
 			array(
 				'field' => 'pop_content',
 				'label' => '팝업내용',
-				'rules' => 'trim|required',
+				'rules' => 'trim',
 			),
 		);
 

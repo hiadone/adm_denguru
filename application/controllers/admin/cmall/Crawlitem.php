@@ -2226,9 +2226,11 @@ class Crawlitem extends CB_Controller
                 $result['list'][$key]['brd_name'] = $this->board->item_id('brd_name',element('brd_id', $val));
                 $result['list'][$key]['brd_key'] = $this->board->item_id('brd_key',element('brd_id', $val));
 
+                if(element(element('brd_id', $val),element('avg_count',$result_2)))
+                    $result['list'][$key]['cit_count_avg'] = element(element('brd_id', $val),element('cit_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
 
-                $result['list'][$key]['cit_count_avg'] = element(element('brd_id', $val),element('cit_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
-                $result['list'][$key]['cit_is_del_count_avg'] = element(element('brd_id', $val),element('cit_is_del_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
+                if(element(element('brd_id', $val),element('avg_count',$result_2)))
+                    $result['list'][$key]['cit_is_del_count_avg'] = element(element('brd_id', $val),element('cit_is_del_count',$result_2)) / element(element('brd_id', $val),element('avg_count',$result_2));
                 
 
                 

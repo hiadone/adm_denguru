@@ -104,6 +104,12 @@ if (element('brd_id', element('data', $view))) {
 						<input type="text" class="form-control" id="brd_brand_text" name="brd_brand_text" value="<?php echo set_value('brd_brand_text', element('brd_brand_text', element('data', $view))); ?>" /> 
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">스토어코멘트</label>
+					<div class="col-sm-10 form-inline">
+						<input type="text" class="form-control" id="brd_comment" name="brd_comment" value="<?php echo set_value('brd_comment', element('brd_comment', element('data', $view))); ?>" /> 
+					</div>
+				</div>
 				<input type="hidden" name="<?php echo element('primary_key', $view); ?>"	value="<?php echo element(element('primary_key', $view), element('data', $view)); ?>" />
 							<div class="form-group">
 								<label class="col-sm-2 control-label">스토어이미지 업로드</label>

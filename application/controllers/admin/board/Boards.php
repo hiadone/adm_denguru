@@ -232,6 +232,11 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
+				'field' => 'brd_comment',
+				'label' => '스토어 코멘트',
+				'rules' => 'trim',
+			),
+			array(
 				'field' => 'board_layout',
 				'label' => '레이아웃',
 				'rules' => 'trim',
@@ -408,6 +413,7 @@ class Boards extends CB_Controller
 			$brd_brand = empty($brd_brand) ? 0 : element('cbr_id',$brd_brand);
 			$brd_search = $this->input->post('brd_search') ? $this->input->post('brd_search') : 0;
 			$brd_blind = $this->input->post('brd_blind') ? $this->input->post('brd_blind') : 0;
+			$brd_comment = $this->input->post('brd_comment') ? $this->input->post('brd_comment') : '';
 			$updatedata = array(
 				'bgr_id' => $this->input->post('bgr_id', null, ''),
 				'brd_key' => $this->input->post('brd_key', null, ''),
@@ -417,6 +423,7 @@ class Boards extends CB_Controller
 				'brd_order' => $brd_order,
 				'brd_search' => $brd_search,
 				'brd_blind' => $brd_blind,
+				'brd_comment' => $brd_comment,
 			);
 			if ($this->input->post('brd_image_del')) {
 				$updatedata['brd_image'] = '';
@@ -724,8 +731,8 @@ class Boards extends CB_Controller
 				'rules' => 'trim',
 			),
 			array(
-				'field' => 'brd_comment',
-				'label' => '스토어 코멘트',
+				'field' => 'brd_crawl_comment',
+				'label' => '스토어 크롤링 코멘트',
 				'rules' => 'trim',
 			),
 			array(
@@ -867,7 +874,7 @@ class Boards extends CB_Controller
 				'brd_goods_key' => $this->input->post('brd_goods_key', null, ''),
 				'brd_order_key' => $this->input->post('brd_order_key', null, ''),
 				'brd_url_key' => $this->input->post('brd_url_key', null, ''),
-				'brd_comment' => $this->input->post('brd_comment', null, ''),
+				'brd_crawl_comment' => $this->input->post('brd_crawl_comment', null, ''),
 				'brd_order_url' => $this->input->post('brd_order_url', null, ''),
 				'brd_register_url' => $this->input->post('brd_register_url', null, ''),
 
