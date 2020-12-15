@@ -6931,6 +6931,50 @@ class Crawl extends CB_Controller
         }
     }
 
+    function cmall_item_cit_version() {    
+        
+        
+        $updatedata = array(
+                    'cit_version' => 0,
+                );
+        $this->Cmall_item_model->update('', $updatedata,array('cit_version '=> 1));
+
+        $manual_tag = $this->Crawl_manual_tag_model->get('','cit_id');
+        $cit_id_arr = array();
+        if ($manual_tag && is_array($manual_tag)) {
+            
+            foreach ($manual_tag as $mvalue) {
+                if (element('cit_id', $mvalue)) {
+                   array_push($cit_id_arr,element('cit_id', $mvalue));
+                }
+            }
+        }
+
+        
+
+        $delete_tag = $this->Crawl_delete_tag_model->get('','cit_id');
+        
+        if ($delete_tag && is_array($delete_tag)) {
+            
+            foreach ($delete_tag as $dvalue) {
+                if (element('cit_id', $dvalue)) {
+                    array_push($cit_id_arr,element('cit_id', $dvalue));
+                }
+            }
+        }
+
+        if($cit_id_arr && is_array($cit_id_arr)){
+            foreach($cit_id_arr as $val){
+                $updatedata = array(
+                    'cit_version' => 1,
+                );
+                if(!empty($val))
+                    $this->Cmall_item_model->update($val, $updatedata);
+            }
+        }
+        
+    }
+
 
     function specialchars_replace($str){
 
@@ -6948,6 +6992,12 @@ class Crawl extends CB_Controller
         
 
         return $str;
+    }
+
+    function cmall_item_day_cron() {   
+
+        $this->cmall_item_count_history();
+        $this->cmall_item_cit_version();
     }
 }
 
