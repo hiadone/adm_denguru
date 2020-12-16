@@ -310,7 +310,7 @@ class Crawl extends CB_Controller
         
         
 
-        $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5' ;
+        $this->_select='cb_crawl_item.*,cb_crawl_detail.cdt_brand1,cb_crawl_detail.cdt_brand2,cb_crawl_detail.cdt_brand3,cb_crawl_detail.cdt_brand4,cb_crawl_detail.cdt_brand5,cdt_price,cdt_price_sale' ;
         $result = $this->get_admin_list('','',$brdwhere);
 
         $this->Cmall_item_model->reconnect();
@@ -322,7 +322,9 @@ class Crawl extends CB_Controller
                 $cbr_id = 0;
                 $_cbr_id = 0;
                 $filetype ='';
-                
+                $cit_price = 0;
+                $cit_price_sale = 0;
+
                 $where = array(
                     'brd_id' => element('brd_id', $val),
                     'cit_goods_code' => element('crw_goods_code', $val),
@@ -406,20 +408,26 @@ class Crawl extends CB_Controller
                     
                     }
 
+                    $cit_price = preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val)));
+
+                    if(empty($cit_price)) $cit_price = preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('cdt_price',$val)));
+
+                    $cit_price_sale = preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val)));
+                    if(empty($cit_price_sale)) $cit_price_sale = preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('cdt_price_sale',$val)));
 
                     $updatedata = array(
                         
                         'post_id' => $_post_id,
                         'cit_name' => element('crw_name',$val),
                         'cit_summary' => element('crawl_sub_title',$val,'') ,
-                        'cit_price' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price',$val))) ,
+                        'cit_price' => $cit_price ,
                         'cit_updated_datetime' => cdate('Y-m-d H:i:s'),                    
                         'cit_post_url' => element('crw_post_url',$val,''),
                         'cit_is_soldout' => element('crw_is_soldout', $val),
                         // 'cit_status' => element('is_del', $val) ? 0 : element('cit_status',$item) ,
                         // 'cit_status' => 1,
                         'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
-                        'cit_price_sale' => preg_replace("/[^0-9]*/s", "", str_replace("&#8361;","",element('crw_price_sale',$val))) ,
+                        'cit_price_sale' => $cit_price_sale ,
                         // 'cit_type1' => element('cit_type1', $ivalue) ? 1 : 0,
                         // 'cit_type2' => element('cit_type2', $ivalue) ? 1 : 0,
                         'cit_type3' => $is_new ? 1 : 0,
@@ -5026,6 +5034,8 @@ class Crawl extends CB_Controller
        
 
         $cdt_content = $this->input->post('cdt_content');
+        $cdt_price = $this->input->post('cdt_price');
+        $cdt_price_sale = $this->input->post('cdt_price_sale');
 
         $DB2 = $this->load->database('db2', TRUE);
 
@@ -5035,6 +5045,8 @@ class Crawl extends CB_Controller
             'crw_id' => $crw_id,
             'cdt_content' => $cdt_content,
             'brd_id' => $brd_id,
+            'cdt_price' => $cdt_price,
+            'cdt_price_sale' => $cdt_price_sale,
             'cdt_datetime' => cdate('Y-m-d H:i:s'),
             'cdt_updated_datetime' => cdate('Y-m-d H:i:s'),
             

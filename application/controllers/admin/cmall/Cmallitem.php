@@ -80,7 +80,7 @@ class Cmallitem extends CB_Controller
             'cit_wish_count' => $param->sort('cit_wish_count', 'asc'),
             'cit_price' => $param->sort('cit_price', 'asc'),
             'cit_status' => $param->sort('cit_status', 'asc'),
-            'cit_order'.$this->input->get('cit_type') => $param->sort('(0.1/cit_order'.$this->input->get('cit_type').')', 'asc'),
+            'cit_order'.$this->input->get('cit_type') => $param->sort('(0.1/cit_order'.$this->input->get('cit_type').')', 'desc'),
 
         );
         $findex = $this->input->get('findex') ? $this->input->get('findex') : $this->{$this->modelname}->primary_key;
