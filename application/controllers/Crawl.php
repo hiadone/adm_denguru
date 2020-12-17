@@ -5607,7 +5607,7 @@ class Crawl extends CB_Controller
     }
 
 
-    public function order_html_write_file($brd_id,$mem_id=2)
+    public function order_html_write_file($brd_id,$mem_id=0)
     {   
 
  
@@ -5950,7 +5950,7 @@ class Crawl extends CB_Controller
     }
 
 
-    public function orderstatus_html_write_file($brd_id,$mem_id=2,$cor_id=0)
+    public function orderstatus_html_write_file($brd_id,$mem_id=0,$cor_id=0)
     {   
 
         
