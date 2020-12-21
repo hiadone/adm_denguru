@@ -5623,6 +5623,7 @@ class Crawl extends CB_Controller
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -5630,21 +5631,25 @@ class Crawl extends CB_Controller
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($mem_id)) {
             $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($this->input->post('pointer_url'))) {
             $result = array('resultcode'=>1002,'message' => 'pointer_url 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($this->input->post('data'))) {
             $result = array('resultcode'=>1003,'message' => 'data 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -5728,7 +5733,7 @@ class Crawl extends CB_Controller
             
             
             $result = array('resultcode'=>2,'message' => '오류 입니다 cor_key 없습니다..');
-                    log_message('error', $result['message']);
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             
 
@@ -5827,6 +5832,7 @@ class Crawl extends CB_Controller
 
             if ( ! element('mem_id', $member)) {
                 $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
@@ -5855,7 +5861,7 @@ class Crawl extends CB_Controller
             
             if(empty($cor_id)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
-                log_message('error', $result['message']);
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
@@ -5877,13 +5883,13 @@ class Crawl extends CB_Controller
             
 
             // $this->insert_order($brd_id,$mem_id,$cor_key,$cor_key,$cor_pay_type);
-            log_message('error', $result['message']);
+            
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
-                log_message('error', $result['message']);
+        log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
 
@@ -5900,6 +5906,7 @@ class Crawl extends CB_Controller
 
         if (empty($cor_id)) {
             $result = array('resultcode'=>1001,'message' => 'cor_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
@@ -5921,6 +5928,7 @@ class Crawl extends CB_Controller
 
         if ( ! element('cor_id', $result_order)) {
             $result = array('resultcode'=>1000,'message' => '없는 cor_id 입니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -5945,7 +5953,7 @@ class Crawl extends CB_Controller
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
-                
+        log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 
@@ -5964,6 +5972,7 @@ class Crawl extends CB_Controller
 
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
@@ -5971,16 +5980,19 @@ class Crawl extends CB_Controller
 
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($mem_id)) {
             $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
 
         if (empty($this->input->post('data'))) {
             $result = array('resultcode'=>1003,'message' => 'data 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
@@ -5990,6 +6002,7 @@ class Crawl extends CB_Controller
 
         $board_crawl = $this->Board_crawl_model->get_one('','brd_id,brd_order_key',$crawlwhere);
         if ( ! element('brd_id', $board_crawl)) {
+            log_message('error', 'msg: 없는 brd_id 입니다 pointer:'.current_url());
             show_404();
         }
 
@@ -6092,6 +6105,7 @@ class Crawl extends CB_Controller
 
             if ( ! element('mem_id', $member)) {
                 $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
@@ -6100,6 +6114,7 @@ class Crawl extends CB_Controller
             
             if ( ! element('cor_id', $order)) {
                 log_message('error', $cor_id. '은 없는 cor_id 입니다');
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
                 // $result = array('resultcode'=>1003,'message' => '없는 cor_order_no 입니다.');
                 // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
@@ -6125,6 +6140,7 @@ class Crawl extends CB_Controller
            
             if(empty($cor_id_)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
                 exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
 
@@ -6144,7 +6160,7 @@ class Crawl extends CB_Controller
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
-                
+        log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
 
@@ -6162,6 +6178,7 @@ class Crawl extends CB_Controller
 
         if (empty($cos_id)) {
             $result = array('resultcode'=>1001,'message' => 'cos_id 가 없습니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
@@ -6184,6 +6201,7 @@ class Crawl extends CB_Controller
 
         if ( ! element('cos_id', $result_order)) {
             $result = array('resultcode'=>1000,'message' => '없는 cos_id 입니다.');
+            log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
@@ -6213,7 +6231,7 @@ class Crawl extends CB_Controller
 
 
         $result = array('resultcode'=>2,'message' => '오류 입니다.');
-                
+        log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
     }
 

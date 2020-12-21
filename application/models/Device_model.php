@@ -27,5 +27,19 @@ class Device_model extends CB_Model
         parent::__construct();
     }
 
-    
+    public function get_admin_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR',$where_in = '')
+    {
+
+        $join = array();
+        
+        $select = 'device.*';        
+        $join[] = array('table' => 'member', 'on' => 'member.mem_id = device.mem_id', 'type' => 'inner');
+        $join[] = array('table' => 'member_group_member', 'on' => 'member.mem_id = member_group_member.mem_id', 'type' => 'left');
+
+        
+        
+        $result = $this->_get_list_common($select, $join, $limit, $offset, $where, $like, $findex, $forder, $sfield, $skeyword, $sop,$where_in);
+
+        return $result;
+    }
 }

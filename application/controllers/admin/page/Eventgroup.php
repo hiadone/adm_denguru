@@ -605,7 +605,7 @@ class Eventgroup extends CB_Controller
         if (element('list', $result)) {
             foreach (element('list', $result) as $key => $val) {
                 $countwhere = array(
-                    'target_mem_id' => element('mem_id', $val),
+                    'mem_id' => element('mem_id', $val),
                     'not_type' => 'event',
                     'not_content_id' => element('egr_id',$getdata),
                     
@@ -619,9 +619,9 @@ class Eventgroup extends CB_Controller
                 $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
                 $not_url = $protocol.'://api.denguru.kr/event/post/'.element('egr_id', $getdata); 
 
-                $this->notificationlib->set_noti(
-                    1,
+                $this->notificationlib->set_noti(                    
                     element('mem_id', $val),
+                    1,
                     'event',
                     element('egr_id',$getdata),
                     element('egr_title',$getdata),

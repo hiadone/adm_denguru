@@ -888,6 +888,7 @@ class Denguruapi extends CI_Controller
         
 
         $data['pet_id'] = element('pet_id',$pet);
+        $data['pet_main'] = element('pet_main',$pet);
         $data['pet_name'] = element('pet_name',$pet);
         $data['pet_birthday'] = element('pet_birthday',$pet);
         $data['pet_age'] = date('Y') - cdate('Y',strtotime($data['pet_birthday']));

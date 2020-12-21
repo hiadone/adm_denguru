@@ -51,7 +51,7 @@ class Main extends CB_Controller
 		
 		
 
-
+		
 		// $str = array();
 		// for($i=0;$i < 300000;$i+=10000){
 		// 	$str[] = 'sum(case when cit_price_sale > 0 then (case when cit_price_sale > '.$i.' and cit_price_sale <= '.($i+10000).' then 1 else 0 end)  else (case when cit_price > '.$i.' and cit_price <= '.($i+10000).' then 1 else 0 end) end) '.($i+10000).'under';
@@ -207,7 +207,7 @@ class Main extends CB_Controller
 
 		$tokenData['mem_id'] = $mem_id; //TODO: Replace with data for token
 		$output['token'] = AUTHORIZATION::generateToken($tokenData);
-		// echo $output['token'];
+		echo $output['token'];
 		$view = array();
 		$view['view'] = array();
 

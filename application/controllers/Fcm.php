@@ -736,21 +736,23 @@ class Fcm extends CB_Controller
         require_once(FCPATH . 'plugin/google/fcm/vendor/autoload.php'); 
 
         // Instantiate the client with the project api_token and sender_id.
-        $client = new \Fcm\FcmClient('AAAAaivHH_A:APA91bGIDphtINACFbgdHcTjDHA24u4M2PjcpbnCoLxzw5Jtvhdrh0Cxm1Qq-5iA5wE_jLEriATTvA1-6SQUjigW4YwL3mDqpQNt_Cgb_3wzepxHwyRnFOC4AjT9x-X28mcqcJ__hnLn', '');
+        $client = new \Fcm\FcmClient('AAAAdz4rKCU:APA91bGkXxjgopvZQ-jAJosF8XP5VE_qGuAusAy2u4P2Z6SvGeNsXo803a5BpV5RldbiYlf_YTOvPzRg4xHm8pxcfHatc0Li_FlmXEeP9l4Il-VtronzRnlUPQPHIqI4uk9XpHWjSAxS', '');
 
         // $notification = new \Fcm\Push\Notification();
-        $notification = new \Fcm\Push\Data();
+        $notification = new \Fcm\Push\Notification();
 
         if(element('dev_token',$token)){
             
             // Enhance the notification object with our custom options.
             $notification
-                ->addRecipient(element('dev_token',$token))
-                // ->setTitle($fcm_title)
-                // ->setBody($fcm_message)
-                ->addData('title', $fcm_title)
-                ->addData('msg', $fcm_message)                
-                ->addData('link', 'https://secretvt.com/assets/images/temp/favi02.png')
+                ->addRecipient('fvetjC6SuPI:APA91bGjepUPF50lWWz7DHZEbX06QZUlj2DmZrzcqM_PK0KQdiCFU9NF7b2r5aLiYKdCW3maa_Rhcb0z3hqSe57AP6hhzC6eAuEoDaAj-nQcwGkafItV1dxoFlVDFykb586xmD--tck6')
+                // ->addRecipient(element('dev_token',$token))
+                ->setTitle($fcm_title)
+                ->setBody($fcm_message)                
+                // ->addData('title', $fcm_title)
+                // ->addData('msg', $fcm_message)                
+                ->addData('category', 'https://naver.com')
+                ->addData('icon', '/assets/images/favi.png')
                 ;
 
             // Send the notification to the Firebase servers for further handling.
@@ -793,15 +795,16 @@ class Fcm extends CB_Controller
         } elseif($fcm_target ==='2'){
             $where['mem_denied'] = 0;            
             
-            $result = $this->Member_model->get_admin_list('','', $where);
-            $return ='';
+            $result = $this->Device_model->get_admin_list('','', $where);
+            $return = array();
             if (element('list', $result)) {
-                foreach (element('list', $result) as $key => $val) {
+                foreach (element('list', $result) as $key => $val) {                    
                     $return['mem_id'][$key] = element('mem_id',$val);
-                    $return['dev_token'][$key] = element('mem_token',$val);
+                    $return['dev_token'][$key] = element('dev_token',$val);
                     
                 }
             }
+            
             return $return;
 
         } elseif($fcm_target ==='3'){
