@@ -6113,8 +6113,8 @@ class Crawl extends CB_Controller
             $order = $this->Cmall_order_model->get_one($cor_id,'cor_order_no');
             
             if ( ! element('cor_id', $order)) {
-                log_message('error', $cor_id. '은 없는 cor_id 입니다');
-                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
+                
+                log_message('error', 'msg:'.$cor_id. '은 없는 cor_id 입니다' .' pointer:'.current_url());
                 // $result = array('resultcode'=>1003,'message' => '없는 cor_order_no 입니다.');
                 // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
