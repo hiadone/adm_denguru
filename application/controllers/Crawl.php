@@ -6149,7 +6149,7 @@ class Crawl extends CB_Controller
             $cmd=FCPATH.'python/bin/start.orderstatus.sh '.$cor_id_;
             // echo $cmd;
             @exec($cmd, $output, $retval);
-
+            print_r2($output);
             // chmod($write_file_path, 0644);
             $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
                     
