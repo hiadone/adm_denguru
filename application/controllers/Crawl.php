@@ -5409,6 +5409,7 @@ class Crawl extends CB_Controller
         
 
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+        log_message('error', $result);
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
     }
@@ -6110,13 +6111,13 @@ class Crawl extends CB_Controller
             }
 
 
-            $order = $this->Cmall_order_model->get_one($cor_id,'cor_order_no');
+            $order = $this->Cmall_order_model->get_one($cor_id,'cor_order_no,cor_id');
             
             if ( ! element('cor_id', $order)) {
                 
                 log_message('error', 'msg:'.$cor_id. '은 없는 cor_id 입니다' .' pointer:'.current_url());
                 // $result = array('resultcode'=>1003,'message' => '없는 cor_order_no 입니다.');
-                // exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
             }
             
             
