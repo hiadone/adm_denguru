@@ -5974,7 +5974,10 @@ class Crawl extends CB_Controller
         if (empty($brd_id)) {
             $result = array('resultcode'=>1001,'message' => 'brd_id 가 없습니다.');
             log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            $status = 400;
+            $this->output->set_status_header($status);
+            $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+            exit($this->output->_display());
         }
 
         $board = $this->board->item_all($brd_id);
@@ -5982,19 +5985,28 @@ class Crawl extends CB_Controller
         if ( ! element('brd_id', $board)) {
             $result = array('resultcode'=>1001,'message' => '잘못된  brd_id 입니다..');
             log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            $status = 400;
+            $this->output->set_status_header($status);
+            $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+            exit($this->output->_display());
         }
 
         if (empty($mem_id)) {
             $result = array('resultcode'=>1000,'message' => 'mem_id 가 없습니다.');
             log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            $status = 400;
+            $this->output->set_status_header($status);
+            $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+            exit($this->output->_display());
         }
 
         if (empty($this->input->post('data'))) {
             $result = array('resultcode'=>1003,'message' => 'data 가 없습니다.');
             log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            $status = 400;
+            $this->output->set_status_header($status);
+            $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+            exit($this->output->_display());
         }
         
         $crawlwhere = array(
@@ -6107,7 +6119,10 @@ class Crawl extends CB_Controller
             if ( ! element('mem_id', $member)) {
                 $result = array('resultcode'=>1000,'message' => '없는 mem_id 입니다.');
                 log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                $status = 400;
+                $this->output->set_status_header($status);
+                $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+                exit($this->output->_display());
             }
 
 
@@ -6117,7 +6132,10 @@ class Crawl extends CB_Controller
             if ( ! element('cor_id', $order)) {                
                 log_message('error', 'msg:'.$cor_id. '은 없는 cor_id 입니다' .' pointer:'.current_url());
                 $result = array('resultcode'=>1003,'message' => '없는 cor_id 입니다.');
-                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                $status = 400;
+                $this->output->set_status_header($status);
+                $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+                exit($this->output->_display());
             }
             
             
@@ -6142,7 +6160,10 @@ class Crawl extends CB_Controller
             if(empty($cor_id_)){
                 $result = array('resultcode'=>9000,'message' => 'DB 입력시 알 수 없는 오류가 발생하였습니다.');
                 log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-                exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+                $status = 400;
+                $this->output->set_status_header($status);
+                $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+                exit($this->output->_display());
             }
 
             $retval = 1;
@@ -6150,19 +6171,35 @@ class Crawl extends CB_Controller
             $cmd=FCPATH.'python/bin/start.orderstatus.sh '.$cor_id_;
             // echo $cmd;
             @exec($cmd, $output, $retval);
-            print_r2($output);
+            
             // chmod($write_file_path, 0644);
-            $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
+            
+            if($output[0]){
+                $status = 200;
+                $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');    
+                $this->Cmall_order_model->update($cor_id,array('cor_status' =>1));
+            } else {
+                $status = 400;                
+                $result = array('resultcode'=>3,'message' => 'update_order 오류 입니다.');
+                log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url()); 
+            }
+            
                     
-            $this->Cmall_order_model->update($cor_id,array('cor_status' =>1));
+            
                     
-            exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+            
+            $this->output->set_status_header($status);
+            $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+            exit($this->output->_display());
         }
 
 
-        $result = array('resultcode'=>2,'message' => '오류 입니다.');
+        $result = array('resultcode'=>2,'message' => '알수 없는 오류 입니다.');
         log_message('error', 'msg:'.$result['message'] .' pointer:'.current_url());
-        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
+        $status = 400;
+        $this->output->set_status_header($status);
+        $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
+        exit($this->output->_display());
         
 
         
