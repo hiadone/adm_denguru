@@ -5411,8 +5411,8 @@ class Crawl extends CB_Controller
         
         
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-        $this->output->set_status_header($status);
-        $this->output->set_output(json_encode($response,JSON_UNESCAPED_UNICODE));
+        $this->output->set_status_header(200);
+        $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
         $this->output->_display();
         exit;
         
