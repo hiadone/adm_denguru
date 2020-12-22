@@ -5407,15 +5407,10 @@ class Crawl extends CB_Controller
             exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         }
         
-        
-        
-        
+
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-        $this->output->set_status_header(200);
-        $this->output->set_output(json_encode($result,JSON_UNESCAPED_UNICODE));
-        $this->output->_display();
-        exit;
-        
+        log_message('error', 'msg:'.$result['resultcode'].$result['message'] .' pointer:'.current_url());
+        exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
     }
 
