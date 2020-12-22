@@ -6174,7 +6174,7 @@ class Crawl extends CB_Controller
             
             // chmod($write_file_path, 0644);
             
-            if($output[0]){
+            if(!empty($output[0])){
                 $status = 200;
                 $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');    
                 $this->Cmall_order_model->update($cor_id,array('cor_status' =>1));
