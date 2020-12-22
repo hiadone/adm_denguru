@@ -5358,6 +5358,11 @@ class Crawl extends CB_Controller
         $mod_history = '';
         $mod_history .= date('Y-m-d H:i:s', time()).' '.$mem_id.' 주문'.element('cor_memo',$updatedata,'').' 처리'."\n";
         
+        if ( ! element('cor_memo', $updatedata)) {
+            $result = array('resultcode'=>1004,'message' => '없는 cor_memo 입니다.');
+            exit(json_encode($result));
+        }
+
         if($mod_history){
 
             $mod_history = $order['cor_order_history'].$mod_history;
