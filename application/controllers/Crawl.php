@@ -5409,7 +5409,7 @@ class Crawl extends CB_Controller
         
 
         $result = array('resultcode'=>1,'message' => '정상적으로 입력되었습니다.');
-
+        echo "aaaa";
         exit(json_encode($result,JSON_UNESCAPED_UNICODE));
         
     }
