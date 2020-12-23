@@ -435,6 +435,7 @@ class Banner extends CB_Controller
 			// 이벤트가 존재하면 실행합니다
 			Events::trigger('after', $eventname);
 
+			delete_cache_files('/banner','banner-');
 			/**
 			 * 게시물의 신규입력 또는 수정작업이 끝난 후 목록 페이지로 이동합니다
 			 */
@@ -586,6 +587,9 @@ class Banner extends CB_Controller
 			'message',
 			'정상적으로 삭제되었습니다'
 		);
+
+		delete_cache_files('/banner','banner-');
+
 		$param =& $this->querystring;
 		$redirecturl = admin_url($this->pagedir . '?' . $param->output());
 		redirect($redirecturl);
