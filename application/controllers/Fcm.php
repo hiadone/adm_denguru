@@ -378,6 +378,11 @@ class Fcm extends CB_Controller
                 'label' => '메세지',
                 'rules' => 'trim|required',
             ),
+            array(
+                'field' => 'fcm_deeplinkinfo',
+                'label' => '딥링크 정보',
+                'rules' => 'trim|required',
+            ),
         );
 
 
@@ -446,6 +451,7 @@ class Fcm extends CB_Controller
 
             $fcm_title = $this->input->post('fcm_title', null, '');
             $fcm_message = $this->input->post('fcm_message', null, '');
+            $fcm_deeplinkinfo = $this->input->post('fcm_deeplinkinfo', null, '');
             $fcm_target =  $this->input->post('fcm_target', null, '');
             $fcm_target_group =  json_encode($this->input->post('fcm_target_group', null, ''));
             $fcm_send_date = $this->input->post('fcm_send_date', null, '');
@@ -454,6 +460,7 @@ class Fcm extends CB_Controller
                 
                 'fcm_title' => $fcm_title,
                 'fcm_message' => $fcm_message,
+                'fcm_deeplinkinfo' => $fcm_deeplinkinfo,
                 'fcm_target' => $fcm_target,
                 'fcm_reg_date' => date('Y-m-d H:i:s'),
                 'fcm_send_date' => $fcm_send_date,
@@ -481,7 +488,7 @@ class Fcm extends CB_Controller
              * 게시물의 신규입력 또는 수정작업이 끝난 후 뷰 페이지로 이동합니다
              */
             $redirecturl = base_url('/fcm/lists/');
-            // redirect($redirecturl);
+            redirect($redirecturl);
         }
     }
 
@@ -784,7 +791,7 @@ class Fcm extends CB_Controller
         if($fcm_target ==='1'){
             $result = $this->Device_model
                 ->get_list('','', $where);
-            $return ='';
+            $return = array();
             if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val) {
                     $return['mem_id'][$key] = element('mem_id',$val);
@@ -816,7 +823,7 @@ class Fcm extends CB_Controller
             $this->Member_model->allow_order_field = array('member.mem_id'); // 정렬이 가능한 필드
             $result = $this->Member_model->get_admin_list('','', $where,'','member.mem_id','','','','',$where_in);
 
-            $return ='';
+            $return = array();
             if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val) {
                     $return['mem_id'][$key] = element('mem_id',$val);

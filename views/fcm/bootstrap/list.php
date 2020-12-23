@@ -60,8 +60,9 @@
 					
 					<th>번호</th>
 					<th>제목</th>
-					<!-- <th>메세지</th> -->
+					<th>메세지</th>
 					<th>타켓</th>
+					<th>딥링크정보</th>
 					<th>전송날짜</th>
 					<th >전송결과</th>
 					<th>action</th>
@@ -79,7 +80,7 @@
 					<td>
 						<a href="<?php echo element('post_url', $result); ?>" style="" title="<?php echo html_escape(element('fcm_title', $result)); ?>"><?php echo html_escape(element('fcm_title', $result)); ?></a>						
 					</td>
-					<!-- <td><?php echo element('fcm_message', $result); ?></td> -->
+					<td><?php echo element('fcm_message', $result); ?></td>
 					<td>
 						<?php
 
@@ -107,6 +108,7 @@
 						}
 						?>
 						</td>
+					<td><?php echo element('fcm_deeplinkinfo', $result); ?></td>
 					<td><?php echo element('display_send_date', $result); ?></td>
 					<td style="width:300px;word-break:break-all"><?php echo element('fcm_result', $result); ?></td>
 					<td>

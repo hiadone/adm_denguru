@@ -450,7 +450,7 @@ class Notice extends CB_Controller
             
 
 
-            delete_cache_files('/notice','notice-info-');
+            delete_cache_files('/notice','notice-');
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
 
@@ -511,7 +511,7 @@ class Notice extends CB_Controller
             '정상적으로 삭제되었습니다'
         );
 
-        delete_cache_files('/notice','notice-info-');
+        delete_cache_files('/notice','notice-');
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
 

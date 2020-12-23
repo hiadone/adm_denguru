@@ -64,6 +64,13 @@ if (element('syntax_highlighter', element('board', $view)) OR element('comment_s
 				<?php echo element('fcm_message', element('post', $view)) ?>
 			</label>
 		</div>
+
+		<div class="form-group">
+			<label for="fcm_deeplinkinfo" class="col-sm-2 control-label">딥링크 정보</label>
+			<label class="col-sm-10" style="padding-top:7px;" >
+				<?php echo element('fcm_deeplinkinfo', element('post', $view)) ?>
+			</label>
+		</div>
 		
 		<div class="border_button text-center mt20">
 			<a href="<?php echo element('list_url', $view); ?>" class="btn btn-default btn-sm">목록</a>

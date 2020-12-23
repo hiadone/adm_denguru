@@ -74,6 +74,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 
+			<div class="form-group">
+				<label for="fcm_deeplinkinfo" class="col-sm-2 control-label">딥링크정보</label>
+				<div class="col-sm-10" style="display:table;">
+					<?php echo display_dhtml_editor('fcm_deeplinkinfo', set_value('fcm_deeplinkinfo', element('fcm_deeplinkinfo', element('post', $view))), $classname = 'form-control ', $is_dhtml_editor = false, $editor_type = $this->cbconfig->item('post_editor_type')); ?>
+				</div>
+			</div>
+
 			<div class="border_button text-center mt20">
 				<button type="button" class="btn btn-default btn-sm btn-history-back">취소</button>
 				<button type="submit" class="btn btn-success btn-sm">작성완료</button>
