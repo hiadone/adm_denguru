@@ -1,4 +1,4 @@
-<?php
+cdt_price<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -5034,8 +5034,8 @@ class Crawl extends CB_Controller
        
 
         $cdt_content = $this->input->post('cdt_content');
-        $cdt_price = $this->input->post('cdt_price');
-        $cdt_price_sale = $this->input->post('cdt_price_sale');
+        $cdt_price = $this->input->post('cdt_price',null,0);
+        $cdt_price_sale = $this->input->post('cdt_price_sale',null,0);
 
         $DB2 = $this->load->database('db2', TRUE);
 

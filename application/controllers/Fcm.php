@@ -476,9 +476,11 @@ class Fcm extends CB_Controller
             );
             
             
+
+            
             $fcm_send_list =  $this->_get_fcm_send_list($fcm_target,$this->input->post('fcm_target_group', null, ''));
             
-            $this->sendFCMMessage($fcm_id,$fcm_send_list,$fcm_title,$fcm_message);
+            $this->sendFCMMessage($fcm_id,$fcm_send_list,$fcm_title,$fcm_message,$fcm_deeplinkinfo);
             
 
             // 이벤트가 존재하면 실행합니다
@@ -488,7 +490,7 @@ class Fcm extends CB_Controller
              * 게시물의 신규입력 또는 수정작업이 끝난 후 뷰 페이지로 이동합니다
              */
             $redirecturl = base_url('/fcm/lists/');
-            redirect($redirecturl);
+            // redirect($redirecturl);
         }
     }
 
@@ -732,7 +734,7 @@ class Fcm extends CB_Controller
     }
 
 
-    public function sendFCMMessage($fcm_id = 0,$token = array(),$fcm_title='',$fcm_message='')
+    public function sendFCMMessage($fcm_id = 0,$token = array(),$fcm_title='',$fcm_message='',$fcm_deeplinkinfo='')
     {   
 
 
@@ -740,36 +742,134 @@ class Fcm extends CB_Controller
         $eventname = 'event_sendFCMMessage';
         $this->load->event($eventname);
 
-        require_once(FCPATH . 'plugin/google/fcm/vendor/autoload.php'); 
+        // require_once(FCPATH . 'plugin/google/fcm/vendor/autoload.php'); 
 
-        // Instantiate the client with the project api_token and sender_id.
-        $client = new \Fcm\FcmClient('AAAAdz4rKCU:APA91bGkXxjgopvZQ-jAJosF8XP5VE_qGuAusAy2u4P2Z6SvGeNsXo803a5BpV5RldbiYlf_YTOvPzRg4xHm8pxcfHatc0Li_FlmXEeP9l4Il-VtronzRnlUPQPHIqI4uk9XpHWjSAxS', '');
+        // // Instantiate the client with the project api_token and sender_id.
+        // $client = new \Fcm\FcmClient('AAAAdz4rKCU:APA91bGkXxjgopvZQ-jAJosF8XP5VE_qGuAusAy2u4P2Z6SvGeNsXo803a5BpV5RldbiYlf_YTOvPzRg4xHm8pxcfHatc0Li_FlmXEeP9l4Il-VtronzRnlUPQPHIqI4uk9XpHWjSAxS', '');
 
+        // // $notification = new \Fcm\Push\Notification();
         // $notification = new \Fcm\Push\Notification();
-        $notification = new \Fcm\Push\Notification();
+
+        // if(element('dev_token',$token)){
+            
+        //     // Enhance the notification object with our custom options.
+        //     $notification
+        //         ->addRecipient('cEVVnSEfRoulvZvy864zqE:APA91bH1o-3Is988xdtde7C01nx7R2r3YbPS569sXbhA1rgUv5XKlMg25d9u7h2bEmMVV7fi7IBE9wRyudCXVbWx6TyLMHTC22TNNnkgcnREvP64WjgkgFpi9OQ6XfOdeB8j3NICSGOl')
+        //         // ->addRecipient(element('dev_token',$token))
+        //         // ->setTitle($fcm_title)
+        //         // ->setBody($fcm_message)    
+        //         ->setTitle('Hello from php-fcm!')
+        //             ->setBody('Notification body')
+        //             // ->setColor('#20F037')
+        //             // ->setSound("default")
+        //             // ->setIcon("myIcon.png")
+        //             ->addData('key', 'value');            
+        //         // ->setIcon('https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico')
+        //         // ->addData('title', $fcm_title)
+        //         // ->addData('body', $fcm_message)                
+        //         // ->addData('category', 'https://naver.com')
+        //         // ->addData('icon', 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico')
+        //         ;
+
+        //     // Send the notification to the Firebase servers for further handling.
+        //     $result = $client->send($notification);
+
+        //     unset($result['results']);
+
+            
+        //     $updatedata = array(                
+        //         'fcm_result' => json_encode($result),
+        //     );
+                
+        //     // 이벤트가 존재하면 실행합니다
+        //     Events::trigger('before_post_update', $eventname);
+
+        //     $this->Fcm_model->update($fcm_id, $updatedata);
+
+            
+            
+        // }
 
         if(element('dev_token',$token)){
+
+
+            $tokens = array();
+            $tokens[0] = 'cEVVnSEfRoulvZvy864zqE:APA91bH1o-3Is988xdtde7C01nx7R2r3YbPS569sXbhA1rgUv5XKlMg25d9u7h2bEmMVV7fi7IBE9wRyudCXVbWx6TyLMHTC22TNNnkgcnREvP64WjgkgFpi9OQ6XfOdeB8j3NICSGOl';
+            // 
+            // 
+            $tokens[1] = 'fwifimrNTBqdjGXF4uWB7R:APA91bFo0vrNe1S7K1cga4rEkzmo4blbkNWHF3nrVp5G4oSLLVktpVz06Hmjb00lQvrR0BeL7M1SJ0iJ2cMRLEii6zzc7OZIEai3XeQkottTItTWSCiWmHVmdjZk_0pzN_k7hQh6bQpm';
             
-            // Enhance the notification object with our custom options.
-            $notification
-                ->addRecipient('fvetjC6SuPI:APA91bGjepUPF50lWWz7DHZEbX06QZUlj2DmZrzcqM_PK0KQdiCFU9NF7b2r5aLiYKdCW3maa_Rhcb0z3hqSe57AP6hhzC6eAuEoDaAj-nQcwGkafItV1dxoFlVDFykb586xmD--tck6')
-                // ->addRecipient(element('dev_token',$token))
-                ->setTitle($fcm_title)
-                ->setBody($fcm_message)                
-                // ->addData('title', $fcm_title)
-                // ->addData('msg', $fcm_message)                
-                ->addData('category', 'https://naver.com')
-                ->addData('icon', '/assets/images/favi.png')
-                ;
+            // foreach(element('dev_token',$token) as $val){
+            //     array_push($tokens,$val);
+            // }
+            
+            
+            
+            // 헤더 부분
+            $headers = array(
+                'Content-Type:application/json',
+                'Authorization:key=AAAAdz4rKCU:APA91bGkXxjgopvZQ-jAJosF8XP5VE_qGuAusAy2u4P2Z6SvGeNsXo803a5BpV5RldbiYlf_YTOvPzRg4xHm8pxcfHatc0Li_FlmXEeP9l4Il-VtronzRnlUPQPHIqI4uk9XpHWjSAxS'
+            );
 
-            // Send the notification to the Firebase servers for further handling.
-            $result = $client->send($notification);
+            // 발송 내용
+            $arr   = array();
+            $arr['notification'] = array();
+            $arr['notification']['title'] = '제목';
+            $arr['notification']['body'] = '내용';
+            
+            // $arr['notification']['badge'] = '1';
+            // $arr['notification']['tag'] = '1';  // 개별로 보낼때 이름을 다르게
+            // $arr['notification']['priority'] = 'high';  // 안드로이드 8이상 추가
+            // $arr['notification']['content_available'] = true;  // 안드로이드 8이상 추가
 
-            unset($result['results']);
+            $arr['data'] = array();
+
+
+            $fcm_deeplinkinfo = json_decode($fcm_deeplinkinfo,true);
+
+            
+            
+            $arr['data'] = $fcm_deeplinkinfo;
+            $arr['data']['message'] = '내용11'; // 내부에서 받을 시
+            $arr['data']['icon'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico'; // 내부에서 받을 시
+
+            $arr['registration_ids'] = array();
+            $arr['registration_ids'] = $tokens;
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,    'https://fcm.googleapis.com/fcm/send');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($arr));
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            // 푸쉬 전송에 대한 결과를 수신
+            $obj = json_decode($response);
+
+            
+            // 전송 성공 및 실패한 갯수
+            $suc_cnt = $obj->success;
+            $fail_cnt = $obj->failure;  
+            $failure_arr = array();
+
+            
+            foreach($obj->results as $key => $val){     
+                
+                if(!empty($val->error)) array_push($failure_arr,element($key,element('dev_id',$token)));
+            }
+
+            
+            
+
+            
 
             
             $updatedata = array(                
-                'fcm_result' => json_encode($result),
+                'fcm_result' => '성공 : '.$suc_cnt.' 실패 : '.$fail_cnt,
             );
                 
             // 이벤트가 존재하면 실행합니다
@@ -777,9 +877,12 @@ class Fcm extends CB_Controller
 
             $this->Fcm_model->update($fcm_id, $updatedata);
 
-            
-            
+
+            foreach($failure_arr as $val){
+                $this->Device_model->delete($val);                
+            }
         }
+        
     }
 
 
@@ -794,6 +897,7 @@ class Fcm extends CB_Controller
             $return = array();
             if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val) {
+                    $return['dev_id'][$key] = element('dev_id',$val);
                     $return['mem_id'][$key] = element('mem_id',$val);
                     $return['dev_token'][$key] = element('dev_token',$val);
                 }
@@ -805,7 +909,8 @@ class Fcm extends CB_Controller
             $result = $this->Device_model->get_admin_list('','', $where);
             $return = array();
             if (element('list', $result)) {
-                foreach (element('list', $result) as $key => $val) {                    
+                foreach (element('list', $result) as $key => $val) {
+                    $return['dev_id'][$key] = element('dev_id',$val);                    
                     $return['mem_id'][$key] = element('mem_id',$val);
                     $return['dev_token'][$key] = element('dev_token',$val);
                     
@@ -826,6 +931,7 @@ class Fcm extends CB_Controller
             $return = array();
             if (element('list', $result)) {
                 foreach (element('list', $result) as $key => $val) {
+                    $return['dev_id'][$key] = element('dev_id',$val);
                     $return['mem_id'][$key] = element('mem_id',$val);
                     $return['dev_token'][$key] = element('mem_token',$val);
                     

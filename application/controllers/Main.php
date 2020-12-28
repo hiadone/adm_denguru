@@ -58,6 +58,31 @@ class Main extends CB_Controller
 		// }
 
 		// echo implode(",",$str);
+		// 
+		// $this->load->model(array('Cmall_item_model','Crawl_tag_model','Crawl_manual_tag_model','Crawl_delete_tag_model','Vision_api_label_model','Cmall_attr_rel_model','Cmall_kind_rel_model'));
+		// $postwhere = array(
+  //               'cit_datetime >=' => '2020-12-15' ,
+  //           );
+
+		// $cmall_item = $this->Cmall_item_model
+  //           ->get('', '', $postwhere);
+
+  //       echo count($cmall_item);
+  //       foreach ($cmall_item as $c_key => $c_value) {
+
+  //       	$deletewhere = array(
+  //               'cit_id' => element('cit_id', $c_value),
+  //           );
+
+  //           // $this->Vision_api_label_model->delete_where($deletewhere);
+  //           // $this->Crawl_tag_model->delete_where($deletewhere);
+  //           // $this->Crawl_manual_tag_model->delete_where($deletewhere);
+  //           // $this->Crawl_delete_tag_model->delete_where($deletewhere);
+  //           // $this->Cmall_attr_rel_model->delete_where($deletewhere);
+  //           // $this->Cmall_kind_rel_model->delete_where($deletewhere);
+            
+  //       }
+        
 		// exit;
 		$view = array();
 		$view['view'] = array();
