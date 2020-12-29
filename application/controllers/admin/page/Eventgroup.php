@@ -611,22 +611,33 @@ class Eventgroup extends CB_Controller
                     
                 );
                 if($this->Notification_model->count_by($countwhere)) continue;
+                
 
                 $egr_file ='';
+                $deep_link_info = null;
+
+                $deep_link_info = array(
+                                    'schema'=>'content',
+                                    'path'=>'/event/post',
+                                    'key'=>'egr_id',
+                                    'keyValue'=>element('egr_id', $getdata),
+                                );
+
                 if(element('egr_image',$getdata))
                     $egr_file =  cdn_url('eventgroup', element('egr_image', $getdata));
 
                 $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
                 $not_url = $protocol.'://api.denguru.kr/event/post/'.element('egr_id', $getdata); 
 
-                $this->notificationlib->set_noti(                    
-                    element('mem_id', $val),
+                $this->notificationlib->set_noti(                                        
+                    element('mem_id', $val),                    
                     1,
                     'event',
                     element('egr_id',$getdata),
                     element('egr_title',$getdata),
                     $not_url,
                     $egr_file,
+                    json_encode($deep_link_info),
                 );
             }
         }

@@ -565,20 +565,29 @@ class Notice extends CB_Controller
                 if($this->Notification_model->count_by($countwhere)) continue;
 
                 $noti_file ='';
+                $deep_link_info = null;
+                $deep_link_info = array(
+                                    'schema'=>'content',
+                                    'path'=>'/notice/post',
+                                    'key'=>'noti_id',
+                                    'keyValue'=>element('noti_id', $getdata),
+                                );
+
                 if(element('is_image',$getdata))
                     $noti_file =  cdn_url('notice',element('noti_file',$getdata));
 
                 $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
                 $not_url = $protocol.'://api.denguru.kr/notice/post/'.element('noti_id', $getdata); 
 
-                $this->notificationlib->set_noti(
-                    1,
+                $this->notificationlib->set_noti(                    
                     element('mem_id', $val),
+                    1,
                     'notice',
                     element('noti_id',$getdata),
                     element('noti_content',$getdata),
                     $not_url,
                     $noti_file,
+                    json_encode($deep_link_info),
                 );
             }
         }

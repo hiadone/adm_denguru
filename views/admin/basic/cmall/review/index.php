@@ -2,15 +2,28 @@
 	<div class="box-table">
 		<?php
 		echo show_alert_message($this->session->flashdata('message'), '<div class="alert alert-auto-close alert-dismissible alert-info"><button type="button" class="close alertclose" >&times;</button>', '</div>');
-		$attributes = array('class' => 'form-inline', 'name' => 'flist', 'id' => 'flist');
+		$attributes = array('class' => 'form-inline', 'name' => 'fboardlist', 'id' => 'fboardlist');
 		echo form_open(current_full_url(), $attributes);
 		?>
 			<div class="box-table-header">
 			<?php
 			ob_start();
 			?>
+
+				<div class="pull-left">
+
+					<button type="button" class="btn btn-default btn-sm admin-manage-list"><i class="fa fa-cog big-fa"></i> 관리</button>
+                	<div class=" btn-admin-manage-layer admin-manage-layer-list">
+
+	                    <div class="item" onClick="post_multi_action('cre_multi_type1', '1', '선택하신 항목을 리뷰 우선 노출 등록 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i>리뷰우선노출등록</div>
+	                    <div class="item" onClick="post_multi_action('cre_multi_type1', '0', '선택하신 항목을 리뷰 우선 노출 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i>리뷰우선노출해제</div>
+               
+                	</div>
+            	</div>	
+
 				<div class="btn-group pull-right" role="group" aria-label="...">
 					<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+					<a href="<?php echo element('listall_url', $view); ?>?cre_type=1" class="btn btn-primary btn-sm">리뷰 우선 노출 목록</a>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택승인</button>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
 				</div>
@@ -54,7 +67,9 @@
 							<td><?php echo element('cre_hit', $result); ?></td>
 							<td><?php echo element('cre_like', $result); ?></td>
 							<td><?php echo (element('cre_status', $result)) ? '<button class="btn btn-xs btn-default">승인</button>' : '<button class="btn btn-xs btn-danger">미승인</button>'; ?></td>
-							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
+							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a>
+								<?php if (element('cre_type1', $result)) { ?><label class="label label-danger">리뷰우선노출</label> <?php } ?>
+							</td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>
 						</tr>
 					<?php

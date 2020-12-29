@@ -172,28 +172,28 @@
 				<div class="pull-left">
 
 					<button type="button" class="btn btn-default btn-sm admin-manage-list"><i class="fa fa-cog big-fa"></i> 관리</button>
-                <div class=" btn-admin-manage-layer admin-manage-layer-list">
+                	<div class=" btn-admin-manage-layer admin-manage-layer-list">
                     
-                    <div class="item" onClick="post_multi_change_category();"><i class="fa fa-tags"></i> 카테고리변경</div>
-                    
-                    
+	                    <div class="item" onClick="post_multi_change_category();"><i class="fa fa-tags"></i> 카테고리변경</div>
+	                    
+	                    
 
-                    
-                    <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
-                    <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
-                    <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
-                    <div class="item" onClick="post_multi_change_attr();"><i class="fa fa-tags"></i> 특성변경</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 항목을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 항목을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
+	                    
+	                    <div class="item" onClick="post_multi_change_brand();"><i class="fa fa-tags"></i> 브랜드변경</div>
+	                    <div class="item" onClick="post_multi_add_tag();"><i class="fa fa-tags"></i> 태그추가</div>
+	                    <div class="item" onClick="post_multi_delete_tag();"><i class="fa fa-tags"></i> 태그삭제</div>
+	                    <div class="item" onClick="post_multi_change_attr();"><i class="fa fa-tags"></i> 특성변경</div>
+	                    <div class="item" onClick="post_multi_action('cit_multi_status', '1', '선택하신 항목을 블라인드 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드해제</div>
+	                    <div class="item" onClick="post_multi_action('cit_multi_status', '0', '선택하신 항목을 블라인드 처리 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 블라인드처리</div>
 
-                    <div class="item" onClick="post_multi_action('cit_multi_type1', '1', '선택하신 항목을 베스트상품 등록 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 베스트상품등록</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_type1', '0', '선택하신 항목을 베스트상품 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 베스트상품해제</div>
-                    
-                    <div class="item" onClick="post_multi_action('cit_multi_type2', '1', '선택하신 항목을 인기상품 등록 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 인기상품등록</div>
-                    <div class="item" onClick="post_multi_action('cit_multi_type2', '0', '선택하신 항목을 인기상품 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 인기상품해제</div>
+	                    <div class="item" onClick="post_multi_action('cit_multi_type1', '1', '선택하신 항목을 베스트상품 등록 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 베스트상품등록</div>
+	                    <div class="item" onClick="post_multi_action('cit_multi_type1', '0', '선택하신 항목을 베스트상품 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 베스트상품해제</div>
+	                    
+	                    <div class="item" onClick="post_multi_action('cit_multi_type2', '1', '선택하신 항목을 인기상품 등록 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 인기상품등록</div>
+	                    <div class="item" onClick="post_multi_action('cit_multi_type2', '0', '선택하신 항목을 인기상품 해제 하시겠습니까?');"><i class="fa fa-exclamation-circle"></i> 인기상품해제</div>
                     
                
-                </div>
+                	</div>
                 
 					<div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');">tag overwrite</div>
                     
@@ -205,28 +205,28 @@
                 <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'vision_api_label', '선택하신 항목을 vision_api_label update ?');">vision_api_label update</div> -->
                     <!-- <div class="btn btn-danger btn-sm" onClick="multi_crawling_item_update('item', 'tag_overwrite', '선택하신 항목을 item tag overwrite ?');"><i class="fa fa-trash-o"></i>item tag overwrite</div> -->
                     
-            </div>	
+            	</div>	
 
             
                 
             
-					<div class="pull-right">
+				<div class="pull-right">
 
 
-						<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+					<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
 
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-primary btn-sm">베스트상품 목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-primary btn-sm">인기상품  목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-primary btn-sm">신상품 목록</a>						
-						<a href="<?php echo element('search_url', $view); ?>&tag=3" class="btn btn-primary btn-sm">태그목록</a>						
-						<a href="<?php echo element('search_url', $view); ?>&warning=1" class="btn btn-warning btn-sm">warning 목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&notag=1" class="btn btn-warning btn-sm">no 태그 목록</a>
-						<a href="<?php echo element('search_url', $view); ?>&noattr=1" class="btn btn-warning btn-sm">no 특성 목록</a>
-						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택 휴지통</button>
-						<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
-						<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
-					</div>
+					<a href="<?php echo element('search_url', $view); ?>&cit_type=1" class="btn btn-primary btn-sm">베스트상품 목록</a>
+					<a href="<?php echo element('search_url', $view); ?>&cit_type=2" class="btn btn-primary btn-sm">인기상품  목록</a>
+					<a href="<?php echo element('search_url', $view); ?>&cit_type=3" class="btn btn-primary btn-sm">신상품 목록</a>						
+					<a href="<?php echo element('search_url', $view); ?>&tag=3" class="btn btn-primary btn-sm">태그목록</a>						
+					<a href="<?php echo element('search_url', $view); ?>&warning=1" class="btn btn-warning btn-sm">warning 목록</a>
+					<a href="<?php echo element('search_url', $view); ?>&nocategory=1" class="btn btn-warning btn-sm">nocategory 목록</a>
+					<a href="<?php echo element('search_url', $view); ?>&notag=1" class="btn btn-warning btn-sm">no 태그 목록</a>
+					<a href="<?php echo element('search_url', $view); ?>&noattr=1" class="btn btn-warning btn-sm">no 특성 목록</a>
+					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택 휴지통</button>
+					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
+					<a href="<?php echo element('write_url', $view); ?>" class="btn btn-outline btn-danger btn-sm">상품추가</a>
+				</div>
 				<?php
 				$buttons = ob_get_contents();
 				ob_end_flush();

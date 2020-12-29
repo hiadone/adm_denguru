@@ -94,6 +94,12 @@ class Notificationlib extends CI_Controller
 			case 'event':
 				
 				break;
+			case 'notification':
+				
+				break;
+			case 'reviewer':
+				
+				break;
 			default :
 				$result = json_encode( array('error' => 'TYPE 이 잘못되었습니다'));
 				return $result;

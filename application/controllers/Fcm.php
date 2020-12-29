@@ -794,14 +794,14 @@ class Fcm extends CB_Controller
 
 
             $tokens = array();
-            $tokens[0] = 'cEVVnSEfRoulvZvy864zqE:APA91bH1o-3Is988xdtde7C01nx7R2r3YbPS569sXbhA1rgUv5XKlMg25d9u7h2bEmMVV7fi7IBE9wRyudCXVbWx6TyLMHTC22TNNnkgcnREvP64WjgkgFpi9OQ6XfOdeB8j3NICSGOl';
-            // 
-            // 
-            $tokens[1] = 'fwifimrNTBqdjGXF4uWB7R:APA91bFo0vrNe1S7K1cga4rEkzmo4blbkNWHF3nrVp5G4oSLLVktpVz06Hmjb00lQvrR0BeL7M1SJ0iJ2cMRLEii6zzc7OZIEai3XeQkottTItTWSCiWmHVmdjZk_0pzN_k7hQh6bQpm';
+            // $tokens[0] = 'cEVVnSEfRoulvZvy864zqE:APA91bH1o-3Is988xdtde7C01nx7R2r3YbPS569sXbhA1rgUv5XKlMg25d9u7h2bEmMVV7fi7IBE9wRyudCXVbWx6TyLMHTC22TNNnkgcnREvP64WjgkgFpi9OQ6XfOdeB8j3NICSGOl';
+            // // 
+            // // 
+            // $tokens[1] = 'fwifimrNTBqdjGXF4uWB7R:APA91bFo0vrNe1S7K1cga4rEkzmo4blbkNWHF3nrVp5G4oSLLVktpVz06Hmjb00lQvrR0BeL7M1SJ0iJ2cMRLEii6zzc7OZIEai3XeQkottTItTWSCiWmHVmdjZk_0pzN_k7hQh6bQpm';
             
-            // foreach(element('dev_token',$token) as $val){
-            //     array_push($tokens,$val);
-            // }
+            foreach(element('dev_token',$token) as $val){
+                array_push($tokens,$val);
+            }
             
             
             
@@ -854,17 +854,19 @@ class Fcm extends CB_Controller
             // 전송 성공 및 실패한 갯수
             $suc_cnt = $obj->success;
             $fail_cnt = $obj->failure;  
-            $failure_arr = array();
+            $failure_arr = $success_arr = array();
 
             
             foreach($obj->results as $key => $val){     
                 
                 if(!empty($val->error)) array_push($failure_arr,element($key,element('dev_id',$token)));
+
+                if(!empty($val->message_id)) array_push($success_arr,element($key,element('mem_id',$token)));
             }
 
             
             
-
+            print_r2($success_arr);
             
 
             
@@ -880,6 +882,30 @@ class Fcm extends CB_Controller
 
             foreach($failure_arr as $val){
                 $this->Device_model->delete($val);                
+            }
+
+            
+            $this->load->library('notificationlib');            
+
+            $deep_link_info = $fcm_deeplinkinfo;
+            $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+            $not_url = $protocol.'://api.denguru.kr/'.element('path',$fcm_deeplinkinfo,'').'/'.element('keyValue',$fcm_deeplinkinfo,0); 
+
+            
+            foreach($success_arr as $val){
+
+                $result = $this->notificationlib->set_noti(                    
+                    $val,
+                    1,
+                    'notification',
+                    element('keyValue',$fcm_deeplinkinfo,0),
+                    $fcm_message,
+                    $not_url,
+                    '',
+                    json_encode($deep_link_info),
+                );
+
+                print_r2($result);
             }
         }
         

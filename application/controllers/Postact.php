@@ -4842,5 +4842,66 @@ class Postact extends CB_Controller
 
     }
 
-    
+    public function cre_multi_type1($flag = 0)
+	{
+
+		// 이벤트 라이브러리를 로딩합니다
+		$eventname = 'event_postact_post_multi_blame_blind';
+		$this->load->event($eventname);
+
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('before', $eventname);
+
+		$this->load->model(array('Cmall_review_model'));
+
+		$result = array();
+		$this->output->set_content_type('application/json');
+
+		$cre_ids = $this->input->post('chk');
+		if (empty($cre_ids)) {
+			$result = array('error' => '선택된 게시물이 없습니다.');
+			exit(json_encode($result));
+		}
+		$flag = ((int) $flag === 1) ? 1 : 0;
+
+		foreach ($cre_ids as $cre_id) {
+			$cre_id = (int) $cre_id;
+			if (empty($cre_id) OR $cre_id < 1) {
+				$result = array('error' => '잘못된 접근입니다');
+				exit(json_encode($result));
+			}
+			
+			$select = 'cre_id';
+			$cmall = $this->Cmall_review_model->get_one($cre_id, $select);
+
+			if ( ! element('cre_id', $cmall)) {
+				$result = array('error' => '존재하지 않는 게시물입니다');
+				exit(json_encode($result));
+			}
+
+			
+
+			
+
+			$cre_type1 = $flag ? $flag : 0;
+			$updatedata = array(
+				'cre_type1' => $cre_type1,
+			);
+			$this->Cmall_review_model->update($cre_id, $updatedata);
+		}
+
+
+		
+
+        
+		delete_cache_files('/latest','cit-order-');
+    	
+		// 이벤트가 존재하면 실행합니다
+		Events::trigger('after', $eventname);
+
+		$success = ($flag) ? '이 항목을 리뷰우선노출 등록 하셨습니다' : '이 항목을 리뷰우선노출 해제 하였습니다' ;
+		$result = array('success' => $success);
+		exit(json_encode($result));
+
+	}
 }
