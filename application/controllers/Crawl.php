@@ -5378,6 +5378,12 @@ class Crawl extends CB_Controller
             log_message('error', $post);
             
         $cor_goods_code = $this->input->post('cor_goods_code',null,'');
+
+        if ( ! is_array($cor_goods_code))
+        {
+            $cor_goods_code = array($cor_goods_code);
+        }
+        
         $cod_count = $this->input->post('cod_count',null,'');
         $od_status = 'order'; //주문상태
 
