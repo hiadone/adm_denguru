@@ -3164,10 +3164,10 @@ class Crawl extends CB_Controller
             show_404();
         }
 
-        $citem = $this->Cmall_item_model->get_one($cit_id);
-        if ( ! element('cit_id', $citem)) {
-            show_404();
-        }
+        // $citem = $this->Cmall_item_model->get_one($cit_id);
+        // if ( ! element('cit_id', $citem)) {
+        //     show_404();
+        // }
 
         # Your Google Cloud Platform project ID
         // $projectId = 'petproject-235609';
@@ -3229,10 +3229,10 @@ class Crawl extends CB_Controller
             show_404();
         }
 
-        $citem = $this->Cmall_item_model->get_one($cit_id);
-        if ( ! element('cit_id', $citem)) {
-            show_404();
-        }
+        // $citem = $this->Cmall_item_model->get_one($cit_id);
+        // if ( ! element('cit_id', $citem)) {
+        //     show_404();
+        // }
 
         # Your Google Cloud Platform project ID
         // $projectId = 'petproject-235609';
@@ -5295,6 +5295,7 @@ class Crawl extends CB_Controller
 
     public function update_order($brd_id  = 0,$mem_id = 0,$cor_order_no = '')
     {   
+        
         $this->output->set_content_type('application/json');
         $this->load->model(array('Member_model','Cmall_item_model', 'Cmall_order_model', 'Cmall_order_detail_model','Unique_id_model'));
         
@@ -5383,7 +5384,7 @@ class Crawl extends CB_Controller
         {
             $cor_goods_code = array($cor_goods_code);
         }
-        
+
         $cod_count = $this->input->post('cod_count',null,'');
         $od_status = 'order'; //주문상태
 
@@ -5391,10 +5392,16 @@ class Crawl extends CB_Controller
 
         if ($res) {
             if($cor_goods_code && is_array($cor_goods_code)){
+
+
+                // $order_detail = $this->Cmall_order_detail_model->get_one('','cit_id',array('cor_id' => element('cor_id', $order)));
+
+
                 $this->Cmall_order_detail_model->delete_where(array('cor_id' => element('cor_id', $order)));
                 foreach ($cor_goods_code as $key => $val) {
                     $item = $this->Cmall_item_model
                         ->get_one('', '',array('brd_id' => $brd_id,'cit_goods_code' => $val));
+
 
                     
                     $insertdetail = array(
