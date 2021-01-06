@@ -66,7 +66,7 @@
 					<input type="text" class="form-control" name="ban_url" value="<?php echo set_value('ban_url', element('ban_url', element('data', $view))); ?>" />
 				</div>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">배너 사이즈</label>
 				<div class="col-sm-10 form-inline">
 					가로 :
@@ -85,13 +85,20 @@
 						<option value="_blank" <?php echo set_select('ban_target', '_blank', (element('ban_target', element('data', $view)) === '_blank' ? true : false)); ?> >새창</option>
 					</select>
 				</div>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<label class="col-sm-2 control-label">배너 정렬순서</label>
 				<div class="col-sm-10">
 					<input type="number" class="form-control" name="ban_order" value="<?php echo set_value('ban_order', (int) element('ban_order', element('data', $view))); ?>" />
 					<div class="help-inline">정렬 순서가 큰 값이 먼저 출력됩니다</div>
 				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">배너딥링크정보</label>
+				<div class="col-sm-5" style="display:table;">
+					<?php echo display_dhtml_editor('ban_deep_link_info', set_value('ban_deep_link_info', element('ban_deep_link_info', element('data', $view))), $classname = 'form-control ', $is_dhtml_editor = false, $editor_type = $this->cbconfig->item('post_editor_type')); ?>
+				</div>
+
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">배너표시기기</label>

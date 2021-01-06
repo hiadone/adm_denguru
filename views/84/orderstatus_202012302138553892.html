@@ -1,0 +1,695 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<meta name="format-detection" content="telephone=no" />
+<meta name="referrer" contents="always">
+<meta property="og:title" content="네이버페이">
+<meta property="og:url" content="https://m.pay.naver.com/mobile/about">
+<meta property="og:image" content="https://img.pay.naver.net/static/images/customer/og/naverpay.png">
+<meta property="og:description" content="네이버 ID로 간편구매, 네이버페이">
+<!-- 기기 분기처리 스크립트 -->
+<script type="text/javascript">
+	var doc = document.documentElement;
+	doc.setAttribute('data-useragent', navigator.userAgent);
+	var sAgent =  navigator.userAgent;
+	if (sAgent.indexOf("WebKit") < 0) {
+		window.onerror = function(){
+			return true;
+		}
+	}
+</script>
+<title>네이버페이</title>
+<link type="text/css" rel="stylesheet" href="//img.pay.naver.net/o/mstatic/css/service/mobile/layout.css?1609317983056">
+<link type="text/css" rel="stylesheet" href="//img.pay.naver.net/o/mstatic/css/service/mobile/component.css?1609317983056">
+<link type="text/css" rel="stylesheet" href="//img.pay.naver.net/o/mstatic/css/service/mobile/detail.css?1609317983056">
+</head>
+
+<body>
+<div class="u_skip">
+</div>
+<div id="header" class="type_basic">
+
+<div class="gnb">
+    <a href="https://m.pay.naver.com/mobile/home" class="absolutev logo_npay _npay N=a:gnb.pay">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="23" viewBox="0 0 60 23">
+            <defs>
+                <path id="prefix__a" d="M0 23L60 23 60 0 0 0z"></path>
+            </defs>
+            <g fill="none" fill-rule="evenodd">
+                <path fill="#03C75A" d="M30.688 6.563v4.2h2.4c1.587 0 2.551-.495 2.551-2.036v-.33c0-1.45-.964-1.834-2.343-1.834h-2.608zM28.27 4.6h5.14c3.27 0 4.668 1.614 4.668 3.778v.386c0 2.146-1.512 3.98-4.668 3.98h-2.72v5.081h-2.42V4.6zM45.528 13.137h-2.32c-1.243 0-1.677.517-1.677 1.34v.23c0 .688.49 1.09 1.414 1.09 1 0 1.66-.21 2.15-.708.433-.421.433-.88.433-1.665v-.287zm-6.297 1.741v-.612c0-1.722.999-3.004 3.921-3.004h2.376v-.401c0-1.302-.566-1.837-1.848-1.837-1.112 0-2.074.363-2.94 1.052l-1.17-1.76C40.626 7.57 41.927 6.9 43.7 6.9c2.431 0 4.185 1.244 4.185 3.367v7.405h-2.131l-.038-1.301c-.395.937-1.866 1.454-2.96 1.454-2.224 0-3.525-1.09-3.525-2.947zM52.211 6.9L54.529 14.401 54.603 14.401 56.939 6.9 59.423 6.9 54.121 21.275 51.933 20.519 53.249 17.184 49.615 6.9z"></path>
+                <mask id="prefix__b" fill="#fff">
+                    <use xlink:href="#prefix__a"></use>
+                </mask>
+                <path fill="#03C75A" d="M0 23L23.077 23 23.077 0 0 0z" mask="url(#prefix__b)"></path>
+                <path fill="#FFF" d="M16.731 17.25L13.362 17.25 9.298 11.095 9.298 17.25 5.769 17.25 5.769 5.75 9.138 5.75 13.202 11.905 13.202 5.75 16.731 5.75z" mask="url(#prefix__b)"></path>
+            </g>
+        </svg>
+        <span class="blind">네이버페이</span>
+    </a>
+        <h1 class="pageh1">주문 상세정보</h1>
+        <button type="button" onclick="javascript:closeGnb();" class="absolutev absoluter" />
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+            <g fill-rule="evenodd">
+                <path d="M17.301 0L0 17.301 0.7 18 18 0.699z" transform="translate(6 6)"></path>
+                <path d="M0.699 0L0 0.699 17.3 18 18 17.301z" transform="translate(6 6)"></path>
+            </g>
+        </svg>
+        <span class="blind">화면닫기</span>
+    </button>
+</div>
+</div>
+<div id="container" role="main">
+
+
+
+
+<div id="content">
+	<div class="detail_section ordernum_sc">
+		<div class="ordernum">
+			<p class="number">2020123040934121</p>
+			<span class="date">2020.12.30</span>
+		</div>
+        <div class="button_area">
+		</div>
+	</div>
+
+
+	<!-- delivery 단위로 반복 -->
+
+	<ul class="sellerinfo_sc">
+		<li class="detail_section">
+			<div class="sellerinfo_area">
+				<div class="seller_box">
+													<span class="delivery">
+								<span class="blind">배송비</span>
+								3,000
+                                선결제
+							</span>
+
+					<div class="seller_cell ellipsis">
+						<div class="seller_inner">
+							<span class="icon_seller"><span class="blind">판매자홈 바로가기</span></span>
+							<a class="N=a:odd.direct seller_link ellipsis" href="https://m.pay.naver.com/inflow/outlink?url=https%3A%2F%2Fsmartstore.naver.com%2Fheedong&accountid=s_41470625596270887" >
+								히동이와 야옹이네
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="button_area">
+					<div class="button_cell">
+						<a href="tel:010-9984-0861" class="N=a:odd.sellnumber npay_common_button type_basic size_small">
+							<span class="sp_icon_left icon_call">전화걸기</span>
+						</a>
+					</div>
+                            <div class="button_cell">
+                                <a href="https://m.pay.naver.com/mobile/shoppingInquiry/form?orderNo=2020123040934121&merchantNo=500114562" 
+                                    class="N=a:odd.question npay_common_button type_basic size_small ">
+                                    <span class="sp_icon_left icon_ask">문의하기</span>
+                                </a>
+                            </div>
+						<div class="button_cell">
+							<a href="#" class="N=a:odd.talktalk npay_common_button type_basic size_small _click(checkout.mobile.order.order_detail.openTalkTalk(2020123040934121,500114562,2020123070776591)) _stopDefault">
+								<span class="sp_icon_left icon_talk_black">톡톡하기</span>
+							</a>
+						</div>
+				</div>
+			</div>
+			<ul class="dot_list">
+				<li>판매자에게 직접 연락하시면 빠른 확인이 가능합니다.</li>
+
+
+				<li><a href="http://m.pay.naver.com/mobile/merchant/info/500114562"  class="N=a:odd.info info_link text_point_color">
+					판매자정보 확인하기</a></li>
+			</ul>
+			<ul class="order_list">
+					<!-- productOrder 단위로 반복 -->
+					<li>
+						<div class="order_list_item">
+							<a href="https://inflow.pay.naver.com/rd?no=500114562&tr=ppc&pType=M&retUrl=https%3A%2F%2Fsmartstore.naver.com%2Fmain%2Fproducts%2F5294135810&vcode=d2Y9TFbj%2BW9yFI28zHelsumF0g3tI732njFSPgWUWcSpFxsxHa1RcRwHVJhfAV0ov7ilUSoYDzaPwlp%2Fa%2BrUNjEacR2qYRFeLMaWwt0%2Bs5QGzfKmyQBWfhdJJ3C6HKGN"  class="N=a:odd.image thumb"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH+A1BTQQAsAAAAAAEAAQAAAgJEAQA7"  alt="패리스독 분식점 간식놀이 장난감 (색상랜덤배송)" data-src="https://img.pay.naver.net/o/proxy/phinf/shop1/20201224_31/1608783426590fWeTy_JPEG/9919261409811316_385390112.jpg?type=m170"   width='85' height='85'  /><span class="loading _loading"><span class="blind">로딩중...</span></span></a>
+							<div class="product_info">
+				                <div class="additional_status">
+                                            <span class="ico_npmember type_npay"><span class="blind">네이버플러스 멤버십</span></span>
+
+
+                                </div>
+									<strong class="seller_name">[스마트스토어] 히동이와 야옹이네</strong>
+								<!-- NV_MID:82838628059 -->
+								<a href="https://inflow.pay.naver.com/rd?no=500114562&tr=ppc&pType=M&retUrl=https%3A%2F%2Fsmartstore.naver.com%2Fmain%2Fproducts%2F5294135810&vcode=d2Y9TFbj%2BW9yFI28zHelsumF0g3tI732njFSPgWUWcSpFxsxHa1RcRwHVJhfAV0ov7ilUSoYDzaPwlp%2Fa%2BrUNjEacR2qYRFeLMaWwt0%2Bs5QGzfKmyQBWfhdJJ3C6HKGN"  class="N=a:odd.prodname product_name ellipsis">
+									<span class="icon_text status_orderwish">결제대기중</span>
+									
+									
+									패리스독 분식점 간식놀이 장난감 (색상랜덤배송)
+								</a>
+
+								<div class="sum_amount">
+									<strong class="discount_price">
+										7,900원
+									</strong>
+								</div>
+								<p class="ordernum">주문수량 : 1개</p>
+
+								<!-- 배송희망일 -->
+
+									<ul class="option_list">
+
+
+									</ul>
+
+
+                                <!-- 클레임 -->
+
+
+								<div class="button_status">
+
+
+
+			    <div class="button_inner">
+
+				<a href="/o/payNext/2020123040934121?returnUrl=https%3A%2F%2Fm.pay.naver.com%2Fo%2ForderStatus%2F2020123040934121&_entryPoint=orderDetail" class="N=a:odd.paychange switch npay_common_button type_basic size_small _click(checkout.mobile.order.order_detail.userAction(SWITCH_PAYMENT,))">결제수단변경</a>
+
+				</div>
+
+
+
+			    <div class="button_inner">
+
+				<a href="/o/claim/cancel/request/2020123040934121/2020123070776591/select?returnUrl=https%3A%2F%2Fm.pay.naver.com%2Fo%2ForderStatus%2F2020123040934121" class="N=a:odd.cancel order_cancel npay_common_button type_basic size_small _click(checkout.mobile.order.order_detail.userAction(CANCEL_REQUEST,))">취소요청</a>
+
+				</div>
+
+											<div class="button_inner">
+											</div>
+
+								</div>
+                            </div>
+                        </div>
+                    </li>
+				<!-- productOrder 단위로 반복 끝 -->
+			</ul>
+		</li>
+	</ul>
+	<!-- delivery 단위로 반복 끝 -->
+
+	<!-- [D] 광고배너 -->
+    <div class="banner_ad" id="div-1"></div>
+
+		<div class="detail_section">
+			<div class="info_area">
+				<div class="info_head">
+					<h3 class="h3">배송지정보</h3>
+						    <a href="#" class="N=a:odd.change npay_common_button type_basic size_small _click(checkout.mobile.order.order_detail.moveDeliveryAddressChange()) _stopDefault"><span>배송지변경</span></a>
+				</div>
+				<div class="info_cont">
+					<ul class="info_list person_info delivery">
+						<li><strong>수령인</strong><span>고은선</span></li>
+						<li><strong>연락처</strong><div>010-9518-6788</div></li>
+						<li><strong>배송지</strong><span>08507</span><br>서울특별시 금천구 가산디지털1로 128 (가산동, 에스티엑스브이타워)<br> 1206~1208호</li>
+
+
+						<li><strong>배송메모</strong>
+-
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+    <div class="detail_section type_payment_info">
+        <div class="info_area">
+            <div class="info_head">
+                <h3 class="h3">주문금액</h3>
+                <strong class="detail_order_price">10,900원</strong>
+            </div>
+            <div class="info_cont">
+                <ul class="info_list">
+                    <li>
+                        <div class="total">
+                            <strong>상품금액</strong>
+                            <em class="amount"><span>7,900</span>원</em>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="total">
+                            <strong>배송비</strong>
+                            <em class="amount">+<span>3,000</span>원</em>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="total">
+                            <strong>쿠폰할인</strong>
+                            <em class="amount"><span>0</span>원</em>
+                        </div>
+                        <ul>
+                        <ul class="inner_list">
+                            <li>
+                                <span>상품/스토어/주문 할인</span>
+                                <span class="amount"><em>0</em>원</span>
+                            </li>
+                            <li>
+                                <span>배송비 할인</span>
+                                <span class="amount"><em>0</em>원</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="detail_section type_payment_info">
+        <div class="info_area">
+            <div class="info_head">
+                <h3 class="h3">결제상세</h3>
+            </div>
+            <div class="info_cont">
+                <ul class="info_list">
+                        <li class="type_main_payment">
+                            <strong>무통장입금</strong>
+                            <em class="amount"><span>10,900</span>원</em>
+                            <div class="payment_detail_info">
+                                국민은행
+                                56989013785256
+                                        <a href="#" class="link_later _click(checkout.mobile.order.order_detail.moveVirtualBankEdit()) _stopDefault">은행 변경</a>
+                                <ul class="deposit_info">
+                                        <li>예금주 : 네이버페이 </li>
+                                        <li>입금기한 : 2021.01.04</li>
+                                </ul>
+                            </div>
+                            <ul class="dot_list type_black">
+                            <ul class="dot_list type_black">
+                                <li><span class="point_black">주문자/입금자명이 달라도</span> 가상 계좌번호로 정확한 금액 입금시 입금됨</li>
+                                <li><span class="point_black">농협, 국민, 부산, SC, 우체국은 ATM 현금 입금 불가</span>하여 은행창구, 인터넷 뱅킹으로 이용 가능 </li>
+                            </ul>
+                        </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+		<div class="detail_section">
+			<input type="checkbox" id="point_chk1" class="hidden" checked="checked">
+			<div class="N=a:odd.benefit info_area">
+				<label for="point_chk1" class="info_head">
+					<h3 class="h3">포인트 혜택</h3>
+					<span class="text_point_color point_benefit">최대 229원</span>
+				</label>
+				<div class="info_cont">
+					<ul class="info_list point">
+							<li>
+								<div class="benefit_summary">
+									<strong>구매적립<a href="#" class="N=a:odd.paybenefit btn_que _click(checkout.mobile.order.order_detail.showLayerPurchaseMileage()) _stopDefault"><span class="blind">적립혜택정보보기</span></a></strong>
+									<em class="summary_num">총 79원</em>
+								</div>
+								<ul class="inner_list">
+										<li>
+											<span class="benefit_name">기본적립</span>
+											<span class="benefit_sum"><em>79</em>원</span>
+										</li>
+								</ul>
+							</li>
+							<li>
+								<div class="benefit_summary">
+									<strong>리뷰적립<a href="#" class="N=a:odd.revbenefit btn_que _click(checkout.mobile.order.order_detail.showLayerReviewMileage()) _stopDefault"><span class="blind">적립혜택정보보기</span></a></strong>
+									<em class="summary_num">최대 150원</em>
+								</div>
+							</li>
+                    </ul>
+					    <div class="division_line">
+							    <p class="desc_text icon_notice">동일상품(상품번호 기준)에 대한 리뷰 적립 혜택은 상품리뷰/한달사용 리뷰 각각 1회로 제한</p>
+						</div>
+                </div>
+            </div>
+		</div>
+    <div class="bottom_button_area">
+        <button type="button" class="npay_common_button type_basic size_large _click(checkout.mobile.order.order_detail.repurchaseOpenByOrderNo(2020123040934121)) _stopDefault"><span>전체 재구매</span></button>
+    </div>
+	<div class="spot_event">
+		<div class="flick _card_banner_rolling">
+			<div class="flick-container">
+						<div class="flick-panel">
+							<a class="N=a:odd.banner" href="https://new-m.pay.naver.com/#/mymoney" target="_blank">
+								<div><img src="https://phinf.pstatic.net/checkout/20200317_198/1584427380118GAv27_JPEG/MO___616x136_4a506f.jpg" alt="배너" width="308" height="68"></div>
+							</a>
+						</div>
+						<div class="flick-panel">
+							<a class="N=a:odd.banner" href="https://dbill.naver.com/build/index.html#/partnership-card/woori" target="_blank">
+								<div><img src="https://phinf.pstatic.net/checkout/20200507_60/1588816039197vj8QL_PNG/616x136_4b5070.png" alt="배너" width="308" height="68"></div>
+							</a>
+						</div>
+						<div class="flick-panel">
+							<a href="https://dbill.naver.com/build/index.html#/partnership-card/woori" target="_blank" class="N=a:car.underbanner"><img src="https://phinf.pstatic.net/checkout/20200507_60/1588816039197vj8QL_PNG/616x136_4b5070.png" alt="배너" width="308" height="68"></a>
+						</div>
+			</div>
+		</div>
+		<input type="hidden" class="_card_banner_rolling_size" value="2">
+			<div class="_banner_0" style="display:none;">
+				<a href="https://new-m.pay.naver.com/#/mymoney" target="_blank" class="N=a:car.underbanner"><img src="https://phinf.pstatic.net/checkout/20200317_198/1584427380118GAv27_JPEG/MO___616x136_4a506f.jpg" alt="배너" width="308" height="68"></a>
+			</div>
+			<div class="_banner_1" style="display:none;">
+				<a href="https://dbill.naver.com/build/index.html#/partnership-card/woori" target="_blank" class="N=a:car.underbanner"><img src="https://phinf.pstatic.net/checkout/20200507_60/1588816039197vj8QL_PNG/616x136_4b5070.png" alt="배너" width="308" height="68"></a>
+			</div>
+				<div class="_banner_2" style="display:none;">
+					<a href="https://dbill.naver.com/build/index.html#/partnership-card/woori" target="_blank" class="N=a:car.underbanner"><img src="https://phinf.pstatic.net/checkout/20200507_60/1588816039197vj8QL_PNG/616x136_4b5070.png" alt="배너" width="308" height="68"></a>
+				</div>
+
+		<!-- [D] 배너가 2개 이상일 때만 노출 -->
+			<div class="dot_indicator">
+				<!-- [D] 해당 슬라이드 배너의 dot에 on 클래스 추가 -->
+					<span class="sr_only _pg_num_0 on" title="현재 페이지">1</span>
+					<span class="sr_only _pg_num_1 " >2</span>
+			</div>
+	</div>
+
+<div class="ly_bx _layer_review_mileage" style="display:none;">
+    <dl class="benefit_wrap benefit">
+        <dt>리뷰 적립 혜택</dt>
+        <dd>
+            <p class="txt">
+                ∙ 텍스트 리뷰와 포토/동영상 리뷰 적립 혜택은 중복으로 지급되지 않으며, 포토/동영상 리뷰 작성 포인트는 최초 작성 시 포토/동영상을 첨부할 경우에만 적립됩니다.
+            </p>
+            <p class="txt">
+                ∙ 동일상품(상품번호 기준)에 대한 리뷰 적립 혜택은 리뷰/한달사용 리뷰 각각 1회로 제한되며, 적립 후 30일 경과 시 리뷰 적립혜택을 다시 받을 수 있습니다.
+            </p>
+            <p class="txt">
+                ∙ 상품 결제금액 기준 3,000원 미만인 경우 리뷰 작성에 대한 포인트 적립이 제외됩니다.
+            </p>
+			<p class="txt">
+				∙ 상품주문결제 금액에서 구매 적립과 리뷰 적립 포인트를 차감한 금액이 0원 미만(마이너스 금액)일 경우 구매 적립과 리뷰 작성에 대한 포인트 적립이 제외됩니다.
+			</p>
+            <ul class="benefit_lst review">
+                <li class="benefit_item">
+                    <div class="tmb">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH+A1BTQQAsAAAAAAEAAQAAAgJEAQA7"  alt="상품 이미지" data-src="https://img.pay.naver.net/o/proxy/phinf/shop1/20201224_31/1608783426590fWeTy_JPEG/9919261409811316_385390112.jpg?type=m80"   width='40' height='40'  /><span class="loading _loading"><span class="blind">로딩중...</span></span>                    </div>
+                    <div class="inr">
+                        <strong class="tit">패리스독 분식점 간식놀이 장난감 (색상랜덤배송)</strong>
+                            <em class="subtit">리뷰 작성 시 포인트 안내</em>
+                            <span class="detail"><span class="review_txt">텍스트 리뷰</span><span class="fr"><strong>50</strong>원</span></span>
+                            <span class="detail"><span class="review_txt">포토/동영상 리뷰</span><span class="fr"><strong>150</strong>원</span></span>
+                    </div>
+                </li>
+            </ul>
+        </dd>
+    </dl>
+    <div class="close_btn">
+        <button type="button" class="N=a:.closerev npay_common_button type_basic size_popup _click(checkout.mobile.order.order_detail.hideLayerReviewMileage()) _stopDefault"><span>닫기</span></button>
+    </div>
+</div>
+
+<div class="ly_bx _layer_purchase_mileage" style="display:none;">
+    <dl class="benefit_wrap">
+        <dt>구매 적립 혜택</dt>
+        <dd>
+            <p class="txt">상품별 주문금액기준 구매확정시 즉시적립됩니다.<br>
+				쿠폰할인금액/배송비/추가구성상품가격 제외 되며 1회 주문 기준 최대 10만원까지만 적립됩니다.<br>
+				(단, 무통장입금은 최대 2만원까지 적립)<br>
+                간편결제/일반결제에 따라 지급되는 적립혜택이 상이할 수 있습니다.<br>
+				상품주문결제 금액에서 구매 적립과 리뷰 적립 포인트를 차감한 금액이 0원 미만(마이너스 금액)일 경우 구매 적립과 리뷰 작성에 대한 포인트 적립이 제외됩니다.<br>
+                <a href="https://m.help.naver.com/support/contents/contentsView.help?contentsNo=7175" class="btn_txt" target="_blank">적립정책 자세히보기</a></p>
+            <p class="txt"> </p>
+            <ul class="benefit_lst review">
+					<li class="benefit_item">
+						<div class="tmb">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH+A1BTQQAsAAAAAAEAAQAAAgJEAQA7"  alt="상품 이미지" data-src="https://img.pay.naver.net/o/proxy/phinf/shop1/20201224_31/1608783426590fWeTy_JPEG/9919261409811316_385390112.jpg?type=m80"   width='40' height='40'  /><span class="loading _loading"><span class="blind">로딩중...</span></span>						</div>
+						<div class="inr">
+							<strong class="tit">패리스독 분식점 간식놀이 장난감 (색상랜덤배송)</strong>
+							<span class="detail"><span><strong>79</strong>원</span></span>
+						</div>
+					</li>
+            </ul>
+        </dd>
+    </dl>
+    <div class="close_btn">
+        <button type="button" class="npay_common_button type_basic size_popup _click(checkout.mobile.order.order_detail.hideLayerPurchaseMileage()) _stopDefault"><span>닫기</span></button>
+    </div>
+</div>
+
+<div class="ly_bx ly_buy ly_delivery _layer_hope_delivery" style="display:none;">
+    <button type="button" class="btn_ly_close _click(checkout.mobile.order.order_detail.hideHopeDeliveryLayer()) _stopDefault"><span class="blind">팝업닫기</span></button>
+</div>
+
+<div class="ly_bx ly_simulator _predictionStatusLayer" style="display: none;">
+	<dl class="benefit_wrap">
+		<dt>배송기간</dt>
+		<dd>
+			<div class="delivery_wrap">
+				<div class="status">
+					<strong class="status_title _predictionBest"></strong>
+					<p class="status_location">서울특별시 금천구 가산디지털1로 128 (가산동, 에스티엑스브이타워)</p>
+				</div>
+				<ul class="status_estimation _predictionList">
+				</ul>
+				<p class="delivery_simulator">
+					<b class="title">배송시뮬레이터<span class="blind">beta</span></b>
+					빅데이터 분석을 통한 배송일 예측 시스템
+				</p>
+			</div>
+			<ul class="bullet">
+				<li>최근 6개월 간의 배송 데이터 분석으로 예측한 이 상품의 배송완료 예상률입니다.</li>
+				<li>스토어 및 택배사 사정에 따라 실제와 다를 수 있습니다.</li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="close_btn">
+		<button type="button" class="npay_common_button type_basic size_popup _click(checkout.mobile.order.order_detail.hidePredictionStatusLayer()) _stopDefault"><span>닫기</span></button>
+	</div>
+</div>
+
+
+<div class="dimmed _layer_dimmed" style="display:none;"></div>
+</div></div>
+<div id="footer">
+    <ul class="info">
+            <li><a href="#" class="_layout_footer_logout _layout_target_top N=a:fot.logout">로그아웃</a></li>
+                <li><a href="https://order.pay.naver.com/orderStatus/2020123040934121?site_preference=normal" class="com_btn N=a:fot.gopc">PC버전</a></li>
+        <li><a href="https://m.naver.com/services.html?f=svc.shopping" onclick="window.top.location.href='https://m.naver.com/services.html?f=svc.shopping'; return false;"
+               class="_layout_target_top N=a:fot.sitemap">전체서비스</a>
+        </li>
+    </ul>
+    <ul class="info">
+        <li><a href="https://m.help.naver.com/support/service/main.nhn?serviceNo=11714" class="N=a:fot.customer">쇼핑&페이 고객센터</a></li>
+        <li><a href="https://m.pay.naver.com/mobile/provision" class="l_none N=a:fot.agreement">약관 및 정책</a></li>
+        <li><a href="https://m.pay.naver.com/mobile/policy/financial" class="N=a:fot.privacy"><b>개인정보처리방침</b></a></li>
+    </ul>
+    <p class="logonf" onclick="window.top.location.href='https://www.naverfincorp.com/'; return false;" class="N=a:fot.naverci">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="26" viewBox="0 0 96 26">
+            <defs>
+                <path id="prefix__a" d="M0.518 0.462L11.559 0.462 11.559 11.964 0.518 11.964z"/>
+                <path id="prefix__c" d="M0 0.038L11.189 0.038 11.189 11.068 0 11.068z"/>
+                <path id="prefix__e" d="M0.256 0.038L12.918 0.038 12.918 11.068 0.256 11.068z"/>
+                <path id="prefix__g" d="M0.021 0.038L8.808 0.038 8.808 11.068 0.021 11.068z"/>
+                <path id="prefix__i" d="M0.2 0.038L12.861 0.038 12.861 11.068 0.2 11.068z"/>
+            </defs>
+            <g fill="none" fill-rule="evenodd">
+                <path fill="#CCC" d="M0 13.813L0 25.188 3.509 25.188 3.509 21.327 6.952 21.327 7.954 18.648 3.509 18.648 3.509 16.691 8.686 16.691 9.763 13.813zM11.39 25.188L14.644 25.188 14.644 13.813 11.39 13.813zM24.808 13.813L24.808 19.9 20.585 13.813 17.085 13.813 17.085 25.188 20.752 25.188 20.752 19.1 24.974 25.188 28.475 25.188 28.475 13.813zM68.339 25.188L71.593 25.188 71.593 13.813 68.339 13.813z"/>
+                <g transform="translate(55.311 13.223)">
+                    <mask id="prefix__b" fill="#fff">
+                        <use xlink:href="#prefix__a"/>
+                    </mask>
+                    <path fill="#CCC" d="M.518 6.244v-.03C.518 2.92 3.112.461 6.437.461c2.45 0 4.104 1.181 5.043 2.867L8.409 5.11c-.413-.788-1.002-1.34-2.02-1.34-1.258 0-2.084 1.088-2.084 2.411v.032c0 1.434.859 2.442 2.083 2.442 1.05 0 1.64-.567 2.1-1.386l3.071 1.717c-.938 1.639-2.497 2.978-5.266 2.978-3.086 0-5.775-2.3-5.775-5.72" mask="url(#prefix__b)"/>
+                </g>
+                <path fill="#CCC" d="M34.592 20.842l1.244-3.446 1.245 3.446h-2.49zm-.72-6.92l-4.367 11.03h3.711l.527-1.46h4.186l.527 1.46h3.711l-4.366-11.03h-3.93zM90.488 22.16L90.488 13.922 86.885 13.922 86.885 24.951 94.616 24.951 95.721 22.16zM78.164 20.842l1.244-3.446 1.245 3.446h-2.49zm-.72-6.92l-4.367 11.03h3.711l.528-1.46h4.185l.527 1.46h3.711l-4.366-11.03h-3.93zM50.9 19.825L46.752 13.921 43.313 13.921 43.313 24.951 46.915 24.951 46.915 19.048 51.063 24.951 54.502 24.951 54.502 13.921 50.9 13.921z"/>
+                <mask id="prefix__d" fill="#fff">
+                    <use xlink:href="#prefix__c"/>
+                </mask>
+                <path fill="#CCC" d="M7.587 5.941L3.439 0.038 0 0.038 0 11.068 3.602 11.068 3.602 5.165 7.75 11.068 11.189 11.068 11.189 0.038 7.587 0.038z" mask="url(#prefix__d)"/>
+                <g transform="translate(12.08)">
+                    <mask id="prefix__f" fill="#fff">
+                        <use xlink:href="#prefix__e"/>
+                    </mask>
+                    <path fill="#CCC" d="M5.342 6.958l1.245-3.445 1.245 3.445h-2.49zm-.72-6.92L.256 11.068h3.71l.528-1.46H8.68l.527 1.46h3.712L8.55.038h-3.93z" mask="url(#prefix__f)"/>
+                </g>
+                <g transform="translate(36.874)">
+                    <mask id="prefix__h" fill="#fff">
+                        <use xlink:href="#prefix__g"/>
+                    </mask>
+                    <path fill="#CCC" d="M3.569 6.877L8.645 6.877 8.645 4.228 3.569 4.228 3.569 2.741 8.699 2.741 8.699 0.038 0.021 0.038 0.021 11.068 8.808 11.068 8.808 8.364 3.569 8.364z" mask="url(#prefix__h)"/>
+                </g>
+                <g transform="translate(22.887)">
+                    <mask id="prefix__j" fill="#fff">
+                        <use xlink:href="#prefix__i"/>
+                    </mask>
+                    <path fill="#CCC" d="M6.53 7.29L3.911 0.037 0.2 0.037 4.566 11.068 8.495 11.068 12.861 0.037 9.15 0.037z" mask="url(#prefix__j)"/>
+                </g>
+                <path fill="#CCC" d="M52.777 5.174h-1.91V2.85h1.91c.649 0 1.174.52 1.174 1.163 0 .641-.525 1.162-1.174 1.162zm2.425 2.11l.338-.14c1.294-.537 1.952-1.698 1.952-3.171 0-1.394-.513-2.424-1.525-3.064-.94-.594-2.16-.871-3.838-.871h-4.7v11.03h3.493V7.985h1.255l2.129 3.081h3.711l-2.815-3.783z"/>
+            </g>
+        </svg>
+        <span class="blind">NAVER FINANCIAL</span>
+    </p>
+    <p class="description">
+        네이버파이낸셜㈜은 전자결제서비스제공자 및 통신판매중개자이며<br>
+        통신판매의 당사자가 아닙니다. 상품, 상품정보 및 거래에 관한<br>
+        의무와 책임은 판매자에게 있습니다.
+    </p>
+    <input type="checkbox" id="nf_info" class="hidden">
+    <div class="corp_info">
+        <label for="nf_info" class="label">네이버파이낸셜㈜ 사업자 정보</label>
+        <ul class="corp_info_list">
+            <li>
+                <span class="title">대표이사</span>
+                <span>최인혁</span>
+            </li>
+            <li>
+                <span class="title">주소</span>
+                <span>경기도 성남시 분당구 불정로 6 네이버 그린팩토리 13561</span>
+            </li>
+            <li>
+                <span class="title">전화</span>
+                <span>1588-3819 (대표전화/고객센터)</span>
+            </li>
+            <li>
+                <span class="title">문의</span>
+                <span><a href="https://m.help.pay.naver.com/faq/alias/naver-mgu.help">온라인 문의 바로가기</a></span>
+            </li>
+            <li>
+                <span class="title">사업자등록번호</span>
+                <span>524-86-01528</span>
+            </li>
+        </ul>
+    </div>
+    <div class="android_add">
+        <button type="button" class="button_banner _layout_footer_shortcut_btn N=a:fot.shortcut">
+			<span class="icon npay">
+				<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+					<g fill="none" fill-rule="evenodd">
+						<rect width="34" height="34" fill="#09B65A" rx="1.2"/>
+						<g>
+							<path fill="#FFF" d="M13.288 2.643v1.908h1.02c.674 0 1.084-.225 1.084-.925v-.15c0-.658-.41-.833-.996-.833h-1.108zm-1.028-.891h2.184c1.39 0 1.984.733 1.984 1.716v.175c0 .975-.643 1.808-1.984 1.808h-1.156v2.308H12.26V1.752zM19.594 5.969h-.985c-.529 0-.713.224-.713.582v.1c0 .3.208.475.6.475.425 0 .706-.091.914-.308.184-.183.184-.383.184-.725V5.97zm-2.676.757V6.46c0-.75.425-1.308 1.667-1.308h1.01v-.175c0-.566-.24-.799-.786-.799-.472 0-.881.158-1.25.458l-.496-.766c.448-.325 1.001-.616 1.754-.616 1.034 0 1.78.54 1.78 1.465v3.223h-.906l-.016-.566c-.169.408-.794.633-1.258.633-.946 0-1.499-.475-1.499-1.283zM22.435 3.254L23.42 6.518 23.451 6.518 24.444 3.254 25.5 3.254 23.246 9.511 22.317 9.182 22.876 7.73 21.332 3.254z" transform="translate(4.344 12.089)"/>
+							<path d="M0 10.011L25.01 10.011 25.01 0 0 0z" transform="translate(4.344 12.089)"/>
+							<path fill="#FFF" d="M9.808 0v10.011H0V0h9.808zm-5.85 2.503H2.453v5.005H4.03V4.83l1.818 2.68h1.507V2.502H5.777v2.679l-1.818-2.68z" transform="translate(4.344 12.089)"/>
+						</g>
+					</g>
+				</svg>
+			</span>
+            <span><b class="point_color">네이버페이</b> 바로가기 추가</span>
+            <span class="icon down">
+				<svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30">
+					<g fill="#666">
+						<path d="M8.444 14.039L14.103 20.075 19.762 14.041 20.341 14.583 14.104 21.235 7.866 14.582z"/>
+						<path d="M14.707 4L14.707 20.655 13.707 20.655 13.707 4zM3.793 22.241L3.793 25.81 24.414 25.81 24.414 22.241 25.207 22.241 25.207 26.603 3 26.603 3 22.241z"/>
+					</g>
+				</svg>
+			</span>
+        </button>
+    </div>
+</div>
+<!-- javascript 영역 -->
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/jindo.mobile.all.js?ts=3" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.Component.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.UIComponent.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.Timer.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.WatchInput.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.LayerManager.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.LayerPosition.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/component/jindo.NumericStepper.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/mobile_component/jindo.m.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/mobile_component/jindo.m.Touch.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/mobile_component/jindo.m.CoreScroll.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/mobile_component/jindo.m.Scroll.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo/mobile_component/jindo.m.AjaxHistory.js?ts=3" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/config.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.base.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.utility.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.variables.js?ts=1" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.Component.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.layer.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.net.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.window.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.event.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.event.delegator.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/pug/pug.storage.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/service/checkout/mobile/pug/pug.mobile.js?ts=7" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/static.pay/o/c/commonjs/mobile_static/js/jindo_2_11_0/mobile_component/jindo.m.component.merged.js" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order/ui.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order/order_branch.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order/cancel_req/endpoint_control.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order/order_detail/order_detail.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="https://ssl.pstatic.net/tveta/libs/ssp/polyfill/js/ssp.polyfill.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript" src="//img.pay.naver.net/o/mstatic/js/service/checkout/mobile/order/order_glad.js?1609317983056" charset="utf-8"></script>
+<script type="text/javascript">
+	if (window && window["goNewHome"] === undefined) {
+		goNewHome = function() {
+			var __newHomeUrl = 'https://new-m.pay.naver.com/';
+			if (__newHomeUrl && __newHomeUrl !== "") {
+				location.href=__newHomeUrl;
+				return;
+			};
+		}
+	}
+	if (window && window["closeGnb"] === undefined) {
+		closeGnb = function() {
+			var _closeGnbTp = 'historyBack';
+			if (_closeGnbTp && _closeGnbTp !== "") {
+				if (_closeGnbTp === "closeWindow") {
+					window.close();
+					return;
+				}
+				if (_closeGnbTp === "backUrl") {
+					var _closeGnbBackUrl = '';
+					if (_closeGnbBackUrl && _closeGnbBackUrl !== "") {
+						location.href=_closeGnbBackUrl;
+						return;
+					}
+				}
+				if (_closeGnbTp === "historyBack") {
+					history.back();
+					return false;
+				}
+			}
+			//기본값은 historyBack
+			try {
+				history.back();
+				return false;
+			} catch(e) {
+
+			}
+		}
+	}
+pug.registerModule(checkout.mobile.order.order_branch);
+pug.registerModule(checkout.mobile.order.cancel_req.endpoint_control, {
+"callbackOnChange" : "",
+"" : ""
+});
+pug.registerModule(checkout.mobile.order.order_detail, {
+"urls" : 	{
+			"mobile.user.front.host" : "m.pay.naver.com",
+			"user.front.host" : "pay.naver.com",
+			"biztalk.front.host" : "talk.naver.com",
+			"hope.delivery.order.popup.mobile.url" : "http://m.shopping.naver.com/hope-delivery/orders/{=productOrderId}/products/{=productId}",
+			"mobile.shopping.cart.url" : "http://m.shopping.naver.com/cart",
+		"":""
+	}
+,
+"orderId" : "2020123040934121",
+"returnUrl" : "",
+"bookingCommandHeadUrl" : "https://api.booking.naver.com/v3.1/custom/naver-pay/redirect/",
+"inflowChannel" : "",
+"deliveryPredictions" : null,
+"" : ""
+});
+
+pug.registerModule(checkout.mobile.order.order_glad, {
+	"gfdUrl" : "https://internal.pay.naver.com/ad/seg",
+	"divId" : "div-1",
+	"unitId" : "m_pay_paid_end",
+	"spwp" : spwp
+});
+
+</script>
+<div class="_repurchase">&nbsp;</div>
+<div class="_repurchaseDtl">
+</div>
+</body>
+    <script type="text/javascript" language="javascript" charset="utf-8">
+        document.domain = "naver.com";
+    </script>
+<script type="text/javascript" language="JavaScript" src="https://ssl.pstatic.net/static.checkout/layout/202012301826/js/mobile/layout.variable.real.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://ssl.pstatic.net/static.checkout/layout/202012301826/js/mobile/layout.footer.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://ssl.pstatic.net/static.checkout/layout/202012301826/js/common/lcslog-0.8.4.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://ssl.pstatic.net/static.checkout/layout/202012301826/js/mobile/checkout.nclk_evt.js"></script>
+</html>

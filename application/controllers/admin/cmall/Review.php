@@ -91,6 +91,13 @@ class Review extends CB_Controller
 
             
         } 
+
+        if(!empty($this->input->get('cre_type2'))){
+            
+            $where['cre_type2'] = $this->input->get('cre_type2');
+
+            
+        } 
 		/**
 		 * 게시판 목록에 필요한 정보를 가져옵니다.
 		 */

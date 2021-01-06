@@ -31,11 +31,10 @@
 						<tr>
 							<th><a href="<?php echo element('pop_id', element('sort', $view)); ?>">번호</a></th>
 							<th><a href="<?php echo element('pop_title', element('sort', $view)); ?>">제목</a></th>
-							<th><a href="<?php echo element('pop_device', element('sort', $view)); ?>">접속기기</a></th>
+							<th>이미지</th>
 							<th><a href="<?php echo element('pop_start_date', element('sort', $view)); ?>">시작일시</a></th>
 							<th><a href="<?php echo element('pop_end_date', element('sort', $view)); ?>">종료일시</a></th>
-							<th>시간</th>
-							<th>가운데정렬</th>
+							<th>시간</th>							
 							<th><a href="<?php echo element('pop_activated', element('sort', $view)); ?>">활성여부</a></th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -49,11 +48,13 @@
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
 							<td><?php echo html_escape(element('pop_title', $result)); ?></td>
-							<td class="text-center"><?php echo element('pop_device', $result); ?></td>
+							<td class="text-center">
+								<img src="<?php echo cdn_url('popup',element('pop_image', $result)); ?>" alt="배너 이미지" title="배너 이미지" />
+							</td>
 							<td><?php echo element('pop_start_date', $result); ?></td>
 							<td><?php echo element('pop_end_date', $result); ?></td>
 							<td class="text-center"><?php echo element('pop_disable_hours', $result); ?></td>
-							<td><?php echo element('pop_is_center', $result) ? '가운데정렬' : ''; ?></td>
+							
 							<td><?php echo element('pop_activated', $result) ? '<button type="button" class="btn btn-xs btn-primary">활성</button>' : '<button type="button" class="btn btn-xs btn-danger">비활성</button>'; ?></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a></td>
 							<td><input type="checkbox" name="chk[]" class="list-chkbox" value="<?php echo element(element('primary_key', $view), $result); ?>" /></td>

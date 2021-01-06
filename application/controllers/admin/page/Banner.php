@@ -34,7 +34,7 @@ class Banner extends CB_Controller
 	/**
 	 * 헬퍼를 로딩합니다
 	 */
-	protected $helpers = array('form', 'array');
+	protected $helpers = array('form', 'array', 'dhtml_editor');
 
 	function __construct()
 	{
@@ -243,16 +243,16 @@ class Banner extends CB_Controller
 				'label' => '배너표시기기',
 				'rules' => 'trim|required',
 			),
-			array(
-				'field' => 'ban_width',
-				'label' => '이미지 가로값',
-				'rules' => 'trim|required|numeric|is_natural',
-			),
-			array(
-				'field' => 'ban_height',
-				'label' => '이미지 세로값',
-				'rules' => 'trim|required|numeric|is_natural',
-			),
+			// array(
+			// 	'field' => 'ban_width',
+			// 	'label' => '이미지 가로값',
+			// 	'rules' => 'trim|required|numeric|is_natural',
+			// ),
+			// array(
+			// 	'field' => 'ban_height',
+			// 	'label' => '이미지 세로값',
+			// 	'rules' => 'trim|required|numeric|is_natural',
+			// ),
 			array(
 				'field' => 'ban_order',
 				'label' => '정렬순서',
@@ -261,6 +261,11 @@ class Banner extends CB_Controller
 			array(
 				'field' => 'ban_activated',
 				'label' => '배너활성화',
+				'rules' => 'trim',
+			),
+			array(
+				'field' => 'ban_deep_link_info',
+				'label' => '배너딥링크정보 ',
 				'rules' => 'trim',
 			),
 		);
@@ -380,6 +385,7 @@ class Banner extends CB_Controller
 			$ban_height = $this->input->post('ban_height') ? $this->input->post('ban_height') : 0;
 			$ban_order = $this->input->post('ban_order') ? $this->input->post('ban_order') : 0;
 			$ban_activated = $this->input->post('ban_activated') ? 1 : 0;
+			$ban_deep_link_info =  json_encode($this->input->post('ban_deep_link_info', null, ''));
 
 			$updatedata = array(
 				'ban_start_date' => $ban_start_date,
@@ -393,6 +399,7 @@ class Banner extends CB_Controller
 				'ban_height' => $ban_height,
 				'ban_order' => $ban_order,
 				'ban_activated' => $ban_activated,
+				'ban_deep_link_info' => $ban_deep_link_info,
 			);
 			if ($this->input->post('ban_image_del')) {
 				$updatedata['ban_image'] = '';

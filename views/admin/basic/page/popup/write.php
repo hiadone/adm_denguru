@@ -43,6 +43,14 @@
 					<input type="text" class="form-control datepicker" name="pop_end_date" value="<?php echo set_value('pop_end_date', element('pop_end_date', element('data', $view))); ?>" />
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">팝업딥링크정보</label>
+				<div class="col-sm-5" style="display:table;">
+					<?php echo display_dhtml_editor('pop_deep_link_info', set_value('pop_deep_link_info', element('pop_deep_link_info', element('data', $view))), $classname = 'form-control ', $is_dhtml_editor = false, $editor_type = $this->cbconfig->item('post_editor_type')); ?>
+				</div>
+
+			</div>
 			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">팝업정렬</label>
 				<div class="col-sm-10">

@@ -816,6 +816,9 @@ class Fcm extends CB_Controller
             $arr['notification'] = array();
             $arr['notification']['title'] = '제목';
             $arr['notification']['body'] = '내용';
+            $arr['notification']['ImageUrl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
+            $arr['notification']['imageurl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
+            $arr['notification']['imageUrl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
             
             // $arr['notification']['badge'] = '1';
             // $arr['notification']['tag'] = '1';  // 개별로 보낼때 이름을 다르게

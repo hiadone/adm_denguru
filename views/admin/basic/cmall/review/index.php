@@ -23,6 +23,8 @@
 
 				<div class="btn-group pull-right" role="group" aria-label="...">
 					<a href="<?php echo element('listall_url', $view); ?>" class="btn btn-outline btn-default btn-sm">전체목록</a>
+					<a href="<?php echo element('listall_url', $view); ?>?cre_type2=1" class="btn btn-warning btn-sm">리뷰상품 추천 목록</a>
+					<a href="<?php echo element('listall_url', $view); ?>?cre_type2=2" class="btn btn-danger btn-sm">리뷰상품 비추천 목록</a>
 					<a href="<?php echo element('listall_url', $view); ?>?cre_type=1" class="btn btn-primary btn-sm">리뷰 우선 노출 목록</a>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-update btn-list-selected disabled" data-list-update-url = "<?php echo element('list_update_url', $view); ?>" >선택승인</button>
 					<button type="button" class="btn btn-outline btn-default btn-sm btn-list-delete btn-list-selected disabled" data-list-delete-url = "<?php echo element('list_delete_url', $view); ?>" >선택삭제</button>
@@ -46,6 +48,7 @@
 							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">평점</a></th>
 							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">조회수</a></th>
 							<th><a href="<?php echo element('cre_score', element('sort', $view)); ?>">추천수</a></th>
+							<th><a href="<?php echo element('cre_type2', element('sort', $view)); ?>">상품추천</a></th>
 							<th><a href="<?php echo element('cre_status', element('sort', $view)); ?>">승인</a></th>
 							<th>수정</th>
 							<th><input type="checkbox" name="chkall" id="chkall" /></th>
@@ -59,13 +62,22 @@
 						<tr>
 							<td><?php echo number_format(element('num', $result)); ?></td>
 							<td><a href="<?php echo goto_url(cmall_item_url(element('cit_key', $result))); ?>" target="_blank"><?php echo html_escape(element('cit_name', $result)); ?></a></td>
-							<td><?php echo html_escape(element('cre_good', $result)); ?></td>
-							<td><?php echo html_escape(element('cre_bad', $result)); ?></td>
+							<td style="width:250px;"><?php echo html_escape(element('cre_good', $result)); ?></td>
+							<td style="width:250px;"><?php echo html_escape(element('cre_bad', $result)); ?></td>
 							<td><?php echo element('display_name', $result); ?> <?php if (element('mem_userid', $result)) { ?> ( <a href="?sfield=cmall_review.mem_id&amp;skeyword=<?php echo element('mem_id', $result); ?>"><?php echo html_escape(element('mem_userid', $result)); ?></a> ) <?php } ?></td>
 							<td><?php echo display_datetime(element('cre_datetime', $result), 'full'); ?></td>
 							<td><?php echo str_repeat('&#9733;', element('cre_score', $result)); ?></td>
 							<td><?php echo element('cre_hit', $result); ?></td>
 							<td><?php echo element('cre_like', $result); ?></td>
+							<td>
+								<?php 
+								if(element('cre_type2', $result) === '1')
+									echo '<button class="btn btn-xs btn-warning">추천</button>';
+								elseif(element('cre_type2', $result) === '2') 
+									echo '<button class="btn btn-xs btn-danger">비추천</button>';
+								?>
+									
+							</td>
 							<td><?php echo (element('cre_status', $result)) ? '<button class="btn btn-xs btn-default">승인</button>' : '<button class="btn btn-xs btn-danger">미승인</button>'; ?></td>
 							<td><a href="<?php echo admin_url($this->pagedir); ?>/write/<?php echo element(element('primary_key', $view), $result); ?>?<?php echo $this->input->server('QUERY_STRING', null, ''); ?>" class="btn btn-outline btn-default btn-xs">수정</a>
 								<?php if (element('cre_type1', $result)) { ?><label class="label label-danger">리뷰우선노출</label> <?php } ?>

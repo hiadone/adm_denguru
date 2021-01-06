@@ -60,7 +60,7 @@
 							<td><?php echo html_escape(element('ban_title', $result)); ?></td>
 							<td><?php echo html_escape(element('bng_name', $result)); ?></td>
 							<td class="text-center"><?php echo element('ban_device', $result); ?></td>
-							<td><?php if (element('ban_url', $result)) { ?><a href="<?php echo goto_url(element('ban_url', $result)); ?>" target="_blank"><?php echo html_escape(element('ban_url', $result)); ?></a> <?php } ?></td>
+							<td  style="width:400px;word-break: break-all;"><?php if (element('ban_url', $result)) { ?><a href="<?php echo goto_url(element('ban_url', $result)); ?>" target="_blank"><?php echo html_escape(element('ban_url', $result)); ?></a> <?php } ?></td>
 							<td class="text-center"><?php echo html_escape(element('ban_width', $result)); ?> / <?php echo html_escape(element('ban_height', $result)); ?></td>
 							<td><?php echo element('ban_start_date', $result); ?></td>
 							<td><?php echo element('ban_end_date', $result); ?></td>

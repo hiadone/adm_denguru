@@ -262,6 +262,11 @@ class Popup extends CB_Controller
 				'label' => '팝업내용',
 				'rules' => 'trim',
 			),
+			array(
+				'field' => 'pop_deep_link_info',
+				'label' => '팝업딥링크정보 ',
+				'rules' => 'trim',
+			),
 		);
 
 		$this->form_validation->set_rules($config);
@@ -379,6 +384,9 @@ class Popup extends CB_Controller
 			$pop_page = $this->input->post('pop_page') ? $this->input->post('pop_page') : 0;
 			$pop_disable_hours = $this->input->post('pop_disable_hours') ? $this->input->post('pop_disable_hours') : 0;
 			$pop_activated = $this->input->post('pop_activated') ? $this->input->post('pop_activated') : 0;
+			$pop_deep_link_info =  json_encode($this->input->post('pop_deep_link_info', null, ''));
+
+			
 
 			$updatedata = array(
 				'pop_title' => $this->input->post('pop_title', null, ''),
@@ -394,6 +402,7 @@ class Popup extends CB_Controller
 				'pop_disable_hours' => $pop_disable_hours,
 				'pop_activated' => $pop_activated,
 				'pop_content' => $this->input->post('pop_content', null, ''),
+				'pop_deep_link_info' => $pop_deep_link_info,
 				'pop_content_html_type' => $content_type,
 			);
 
