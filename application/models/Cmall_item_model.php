@@ -377,7 +377,7 @@ class Cmall_item_model extends CB_Model
             array_push($result,$val);
         }
         
-        $this->db->select('count(*) as cnt, ckd_value_kr,cmall_kind.ckd_id ', false);
+        $this->db->select('count(*) as cnt, ckd_value_kr as ckd_value,cmall_kind.ckd_id ', false);
         $this->db->from('cmall_item');
         $this->db->join('cmall_kind_rel', 'cmall_kind_rel.cit_id = cmall_item.cit_id', 'inner');
         $this->db->join('cmall_kind', 'cmall_kind.ckd_id = cmall_kind_rel.ckd_id', 'inner');        
@@ -392,7 +392,7 @@ class Cmall_item_model extends CB_Model
         
         $this->db->order_by('cnt', 'desc');
         if ($limit) {
-            $this->db->limit(2);
+            $this->db->limit(3);
         }
         $qry = $this->db->get();
         $result_ = $qry->result_array();
