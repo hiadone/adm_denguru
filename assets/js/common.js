@@ -978,10 +978,15 @@ if (typeof(COMMON_JS) === 'undefined') {
         
         
         
-
-
+        
+        
         var $that = $(this);
-        var cit_type = input_key.replace(/[^0-9]/g,'');
+        
+        if(typeof input_key ==='string')
+            var cit_type = input_key.replace(/[^0-9]/g,'');
+        else 
+            var cit_type = input_key;
+
         $.ajax({
             url : href,
             type : 'post',
