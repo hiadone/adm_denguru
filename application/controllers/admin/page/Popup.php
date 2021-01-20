@@ -384,7 +384,7 @@ class Popup extends CB_Controller
 			$pop_page = $this->input->post('pop_page') ? $this->input->post('pop_page') : 0;
 			$pop_disable_hours = $this->input->post('pop_disable_hours') ? $this->input->post('pop_disable_hours') : 0;
 			$pop_activated = $this->input->post('pop_activated') ? $this->input->post('pop_activated') : 0;
-			$pop_deep_link_info =  json_encode($this->input->post('pop_deep_link_info', null, ''));
+			$pop_deep_link_info =  $this->input->post('pop_deep_link_info', null, '');
 
 			
 

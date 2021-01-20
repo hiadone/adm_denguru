@@ -385,7 +385,7 @@ class Banner extends CB_Controller
 			$ban_height = $this->input->post('ban_height') ? $this->input->post('ban_height') : 0;
 			$ban_order = $this->input->post('ban_order') ? $this->input->post('ban_order') : 0;
 			$ban_activated = $this->input->post('ban_activated') ? 1 : 0;
-			$ban_deep_link_info =  json_encode($this->input->post('ban_deep_link_info', null, ''));
+			$ban_deep_link_info =  $this->input->post('ban_deep_link_info', null, '');
 
 			$updatedata = array(
 				'ban_start_date' => $ban_start_date,
