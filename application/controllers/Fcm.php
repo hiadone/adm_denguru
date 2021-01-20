@@ -814,8 +814,8 @@ class Fcm extends CB_Controller
             // 발송 내용
             $arr   = array();
             $arr['notification'] = array();
-            $arr['notification']['title'] = '제목';
-            $arr['notification']['body'] = '내용';
+            $arr['notification']['title'] = $fcm_title;
+            $arr['notification']['body'] = $fcm_message;
             $arr['notification']['ImageUrl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
             $arr['notification']['imageurl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
             $arr['notification']['imageUrl'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico';
@@ -828,17 +828,22 @@ class Fcm extends CB_Controller
             $arr['data'] = array();
 
 
+            
+            
+
+
             $fcm_deeplinkinfo = json_decode($fcm_deeplinkinfo,true);
 
             
             
             $arr['data'] = $fcm_deeplinkinfo;
-            $arr['data']['message'] = '내용11'; // 내부에서 받을 시
+            $arr['data']['message'] = $fcm_message; // 내부에서 받을 시
             $arr['data']['icon'] = 'https://www.bitcoissue.com/uploads/favicon/4598d01cc71c807eff0a4a62341aa3f6.ico'; // 내부에서 받을 시
 
             $arr['registration_ids'] = array();
             $arr['registration_ids'] = $tokens;
 
+            
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,    'https://fcm.googleapis.com/fcm/send');
             curl_setopt($ch, CURLOPT_POST, true);
