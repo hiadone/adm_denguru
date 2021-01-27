@@ -385,7 +385,7 @@ class Event extends CB_Controller
                 );
             }
 
-            delete_cache_files('/event','event-info-');
+            delete_cache_files('/event_group','event-group-');
             // 이벤트가 존재하면 실행합니다
             Events::trigger('after', $eventname);
 
@@ -438,7 +438,7 @@ class Event extends CB_Controller
             '정상적으로 삭제되었습니다'
         );
 
-        delete_cache_files('/event','event-info-');
+        delete_cache_files('/event_group','event-group-');
         $param =& $this->querystring;
         $redirecturl = admin_url($this->pagedir . '?' . $param->output());
         redirect($redirecturl);
