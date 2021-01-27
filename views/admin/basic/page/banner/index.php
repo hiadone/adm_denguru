@@ -39,7 +39,7 @@
 							<th><a href="<?php echo element('bng_name', element('sort', $view)); ?>">배너 위치</a></th>
 							<th>표시기기</th>
 							<th><a href="<?php echo element('ban_url', element('sort', $view)); ?>">URL</a></th>
-							<th>가로/세로</a></th>
+							
 							<th><a href="<?php echo element('ban_start_date', element('sort', $view)); ?>">시작일시</a></th>
 							<th><a href="<?php echo element('ban_end_date', element('sort', $view)); ?>">종료일시</a></th>
 							<th><a href="<?php echo element('ban_hit', element('sort', $view)); ?>">클릭수</a></th>
@@ -60,8 +60,12 @@
 							<td><?php echo html_escape(element('ban_title', $result)); ?></td>
 							<td><?php echo html_escape(element('bng_name', $result)); ?></td>
 							<td class="text-center"><?php echo element('ban_device', $result); ?></td>
-							<td  style="width:400px;word-break: break-all;"><?php if (element('ban_url', $result)) { ?><a href="<?php echo goto_url(element('ban_url', $result)); ?>" target="_blank"><?php echo html_escape(element('ban_url', $result)); ?></a> <?php } ?></td>
-							<td class="text-center"><?php echo html_escape(element('ban_width', $result)); ?> / <?php echo html_escape(element('ban_height', $result)); ?></td>
+							<td  style="width:400px;word-break: break-all;"><?php if (element('ban_url', $result)) { ?><a href="<?php echo goto_url(element('ban_url', $result)); ?>" target="_blank"><?php echo html_escape(element('ban_url', $result)); ?></a> <?php } ?>
+								<div>
+									<?php echo element('ban_deep_link_info', $result); ?>
+								</div>
+							</td>
+							
 							<td><?php echo element('ban_start_date', $result); ?></td>
 							<td><?php echo element('ban_end_date', $result); ?></td>
 							<td class="text-center"><?php echo number_format((int) element('ban_hit', $result)); ?></td>
