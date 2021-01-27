@@ -51,7 +51,18 @@
                         <tr>
                             <td><?php echo number_format(element('num', $result)); ?></td>
                             <td><?php if (element('cit_file_1', $result)) {?><img src="<?php echo cdn_url('cmallitem', element('cit_file_1', $result)); ?>" alt="<?php echo html_escape(element('cit_name', $result)); ?>" title="<?php echo html_escape(element('cit_name', $result)); ?>" class="thumbnail mg0" style="width:80px;" /><?php } ?></td>
-                            <td><?php echo html_escape(element('cit_name', $result)); ?></td>
+                            <td>
+                                <?php 
+                                    
+                                        echo '<div><label class="label label-default">'.element('brd_name', $result).'</label></div>';
+                                    ?>
+                                <?php echo html_escape(element('cit_name', $result)); ?>
+                                <?php 
+                                    if(element('cit_is_soldout', $result))
+                                        echo '<div><button class="btn btn-danger btn-xs" type="button">Sold out</button></div>';
+                                ?>
+                                
+                            </td>
                             <!-- <td class="text-center"><?php echo element('eve_device', $result); ?></td> -->
                             <td><?php echo element('evr_start_date', $result); ?></td>
                             <td><?php echo element('evr_end_date', $result); ?></td>

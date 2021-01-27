@@ -239,10 +239,10 @@ class Event_model extends CB_Model
     public function get_item_list($limit = '', $offset = '', $where = '', $like = '', $findex = '', $forder = '', $sfield = '', $skeyword = '', $sop = 'OR')
     {
 
-        $select = 'cmall_item.*,event.*,event_rel.*';        
+        $select = 'cmall_item.*,event.*,event_rel.*,board.*';        
         $join[] = array('table' => 'event_rel', 'on' => 'event_rel.eve_id = event.eve_id', 'type' => 'inner');
         $join[] = array('table' => 'cmall_item', 'on' => 'cmall_item.cit_id = event_rel.cit_id', 'type' => 'inner');
-        
+        $join[] = array('table' => 'board', 'on' => 'board.brd_id = cmall_item.brd_id', 'type' => 'inner');
 
         
 
