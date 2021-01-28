@@ -311,7 +311,7 @@ class Review extends CB_Controller
                     if ($value) {
                         $uploadconfig = array();
                         $uploadconfig['upload_path'] = $upload_path;
-                        $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif|acc|flv|f4a|f4v|mov|mp3|mp4|m4a|m4v|oga|ogg|rss|webm';
+                        $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif|acc|flv|f4a|f4v|mov|mp3|mp4|m4a|m4v|oga|ogg|rss|webm|avi';
                         $uploadconfig['max_size'] = 100 * 1024;
                         $uploadconfig['encrypt_name'] = true;
 
@@ -331,6 +331,18 @@ class Review extends CB_Controller
                             $uploadfiledata[$i]['rfi_width'] = element('image_width', $filedata) ? element('image_width', $filedata) : 0;
                             $uploadfiledata[$i]['rfi_height'] = element('image_height', $filedata) ? element('image_height', $filedata) : 0;
                             $uploadfiledata[$i]['rfi_type'] = str_replace('.', '', element('file_ext', $filedata));
+
+
+                            $play_extension = array('acc', 'flv', 'f4a', 'f4v', 'mov', 'mp3', 'mp4', 'm4a', 'm4v', 'oga', 'ogg', 'rss', 'webm');
+
+                            
+                            if ( in_array(element('rfi_type', $uploadfiledata[$i]), $play_extension)) {
+                                $retval = 1;
+                                $cmd ="/usr/bin/ffmpeg  -i ".$this->upload->upload_path.$this->upload->file_name."  -r 0.0033 -vf scale=-1:480 -vcodec png ".$this->upload->upload_path.$this->upload->file_name."%002d.png";
+                                @exec($cmd, $output, $retval);
+                                
+                            }
+                            
                             $uploadfiledata[$i]['is_image'] = element('is_image', $filedata) ? element('is_image', $filedata) : 0;
 
                             $upload = $this->aws_s3->upload_file($this->upload->upload_path,$this->upload->file_name,$upload_path);
@@ -341,7 +353,7 @@ class Review extends CB_Controller
                     }
                 }
             }
-
+            
             if (isset($_FILES) && isset($_FILES['cre_file_update'])
                 && isset($_FILES['cre_file_update']['name'])
                 && is_array($_FILES['cre_file_update']['name'])
@@ -379,7 +391,7 @@ class Review extends CB_Controller
                     if ($value) {
                         $uploadconfig = array();
                         $uploadconfig['upload_path'] = $upload_path;
-                        $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif|acc|flv|f4a|f4v|mov|mp3|mp4|m4a|m4v|oga|ogg|rss|webm';
+                        $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif|acc|flv|f4a|f4v|mov|mp3|mp4|m4a|m4v|oga|ogg|rss|webm|avi';
                         $uploadconfig['max_size'] = 100 * 1024;
                         $uploadconfig['encrypt_name'] = true;
                         $this->upload->initialize($uploadconfig);
@@ -409,6 +421,18 @@ class Review extends CB_Controller
                             $uploadfiledata2[$i]['rfi_height'] = element('image_height', $filedata)
                                 ? element('image_height', $filedata) : 0;
                             $uploadfiledata2[$i]['rfi_type'] = str_replace('.', '', element('file_ext', $filedata));
+
+                            $play_extension = array('acc', 'flv', 'f4a', 'f4v', 'mov', 'mp3', 'mp4', 'm4a', 'm4v', 'oga', 'ogg', 'rss', 'webm');
+
+                            
+                            if ( in_array(element('rfi_type', $uploadfiledata2[$i]), $play_extension)) {
+                                $retval = 1;
+                                $cmd ="/usr/bin/ffmpeg  -i ".$this->upload->upload_path.$this->upload->file_name."  -r 0.0033 -vf scale=-1:480 -vcodec png ".$this->upload->upload_path.$this->upload->file_name."%002d.png";
+                                @exec($cmd, $output, $retval);
+
+
+                            }
+
                             $uploadfiledata2[$i]['is_image'] = element('is_image', $filedata)
                                 ? element('is_image', $filedata) : 0;
 
