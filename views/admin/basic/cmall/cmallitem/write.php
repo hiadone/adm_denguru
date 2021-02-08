@@ -178,7 +178,7 @@
 				</div>
 			</div>
 
-			<div class="box-table-header">
+			<!-- <div class="box-table-header">
 				<h4><a data-toggle="collapse" href="#cmalltab9" aria-expanded="true" aria-controls="cmalltab9">제품견종</a></h4>
 				<a data-toggle="collapse" href="#cmalltab9" aria-expanded="true" aria-controls="cmalltab9"><i class="fa fa-chevron-up pull-right"></i></a>
 			</div>
@@ -252,7 +252,7 @@
 						</script>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="box-table-header">
 				<h4><a data-toggle="collapse" href="#cmalltab2" aria-expanded="true" aria-controls="cmalltab2">기본정보</a></h4>
