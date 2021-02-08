@@ -92,6 +92,8 @@
 						$open = false;
 						$attr = element('all_attr', element('data', $view));
 						$item_attr = element('attr', element('data', $view));
+						$item_kind = element('kind', element('data', $view));
+
 						if (element(0, $attr)) {
 							$i = 0;
 							foreach (element(0, $attr) as $key => $val) {
@@ -103,7 +105,9 @@
 								echo '<div class="checkbox" style="vertical-align:top;">';
 								$cat_checked = (is_array($item_attr) && in_array(element('cat_id', $val), $item_attr)) ? 'checked="checked"' : '';
 								echo '<label for="cat_id_' . element('cat_id', $val) . '"><input type="checkbox" name="cmall_attr[]" value="' . element('cat_id', $val) . '" ' . $cat_checked . ' id="cat_id_' . element('cat_id', $val) . '" onclick="display_cmall_attr(this.checked,\'cattrwrap_' . element('cat_id', $val) . '\');" />' . element('cat_value', $val) . '</label> ';
-								echo get_subattr($attr, $item_attr, element('cat_id', $val), $display);
+
+								
+								echo get_subattr($attr, $item_attr, element('cat_id', $val), $display,$item_kind);
 								echo '</div>';
 								if ($i%3== 2) {
 									echo '</div>';
@@ -116,20 +120,38 @@
 								$open = false;
 							}
 						}
-						function get_subattr($attr, $item_attr, $key, $display)
+						function get_subattr($attr, $item_attr, $key, $display,$item_kind)
 						{
 
 							$subcat = element($key, $attr);
 							$html = '';
 							if ($subcat) {
-								$html .= '<div class="form-group" id="cattrwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
-								foreach ($subcat as $skey => $sval) {
-									$display = (is_array($item_attr) && in_array(element('cat_id', $sval), $item_attr)) ? 'block' : 'none';
-									$cat_checked = (is_array($item_attr) && in_array(element('cat_id', $sval), $item_attr)) ? 'checked="checked"' : '';
-									$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
-									$html .= '<label for="cat_id_' . element('cat_id', $sval) . '"><input type="checkbox" name="cmall_attr[]" value="' . element('cat_id', $sval) . '" ' . $cat_checked . ' id="cat_id_' . element('cat_id', $sval) . '" onclick="display_cmall_attr(this.checked,\'cattrwrap_' . element('cat_id', $sval) . '\');" /> ' . element('cat_value', $sval) . '</label>';
-									$html .= get_subattr($attr, $item_attr, element('cat_id', $sval), $display);
-									$html .= '</div>';
+								if($key === '4' || $key === '5' || $key === '6'){
+									// $display ='block';
+									$html .= '<div class="form-group" id="cattrwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
+									foreach ($subcat as $skey => $sval) {
+										$display = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'block' : 'none';
+										$cat_checked = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'checked="checked"' : '';
+										
+										$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
+										
+										$html .= '<label for="ckd_id_' . element('ckd_id', $sval) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $sval) . '" ' . $cat_checked . ' id="ckd_id_' . element('ckd_id', $sval) . '" onclick="display_cmall_attr(this.checked,\'ckdtrwrap_' . element('ckd_id', $sval) . '\');" /> ' . element('ckd_value_kr', $sval) . '</label>';
+										// $html .= get_subattr($attr, $item_attr, element('ckd_id', $sval), $display,$item_kind);
+										$html .= '</div>';
+									}
+								} else {
+									$html .= '<div class="form-group" id="cattrwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
+									foreach ($subcat as $skey => $sval) {
+										$display = (is_array($item_attr) && in_array(element('cat_id', $sval), $item_attr)) ? 'block' : 'none';
+										$cat_checked = (is_array($item_attr) && in_array(element('cat_id', $sval), $item_attr)) ? 'checked="checked"' : '';									
+										if($key === '1')
+											$html .= '<div class="checkbox" style="vertical-align:top;margin-left:20px;">';
+										else
+											$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
+										$html .= '<label for="cat_id_' . element('cat_id', $sval) . '"><input type="checkbox" name="cmall_attr[]" value="' . element('cat_id', $sval) . '" ' . $cat_checked . ' id="cat_id_' . element('cat_id', $sval) . '" onclick="display_cmall_attr(this.checked,\'cattrwrap_' . element('cat_id', $sval) . '\');" /> ' . element('cat_value', $sval) . '</label>';
+										$html .= get_subattr($attr, $item_attr, element('cat_id', $sval), $display,$item_kind);
+										$html .= '</div>';
+									}								
 								}
 								$html .= '</div>';
 							}
@@ -139,9 +161,12 @@
 						?>
 						<script type="text/javascript">
 						//<![CDATA[
-						function display_cmall_attr(check, idname) {
+						function display_cmall_attr(check, idname) {	
+							
 							if (check === true) {
 								$('#' + idname).show();
+								// $('#' + idname).find('input:checkbox').attr('checked', true);
+
 							} else {
 								$('#' + idname).hide();
 								$('#' + idname).find('input:checkbox').attr('checked', false);
@@ -163,20 +188,22 @@
 					<div class="col-sm-10">
 						<?php
 						$open = false;
-						$kind = element(0,element('all_kind', element('data', $view)));
+						$kind = element('parent_kind', element('data', $view));
 						$item_kind = element('kind', element('data', $view));
-						if ($kind) {
+						if (element(0, $kind)) {
+
 							$i = 0;
-							foreach ($kind as $key => $val) {
+							foreach (element(0, $kind) as $key => $val) {
+
 								$display = (is_array($item_kind) && in_array(element('ckd_id', $val), $item_kind)) ? "block" : 'none';
 								if ($i%5== 0) {
 									echo '<div>';
 									$open = true;
 								}
-								echo '<div class="checkbox checkbox-inline" style="vertical-align:top;">';
+								echo '<div class="checkbox" style="vertical-align:top;">';
 								$ckd_checked = (is_array($item_kind) && in_array(element('ckd_id', $val), $item_kind)) ? 'checked="checked"' : '';
 								echo '<label for="ckd_id_' . element('ckd_id', $val) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $val) . '" ' . $ckd_checked . ' id="ckd_id_' . element('ckd_id', $val) . '" onclick="display_cmall_kind(this.checked,\'ckindwrap_' . element('ckd_id', $val) . '\');" />' . element('ckd_value_kr', $val) . '</label> ';
-								// echo get_subkind($kind, $item_kind, element('ckd_id', $val), $display);
+								echo get_subkind($kind, $item_kind, element('ckd_id', $val), $display);
 								echo '</div>';
 								if ($i%5== 4) {
 									echo '</div>';
@@ -197,11 +224,12 @@
 							if ($subcat) {
 								$html .= '<div class="form-group" id="ckindwrap_' . $key . '" style="vertical-align:margin-left:10px;top;display:' . $display . ';" >';
 								foreach ($subcat as $skey => $sval) {
+
 									$display = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'block' : 'none';
 									$ckd_checked = (is_array($item_kind) && in_array(element('ckd_id', $sval), $item_kind)) ? 'checked="checked"' : '';
 									$html .= '<div class="checkbox-inline" style="vertical-align:top;margin-left:10px;">';
 									$html .= '<label for="ckd_id_' . element('ckd_id', $sval) . '"><input type="checkbox" name="cmall_kind[]" value="' . element('ckd_id', $sval) . '" ' . $ckd_checked . ' id="ckd_id_' . element('ckd_id', $sval) . '" onclick="display_cmall_kind(this.checked,\'ckindwrap_' . element('ckd_id', $sval) . '\');" /> ' . element('ckd_value_kr', $sval) . '</label>';
-									$html .= get_subkind($kind, $item_kind, element('ckd_id', $sval), $display);
+									// $html .= get_subkind($kind, $item_kind, element('ckd_id', $sval), $display);
 									$html .= '</div>';
 								}
 								$html .= '</div>';
@@ -213,12 +241,12 @@
 						<script type="text/javascript">
 						//<![CDATA[
 						function display_cmall_kind(check, idname) {
-							// if (check === true) {
-							// 	$('#' + idname).show();
-							// } else {
-							// 	$('#' + idname).hide();
-							// 	$('#' + idname).find('input:checkbox').attr('checked', false);
-							// }
+							if (check === true) {
+								$('#' + idname).show();
+							} else {
+								$('#' + idname).hide();
+								$('#' + idname).find('input:checkbox').attr('checked', false);
+							}
 						}
 						//]]>
 						</script>

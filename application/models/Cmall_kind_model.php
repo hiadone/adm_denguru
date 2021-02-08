@@ -43,6 +43,21 @@ class Cmall_kind_model extends CB_Model
         return $result;
     }
 
+    public function get_parent_kind()
+    {
+        $cachename = 'cmall-kind-parent';
+        if ( ! $result = $this->cache->get($cachename)) {
+            $return = $this->get($primary_value = '', $select = '', array('ckd_parent' => 0), $limit = '', $offset = 0, $findex = 'ckd_id', $forder = 'asc');
+            if ($return) {
+                foreach ($return as $key => $value) {
+                    $result[$value['ckd_parent']][] = $value;
+                }
+                $this->cache->save($cachename, $result);
+            }
+        }
+        return $result;
+    }
+
 
     public function get_kind_info($ckd_id = 0)
     {

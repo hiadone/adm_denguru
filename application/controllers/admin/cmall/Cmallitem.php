@@ -1224,9 +1224,26 @@ class Cmallitem extends CB_Controller
                 '기본설정따름'
             );
             $view['view']['data']['all_category'] = $this->Cmall_category_model->get_all_category();
-            $view['view']['data']['all_attr'] = $this->Cmall_attr_model->get_all_attr();
-            $view['view']['data']['all_kind'] = $this->Cmall_kind_model->get_all_kind();
 
+
+            $view['view']['data']['all_attr'] = $this->Cmall_attr_model->get_all_attr();
+
+
+            $parent_kind = $this->Cmall_kind_model->get_parent_kind();
+
+            // $aaa =array(array(array('ckd_id'=>4,'ckd_value_kr'=>'소형견'),array('ckd_id'=>5,'ckd_value_kr'=>'중형견'),array('ckd_id'=>6,'ckd_value_kr'=>'대형견')));
+
+            foreach(element(1,$view['view']['data']['all_attr']) as $key => $val){
+                
+                foreach(element(0,$parent_kind) as $pval){
+                    if(element('ckd_size',$pval) === $val['cat_id'])
+                        $view['view']['data']['all_attr'][$val['cat_id']][] = $pval;
+                }
+                
+            }
+            // $view['view']['data']['parent_kind'] = $aaa;
+            
+            
             /**
              * primary key 정보를 저장합니다
              */
