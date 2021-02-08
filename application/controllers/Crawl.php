@@ -511,6 +511,37 @@ class Crawl extends CB_Controller
                                 @chmod($file, 0644);
                             }
 
+                            if($citimageName !== $crwimageName){
+
+                                $old_upload_path_ =config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item);
+                                $new_upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
+                                $filetype = mime_content_type($upload_path_);
+                                copy(
+                                    $new_upload_path_,
+                                    $upload_path.$crwimageName
+                                );
+                                
+                                
+
+                                
+
+                                if(empty($filetype)) $filetype = mime_content_type($upload_path.$crwimageName);
+
+                                $upload = $this->aws_s3->upload_file($new_upload_path_,'',$upload_path.$crwimageName,$filetype);       
+                                @unlink($old_upload_path_);
+
+                                $deleted = $this->aws_s3->delete_file($old_upload_path_);
+
+                                
+                                $this->benchmark->mark('code_end');    
+                                if($upload){
+                                    if($this->benchmark->elapsed_time('code_start', 'code_end') > 20)
+                                        $this->Cmall_item_model->reconnect();
+                                    $updatedata['cit_file_1'] = element('brd_id', $val) . '/'.$_post_id . '/'.$crwimageName;
+                                    $this->Cmall_item_model->update(element('cit_id',$item), $updatedata);
+                                }
+                            }
+
                             if($_post_id !== element('post_id',$item)){
 
                                 $upload_path_ =config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item);
