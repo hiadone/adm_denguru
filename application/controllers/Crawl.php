@@ -4922,9 +4922,66 @@ class Crawl extends CB_Controller
             }
             
             
+            if($brd_id == '125'){
 
+                $this->load->library('upload');
 
-            
+                for ($k = 1; $k <= 10; $k++) {
+                    if (isset($_FILES) && isset($_FILES['crw_file_' . $k]) && isset($_FILES['crw_file_' . $k]['name']) && $_FILES['crw_file_' . $k]['name']) {
+                        $upload_path = config_item('uploads_dir') . '/crawlitem/';
+                        if (is_dir($upload_path) === false) {
+                            mkdir($upload_path, 0707);
+                            $file = $upload_path . 'index.php';
+                            $f = @fopen($file, 'w');
+                            @fwrite($f, '');
+                            @fclose($f);
+                            @chmod($file, 0644);
+                        }
+                        $upload_path .= $brd_id . '/';
+                        if (is_dir($upload_path) === false) {
+                            mkdir($upload_path, 0707);
+                            $file = $upload_path . 'index.php';
+                            $f = @fopen($file, 'w');
+                            @fwrite($f, '');
+                            @fclose($f);
+                            @chmod($file, 0644);
+                        }
+                        $upload_path .= str_replace(" ","",$updatedata['crw_category1']) . '/';
+                        if (is_dir($upload_path) === false) {
+                            mkdir($upload_path, 0707);
+                            $file = $upload_path . 'index.php';
+                            $f = @fopen($file, 'w');
+                            @fwrite($f, '');
+                            @fclose($f);
+                            @chmod($file, 0644);
+                        }
+
+                        $uploadconfig = array();
+                        $uploadconfig['upload_path'] = $upload_path;
+                        $uploadconfig['allowed_types'] = 'jpg|jpeg|png|gif';
+                        $uploadconfig['max_size'] = '10000';
+                        $uploadconfig['encrypt_name'] = true;
+
+                        $this->upload->initialize($uploadconfig);
+
+                        if ($this->upload->do_upload('crw_file_' . $k)) {
+                            $img = $this->upload->data();
+                            $crw_file[$k] = $brd_id . '/' . str_replace(" ","",$updatedata['crw_category1']) . '/' . element('file_name', $img);
+
+                            
+                            $new_upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$crawl_item);
+                            @unlink($new_upload_path_);
+                            
+                            $updatedata['crw_file_' . $k] = $crw_file[$k];
+                        } else {
+                            $file_error = $this->upload->display_errors();
+                            return $file_error;
+                            // break;
+
+                        }
+                    }
+                }
+            }
             
 
             $array = array(
