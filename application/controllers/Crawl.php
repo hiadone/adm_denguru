@@ -515,7 +515,7 @@ class Crawl extends CB_Controller
 
                                 $old_upload_path_ =config_item('uploads_dir') . '/cmallitem/'.element('cit_file_1',$item);
                                 $new_upload_path_ =config_item('uploads_dir') . '/crawlitem/'.element('crw_file_1',$val);
-                                $filetype = mime_content_type($upload_path_);
+                                $filetype = mime_content_type($new_upload_path_);
                                 copy(
                                     $new_upload_path_,
                                     $upload_path.$crwimageName
