@@ -234,7 +234,7 @@ class Crawl extends CB_Controller
                     $updatedata = array(
                         
                      
-                        'cbr_id' => !empty($_cbr_id) ? $_cbr_id : $brd_brand,
+                        'cbr_id' => !empty($_cbr_id) ? $_cbr_id : !empty($brd_brand) ? $brd_brand : 9999 ,
                     
                     );
 
