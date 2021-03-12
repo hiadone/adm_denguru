@@ -1920,7 +1920,7 @@ class Board_post extends CB_Controller
 			$where['post_notice'] = 0;
 		}
 		if (element('use_personal', $board) && $is_admin === false) {
-			$where['post.mem_id'] = $mem_id;
+			$where['post.mem_id'] = $mem_id;			
 		}
 
 		$category_id = (int) $this->input->get('category_id');
